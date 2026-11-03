@@ -1,0 +1,19 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# Dependencies & builds
+node_modules/
+dist/
+build/
+*.log
+
+# Secrets
+.env
+.env.*
+*.pem
+*.key
