@@ -10,6 +10,7 @@ const A = require('./art.js');
 const K = require('./catalog.js');
 const L = require('./levels.js');
 const WR = require('./wardrobe.js');
+const R = require('./recipes.js');
 const C = D.COLORS;
 
 const PICKUPS = 3, BITES = 3;
@@ -28,7 +29,8 @@ function install(Game) {
   const P = Game.prototype;
 
   // ── starting a stream ──
-  P.startStream = function (n) { const lv = L.level(n); this.sessionLevels++; this.trans = 0.3; this.newRun({ level: lv.n, food: lv.food, pack: lv.pack, loc: 'home', view: lv.view, cost: 0, cpb: lv.cpb, event: lv.event }); this.beginStream(); };
+  // V4: a level starts on the stream with the viewer's request; the dish is cooked first (cook.js), then eaten
+  P.startStream = function (n) { const lv = L.level(n); this.sessionLevels++; this.trans = 0.3; this.newRun({ level: lv.n, food: null, recipe: lv.recipe, request: lv.request, pack: 'plates', phase: 'request', loc: 'home', view: lv.view, cost: 0, cpb: lv.cpb, event: lv.event }); this.beginStream(); };
   // activities end here: one chosen food, a bonus stream that never advances the level
   P.startFoodStream = function (foodId, o) {
     o = o || {}; const d = K.dish(foodId) || K.dish('cat_chips'); const reached = this.curLevel(); const lv = L.level(reached);
@@ -39,9 +41,9 @@ function install(Game) {
   P.newRun = function (o) {
     const lv = L.level(o.level || o.goalLevel || 1);
     const goal = o.level ? lv.goal : Math.round(lv.goal * 0.8), start = o.level ? lv.startViewers : Math.round(lv.startViewers * 0.8);
-    this.run = { v: 3, level: o.level || 0, side: o.side || null, food: o.food, pack: o.pack, loc: o.loc, view: o.view, event: o.event, toppings: o.toppings || null,
+    this.run = { v: o.recipe ? 4 : 3, level: o.level || 0, side: o.side || null, food: o.food, recipe: o.recipe || null, request: o.request || null, dish: o.dish || null, perfect: false, pack: o.pack, loc: o.loc, view: o.view, event: o.event, toppings: o.toppings || null,
       cost: o.cost || 0, cpb: o.cpb, goal: goal, goal3: Math.round(goal * 1.3), start: start, hu: Math.max(1, (goal - start) * 1.0 / (PICKUPS * BITES)),
-      viewers: start, peak: start, coins: 0, pickups: 0, bites: 0, phase: 'sealed', pt: 0, hearts: 0, gift: null, giftTaken: false, eventDone: false, t: 0, finaleDone: false };
+      viewers: start, peak: start, coins: 0, pickups: 0, bites: 0, phase: o.phase || 'sealed', pt: 0, hearts: 0, gift: null, giftTaken: false, eventDone: false, t: 0, finaleDone: false };
     this.saveRun();
   };
   P.beginStream = function () {
@@ -54,13 +56,21 @@ function install(Game) {
     this.pushChat('idle');
     this.setState('stream');
   };
+  // the food being eaten as a dish-like record (cooked V4 dish or a catalog food)
+  P.runFood = function () {
+    const r = this.run; if (!r.recipe) return K.dish(r.food);
+    const d = r.dish || r.request, col = R.colorOf(d), rc = R.RECIPES[r.recipe];
+    return { id: r.recipe, name: R.dishName(d), taste: R.tasteOf(d), sound: rc.sound, c1: col, c3: col, tags: [], bites: 3 };
+  };
+  P.platePos = function (i) { const W = this.W, H = this.H; return { x: W * [0.24, 0.5, 0.76][i], y: H * (i === 1 ? 0.7 : 0.655), size: Math.min(150, W * 0.27) }; };
+  P.nextPlate = function () { return this.run.pickups; }; // plates are eaten left → right
   P.streamLevel = function () { const r = this.run; return L.level(r.level || r.goalLevel || this.curLevel()); };
   P.packPos = function () { return { x: this.W / 2, y: this.H * 0.665, size: Math.min(250, this.W * 0.46) }; };
 
   // ── save / resume (run_json v3; older runs are dropped — the level itself is kept) ──
   P.saveRun = function () {
     const r = this.run; if (!r) { this.profile.set('run_json', ''); return; }
-    const o = {}; const keys = ['v', 'level', 'side', 'food', 'pack', 'loc', 'view', 'event', 'toppings', 'cost', 'cpb', 'goal', 'goal3', 'start', 'hu', 'viewers', 'peak', 'coins', 'pickups', 'bites', 'phase', 'hearts', 'giftTaken', 'eventDone', 'goalLevel'];
+    const o = {}; const keys = ['v', 'level', 'side', 'food', 'recipe', 'request', 'dish', 'perfect', 'giftAd', 'pack', 'loc', 'view', 'event', 'toppings', 'cost', 'cpb', 'goal', 'goal3', 'start', 'hu', 'viewers', 'peak', 'coins', 'pickups', 'bites', 'phase', 'hearts', 'giftTaken', 'eventDone', 'goalLevel'];
     for (let i = 0; i < keys.length; i++) o[keys[i]] = r[keys[i]];
     o.viewers = Math.round(o.viewers); o.peak = Math.round(o.peak);
     this.profile.set('run_json', JSON.stringify(o));
@@ -69,7 +79,9 @@ function install(Game) {
     try {
       const r = JSON.parse(this.profile.get('run_json') || 'null');
       if (!r) return;
-      if (r.v !== 3 || !K.dish(r.food)) { this.profile.set('run_json', ''); return; } // V1/V2 multi-food runs: start the level fresh
+      const ok = (r.v === 3 && K.dish(r.food)) || (r.v === 4 && R.RECIPES[r.recipe]);
+      if (!ok) { this.profile.set('run_json', ''); return; } // V1/V2 multi-food runs: start the level fresh
+      if (r.v === 4 && !r.dish) r.phase = 'request'; // closed while cooking: cook again
       r.t = 0; r.pt = 0; this.run = r;
     } catch (e) { this.run = null; this.profile.set('run_json', ''); }
   };
@@ -81,9 +93,10 @@ function install(Game) {
       // optional extras first: hearts, the fan gift
       for (let i = this.hearts.length - 1; i >= 0; i--) { const h = this.hearts[i]; if (!h.taken && U.dist(x, y, h.x, h.y) < 40) { this.tapHeart(h); return true; } }
       if (r.gift && !r.giftTaken && U.dist(x, y, r.gift.x, r.gift.y) < 60) { this.tapGift(); return true; }
-      const pk = this.packPos(); const onPack = Math.abs(x - pk.x) < pk.size * 0.55 && Math.abs(y - pk.y) < pk.size * 0.55;
+      let pk = this.packPos(); let onPack = Math.abs(x - pk.x) < pk.size * 0.55 && Math.abs(y - pk.y) < pk.size * 0.55;
+      if (r.recipe) { onPack = false; for (let i = r.pickups; i < PICKUPS; i++) { const pp = this.platePos(i); if (U.dist(x, y, pp.x, pp.y) < pp.size * 0.6) onPack = true; } }
       if (onPack && r.phase === 'sealed') { this.openPack(); return true; }
-      if (onPack && r.phase === 'open') { this.carry = { tid: id, x: x, y: y, sx: x, sy: y, moved: false, drag: true }; r.phase = 'carry'; r.pt = 0; this.audio.play('pop', { gain: 0.5 }); return true; }
+      if (onPack && r.phase === 'open') { if (r.recipe) { const pp = this.platePos(r.pickups); x = pp.x; y = pp.y; } this.carry = { tid: id, x: x, y: y, sx: x, sy: y, moved: false, drag: true }; r.phase = 'carry'; r.pt = 0; this.audio.play('pop', { gain: 0.5 }); return true; }
       return false;
     }
     const c = this.carry; if (!c || c.tid !== id || !c.drag) return false;
@@ -101,7 +114,7 @@ function install(Game) {
 
   // ── one bite of the current pickup ──
   P.biteNow = function () {
-    const r = this.run, d = K.dish(r.food), beat = BEAT[Math.min(r.pickups, PICKUPS - 1)];
+    const r = this.run, d = this.runFood(), beat = BEAT[Math.min(r.pickups, PICKUPS - 1)];
     const taste = d.tastes ? d.tastes[r.bites % d.tastes.length] : d.taste;
     const hype = Math.round(r.hu * beat.mult * [0.9, 1.0, 1.1][r.bites] * (0.9 + 0.1 * D.TASTES[taste].mult) * (0.95 + Math.random() * 0.1));
     this.addViewers(hype); r.coins += r.cpb; this.profile.add('coins', r.cpb);
@@ -120,7 +133,7 @@ function install(Game) {
   P.spawnCrumbs = function (x, y, d) { for (let i = 0; i < 6; i++) this.confetti.push({ x: x + (Math.random() - 0.5) * 30, y: y, vx: (Math.random() - 0.5) * 160, vy: -60 - Math.random() * 120, life: 0, max: 0.7, color: i % 2 ? d.c1 : d.c3, r: 2.5 + Math.random() * 2.5, rot: 0, spin: 4 }); };
   // the emotional beat after each pickup
   P.pickupDone = function () {
-    const r = this.run, d = K.dish(r.food), k = r.pickups, beat = BEAT[Math.min(k, PICKUPS - 1)];
+    const r = this.run, d = this.runFood(), k = r.pickups, beat = BEAT[Math.min(k, PICKUPS - 1)];
     r.pickups++; r.bites = 0; r.phase = 'react'; r.pt = 0;
     const W = this.W, H = this.H;
     r.banner = { text: beat.title, sub: k === 0 ? (TASTE_LINE[d.sound] || 'SO GOOD!') : k === 1 ? U.fmtViewers(r.viewers) + ' WATCHING!' : 'ONE MORE…', t: 0 };
@@ -165,7 +178,7 @@ function install(Game) {
         const c = this.carry; if (!c) { r.phase = 'open'; break; }
         if (!c.drag) {
           c.ft += dt / T.carry; const pk = this.packPos(), m = this.mouth(); const k = U.easeInOut(Math.min(1, c.ft));
-          const tx = c.back ? pk.x : m.x, ty = c.back ? pk.y - 20 : m.y;
+          const home = r.recipe ? this.platePos(r.pickups) : pk; const tx = c.back ? home.x : m.x, ty = c.back ? home.y - 20 : m.y;
           c.x = U.lerp(c.fx, tx, k); c.y = U.lerp(c.fy, ty, k) - Math.sin(k * Math.PI) * (c.back ? 30 : 60);
           if (c.ft >= 1) { if (c.back) { this.carry = null; r.phase = 'open'; } else this.deliver(); }
         }
@@ -185,9 +198,11 @@ function install(Game) {
   };
   P.viralFinish = function () {
     const r = this.run, W = this.W, H = this.H;
-    const bonus = r.cpb * 3; r.coins += bonus; this.profile.add('coins', bonus);
-    this.addViewers(Math.round(r.goal * FINALE_BOOST));
-    r.banner = { text: 'VIRAL!', sub: U.fmtViewers(r.peak) + ' VIEWERS  ·  +' + bonus + ' COINS', t: 0, big: true };
+    let bonus = r.cpb * 3;
+    if (r.recipe && r.level) { const lv = L.level(r.level); r.mission = Math.round(lv.reward * (r.perfect ? 1.5 : 1)); bonus += r.mission; }
+    r.coins += bonus; this.profile.add('coins', bonus);
+    this.addViewers(Math.round(r.goal * (FINALE_BOOST + (r.perfect ? 0.12 : 0))));
+    r.banner = { text: r.mission ? 'MISSION COMPLETE!' : 'VIRAL!', sub: U.fmtViewers(r.peak) + ' VIEWERS  ·  +' + bonus + ' COINS', t: 0, big: true };
     this.setFace('yum', T.finale); this.audio.play('win'); this.spawnConfetti(W / 2, H * 0.4, 80); this.vibrate('long');
     for (let i = 0; i < 20; i++) this.spawnReaction(i % 2 ? 'heart' : null);
     this.pushChat('milestone', U.fmtViewers(r.peak)); this.pushChat('finish');
@@ -197,13 +212,14 @@ function install(Game) {
   // ── result ──
   P.finishRun = function () {
     const r = this.run, p = this.profile; if (!r) return;
-    const stars = r.peak >= r.goal3 ? 3 : r.peak >= r.goal ? 2 : 1;
+    let stars = r.peak >= r.goal3 ? 3 : r.peak >= r.goal ? 2 : 1; if (r.perfect && stars < 3) stars++; // matching the request is worth a star
     p.add('streams', 1);
     if (r.peak > (p.get('best_viewers') || 0)) p.set('best_viewers', Math.round(r.peak));
-    const res = { side: r.side, food: r.food, stars: stars, peak: Math.round(r.peak), goal: r.goal, coins: r.coins, hearts: r.hearts, gift: r.giftTaken, unlocks: [], firstClear: false, bonusTaken: false, t: 0 };
+    const fid = r.recipe || r.food;
+    const res = { side: r.side, food: r.food, dish: r.dish, perfect: r.perfect, mission: r.mission || 0, stars: stars, peak: Math.round(r.peak), goal: r.goal, coins: r.coins, hearts: r.hearts, gift: r.giftTaken, unlocks: [], firstClear: false, bonusTaken: false, t: 0 };
     // collection: every food eaten once is in the food book
     let book; try { book = JSON.parse(p.get('foods_json') || '[]'); } catch (e) { book = []; }
-    if (book.indexOf(r.food) < 0) { book.push(r.food); p.set('foods_json', JSON.stringify(book)); res.unlocks.push('FOOD BOOK: ' + K.dish(r.food).name.toUpperCase()); }
+    if (book.indexOf(fid) < 0) { book.push(fid); p.set('foods_json', JSON.stringify(book)); res.unlocks.push('FOOD BOOK: ' + (r.recipe ? R.RECIPES[r.recipe].name : K.dish(r.food).name).toUpperCase()); }
     if (r.level) {
       const lv = L.level(r.level); res.lv = lv;
       const st = this.stars(); if (stars > (st[lv.n] || 0)) st[lv.n] = stars; p.set('stars_json', JSON.stringify(st));
@@ -240,22 +256,37 @@ function install(Game) {
     A.phoneStick(ctx, W * 0.08, H * 0.38, 0.85, this.time);
     ctx.restore();
     if (r) {
-      const pk = this.packPos(), d = K.dish(r.food);
+      let pk = this.packPos(); const d = this.runFood();
       const ph = r.phase, e = Math.min(1, r.pickups / PICKUPS);
-      const state = ph === 'sealed' ? 'sealed' : ph === 'opening' ? 'opening' : (ph === 'empty' || ph === 'finale') ? 'empty' : 'open';
       const glow = (ph === 'sealed' || ph === 'open') && !still;
-      if (glow) { ctx.globalAlpha = 0.25 + 0.15 * Math.sin(this.time * 5); A.circle(ctx, pk.x, pk.y, pk.size * 0.55, '#fff8d0', 0); ctx.globalAlpha = 1; }
-      A.pack(ctx, d, r.pack, pk.x, pk.y + (glow ? Math.sin(this.time * 3) * 3 : 0), pk.size, state, ph === 'opening' ? r.pt / T.opening : 0, e, this.time, r.toppings);
-      // pickup pips
-      for (let i = 0; i < PICKUPS; i++) { const px = pk.x + (i - 1) * 34, py = pk.y + pk.size * 0.5 + 18; A.circle(ctx, px, py, 11, i < r.pickups ? C.pink : 'rgba(255,255,255,0.85)', 3); if (i < r.pickups) A.heart(ctx, px, py + 1, 5, '#fff', 0); }
-      // the portion on its way to the mouth
-      if (this.carry) A.portion(ctx, d, this.carry.x, this.carry.y, 110, this.time);
+      if (r.recipe) {
+        // V4: the cooked dish, served as 3 portions on plates (eaten left → right)
+        const served = !!r.dish && ph !== 'request';
+        for (let i = 0; i < PICKUPS; i++) {
+          const pp = this.platePos(i); A.ellipse(ctx, pp.x, pp.y + pp.size * 0.32, pp.size * 0.48, pp.size * 0.13, '#e9f3ff', 4); A.ellipse(ctx, pp.x, pp.y + pp.size * 0.31, pp.size * 0.36, pp.size * 0.08, '#f8fbff', 0);
+          if (!served || i < r.pickups) continue;
+          if (this.carry && i === r.pickups) continue;
+          const bob = glow && i === r.pickups ? Math.sin(this.time * 4) * 3 : 0;
+          if (glow && i === r.pickups) { ctx.globalAlpha = 0.25 + 0.15 * Math.sin(this.time * 5); A.circle(ctx, pp.x, pp.y, pp.size * 0.5, '#fff8d0', 0); ctx.globalAlpha = 1; }
+          R.draw(ctx, A, r.dish, pp.x, pp.y + bob, pp.size, { flipped: true, set: true, fill: 1, tops: 3, deco: 1 });
+        }
+        pk = this.platePos(1);
+        if (this.carry && r.dish) R.draw(ctx, A, r.dish, this.carry.x, this.carry.y, 100, { flipped: true, set: true, fill: 1, tops: 3, deco: 1 });
+        if (ph === 'request' && !still) this.drawRequest();
+      } else {
+        const state = ph === 'sealed' ? 'sealed' : ph === 'opening' ? 'opening' : (ph === 'empty' || ph === 'finale') ? 'empty' : 'open';
+        if (glow) { ctx.globalAlpha = 0.25 + 0.15 * Math.sin(this.time * 5); A.circle(ctx, pk.x, pk.y, pk.size * 0.55, '#fff8d0', 0); ctx.globalAlpha = 1; }
+        A.pack(ctx, d, r.pack, pk.x, pk.y + (glow ? Math.sin(this.time * 3) * 3 : 0), pk.size, state, ph === 'opening' ? r.pt / T.opening : 0, e, this.time, r.toppings);
+        for (let i = 0; i < PICKUPS; i++) { const px = pk.x + (i - 1) * 34, py = pk.y + pk.size * 0.5 + 18; A.circle(ctx, px, py, 11, i < r.pickups ? C.pink : 'rgba(255,255,255,0.85)', 3); if (i < r.pickups) A.heart(ctx, px, py + 1, 5, '#fff', 0); }
+        if (this.carry) A.portion(ctx, d, this.carry.x, this.carry.y, 110, this.time);
+      }
       // mouth target while carrying
       if (ph === 'carry' && this.carry && this.carry.drag) { const m = this.mouth(); const a = 0.4 + 0.25 * Math.sin(this.time * 8); ctx.strokeStyle = 'rgba(255,255,255,' + a + ')'; ctx.lineWidth = 5; ctx.setLineDash([10, 10]); ctx.beginPath(); ctx.arc(m.x, m.y, MOUTH_R - 10, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]); }
       // hints
       if (!still) {
         if (ph === 'sealed') ui.label('TAP · ' + L.PACK_INFO[r.pack].open + '!', W / 2, pk.y - pk.size * 0.62, 20, C.white, 'center', { stroke: 6 });
-        else if (ph === 'open') ui.label(r.pickups === 0 ? 'TAP OR DRAG A BITE TO HER MOUTH' : 'NEXT BITE!  (' + (r.pickups + 1) + '/' + PICKUPS + ')', W / 2, pk.y - pk.size * 0.62, r.pickups === 0 ? 17 : 20, C.white, 'center', { stroke: 6 });
+        else if (ph === 'open') ui.label(r.pickups === 0 ? 'TAP OR DRAG A PLATE TO HER MOUTH' : 'NEXT ONE!  (' + (r.pickups + 1) + '/' + PICKUPS + ')', W / 2, pk.y - pk.size * 0.62 - (r.recipe ? 10 : 0), r.pickups === 0 ? 17 : 20, C.white, 'center', { stroke: 6 });
+        if (ph === 'open' && r.pickups >= 1 && !r.giftAd && this.canFanGift()) this.drawFanGiftBtn();
       }
       // fan gift
       if (r.gift && !r.giftTaken) { const g = r.gift; const drop = Math.min(1, g.t * 2.5); A.mysteryBox(ctx, g.x, U.lerp(-60, g.y, U.easeOutCubic(drop)), 90, this.time, 0, true); if (drop >= 1) ui.label('TAP!', g.x, g.y + 56, 15, C.white, 'center', { stroke: 4 }); }
@@ -283,6 +314,28 @@ function install(Game) {
     // beat banner
     if (r.banner && !still) { const b = r.banner; const k = U.easeOutBack(Math.min(1, b.t * 3)); const a = b.big ? 1 : Math.min(1, (1.6 - b.t) * 3); ctx.globalAlpha = Math.max(0, a); ctx.save(); ctx.translate(W / 2, H * 0.47); ctx.scale(k, k); ui.title(b.text, 0, 0, b.big ? 64 : 36, b.big ? C.yellow : C.white, C.pinkDark); if (b.sub) ui.label(b.sub, 0, b.big ? 48 : 34, b.big ? 20 : 18, C.white, 'center', { stroke: 5 }); ctx.restore(); ctx.globalAlpha = 1; }
   };
+  // the viewer's request (start of every level) and the big MAKE button
+  P.drawRequest = function () {
+    const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, r = this.run, req = r.request, lv = L.level(r.level), top = this.top();
+    const y = top + 118, a = Math.min(1, r.t * 3); ctx.globalAlpha = a;
+    ui.panel(30, y, W - 60, 104, '#ffffff', C.lavenderDark, 22, 4); A.rr(ctx, 30, y, W - 60, 30, 14); ctx.fillStyle = '#efe4ff'; ctx.fill();
+    ui.label('VIEWER REQUEST', W / 2, y + 16, 14, C.lavenderDark);
+    A.avatar(ctx, D.AVATARS[r.level % D.AVATARS.length], 64, y + 66, 20);
+    R.draw(ctx, A, req, W / 2 - 40, y + 64, 66, { flipped: true, set: true, fill: 1, tops: 1, deco: 0 });
+    ui.label(R.dishName(req), W / 2 + 70, y + 54, 16, C.text); const ts = R.opt(R.toppingSlot(req.recipe), req.topping); ui.label('+ ' + (ts ? ts.name : ''), W / 2 + 70, y + 74, 12, C.textLight);
+    A.coin(ctx, W - 86, y + 92, 8); ui.label(String(lv.reward), W - 72, y + 93, 13, C.goldDark, 'left');
+    ctx.globalAlpha = 1;
+    const by = this.bottom() - 190, pulse = 1 + Math.sin(this.time * 5) * 0.04;
+    ctx.save(); ctx.translate(W / 2, by + 36); ctx.scale(pulse, pulse); ctx.translate(-W / 2, -(by + 36));
+    ui.button('cook_go', W * 0.18, by, W * 0.64, 72, R.RECIPES[r.recipe].make, { color: C.yellow, dark: C.yellowDark, size: 26 }); ctx.restore();
+    if (r.level === 1 && (this.profile.get('streams') || 0) === 0) { const fx = W * 0.7 + Math.sin(this.time * 4) * 6, fy = by + 60 + Math.cos(this.time * 4) * 6; A.circle(ctx, fx, fy, 16, 'rgba(255,255,255,0.85)', 3); ui.label('TAP!', fx, fy + 30, 14, C.white, 'center', { stroke: 4 }); }
+  };
+  P.canFanGift = function () { return this.hs.hasAds() && this.hs.canShowFanGift && this.hs.canShowFanGift() && (this.profile.get('streams') || 0) >= 2; };
+  P.drawFanGiftBtn = function () {
+    const ui = this.ui, ctx = this.ctx, W = this.W, top = this.top(), y = top + 120;
+    ui.panel(24, y, W - 150, 54, '#ffe6f0', C.pinkDark, 20, 3); A.avatar(ctx, 'bear', 52, y + 27, 17); ui.label('I have a gift for you!', 80, y + 20, 13, C.text, 'left'); const g = this.hs.rewardsFanGift ? this.hs.rewardsFanGift() : null; ui.label(g ? this.itemsText(g) : '', 80, y + 39, 12, C.goldDark, 'left');
+    ui.button('fangift_ad', W - 170, y + 6, 120, 42, '▶ GET', { color: C.green, dark: C.greenDark, size: 17 });
+  };
   P.drawResult = function () {
     const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, res = this.result, hs = this.hs;
     ui.dim(0.4);
@@ -291,9 +344,10 @@ function install(Game) {
     ui.title(res.stars >= 3 ? 'SUPER VIRAL!' : res.stars >= 2 ? 'VIRAL STREAM!' : 'GREAT STREAM!', W / 2, py + 46, 36, C.white, C.pinkDark);
     ui.label(res.lv ? 'STREAM ' + res.lv.n + ' · ' + res.lv.title.toUpperCase() : (L.modeOf(res.side) ? L.modeOf(res.side).name : 'BONUS') + ' STREAM', W / 2, py + 76, 13, C.textLight);
     for (let k = 0; k < 3; k++) { const on = k < res.stars; const sc = on ? U.easeOutBack(Math.min(1, Math.max(0, res.t * 2 - k * 0.5))) : 1; ctx.save(); ctx.translate(W / 2 + (k - 1) * 70, py + 116); ctx.scale(sc, sc); A.uiStar(ctx, 0, 0, 28, on, '#e8e0e0', 4); ctx.restore(); }
-    A.food(ctx, K.dish(res.food), W / 2 - 150, py + 116, 70, 0, this.time);
+    if (res.dish) R.draw(ctx, A, res.dish, W / 2 - 150, py + 116, 70, { flipped: true, set: true, fill: 1, tops: 3, deco: 1 }); else A.food(ctx, K.dish(res.food), W / 2 - 150, py + 116, 70, 0, this.time);
+
     ui.label('PEAK ' + U.fmtViewers(res.peak) + '  (goal ' + U.fmtViewers(res.goal) + ')', W / 2, py + 166, 20, C.text);
-    ui.label('hearts tapped ' + res.hearts + (res.gift ? '  ·  fan gift ✓' : ''), W / 2, py + 192, 13, C.textLight);
+    ui.label(res.mission ? 'MISSION +' + res.mission + (res.perfect ? '  ·  PERFECT MATCH ★' : '') : 'hearts tapped ' + res.hearts + (res.gift ? '  ·  fan gift ✓' : ''), W / 2, py + 192, 13, res.mission ? C.pinkDark : C.textLight);
     A.coin(ctx, W / 2 - 60, py + 226, 12); ui.label('+' + U.fmtCoins(res.coins), W / 2 + 8, py + 226, 26, C.goldDark);
     let y = py + 258;
     if (res.firstClear) { const rb = hs.rewardsLevelBonus(); if (rb) { ui.label('LEVEL BONUS  ' + this.itemsText(rb), W / 2, y, 15, C.pinkDark); y += 24; } }

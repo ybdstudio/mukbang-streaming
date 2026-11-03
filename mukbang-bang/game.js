@@ -14,6 +14,8 @@ var DEFAULTS = {
     first_stream:    { coins: 200, $limit: 'once' },      // the player's first finished stream
     bonus_coins:     { coins: 300 },                      // rewarded ad place on the result screen
     free_coins:      { coins: 200 },                      // rewarded ad place behind the "+" next to the coins
+    fan_gift:        { coins: 300 },                      // rewarded ad place: a fan's gift between bites on the stream
+    // no entry for "rare_choice": that ad only unlocks a rare ingredient for this dish (counts as the requested one)
     // no entries for "surprise_food", "fashion_reward", "viral_boost": those ads only let the game go on
     // (a rare-food bonus stream / a wardrobe item / a hype boost for this stream) — watched = {} → continue
     // no "stream_end" entry: that interstitial gives nothing, it only continues to the next level
@@ -133,6 +135,11 @@ var hs = {
   showBonusCoins: function () { return HSGame.showAd('bonus_coins'); },
   canShowFreeCoins: function () { return HSGame.canShowAd('free_coins'); },
   showFreeCoins: function () { return HSGame.showAd('free_coins'); },
+  canShowFanGift: function () { return HSGame.canShowAd('fan_gift'); },
+  showFanGift: function () { return HSGame.showAd('fan_gift'); },
+  rewardsFanGift: function () { return HSGame.rewards('fan_gift'); },
+  canShowRare: function () { return HSGame.canShowAd('rare_choice'); },
+  showRare: function () { return HSGame.showAd('rare_choice'); },
   canShowSurprise: function () { return HSGame.canShowAd('surprise_food'); },
   showSurprise: function () { return HSGame.showAd('surprise_food'); },
   canShowFashion: function () { return HSGame.canShowAd('fashion_reward'); },

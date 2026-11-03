@@ -1,5 +1,7 @@
 # Mukbang Bang — tiến trình & bàn giao (03/11/2026)
 
+> **V4 (hiện tại)** — làm theo video: viewer yêu cầu món → **tự nấu** theo từng bước chọn (khay 4 ô + ✓, rót/giữ dụng cụ/lật/đặt/chà) → PERFECT! → stream ăn 3 đĩa × 3 miếng → MISSION COMPLETE; 40 màn, 8 công thức; chợ/giao hàng/buffet là hoạt động phụ; 8 ad place (thêm `fan_gift`, `rare_choice`), cooldown 30 s. Thiết kế + kết quả mô phỏng: `docs/GAME-DESIGN-V4.md`. V3 (`docs/GAME-DESIGN-V3.md`) là lịch sử của vòng mở gói, nay chỉ còn trong hoạt động phụ.
+>
 > **V3 (hiện tại)** — vòng ăn 1 món: mở gói → 3 gắp × 3 miếng → VIRAL; 50 stream; 4 hoạt động tuỳ chọn ở Home; Wardrobe; 6 ad place đo impression thật, cooldown 30 s. Thiết kế + QA: `docs/GAME-DESIGN-V3.md`. Art mới: `docs/ART-DIRECTION-V3.md` (chờ Codex). V2 (`docs/GAME-DESIGN-V2.md`) chỉ còn là lịch sử; các mục V1 bên dưới về HS kit / lệnh / quy ước vẫn đúng.
 
 Tài liệu cho người/AI tiếp quản. Đọc hết file này trước khi sửa code.
@@ -20,8 +22,8 @@ Tài liệu cho người/AI tiếp quản. Đọc hết file này trước khi s
 | Economy (luôn lãi), mốc lượt xem có tip, thưởng level đầu | ✅ |
 | Lưu tiến trình trong HSGame profile (cloud), stream dở dang khôi phục sau khi tắt app | ✅ |
 | HS kit: rewards, 3 ad place, shop, nút TikTok review (Entry/Launch/Share), pause/resume | ✅ |
-| `hs-check`: **0 ❌, 4 ⚠️** (chỉ thiếu App ID + 3 ad unit id) | ✅ |
-| `tools/sim-test.mjs` V3: **85** kiểm tra + mô phỏng 5 hồ sơ × 50 stream (thời gian + impression đo từ ad_stats), all passed | ✅ |
+| `hs-check`: **0 ❌, 9 ⚠️** (chỉ thiếu App ID + 8 ad unit id) | ✅ |
+| `tools/sim-test.mjs` V4: nấu + ăn bằng thao tác chạm thật, 8 công thức, lưu/tiếp tục, ads; mô phỏng 5 hồ sơ × 40 màn — all passed. Average: playtime 41′, **5.9 imps/5 phút (KPI 8 chưa đạt)** | ✅ |
 | Bản web 1 file + artifact claude.ai | ✅ https://claude.ai/artifact/RT6eXomFXizn2A6YfZbhtp (riêng tư, của chủ dự án) |
 | Repo GitHub `greenteeceo/mukbang-bang` (private), nhánh `main` | ✅ commit mới nhất `1f2b304` |
 | **Art bitmap từ Codex (143 ảnh, 2.6 MB) đã tích hợp**: món ăn, 3 streamer ghép lớp + 9 biểu cảm, 5 nền, siêu thị, quầy quét, icon, emoji, avatar, logo. Code vẽ canvas cũ giữ làm fallback | ✅ |

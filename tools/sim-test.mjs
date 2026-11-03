@@ -24,6 +24,8 @@ const K = require('./catalog.js');
 const S = require('./sprites.js');
 const WR = require('./wardrobe.js');
 const ST = require('./stream.js');
+const R = require('./recipes.js');
+const CK = require('./cook.js');
 
 let fails = 0;
 function check(name, ok, info) { if (ok) console.log('✅', name); else { fails++; console.log('❌', name, info === undefined ? '' : JSON.stringify(info).slice(0, 400)); } }
@@ -66,6 +68,8 @@ function fakeHs(profile, mode, opts) {
     canShowSurprise: () => cool('surprise_food'), showSurprise() { return ad('surprise_food', null); },
     canShowFashion: () => cool('fashion_reward'), showFashion() { return ad('fashion_reward', null); },
     canShowBoost: () => cool('viral_boost'), showBoost() { return ad('viral_boost', null); },
+    canShowFanGift: () => cool('fan_gift'), showFanGift() { return ad('fan_gift', { coins: 300 }); }, rewardsFanGift: () => ({ coins: 300 }),
+    canShowRare: () => cool('rare_choice'), showRare() { return ad('rare_choice', null); },
     profileMissionDone: () => false, shortcutMissionDone: () => false, startProfileMission() {}, startShortcutMission() {},
     canShare: () => true, share: () => Promise.resolve({}), shop: () => Promise.resolve([]), buy: () => Promise.resolve({ ok: true, delivered: true }), on() {}
   };
@@ -81,54 +85,87 @@ function touchAt(g, p, x, y) { const k = K390(g); p.touch('start', 3, x * k, y *
 function drag(g, p, x0, y0, x1, y1, steps) { const k = K390(g); p.touch('start', 2, x0 * k, y0 * k); run(g, 0.05); for (let i = 1; i <= (steps || 10); i++) { p.touch('move', 2, (x0 + (x1 - x0) * i / (steps || 10)) * k, (y0 + (y1 - y0) * i / (steps || 10)) * k); run(g, 0.02); } p.touch('end', 2, x1 * k, y1 * k); run(g, 0.05); }
 function runUntil(g, cond, max) { for (let i = 0; i < (max || 20) * 60 && !cond(); i++) run(g, 1 / 60); return cond(); }
 
-// ═════════ core eating loop ═════════
+// ── V4 helpers: cook the requested dish through real touches; eat whatever is on the table ──
+// opts: { match: true (pick what the viewer asked for), cost: fn(seconds, kind) for time accounting }
+async function cookAll(g, p, opts) {
+  opts = opts || {}; const k = g.ck; const kk = K390(g); const cost = opts.cost || (() => {}); let guard = 0;
+  while (g.state === 'cook' && g.ck && g.ck.doneT < 0 && guard++ < 40) {
+    const st = g.curCookStep(), a = g.cookArea(), t0 = g.time;
+    if (st.t === 'pick' && k.rare && opts.rare && Math.random() < opts.rare) { await tap(g, p, 'ck_rare'); await flush(); if (k.sel) { await tap(g, p, 'ck_ok'); cost(0, 'pick'); if (opts.onAd) opts.onAd(); continue; } }
+    if (st.t === 'pick') { const want = k.req[CK.SLOT_KEY[st.slot]]; const o = opts.match !== false && k.opts.find(x => x.id === want) ? want : k.opts.find(x => x.id !== want).id; await tap(g, p, 'cko_' + o); await tap(g, p, 'ck_ok'); cost(0, 'pick'); }
+    else if (st.t === 'pour' || st.t === 'hold') { p.touch('start', 5, a.x * kk, a.y * kk); let i = 0; while (g.ck && g.curCookStep() === st && i++ < 400) run(g, 0.05); p.touch('end', 5, a.x * kk, a.y * kk); cost(g.time - t0, 'hold'); }
+    else if (st.t === 'flip') { touchAt(g, p, a.x, a.y); runUntil(g, () => !g.ck || g.curCookStep() !== st, 2); cost(g.time - t0, 'tap'); }
+    else if (st.t === 'place') { for (let i = 0; i < st.n && g.ck && g.curCookStep() === st; i++) { touchAt(g, p, a.x + (i - 1) * 30, a.y - 20); cost(0, 'tap'); } }
+    else if (st.t === 'shake') { p.touch('start', 6, a.x * kk, a.y * kk); let x = a.x, dir = 1, i = 0; while (g.ck && g.curCookStep() === st && i++ < 400) { x += dir * 40; if (Math.abs(x - a.x) > 90) dir = -dir; p.touch('move', 6, x * kk, a.y * kk); run(g, 0.016); } p.touch('end', 6, x * kk, a.y * kk); cost(g.time - t0, 'rub'); }
+  }
+  const t1 = g.time; runUntil(g, () => g.state === 'stream', 4); cost(g.time - t1, 'wait');
+}
+function foodPos(g) { const r = g.run; return r && r.recipe ? g.platePos(Math.min(2, r.pickups)) : g.packPos(); }
+// from request / sealed to the result. feed: 'tap' | 'drag' | 'mix'
+async function eatAll(g, p, feed) {
+  if (g.run.phase === 'request') { await tap(g, p, 'cook_go'); await cookAll(g, p); }
+  if (g.run.phase === 'sealed') { const pk = g.packPos(); touchAt(g, p, pk.x, pk.y); run(g, 1); }
+  for (let k = 0, guard = 0; g.run && g.run.pickups < 3 && guard++ < 8; k++) { runUntil(g, () => !g.run || g.run.phase === 'open', 8); if (!g.run || g.run.pickups >= 3) break; const fp = foodPos(g); if (feed === 'drag' || (feed === 'mix' && k === 1)) { const m = g.mouth(); drag(g, p, fp.x, fp.y, m.x, m.y, 10); } else touchAt(g, p, fp.x, fp.y); runUntil(g, () => !g.run || g.run.phase === 'react', 6); }
+  runUntil(g, () => g.state === 'result', 10);
+}
+
+// ═════════ core loop: request → cook → serve 3 portions → 3 × 3 bites → mission ═════════
 seed(1);
 {
   const p = fakePlatform(), prof = fakeProfile(INIT), hs = fakeHs(prof, 'ok'); const g = new Game(p, hs); g.hsReady = true; run(g, 0.2);
-  check('new player starts inside stream 1 (no menus)', g.state === 'stream' && g.run.level === 1);
-  check('ONE food on the table: a sealed package', g.run.food === L.level(1).food && g.run.phase === 'sealed' && g.run.pickups === 0);
-  const pk = g.packPos();
-  touchAt(g, p, pk.x, pk.y); check('tap the package → opening', g.run.phase === 'opening');
-  run(g, ST.T.opening + 0.05); check('opening → open and full', g.run.phase === 'open' && g.run.pickups === 0);
-  const stages = []; const coins0 = prof.get('coins');
-  // pickup 1 by TAP, pickup 2 by DRAG, pickup 3 by TAP
+  check('new player starts inside stream 1 with a viewer request', g.state === 'stream' && g.run.level === 1 && g.run.phase === 'request' && !!g.run.request);
+  check('the MAKE button is there at once (first tap < 3 s)', hasBtn(g, 'cook_go'));
+  await tap(g, p, 'cook_go'); check('MAKE → the cooking scene', g.state === 'cook' && g.ck.lv.n === 1);
+  const steps = g.ck.rc.steps.map(s => s.t);
+  check('jelly = pick mould → pick flavour → pour → cool → flip → topping → place → deco → shake (as in the video)', steps.join() === 'pick,pick,pour,hold,flip,pick,place,pick,shake', steps);
+  check('a pick step shows 4 choices incl. the requested one', g.ck.opts.length === 4);
+  const want = g.ck.req.flavor; await tap(g, p, 'cko_' + g.ck.opts[0].id); check('choosing does not advance until ✓', g.ck.step === 0 && g.ck.sel === g.ck.opts[0].id); await tap(g, p, 'ck_ok'); check('✓ confirms the choice', g.ck.step === 1);
+  check('the flavour tray contains the requested flavour', g.ck.opts.some(o => o.id === want));
+  await cookAll(g, p, { match: true });
+  check('cooked dish matches the request → PERFECT, back on the stream', g.state === 'stream' && g.run.perfect === true && g.run.dish.flavor === want);
+  check('served as 3 portions on plates, phase open', g.run.phase === 'open' && g.run.pickups === 0);
   for (let k = 0; k < 3; k++) {
-    if (k === 1) { const m = g.mouth(); drag(g, p, pk.x, pk.y, m.x, m.y, 12); check('drag a portion to the mouth → chewing starts at once', g.run.phase === 'chew', g.run.phase); }
-    else { touchAt(g, p, pk.x, pk.y); check('pickup ' + (k + 1) + ': a tap carries the portion', g.run.phase === 'carry'); runUntil(g, () => g.run.phase === 'chew', 2); }
-    let bitesSeen = 0; runUntil(g, () => { bitesSeen = Math.max(bitesSeen, g.run.bites); return g.run.phase === 'react'; }, 5);
-    check('pickup ' + (k + 1) + ': exactly 3 bites', bitesSeen === 3 && g.run.pickups === k + 1, { bitesSeen, pickups: g.run.pickups });
-    stages.push(g.run.phase);
+    const fp = foodPos(g);
+    if (k === 1) { const m = g.mouth(); drag(g, p, fp.x, fp.y, m.x, m.y, 12); check('drag a portion to the mouth → chewing at once', g.run.phase === 'chew', g.run.phase); }
+    else { touchAt(g, p, fp.x, fp.y); check('portion ' + (k + 1) + ': a tap carries it', g.run.phase === 'carry'); runUntil(g, () => g.run.phase === 'chew', 2); }
+    let bites = 0; runUntil(g, () => { bites = Math.max(bites, g.run.bites); return g.run.phase === 'react'; }, 5);
+    check('portion ' + (k + 1) + ': exactly 3 bites', bites === 3 && g.run.pickups === k + 1, { bites, pickups: g.run.pickups });
     runUntil(g, () => g.run.phase !== 'react', 3);
-    if (k < 2) check('after pickup ' + (k + 1) + ': package open again, ' + (3 - k - 1) + ' left', g.run.phase === 'open' && g.run.pickups === k + 1);
   }
-  check('after 3 pickups (9 bites) the package is EMPTY', g.run.phase === 'empty' && g.run.pickups === 3);
-  const tryMore = g.run.phase; touchAt(g, p, pk.x, pk.y); check('an empty package cannot be picked from', g.run.phase === tryMore);
-  runUntil(g, () => g.run && g.run.phase === 'finale', 3); check('viral finale plays', g.run.phase === 'finale' && !!g.run.banner);
+  check('after 3 portions (9 bites) every plate is empty', g.run.phase === 'empty' && g.run.pickups === 3);
+  runUntil(g, () => g.run && g.run.phase === 'finale', 3); check('MISSION COMPLETE finale', g.run.phase === 'finale' && g.run.mission > 0);
   runUntil(g, () => g.state === 'result', 5);
-  check('…then the result', g.state === 'result' && g.result.lv.n === 1, g.state);
-  check('every bite paid coins (9 × cpb + finale)', g.result.coins >= 9 * L.level(1).cpb, g.result.coins);
-  check('normal eating reaches the goal (2★)', g.result.stars >= 2, g.result);
+  check('result: mission reward ×1.5 for a perfect match', g.result.mission === Math.round(L.level(1).reward * 1.5) && g.result.coins >= 9 * L.level(1).cpb + g.result.mission, g.result);
+  check('perfect + normal eating → at least 2★', g.result.stars >= 2);
   check('level 1 cleared: level bonus + first stream claimed', hs.claims.join() === 'level_bonus,first_stream' && prof.get('level') === 2);
-  check('food book records the food', JSON.parse(prof.get('foods_json')).indexOf(L.level(1).food) >= 0);
-  // a missed drag returns the portion
-  await tap(g, p, 'next'); check('NEXT → stream 2 at once (no shop / checkout)', g.state === 'stream' && g.run.level === 2);
-  touchAt(g, p, pk.x, pk.y); run(g, 1); drag(g, p, pk.x, pk.y, pk.x + 160, pk.y + 40, 6); runUntil(g, () => g.run.phase === 'open', 2);
-  check('a drag released away from the mouth flies the portion back (no pickup spent)', g.run.phase === 'open' && g.run.pickups === 0);
-  // 3 stars by tapping hearts (optional, no timing)
-  let tapped = 0; touchAt(g, p, pk.x, pk.y); for (let k = 0; k < 3 && g.run; k++) { runUntil(g, () => !g.run || g.run.phase === 'open', 6); if (!g.run) break; touchAt(g, p, pk.x, pk.y); for (let i = 0; i < 40 && g.run && g.run.phase !== 'open' && g.run.phase !== 'empty'; i++) { run(g, 0.12); for (const h of g.hearts.slice()) if (!h.taken) { touchAt(g, p, h.x, h.y); tapped++; } if (g.run.gift && !g.run.giftTaken) touchAt(g, p, g.run.gift.x, g.run.gift.y); } }
+  // level 2: wrong choices → still served, no perfect bonus
+  await tap(g, p, 'next'); check('NEXT → stream 2 with a new request', g.state === 'stream' && g.run.level === 2 && g.run.phase === 'request');
+  await tap(g, p, 'cook_go'); await cookAll(g, p, { match: false }); check('not what they asked → YUMMY (no fail), served anyway', g.state === 'stream' && g.run.perfect === false && g.run.phase === 'open');
+  const fp = foodPos(g); drag(g, p, fp.x, fp.y, fp.x + 150, fp.y + 30, 6); runUntil(g, () => g.run.phase === 'open', 2); check('a drag released away from the mouth flies back (no portion spent)', g.run.pickups === 0);
+  let tapped = 0; for (let k = 0; k < 3 && g.run; k++) { runUntil(g, () => !g.run || g.run.phase === 'open', 6); if (!g.run) break; const q = foodPos(g); touchAt(g, p, q.x, q.y); for (let i = 0; i < 40 && g.run && g.run.phase !== 'open' && g.run.phase !== 'empty'; i++) { run(g, 0.12); for (const h of g.hearts.slice()) if (!h.taken) { touchAt(g, p, h.x, h.y); tapped++; } if (g.run.gift && !g.run.giftTaken) touchAt(g, p, g.run.gift.x, g.run.gift.y); } }
   runUntil(g, () => g.state === 'result', 10);
-  check('tapping the optional hearts / gift gives 3★ (' + tapped + ' hearts)', g.result.stars === 3, g.result);
+  check('no perfect: mission reward ×1; tapping hearts still reaches 3★ (' + tapped + ')', g.result.mission === L.level(2).reward && g.result.stars === 3, g.result);
+}
+seed(11);
+{ // every recipe cooks through real touches
+  for (const rc of Object.keys(R.RECIPES)) {
+    const n = L.LEVELS.find(l => l.recipe === rc).n; const prof = fakeProfile(Object.assign({}, INIT, { level: n, levels_done: n - 1, streams: n - 1 })); const p = fakePlatform(), g = new Game(p, fakeHs(prof, 'ok')); g.hsReady = true; run(g, 0.1);
+    if (g.state !== 'stream') await tap(g, p, 'play'); await tap(g, p, 'cook_go'); const nsteps = g.ck.rc.steps.length; await cookAll(g, p, { match: true });
+    check(rc + ' (level ' + n + ', ' + nsteps + ' steps): cooked → perfect → served', g.state === 'stream' && g.run.perfect && g.run.dish.recipe === rc);
+  }
 }
 seed(2);
-{ // save & resume mid-stream (after pickup 1, and mid-chew)
+{ // save & resume: during cooking, after portion 1, mid-chew; old runs
   const prof = fakeProfile(Object.assign({}, INIT, { level: 5, levels_done: 4, streams: 4 })); const hs = fakeHs(prof, 'ok');
   const p = fakePlatform(), g = new Game(p, hs); g.hsReady = true; run(g, 0.1);
-  await tap(g, p, 'play'); const pk = g.packPos(); touchAt(g, p, pk.x, pk.y); run(g, 1); touchAt(g, p, pk.x, pk.y); runUntil(g, () => g.run.phase === 'open' && g.run.pickups === 1, 8);
-  const saved = JSON.parse(prof.get('run_json')); check('run_json v3 saved after pickup 1', saved.v === 3 && saved.pickups === 1 && saved.food === L.level(5).food, saved);
+  await tap(g, p, 'play'); await tap(g, p, 'cook_go'); await tap(g, p, 'cko_' + g.ck.opts[0].id); await tap(g, p, 'ck_ok');
+  const g0 = new Game(fakePlatform(), hs); g0.hsReady = true; run(g0, 0.1); check('closed while cooking → the request waits (cook again)', g0.run && g0.run.phase === 'request' && !g0.run.dish);
+  await cookAll(g, p); const fp = foodPos(g); touchAt(g, p, fp.x, fp.y); runUntil(g, () => g.run.phase === 'open' && g.run.pickups === 1, 8);
+  const saved = JSON.parse(prof.get('run_json')); check('run_json v4 keeps the cooked dish + 1 portion eaten', saved.v === 4 && saved.pickups === 1 && saved.dish && saved.dish.recipe === L.level(5).recipe, saved);
   const g2 = new Game(fakePlatform(), hs); g2.hsReady = true; run(g2, 0.1);
-  check('restart: the same stream is waiting (1 of 3 pickups done)', g2.run && g2.run.pickups === 1 && g2.state === 'home');
-  await tap(g2, g2.p, 'play'); check('RESUME MUKBANG continues it', g2.state === 'stream' && g2.run.phase === 'open' && g2.run.pickups === 1);
-  touchAt(g2, g2.p, pk.x, pk.y); runUntil(g2, () => g2.run.phase === 'chew' && g2.run.bites === 2, 4); const c1 = prof.get('coins');
+  check('restart: the same stream waits at home', g2.run && g2.run.pickups === 1 && g2.state === 'home');
+  await tap(g2, g2.p, 'play'); check('RESUME continues with 2 portions left', g2.state === 'stream' && g2.run.phase === 'open' && g2.run.pickups === 1);
+  const fp2 = foodPos(g2); touchAt(g2, g2.p, fp2.x, fp2.y); runUntil(g2, () => g2.run.phase === 'chew' && g2.run.bites === 2, 4); const c1 = prof.get('coins');
   const g3 = new Game(fakePlatform(), hs); g3.hsReady = true; run(g3, 0.1); await tap(g3, g3.p, 'play'); runUntil(g3, () => g3.run.bites === 3 || g3.run.phase === 'react', 3); const paid = prof.get('coins') - c1;
   check('resume mid-chew finishes only the missing bite (no double pay)', paid === g3.run.cpb, { paid, cpb: g3.run.cpb });
   const legacy = fakeProfile(Object.assign({}, INIT, { level: 4, streams: 3, run_json: JSON.stringify({ v: 2, level: 4, items: [{ id: 'chili_noodle', eaten: 1 }] }) }));
@@ -137,32 +174,32 @@ seed(2);
 }
 // ═════════ data ═════════
 {
-  check('50 streams, one food each, 6 chapters', L.LEVEL_COUNT === 50 && L.CHAPTERS.length === 6 && L.LEVELS.every(l => !!K.dish(l.food)));
-  const packs = new Set(L.LEVELS.map(l => l.pack)); check('all 5 package types appear (bag, cup, bottle, box, dome)', ['bag', 'cup', 'bottle', 'box', 'dome'].every(t => packs.has(t)), [...packs]);
-  const firstPack = {}; L.LEVELS.forEach(l => { if (!firstPack[l.pack]) firstPack[l.pack] = l.n; }); check('every package type is introduced within the first 10 streams', Object.values(firstPack).every(n => n <= 10), firstPack);
-  const foods = new Set(L.LEVELS.map(l => l.food)); check('no food repeats across the 50 streams', foods.size === 50);
-  check('activities unlock at 3 / 7 / 11 / 15 and appear in level unlocks', L.MODES.every(m => L.unlockLevel('mode:' + m.id) === m.unlock), L.MODES.map(m => [m.id, L.unlockLevel('mode:' + m.id)]));
+  check('40 levels, each a cookable request, 5 chapters', L.LEVEL_COUNT === 40 && L.CHAPTERS.length === 5 && L.LEVELS.every(l => R.RECIPES[l.recipe] && l.request && l.request.topping));
+  const firstRc = {}; L.LEVELS.forEach(l => { if (!firstRc[l.recipe]) firstRc[l.recipe] = l.n; }); check('all 8 recipes appear within the first 15 levels', Object.keys(R.RECIPES).every(r => firstRc[r] <= 15), firstRc);
+  check('every request is cookable at its level (options unlocked)', L.LEVELS.every(l => { const rc = R.RECIPES[l.recipe]; const fs = rc.taste === 'broth' ? 'broth' : 'flavor'; return R.options(fs, l.n).some(o => o.id === l.request[fs]) && R.options(R.toppingSlot(l.recipe), l.n).some(o => o.id === l.request.topping); }));
+  check('new choices unlock across the levels', L.LEVELS.filter(l => l.news.length).length >= 25);
+  check('activities unlock at 3 / 7 / 11', L.MODES.every(m => L.unlockLevel('mode:' + m.id) === m.unlock) && L.MODES.length === 3, L.MODES.map(m => [m.id, L.unlockLevel('mode:' + m.id)]));
   const gifts = WR.ITEMS.filter(i => i.gift); check('every wardrobe gift is granted by its level', gifts.every(i => L.unlockLevel('look:' + i.id) === i.gift), gifts.filter(i => L.unlockLevel('look:' + i.id) !== i.gift).map(i => i.id));
-  check('goals rise every stream', L.LEVELS.every((l, i) => i === 0 || l.goal > L.LEVELS[i - 1].goal));
+  check('goals rise every level', L.LEVELS.every((l, i) => i === 0 || l.goal > L.LEVELS[i - 1].goal));
 }
-// ═════════ optional activities: one food each, never advance the level ═════════
+// ═════════ optional activities: packaged / restaurant food, one item, never advance the level ═════════
 seed(3);
-for (const mode of ['market', 'delivery', 'buffet', 'kitchen']) {
+for (const mode of ['market', 'delivery', 'buffet']) {
   const prof = fakeProfile(Object.assign({}, INIT, { level: 20, levels_done: 19, streams: 19, coins: 3000 })); const p = fakePlatform(), hs = fakeHs(prof, 'ok'), g = new Game(p, hs); g.hsReady = true; run(g, 0.1);
-  await tap(g, p, 'side_' + mode); check(mode + ': opens from home', g.state === (mode === 'market' ? 'market' : mode), g.state);
+  await tap(g, p, 'side_' + mode); check(mode + ': opens from home', g.state === mode, g.state);
   g.sceneAutoFill(); runUntil(g, () => g.state === 'stream', 6);
-  check(mode + ': ends in a ONE-food bonus stream', g.state === 'stream' && g.run.side === mode && !!K.dish(g.run.food) && g.run.level === 0, g.run && g.run.side);
+  check(mode + ': ends in a ONE-food bonus stream (sealed package)', g.state === 'stream' && g.run.side === mode && g.run.phase === 'sealed' && !!K.dish(g.run.food), g.run && g.run.side);
   if (mode === 'buffet') check('buffet: the stream takes place at the restaurant', g.run.loc === 'restaurant');
-  const pk = g.packPos(); touchAt(g, p, pk.x, pk.y); run(g, 1); for (let k = 0; k < 3; k++) { touchAt(g, p, pk.x, pk.y); runUntil(g, () => g.run.phase === 'open' || g.run.phase === 'empty', 8); }
+  const pk = g.packPos(); touchAt(g, p, pk.x, pk.y); check(mode + ': tap the package → opening', g.run.phase === 'opening'); run(g, 1);
+  for (let k = 0; k < 3; k++) { touchAt(g, p, pk.x, pk.y); runUntil(g, () => g.run.phase === 'open' || g.run.phase === 'empty', 8); }
+  check(mode + ': 3 pickups empty the package', g.run.phase === 'empty' && g.run.pickups === 3);
   runUntil(g, () => g.state === 'result', 8);
-  check(mode + ': pays coins, adds the food to the book, level unchanged', g.state === 'result' && g.result.coins > 0 && prof.get('level') === 20 && JSON.parse(prof.get('foods_json')).length === 1, { lvl: prof.get('level') });
+  check(mode + ': pays coins, adds to the food book, level unchanged', g.state === 'result' && g.result.coins > 0 && prof.get('level') === 20 && JSON.parse(prof.get('foods_json')).length === 1, { lvl: prof.get('level') });
 }
-{ // locked & unaffordable activities
-  const prof = fakeProfile(Object.assign({}, INIT, { level: 2, streams: 1, coins: 5000 })); const p = fakePlatform(), g = new Game(p, fakeHs(prof, 'ok')); g.hsReady = true; run(g, 0.1);
+{ const prof = fakeProfile(Object.assign({}, INIT, { level: 2, streams: 1, coins: 5000 })); const p = fakePlatform(), g = new Game(p, fakeHs(prof, 'ok')); g.hsReady = true; run(g, 0.1);
   await tap(g, p, 'side_buffet'); check('a locked activity stays on home', g.state === 'home');
   const prof2 = fakeProfile(Object.assign({}, INIT, { level: 12, streams: 11, coins: 10 })); const p2 = fakePlatform(), g2 = new Game(p2, fakeHs(prof2, 'ok')); g2.hsReady = true; run(g2, 0.1);
-  await tap(g2, p2, 'side_delivery'); check('no coins → activity refused, START MUKBANG still free', g2.state === 'home'); await tap(g2, p2, 'play'); check('…and the main stream starts', g2.state === 'stream');
-}
+  await tap(g2, p2, 'side_delivery'); check('no coins → activity refused, the main stream is always free', g2.state === 'home'); await tap(g2, p2, 'play'); check('…START MUKBANG works', g2.state === 'stream'); }
 // ═════════ wardrobe ═════════
 seed(4);
 {
@@ -172,67 +209,71 @@ seed(4);
   await tap(g, p, 'witem_outfit_bib'); check('cannot buy without enough coins', !WR.owns(WR.state(prof), 'outfit_bib') && prof.get('coins') === 500);
   await tap(g, p, 'wtab1'); await tap(g, p, 'witem_hair_bow'); check('equip an owned hair accessory', WR.look(prof, 'luna').hair === 'hair_bow');
   await tap(g, p, 'witem_hair_crown'); check('a level gift cannot be bought early', !WR.owns(WR.state(prof), 'hair_crown'));
-  await tap(g, p, 'home'); await tap(g, p, 'play'); const pk = g.packPos(); touchAt(g, p, pk.x, pk.y); run(g, 1); touchAt(g, p, pk.x, pk.y); runUntil(g, () => g.run.phase === 'react', 5);
-  check('the look stays on while chewing (stream runs normally)', g.run.pickups === 1);
-  const p2 = fakePlatform(), prof2 = fakeProfile(Object.assign({}, INIT, { level: 3, streams: 2 })), g2 = new Game(p2, fakeHs(prof2, 'ok')); g2.hsReady = true; run(g2, 0.1); await tap(g2, p2, 'wardrobe'); check('wardrobe locked before stream ' + WR.OPEN_AT, g2.state === 'home');
+  await tap(g, p, 'home'); await tap(g, p, 'play'); await eatAll(g, p, 'tap'); check('the look stays on through cooking and eating', g.state === 'result');
+  const p2 = fakePlatform(), prof2 = fakeProfile(Object.assign({}, INIT, { level: 3, streams: 2 })), g2 = new Game(p2, fakeHs(prof2, 'ok')); g2.hsReady = true; run(g2, 0.1); await tap(g2, p2, 'wardrobe'); check('wardrobe locked before level ' + WR.OPEN_AT, g2.state === 'home');
 }
 // ═════════ ads ═════════
 seed(5);
 {
   const prof = fakeProfile(Object.assign({}, INIT, { level: 3, levels_done: 2, streams: 2, coins: 3000 })); let clk = 0; const hs = fakeHs(prof, 'ok', { clock: () => clk, cooldown: 30 });
   const p = fakePlatform(), g = new Game(p, hs); g.hsReady = true; run(g, 0.1);
-  const eat = async () => { const pk = g.packPos(); touchAt(g, p, pk.x, pk.y); run(g, 1); for (let k = 0; k < 3; k++) { touchAt(g, p, pk.x, pk.y); runUntil(g, () => g.run.phase === 'open' || g.run.phase === 'empty', 8); } runUntil(g, () => g.state === 'result', 8); };
-  await tap(g, p, 'play'); check('no viral-boost button during the ad-free streams', !hasBtn(g, 'boost_ad')); await eat();
-  await tap(g, p, 'next'); check('no interstitial in the first ' + 3 + ' streams', hs.ads.indexOf('stream_end') < 0, hs.ads);
-  await eat(); clk = 100; await tap(g, p, 'next'); check('interstitial at NEXT after stream 4 (a tap, a natural transition)', hs.ads.filter(a => a === 'stream_end').length === 1, hs.ads);
-  check('viral boost offered only while the package is sealed', g.state === 'stream' && g.run.phase === 'sealed' && hasBtn(g, 'boost_ad'));
-  const v0 = g.run.viewers; await tap(g, p, 'boost_ad'); await flush(); run(g, 0.1); check('viral boost ad → +25% goal viewers, button gone', g.run.viewers > v0 && !hasBtn(g, 'boost_ad'));
-  const pk = g.packPos(); touchAt(g, p, pk.x, pk.y); run(g, 1); touchAt(g, p, pk.x, pk.y); run(g, 0.6); check('no ad button while chewing', !hasBtn(g, 'boost_ad') && !hasBtn(g, 'bonus_ad'));
-  for (let k = 0; k < 2; k++) { runUntil(g, () => g.run.phase === 'open', 8); touchAt(g, p, pk.x, pk.y); } runUntil(g, () => g.state === 'result', 12);
-  clk = 110; await tap(g, p, 'next'); check('cooldown respected: within 30 s the game does not even ask for an interstitial', hs.ads.filter(a => a === 'stream_end').length === 1 && JSON.parse(prof.get('ad_stats')).stream_end.req === 1 && g.state === 'stream', { ads: hs.ads, st: JSON.parse(prof.get('ad_stats')).stream_end });
-  const st = JSON.parse(prof.get('ad_stats'));
-  check('ad_stats counts requests / impressions / completions per place', st.stream_end.req === 1 && st.stream_end.imp === 1 && st.viral_boost.imp === 1 && st.viral_boost.grant === 0, st);
-  // bonus ad on the result: shown → coins via SDK only
-  await eat(); clk = 200; const c0 = prof.get('coins'); await tap(g, p, 'bonus_ad'); await flush(); check('bonus_coins: the reward comes from the SDK result', prof.get('coins') === c0 + 300 && JSON.parse(prof.get('ad_stats')).bonus_coins.grant === 1);
-  // fashion + surprise
+  await tap(g, p, 'play'); await eatAll(g, p, 'tap');
+  await tap(g, p, 'next'); check('no interstitial in the first 3 streams', hs.ads.indexOf('stream_end') < 0, hs.ads);
+  await eatAll(g, p, 'tap'); clk = 100; await tap(g, p, 'next'); check('interstitial at NEXT after stream 4 (a tap, a natural transition)', hs.ads.filter(a => a === 'stream_end').length === 1, hs.ads);
+  await tap(g, p, 'cook_go'); await cookAll(g, p); const fp = foodPos(g); touchAt(g, p, fp.x, fp.y); run(g, 0.6);
+  check('no ad button while chewing', !hasBtn(g, 'fangift_ad') && !hasBtn(g, 'bonus_ad'));
+  runUntil(g, () => g.run.phase === 'open', 8); check('fan gift offered between portions', hasBtn(g, 'fangift_ad'));
+  const c0 = prof.get('coins'); await tap(g, p, 'fangift_ad'); await flush(); run(g, 0.1); check('fan gift ad → coins from the SDK reward, offered once', prof.get('coins') === c0 + 300 && !hasBtn(g, 'fangift_ad'));
+  for (let k = 0; k < 2; k++) { runUntil(g, () => g.run.phase === 'open', 8); const q = foodPos(g); touchAt(g, p, q.x, q.y); } runUntil(g, () => g.state === 'result', 12);
+  clk = 110; await tap(g, p, 'next');
+ check('cooldown: within 30 s the game does not even ask for an interstitial', hs.ads.filter(a => a === 'stream_end').length === 1 && JSON.parse(prof.get('ad_stats')).stream_end.req === 1 && g.state === 'stream', hs.ads);
+  const st = JSON.parse(prof.get('ad_stats')); check('ad_stats counts per place (req / imp / done / grant)', st.stream_end.imp === 1 && st.fan_gift.imp === 1 && st.fan_gift.grant === 1, st);
+  { // rare choice in the cooking tray (the run of the cooldown test above is still in its request)
+    await tap(g, p, 'cook_go'); let offers = 0, ads = 0; const seenRare = () => { if (g.ck && g.ck.rare) offers++; };
+    seenRare(); await cookAll(g, p, { match: true, rare: 1, onAd: () => { ads++; } });
+    const rs = JSON.parse(prof.get('ad_stats')).rare_choice || {};
+    check('rare choice (▶ RARE) in the tray → ad → used once per dish', rs.imp === 1 && ads === 1, rs);
+    check('a rare ingredient counts as what the viewer asked for → PERFECT', g.run.perfect === true);
+    for (let i = 0; i < 6 && g.run && g.run.pickups < 3; i++) { runUntil(g, () => !g.run || g.run.phase === 'open' || g.run.phase === 'empty', 8); if (!g.run || g.run.pickups >= 3) break; const q = foodPos(g); touchAt(g, p, q.x, q.y); } runUntil(g, () => g.state === 'result', 12);
+    clk = 180; await tap(g, p, 'next'); }
+  await eatAll(g, p, 'tap'); clk = 200; const c1 = prof.get('coins'); await tap(g, p, 'bonus_ad'); await flush(); check('bonus_coins: reward from the SDK result only', prof.get('coins') === c1 + 300 && JSON.parse(prof.get('ad_stats')).bonus_coins.grant === 1);
   await tap(g, p, 'res_home'); prof.set('level', 8); clk = 300; await tap(g, p, 'wardrobe'); const own0 = WR.state(prof).own.length; await tap(g, p, 'fashion_ad'); await flush(); check('fashion reward ad → one new look', WR.state(prof).own.length === own0 + 1);
-  await tap(g, p, 'home'); clk = 400; await tap(g, p, 'surprise_ad'); await flush(); run(g, 0.1); check('surprise food ad → a rare bonus stream', g.state === 'stream' && g.run.side === 'surprise');
-  check('adsLast5min() counts real impressions only', g.adsLast5min() >= 0);
+  await tap(g, p, 'home'); clk = 400; if (g.run) { g.run = null; g.saveRun(); } await tap(g, p, 'surprise_ad'); await flush(); run(g, 0.1); check('surprise food ad → a rare bonus stream (package)', g.state === 'stream' && g.run.side === 'surprise');
+  check('viral boost only while a package is sealed', hasBtn(g, 'boost_ad'));
 }
 for (const mode of ['null', 'reject']) {
   const prof = fakeProfile(Object.assign({}, INIT, { level: 6, levels_done: 5, streams: 5, coins: 1000 })); const hs = fakeHs(prof, mode); const p = fakePlatform(), g = new Game(p, hs); g.hsReady = true; run(g, 0.1);
-  await tap(g, p, 'play'); const pk = g.packPos(); touchAt(g, p, pk.x, pk.y); run(g, 1); for (let k = 0; k < 3; k++) { touchAt(g, p, pk.x, pk.y); runUntil(g, () => g.run.phase === 'open' || g.run.phase === 'empty', 8); } runUntil(g, () => g.state === 'result', 8);
-  const c0 = prof.get('coins'); await tap(g, p, 'bonus_ad'); await flush(); run(g, 0.1); check('ad ' + mode + ': no reward, bonus button back, not counted as impression', prof.get('coins') === c0 && hasBtn(g, 'bonus_ad') && !(JSON.parse(prof.get('ad_stats')).bonus_coins || {}).imp);
-  await tap(g, p, 'next'); await flush(); check('ad ' + mode + ': NEXT still starts the next stream', g.state === 'stream' && g.run.level === 7);
+  await tap(g, p, 'play'); await eatAll(g, p, 'tap');
+  const c0 = prof.get('coins'); await tap(g, p, 'bonus_ad'); await flush(); run(g, 0.1); check('ad ' + mode + ': no reward, bonus button back, not an impression', prof.get('coins') === c0 && hasBtn(g, 'bonus_ad') && !(JSON.parse(prof.get('ad_stats')).bonus_coins || {}).imp);
+  await tap(g, p, 'next'); await flush(); check('ad ' + mode + ': NEXT still starts the next level', g.state === 'stream' && g.run.level === 7);
 }
 { const prof = fakeProfile(Object.assign({}, INIT, { level: 9, levels_done: 8, streams: 8, no_ads: 1 })); const hs = fakeHs(prof, 'ok'); const p = fakePlatform(), g = new Game(p, hs); g.hsReady = true; run(g, 0.1);
-  await tap(g, p, 'play'); g.run.phase = 'finale'; g.run.pt = 99; run(g, 0.1); await tap(g, p, 'next'); check('No Ads: no interstitial', hs.ads.indexOf('stream_end') < 0); }
+  await tap(g, p, 'play'); await eatAll(g, p, 'tap'); await tap(g, p, 'next'); check('No Ads: no interstitial', hs.ads.indexOf('stream_end') < 0); }
 // ═════════ settings / packaging / art ═════════
 { const prof = fakeProfile(Object.assign({}, INIT, { level: 3, levels_done: 2, streams: 2 })); const p = fakePlatform(); const g = new Game(p, fakeHs(prof, 'ok')); g.hsReady = true; run(g, 0.1);
   await tap(g, p, 'settings'); check('TikTok build: no unlock-all button', !hasBtn(g, 'unlock_all'));
   const p2 = fakePlatform(); p2.devTools = true; const prof2 = fakeProfile(Object.assign({}, INIT, { level: 3, levels_done: 2, streams: 2 })); const g2 = new Game(p2, fakeHs(prof2, 'ok')); g2.hsReady = true; run(g2, 0.1);
-  await tap(g2, p2, 'settings'); await tap(g2, p2, 'unlock_all'); check('web build: unlock all → all streams open, levels_done untouched', prof2.get('level') === L.LEVEL_COUNT && prof2.get('levels_done') === 2); }
+  await tap(g2, p2, 'settings'); await tap(g2, p2, 'unlock_all'); check('web build: unlock all → every level open, levels_done untouched', prof2.get('level') === L.LEVEL_COUNT && prof2.get('levels_done') === 2); }
 { let bytes = 0; (function walk(d) { for (const e of readdirSync(d, { withFileTypes: true })) { const q = join(d, e.name); if (e.isDirectory()) walk(q); else bytes += statSync(q).size; } })(join(here, '..', 'mukbang-bang'));
   check('TikTok main package ≤ 4 MB (' + (bytes / 1048576).toFixed(2) + ' MB)', bytes <= 4 * 1024 * 1024);
   const dash = JSON.parse(readFileSync(join(here, '..', 'mukbang-bang.hs-dashboard.json'), 'utf8')); const pl = dash.iaa_config.placements;
-  check('dashboard: 6 ad places, every cooldown 30 s', pl.length === 6 && pl.every(x => x.ads[0].config.cooldown === 30), pl.map(x => x.label + ':' + x.ads[0].config.cooldown));
+  check('dashboard: 8 ad places, every cooldown 30 s, fan_gift has a reward', pl.length === 8 && pl.some(x => x.label === 'rare_choice') && pl.every(x => x.ads[0].config.cooldown === 30) && !!dash.iaa_config.rewards.fan_gift, pl.map(x => x.label + ':' + x.ads[0].config.cooldown));
   const gameDir = join(here, '..', 'mukbang-bang'); const p = fakePlatform(); const miss = []; let asked = 0;
   p.loadImage = (path, done) => { asked++; if (!existsSync(join(gameDir, path))) { miss.push(path); done(null); } else done({ width: 256, height: 256 }); };
   const prof = fakeProfile(INIT), g = new Game(p, fakeHs(prof, 'ok')); g.hsReady = true; run(g, 0.2);
-  const pk = g.packPos(); touchAt(g, p, pk.x, pk.y); run(g, 1); for (let k = 0; k < 3; k++) { touchAt(g, p, pk.x, pk.y); runUntil(g, () => g.run.phase === 'open' || g.run.phase === 'empty', 8); } runUntil(g, () => g.state === 'result', 8);
-  check('sprite path: stream 1 plays with bitmap art, nothing missing requested', g.state === 'result' && asked > 10 && !miss.length, miss); }
+  await eatAll(g, p, 'mix'); check('sprite path: level 1 plays with bitmap art, nothing missing requested', g.state === 'result' && asked > 10 && !miss.length, miss); }
 
 // ═════════ 5 personas × 40 streams: play time + measured ad impressions ═════════
 // Assumptions (NOT measurements): ad fill 90 %; interstitial 15 s, rewarded 30 s of watch time;
 // rewarded opt-in per persona below; activities / wardrobe visit rates below.
 const PERSONAS = {
-  beginner: { think: 2.5, tap: 1.0, drag: 1.3, hearts: 0.3, read: 3.5, bonusAd: 0.15, boostAd: 0.05, side: 0.30, ward: 0.10, surprise: 0.05, fashion: 0.10 },
-  average:  { think: 1.6, tap: 0.7, drag: 1.0, hearts: 0.6, read: 2.5, bonusAd: 0.25, boostAd: 0.15, side: 0.45, ward: 0.15, surprise: 0.10, fashion: 0.20 },
-  skilled:  { think: 1.0, tap: 0.5, drag: 0.7, hearts: 0.9, read: 1.5, bonusAd: 0.20, boostAd: 0.10, side: 0.40, ward: 0.10, surprise: 0.05, fashion: 0.10 },
-  adUser:   { think: 1.6, tap: 0.7, drag: 1.0, hearts: 0.6, read: 2.5, bonusAd: 0.70, boostAd: 0.50, side: 0.45, ward: 0.20, surprise: 0.50, fashion: 0.60 },
-  noAds:    { think: 1.6, tap: 0.7, drag: 1.0, hearts: 0.6, read: 2.5, bonusAd: 0.25, boostAd: 0.15, side: 0.45, ward: 0.15, surprise: 0.10, fashion: 0.20, noAds: true }
+  beginner: { think: 2.5, tap: 1.0, drag: 1.3, hearts: 0.3, read: 3.5, bonusAd: 0.15, boostAd: 0.05, side: 0.30, ward: 0.10, surprise: 0.05, fashion: 0.10 , rare: 0.08 },
+  average:  { think: 1.6, tap: 0.7, drag: 1.0, hearts: 0.6, read: 2.5, bonusAd: 0.25, boostAd: 0.15, side: 0.45, ward: 0.15, surprise: 0.10, fashion: 0.20 , rare: 0.12 },
+  skilled:  { think: 1.0, tap: 0.5, drag: 0.7, hearts: 0.9, read: 1.5, bonusAd: 0.20, boostAd: 0.10, side: 0.40, ward: 0.10, surprise: 0.05, fashion: 0.10 , rare: 0.08 },
+  adUser:   { think: 1.6, tap: 0.7, drag: 1.0, hearts: 0.6, read: 2.5, bonusAd: 0.70, boostAd: 0.50, side: 0.45, ward: 0.20, surprise: 0.50, fashion: 0.60 , rare: 0.30 },
+  noAds:    { think: 1.6, tap: 0.7, drag: 1.0, hearts: 0.6, read: 2.5, bonusAd: 0.25, boostAd: 0.15, side: 0.45, ward: 0.15, surprise: 0.10, fashion: 0.20, noAds: true , rare: 0.06 }
 };
-const FILL = 0.9, AD_SEC = { stream_end: 15, bonus_coins: 30, free_coins: 30, surprise_food: 30, fashion_reward: 30, viral_boost: 30 };
+const FILL = 0.9, AD_SEC = { stream_end: 15, bonus_coins: 30, free_coins: 30, surprise_food: 30, fashion_reward: 30, viral_boost: 30, fan_gift: 30 };
 const report = [];
 for (const name of Object.keys(PERSONAS)) {
   seed(100 + name.length); const pz = PERSONAS[name];
@@ -246,13 +287,17 @@ for (const name of Object.keys(PERSONAS)) {
   let lastImp = 0;
   const afterAd = () => { const n = statsImp(); if (n > lastImp) { for (let i = lastImp; i < n; i++) b.imps.push(b.clock); const placeSec = 20; spend(placeSec, false); b.adSec += placeSec; lastImp = n; } };
   const tapB = async (id) => { await tap(g, p, id); act(pz.tap); await flush(); afterAd(); };
+  const cookCost = (sec, kind) => { if (kind === 'pick') act(pz.think + pz.tap * 2); else if (kind === 'tap') act(pz.tap); else spend(sec + (kind === 'wait' ? 0 : pz.tap)); };
   const eatStream = async () => {
-    const pk = g.packPos(); spend(pz.think);
+    spend(pz.think);
+    if (g.run.phase === 'request') { spend(pz.read * 0.6); await tapB('cook_go'); await cookAll(g, p, { match: Math.random() < 0.85, cost: cookCost, rare: pz.rare, onAd: afterAd }); }
     if (hasBtn(g, 'boost_ad') && Math.random() < pz.boostAd) await tapB('boost_ad');
-    touchAt(g, p, pk.x, pk.y); act(pz.tap); const t0 = g.time; run(g, ST.T.opening + 0.05); spend(g.time - t0);
-    for (let k = 0; k < 3; k++) {
-      runUntil(g, () => g.run.phase === 'open', 6);
-      if (Math.random() < 0.5) { const m = g.mouth(); drag(g, p, pk.x, pk.y, m.x, m.y, 10); act(pz.drag); } else { touchAt(g, p, pk.x, pk.y); act(pz.tap); }
+    if (g.run.phase === 'sealed') { const pk = g.packPos(); touchAt(g, p, pk.x, pk.y); act(pz.tap); const t0 = g.time; run(g, ST.T.opening + 0.05); spend(g.time - t0); }
+    for (let k = 0, guard = 0; g.run && g.run.pickups < 3 && guard++ < 8; k++) {
+      runUntil(g, () => !g.run || g.run.phase === 'open' || g.run.phase === 'empty', 6); if (!g.run || g.run.pickups >= 3) break;
+      if (k >= 1 && hasBtn(g, 'fangift_ad') && Math.random() < pz.bonusAd * 0.6) await tapB('fangift_ad');
+      const fp = foodPos(g);
+      if (Math.random() < 0.5) { const m = g.mouth(); drag(g, p, fp.x, fp.y, m.x, m.y, 10); act(pz.drag); } else { touchAt(g, p, fp.x, fp.y); act(pz.tap); }
       const t1 = g.time;
       for (let i = 0; i < 60 && g.run && g.run.phase !== 'open' && g.run.phase !== 'empty'; i++) { run(g, 0.1); for (const h of g.hearts.slice()) if (!h.taken && h.life > 1 && Math.random() < pz.hearts * 0.25) { touchAt(g, p, h.x, h.y); b.clock += 0.3; b.acts++; } if (g.run.gift && !g.run.giftTaken && Math.random() < pz.hearts * 0.3) { touchAt(g, p, g.run.gift.x, g.run.gift.y); b.acts++; } }
       spend(g.time - t1);
@@ -285,11 +330,11 @@ for (const name of Object.keys(PERSONAS)) {
   report.push({ name, b, blocked, levels: prof.get('levels_done'), coins: prof.get('coins'), win, first5, stats: JSON.parse(prof.get('ad_stats')) });
   check(name + ': finishes all ' + L.LEVEL_COUNT + ' streams', !blocked && prof.get('levels_done') === L.LEVEL_COUNT, blocked || prof.get('levels_done'));
 }
-function MARKS_ONE(n) { return [5, 10, 20, 30, 40, 50].indexOf(n) >= 0; }
+function MARKS_ONE(n) { return [5, 10, 20, 30, 40].indexOf(n) >= 0; }
 const fmt = s => { const m = Math.floor(s / 60), r = Math.round(s % 60); return m + "'" + (r < 10 ? '0' : '') + r + '"'; };
 console.log('\n── Simulation (human time estimate; ad counts from the game\'s own ad_stats; assumptions in the source) ──');
-console.log('persona     total(with ads)  playtime   S5      S10     S20     S30     S40     S50   side  ward  imps  imps/5min avg (min–max)  first 5 min');
-for (const r of report) { const avg = r.win.length ? (r.win.reduce((a, c) => a + c, 0) / r.win.length) : 0; console.log(r.name.padEnd(11) + fmt(r.b.clock).padStart(10) + fmt(r.b.play).padStart(13) + [5, 10, 20, 30, 40, 50].map(n => fmt(r.b.at[n] || 0).padStart(8)).join('') + String(r.b.sides).padStart(6) + String(r.b.wards).padStart(6) + String(r.b.imps.length).padStart(6) + ('   ' + avg.toFixed(1) + ' (' + Math.min(...r.win) + '–' + Math.max(...r.win) + ')').padEnd(26) + String(r.first5).padStart(6)); }
+console.log('persona     total(with ads)  playtime   S5      S10     S20     S30     S40   side  ward  imps  imps/5min avg (min–max)  first 5 min');
+for (const r of report) { const avg = r.win.length ? (r.win.reduce((a, c) => a + c, 0) / r.win.length) : 0; console.log(r.name.padEnd(11) + fmt(r.b.clock).padStart(10) + fmt(r.b.play).padStart(13) + [5, 10, 20, 30, 40].map(n => fmt(r.b.at[n] || 0).padStart(8)).join('') + String(r.b.sides).padStart(6) + String(r.b.wards).padStart(6) + String(r.b.imps.length).padStart(6) + ('   ' + avg.toFixed(1) + ' (' + Math.min(...r.win) + '–' + Math.max(...r.win) + ')').padEnd(26) + String(r.first5).padStart(6)); }
 const avgR = report.find(r => r.name === 'average'); console.log('average ad_stats:', JSON.stringify(avgR.stats));
 console.log(fails ? ('\n' + fails + ' FAILED') : '\nall passed');
 process.exit(fails ? 1 : 0);

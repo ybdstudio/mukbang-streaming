@@ -15,6 +15,8 @@ const SC = require('./scenes.js');
 const ST = require('./stream.js');
 const WR = require('./wardrobe.js');
 const WS = require('./wardrobe-scene.js');
+const CK = require('./cook.js');
+const R = require('./recipes.js');
 const C = D.COLORS;
 
 const DESIGN_W = 540;
@@ -138,6 +140,7 @@ class Game {
     if (this.state === 'market') this.updateMarket(dt);
     else if (this.state === 'checkout') this.updateCheckout(dt);
     else if (this.sceneUpdate(dt)) { /* delivery / arrive / buffet / kitchen */ }
+    else if (this.state === 'cook') this.updateCook(dt);
     else if (this.state === 'stream') this.updateStream(dt);
     else if (this.state === 'result') this.result.t += dt;
     else if (this.state === 'home') { if (Math.random() < dt * 0.8) this.spawnReaction(); }
@@ -158,16 +161,19 @@ class Game {
     if (this.frozen) return;
     if (kind === 'start') {
       this.audio.unlock();
+      if (this.cookTouch('start', id, x, y)) return;
       if (this.streamTouch('start', id, x, y)) return;
       if (this.sceneTouch('start', id, x, y)) return;
       if (this.state === 'checkout' && !this.checkout.done) { const it = this.hitCheckoutItem(x, y); if (it) { this.checkout.auto = false; this.drag = { id: id, item: it, ox: it.x - x, oy: it.y - y, sx: x, sy: y, moved: false }; this.audio.play('pop', { gain: 0.5 }); return; } }
       this.ui.touchStart(id, x, y);
     } else if (kind === 'move') {
+      if (this.cookTouch('move', id, x, y)) return;
       if (this.streamTouch('move', id, x, y)) return;
       if (this.sceneTouch('move', id, x, y)) return;
       if (this.drag && this.drag.id === id && this.drag.item) { const d = this.drag; d.item.x = x + d.ox; d.item.y = y + d.oy; if (U.dist(x, y, d.sx, d.sy) > 12) d.moved = true; if (this.state === 'checkout') this.checkScanner(d.item); return; }
       this.ui.touchMove(id, x, y);
     } else {
+      if (this.cookTouch('end', id, x, y)) return;
       if (this.streamTouch('end', id, x, y)) return;
       if (this.sceneTouch('end', id, x, y)) return;
       if (this.drag && this.drag.id === id && this.drag.item) { const d = this.drag; this.drag = null; if (d.item) d.item.drag = false; if (this.state === 'checkout' && !d.moved && !d.item.scanned) this.flyToScanner(d.item); else if (this.state === 'checkout') this.checkScanner(d.item); return; }
@@ -182,6 +188,7 @@ class Game {
     const self = this, p = this.profile, hs = this.hs;
     this.audio.play('click', { gain: 0.6 });
     if (this.sceneTap(id)) return;
+    if (this.cookTap(id)) return;
     switch (id) {
       case 'play': if (this.run) this.beginStream(); else this.startStream(this.curLevel()); break;
       case 'wardrobe': if (this.curLevel() < WR.OPEN_AT && (this.profile.get('levels_done') || 0) < WR.OPEN_AT) { this.audio.play('error'); this.showToast('Wardrobe opens after stream ' + WR.OPEN_AT); } else { this.wardTab = this.wardTab || 0; this.setState('wardrobe'); } break;
@@ -205,6 +212,8 @@ class Game {
       case 'resume': this.setState('stream'); break;
       case 'leave': this.saveRun(); this.setState('home'); break;
       case 'bonus_ad': this.watchBonus(); break;
+      case 'cook_go': if (this.state === 'stream' && this.run && this.run.phase === 'request') this.enterCook(); break;
+      case 'fangift_ad': this.watchFanGift(); break;
       case 'surprise_ad': this.watchSurprise(); break;
       case 'boost_ad': this.watchBoost(); break;
       case 'fashion_ad': this.watchFashion(); break;
@@ -296,6 +305,12 @@ class Game {
       for (let i = 0; i < 10; i++) self.spawnHeart(true); self.floatText('VIRAL BOOST!  +' + U.fmtViewers(v), self.W / 2, self.H * 0.47, C.gold, 28, true); self.audio.play('levelup'); self.saveRun();
     });
   }
+  // fan gift: a rewarded ad offered between pickups on the stream (never while chewing), once per stream
+  watchFanGift() {
+    const r = this.run; if (this.adBusy || !r || r.giftAd || r.phase !== 'open' || !this.canFanGift()) return;
+    const self = this; r.giftAd = true;
+    this.adRun('fan_gift', this.hs.showFanGift(), function (res) { if (res === null) { if (self.run) self.run.giftAd = false; self.showToast('No ad right now'); return; } self.spawnConfetti(self.W / 2, self.H * 0.3, 30); self.audio.play('cash'); for (let i = 0; i < 8; i++) self.spawnHeart(true); self.saveRun(); });
+  }
   // fashion reward: an ad that gives one wardrobe item you do not own yet (shop items only; level gifts stay level gifts)
   fashionPool() { const s = WR.state(this.profile), out = []; for (let i = 0; i < WR.ITEMS.length; i++) { const it = WR.ITEMS[i]; if (it.price > 0 && s.own.indexOf(it.id) < 0) out.push(it.id); } return out; }
   canFashion() { return this.hs.hasAds() && this.fashionPool().length > 0 && this.hs.canShowFashion(); }
@@ -332,6 +347,7 @@ class Game {
       case 'hsshop': this.drawByName(this.popupFrom && this.popupFrom !== 'coins' ? this.popupFrom : 'home'); this.drawShop(); break;
       case 'popup': this.drawHome(); this.drawPopup(); break;
       case 'wardrobe': this.drawWardrobe(); break;
+      case 'cook': this.drawCook(); break;
       case 'settings': this.drawHome(); this.drawSettings(); break;
       default: this.sceneDraw();
     }
@@ -364,7 +380,7 @@ class Game {
     const hp = this.headPos(), sd = this.streamerDef(); A.streamer(ctx, sd, hp.x, hp.y + 30, hp.s, { expr: 'yum', t: this.time, bob: Math.sin(this.time * 1.6) * 4, look: WR.look(p, sd.id) });
     A.phoneStick(ctx, W * 0.1, H * 0.4, 0.9, this.time);
     // today's food waiting on the table
-    const d = K.dish(this.run ? this.run.food : lv.food); A.pack(ctx, d, this.run ? this.run.pack : lv.pack, W * 0.8, H * 0.555, 96, 'sealed', 0, 0, this.time);
+    if (this.run && !this.run.recipe) A.pack(ctx, K.dish(this.run.food), this.run.pack, W * 0.8, H * 0.555, 96, 'sealed', 0, 0, this.time); else R.draw(ctx, A, this.run && this.run.dish ? this.run.dish : lv.request, W * 0.8, H * 0.555, 84, { flipped: true, set: true, fill: 1, tops: 2, deco: 1 });
     this.drawReactions();
     const top = this.hud({});
     const hasLogo = A.logo(ctx, W / 2, top + 168, 340);
@@ -610,18 +626,24 @@ class Game {
     n = n || 5; this.profile.set('coins', Math.max(5000, this.profile.get('coins') || 0));
     if (n > 1 && (this.profile.get('level') || 1) < n) { this.profile.set('level', n); this.profile.set('levels_done', n - 1); this.profile.set('streams', n - 1); }
     if (kind === 'home' || kind === 'levels' || kind === 'streamers' || kind === 'settings' || kind === 'wardrobe') { this.run = null; this.saveRun(); this.setState(kind === 'wardrobe' && this.curLevel() < WR.OPEN_AT ? 'home' : kind); return; }
-    const sides = { market: 'market', checkout: 'market', delivery: 'delivery', arrive: 'delivery', buffet: 'buffet', kitchen: 'kitchen', cook: 'kitchen' };
+    const sides = { market: 'market', checkout: 'market', delivery: 'delivery', arrive: 'delivery', buffet: 'buffet' };
     if (sides[kind]) {
       this.run = null; this.enterActivity(sides[kind]);
-      if (kind === 'cook') this.kitStart();
       if (kind === 'checkout' || kind === 'arrive') this.sceneAutoFill();
       return;
     }
     this.startStream(n); const r = this.run; const self = this;
     const step = function (secs) { for (let i = 0; i < secs * 60; i++) self.update(1 / 60); };
-    if (kind === 'sealed' || kind === 'stream') { for (let i = 0; i < 3; i++) this.pushChat('idle'); return; }
-    this.openPack(); step(0.9); if (kind === 'open') return;
-    const feed = function () { self.carry = { tid: 9, x: 0, y: 0, drag: false, fx: self.packPos().x, fy: self.packPos().y, ft: 0, back: false }; r.phase = 'carry'; r.pt = 0; };
+    if (kind === 'request' || kind === 'stream' || kind === 'sealed') { for (let i = 0; i < 3; i++) this.pushChat('idle'); return; }
+    this.enterCook(); const k = this.ck;
+    const cookTo = function (stop) { let g = 0; while (self.ck && self.ck.doneT < 0 && g++ < 30) { const st = self.curCookStep(); if (stop && st.t === stop) return true; if (st.t === 'pick') { const want = k.req[CK.SLOT_KEY[st.slot]]; self.cookTap('cko_' + (want && k.opts.some(function (o) { return o.id === want; }) ? want : k.opts[0].id)); self.cookTap('ck_ok'); } else if (st.t === 'pour') k.st.fill = 0.999, k.holdId = 1, step(0.1), k.holdId = null; else if (st.t === 'hold') k.prog = 0.999, k.holdId = 1, step(0.1), k.holdId = null; else if (st.t === 'flip') k.flipT = 0.59, step(0.1); else if (st.t === 'place') { k.st.tops = st.n - 1; const a = self.cookArea(); self.cookTouch('start', 1, a.x, a.y); } else if (st.t === 'shake') { k.st.deco = 0.999; const a = self.cookArea(); self.cookTouch('start', 1, a.x, a.y); self.cookTouch('move', 1, a.x + 40, a.y); } } return false; };
+    if (kind === 'cook') { cookTo('pour'); return; }
+    if (kind === 'cookpick') { return; }
+    if (kind === 'cooktool') { cookTo('hold'); return; }
+    if (kind === 'cooktop') { cookTo('place'); return; }
+    cookTo(null); if (kind === 'perfect') { step(0.6); return; }
+    step(2); if (kind === 'open') return;
+    const feed = function () { const pp = self.platePos(r.pickups); self.carry = { tid: 9, x: pp.x, y: pp.y, drag: false, fx: pp.x, fy: pp.y, ft: 0, back: false }; r.phase = 'carry'; r.pt = 0; };
     feed(); step(0.5);
     if (kind === 'chew') { step(1.0); return; }
     step(2.0); if (kind === 'react') return;
@@ -634,5 +656,6 @@ class Game {
 SC.install(Game);
 ST.install(Game);
 WS.install(Game);
+CK.install(Game);
 
 module.exports = { Game };

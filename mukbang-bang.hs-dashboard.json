@@ -66,6 +66,28 @@
             }
           }
         ]
+      },
+      {
+        "label": "fan_gift",
+        "ads": [
+          {
+            "id": "<AD UNIT ID>",
+            "config": {
+              "cooldown": 30
+            }
+          }
+        ]
+      },
+      {
+        "label": "rare_choice",
+        "ads": [
+          {
+            "id": "<AD UNIT ID>",
+            "config": {
+              "cooldown": 30
+            }
+          }
+        ]
       }
     ],
     "rewards": {
@@ -90,6 +112,9 @@
         "coins": 300
       },
       "tiktok_profile": {
+        "coins": 300
+      },
+      "fan_gift": {
         "coins": 300
       }
     },

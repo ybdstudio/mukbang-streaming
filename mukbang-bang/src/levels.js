@@ -1,18 +1,16 @@
 'use strict';
-// V3: 40 livestreams, ONE food per stream (docs/GAME-DESIGN-V3.md §4).
-// Each stream: open the package → 3 pickups × 3 bites → viral finish.
-// Levels only decide WHICH food, which fan event, and what unlocks — the
-// eating itself is the same relaxed loop every time.
+// V4: 40 levels. Each = a viewer request → COOK the dish (choices) → eat it on the
+// stream as 3 portions × 3 bites → viral finish (docs/GAME-DESIGN-V4.md).
+// Packaged foods (packOf / PACK_INFO) are still used by the optional activities.
 const D = require('./data.js');
 const K = require('./catalog.js');
 
 const CHAPTERS = [
-  { n: 1, name: 'SNACK ROOKIE', view: 0 },
+  { n: 1, name: 'FIRST KITCHEN', view: 0 },
   { n: 2, name: 'SWEET TOOTH', view: 1 },
   { n: 3, name: 'RISING STAR', view: 2 },
   { n: 4, name: 'COZY NIGHTS', view: 3 },
-  { n: 5, name: 'SUPERSTAR', view: 4 },
-  { n: 6, name: 'MUKBANG LEGEND', view: 2 }
+  { n: 5, name: 'SUPERSTAR', view: 4 }
 ];
 const PER_CHAPTER = 8;
 
@@ -32,93 +30,58 @@ const PACK_INFO = {
 };
 
 // fan events (no timing pressure: everything is optional or automatic)
-//   hearts: floating hearts to tap (always on) · gift: a fan gift box drops (tap for coins)
-//   superchat: a big donation banner (auto) · wave: the chat floods (auto viewer surge)
-//   spotlight: "TRENDING #1" camera zoom (auto) · duet: a fan joins the call (auto, then hearts burst)
 const EVENTS = ['hearts', 'gift', 'superchat', 'wave', 'spotlight', 'duet'];
 
-// [food id, title, fan event, unlocks...]  unlock ids: food: is automatic; mode:<id>, look:<wardrobe id>, streamer:<id>, wardrobe
+// V4: every level = a viewer request for ONE dish you cook first, then eat on the stream.
+// [recipe, fan event, extra unlocks]. Choice unlocks (new moulds, flavours, toppings…) come from recipes.js.
+const R = require('./recipes.js');
 const RAW = [
-  // Ch.1 SNACK ROOKIE
-  ['cat_chips',      'First Crunch',          'hearts',    []],
-  ['honey_puffs',    'Honey Puff Pop',        'hearts',    []],
-  ['cheese_noodle',  'Slurp Time',            'gift',      ['mode:market']],
-  ['soda_pop',       'Fizzy Fun',             'gift',      []],
-  ['straw_cake',     'Cake Day',              'superchat', []],
-  ['rainbow_candy',  'Rainbow Crunch',        'gift',      ['wardrobe', 'look:hair_bow']],
-  ['peach_milk',     'Peachy Sip',            'wave',      ['mode:delivery']],
-  ['chili_noodle',   'Too Spicy!',            'superchat', []],
-  // Ch.2 SWEET TOOTH
-  ['mint_choc',      'Brain Freeze',          'wave',      []],
-  ['kfc_chicken',    'Crispy Chicken Party',  'gift',      ['streamer:kiko']],
-  ['matcha_roll',    'Matcha Moment',         'spotlight', ['mode:buffet']],
-  ['gummy_bears',    'Sour Squad',            'superchat', []],
-  ['bubble_tea',     'Boba Break',            'wave',      ['look:acc_glasses_round']],
-  ['seaweed_crisps', 'Ocean Crunch',          'gift',      []],
-  ['banana_milk',    'Banana Milk Bliss',     'spotlight', ['mode:kitchen']],
-  ['pizza',          'Pizza Night',           'duet',      ['look:outfit_sunny']],
-  // Ch.3 RISING STAR
-  ['melon_bowl',     'Melon Jelly',           'wave',      []],
-  ['choco_pretzel',  'Pretzel Twist',         'gift',      []],
-  ['tteokbokki',     'Fire Rice Cakes',       'superchat', ['look:hair_cat_ears']],
-  ['blue_moon',      'Blue Moon Scoop',       'spotlight', ['streamer:momo']],
-  ['mango_cheese',   'Mango Cheesecake',      'duet',      []],
-  ['berry_smoothie', 'Berry Blast',           'wave',      ['look:acc_headphones']],
-  ['sushi_set',      'Sushi Platter',         'gift',      []],
-  ['sakura_noodle',  'Sakura Slurp',          'spotlight', ['look:outfit_sakura']],
-  // Ch.4 COZY NIGHTS
-  ['sea_noodle',     'Seafood Cup',           'wave',      []],
-  ['choco_mousse',   'Midnight Mousse',       'duet',      []],
-  ['cheese_burger',  'Burger Bite',           'gift',      ['look:outfit_chef']],
-  ['straw_swirl',    'Strawberry Swirl',      'superchat', []],
-  ['dumplings',      'Dumpling Feast',        'wave',      ['look:hair_flowers']],
-  ['rainbow_crepe',  'Rainbow Crepe',         'spotlight', []],
-  ['mini_hotpot',    'Hotpot for One',        'duet',      ['look:acc_heart_glasses']],
-  ['cookie_cream',   'Cookies & Cream',       'gift',      []],
-  // Ch.5 SUPERSTAR
-  ['bean_noodle',    'Black Bean Slurp',      'wave',      []],
-  ['grape_bunch',    'Grape Pop',             'spotlight', ['look:hair_bunny_ears']],
-  ['curry_rice',     'Curry Comfort',         'duet',      []],
-  ['mango_sorbet',   'Mango Sorbet',          'superchat', ['look:outfit_star']],
-  ['seafood_boil',   'Seafood Boil Mania',    'duet',      []],
-  ['berry_tart',     'Berry Tart',            'gift',      ['look:acc_scarf']],
-  ['choco_sundae',   'Sundae Supreme',        'spotlight', []],
-  ['golden_parfait', 'Superstar Finale',      'duet',      ['look:hair_crown']],
-  // Ch.6 MUKBANG LEGEND (encore chapter: rarer foods, funnier reactions)
-  ['shroom_noodle',  'Forest Noodles',        'wave',      []],
-  ['matcha_latte',   'Matcha Latte Art',      'spotlight', []],
-  ['spicy_wings',    'Wing Challenge',        'superchat', []],
-  ['mango_cubes',    'Mango Party',           'gift',      []],
-  ['pasta',          'Creamy Pasta Twirl',    'duet',      []],
-  ['choco_ramen',    'Chocolate Ramen?!',     'wave',      []],
-  ['straw_plate',    'Strawberry Field',      'spotlight', []],
-  ['mochi',          'Mochi Stretch',         'gift',      []],
-  ['pickle_icecream','Pickle Ice Cream?!',    'superchat', []],
-  ['berry_mix',      'Legend Finale',         'duet',      []]
+  // Ch.1 SNACK ROOKIE → "FIRST KITCHEN"
+  ['jelly', 'hearts', []], ['jelly', 'gift', []], ['pudding', 'gift', ['mode:market']], ['cupcake', 'superchat', []],
+  ['boba', 'wave', []], ['jelly', 'gift', ['wardrobe', 'look:hair_bow']], ['ramen', 'superchat', ['mode:delivery']], ['pudding', 'wave', []],
+  // Ch.2
+  ['parfait', 'spotlight', []], ['cupcake', 'gift', ['streamer:kiko']], ['boba', 'duet', ['mode:buffet']], ['donut', 'superchat', []],
+  ['ramen', 'wave', ['look:acc_glasses_round']], ['jelly', 'gift', []], ['bingsu', 'spotlight', []], ['parfait', 'duet', ['look:outfit_sunny']],
+  // Ch.3
+  ['donut', 'wave', []], ['pudding', 'gift', []], ['ramen', 'superchat', ['look:hair_cat_ears']], ['boba', 'spotlight', ['streamer:momo']],
+  ['cupcake', 'duet', []], ['bingsu', 'wave', ['look:acc_headphones']], ['jelly', 'gift', []], ['parfait', 'spotlight', ['look:outfit_sakura']],
+  // Ch.4
+  ['ramen', 'wave', []], ['donut', 'duet', []], ['pudding', 'gift', ['look:outfit_chef']], ['boba', 'superchat', []],
+  ['bingsu', 'wave', ['look:hair_flowers']], ['cupcake', 'spotlight', []], ['ramen', 'duet', ['look:acc_heart_glasses']], ['jelly', 'gift', []],
+  // Ch.5
+  ['parfait', 'wave', []], ['donut', 'spotlight', ['look:hair_bunny_ears']], ['boba', 'duet', []], ['bingsu', 'superchat', ['look:outfit_star']],
+  ['ramen', 'duet', []], ['cupcake', 'gift', ['look:acc_scarf']], ['pudding', 'spotlight', []], ['jelly', 'duet', ['look:hair_crown']]
 ];
 const LEVEL_COUNT = RAW.length;
 
-// viewer goal: 500 → ~2M (log curve), start = 30 %
-function goalOf(n) { const g = 500 * Math.pow(4000, (n - 1) / (LEVEL_COUNT - 1)); const m = Math.pow(10, Math.max(1, Math.floor(Math.log10(g)) - 1)); return Math.round(g / m) * m; }
+// viewer goal: 500 → ~1M (log curve), start = 30 %
+function goalOf(n) { const g = 500 * Math.pow(2000, (n - 1) / (LEVEL_COUNT - 1)); const m = Math.pow(10, Math.max(1, Math.floor(Math.log10(g)) - 1)); return Math.round(g / m) * m; }
 function roundTo(v) { const m = Math.pow(10, Math.max(1, Math.floor(Math.log10(v)) - 1)); return Math.round(v / m) * m; }
-
+const SLOT_NAME = { mold: 'MOULD', flavor: 'FLAVOUR', broth: 'BROTH', topping: 'TOPPING', ramen_top: 'RAMEN TOPPING', boba_top: 'BOBA TOPPING', deco: 'DECORATION', cup: 'CUP', shape: 'DONUT SHAPE' };
+// the request: the newest flavour + topping the player can pick at this level (shows off what just unlocked)
+function requestFor(recipe, n, i) {
+  const rc = R.RECIPES[recipe], fslot = rc.taste === 'broth' ? 'broth' : 'flavor', tslot = R.toppingSlot(recipe);
+  const fs = R.options(fslot, n), ts = R.options(tslot, n);
+  // something that just unlocked at this level wins; otherwise rotate through what is open (L1: strawberry + cherry)
+  const fresh = function (list) { for (let k = 0; k < list.length; k++) if (list[k].unlock === n && n > 1) return list[k]; return null; };
+  const f = fresh(fs) || fs[(i * 3) % fs.length], t = fresh(ts) || ts[(i * 5) % ts.length];
+  const req = { recipe: recipe }; req[fslot] = f.id; req.topping = t.id;
+  return req;
+}
 const LEVELS = [];
-const seenTastes = {}, seenPacks = {}, seenSounds = {};
+const seenRecipes = {};
 for (let i = 0; i < RAW.length; i++) {
   const r = RAW[i], n = i + 1, ch = Math.min(CHAPTERS.length - 1, Math.floor(i / PER_CHAPTER));
-  const d = K.dish(r[0]); if (!d) throw new Error('levels: unknown food ' + r[0]);
-  const pack = packOf(d);
-  const goal = goalOf(n);
-  // what is new in this stream (shown before / after it)
+  const goal = goalOf(n), rc = R.RECIPES[r[0]];
   const news = [];
-  if (!seenPacks[pack]) { seenPacks[pack] = 1; if (n > 1) news.push('NEW PACKAGE: ' + PACK_INFO[pack].open); }
-  if (!seenTastes[d.taste]) { seenTastes[d.taste] = 1; if (n > 1) news.push('NEW REACTION: ' + D.TASTES[d.taste].name.toUpperCase() + ' FACE'); }
-  if (!seenSounds[d.sound]) { seenSounds[d.sound] = 1; if (n > 1) news.push('NEW ASMR SOUND'); }
+  if (!seenRecipes[r[0]]) { seenRecipes[r[0]] = 1; if (n > 1) news.push('NEW RECIPE: ' + rc.name.toUpperCase()); }
+  for (const slot in R.OPT) for (let k = 0; k < R.OPT[slot].length; k++) { const o = R.OPT[slot][k]; if (o[3] === n && n > 1) news.push('NEW ' + SLOT_NAME[slot] + ': ' + o[1].toUpperCase()); }
+  const req = requestFor(r[0], n, i);
   LEVELS.push({
     n: n, chapter: ch + 1, chapterName: CHAPTERS[ch].name, view: CHAPTERS[ch].view, bg: CHAPTERS[ch].view, loc: 'home',
-    title: r[1], food: d.id, pack: pack, event: r[2], unlocks: r[3], news: news,
+    recipe: r[0], request: req, title: R.dishName(req), event: r[1], unlocks: r[2], news: news,
     goal: goal, goal3: roundTo(goal * 1.3), startViewers: roundTo(goal * 0.3),
-    cpb: 6 + 2 * n // coins per bite
+    cpb: 6 + 2 * n, reward: 100 + 20 * n // coins per bite · request reward (bigger when the dish matches the request)
   });
 }
 function level(n) { return LEVELS[Math.max(1, Math.min(LEVEL_COUNT, n | 0)) - 1]; }
@@ -128,8 +91,7 @@ function level(n) { return LEVELS[Math.max(1, Math.min(LEVEL_COUNT, n | 0)) - 1]
 const MODES = [
   { id: 'market',   name: 'SUPERMARKET', short: 'SHOP',   unlock: 3,  color: '#ffd7a3', dark: '#f0a860' },
   { id: 'delivery', name: 'DELIVERY',    short: 'ORDER',  unlock: 7,  color: '#ff8fb3', dark: '#d85e8e' },
-  { id: 'buffet',   name: 'BUFFET',      short: 'BUFFET', unlock: 11, color: '#ffb199', dark: '#c93b1d' },
-  { id: 'kitchen',  name: 'COOKING',     short: 'COOK',   unlock: 15, color: '#9fe3c9', dark: '#5fbf9f' }
+  { id: 'buffet',   name: 'BUFFET',      short: 'BUFFET', unlock: 11, color: '#ffb199', dark: '#c93b1d' }
 ];
 function modeOf(id) { for (let i = 0; i < MODES.length; i++) if (MODES[i].id === id) return MODES[i]; return null; }
 // level an unlock id is granted at
@@ -144,4 +106,4 @@ function sideConfig(mode, reached) {
   return base;
 }
 
-module.exports = { LEVELS, LEVEL_COUNT, CHAPTERS, PER_CHAPTER, EVENTS, PACK_INFO, MODES, modeOf, level, goalOf, packOf, sideConfig, unlockLevel };
+module.exports = { LEVELS, LEVEL_COUNT, CHAPTERS, PER_CHAPTER, EVENTS, PACK_INFO, MODES, modeOf, level, goalOf, packOf, sideConfig, unlockLevel, SLOT_NAME };

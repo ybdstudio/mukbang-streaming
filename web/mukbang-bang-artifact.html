@@ -592,6 +592,8 @@ var DEFAULTS = {
     first_stream:    { coins: 200, $limit: 'once' },      // the player's first finished stream
     bonus_coins:     { coins: 300 },                      // rewarded ad place on the result screen
     free_coins:      { coins: 200 },                      // rewarded ad place behind the "+" next to the coins
+    fan_gift:        { coins: 300 },                      // rewarded ad place: a fan's gift between bites on the stream
+    // no entry for "rare_choice": that ad only unlocks a rare ingredient for this dish (counts as the requested one)
     // no entries for "surprise_food", "fashion_reward", "viral_boost": those ads only let the game go on
     // (a rare-food bonus stream / a wardrobe item / a hype boost for this stream) — watched = {} → continue
     // no "stream_end" entry: that interstitial gives nothing, it only continues to the next level
@@ -711,6 +713,11 @@ var hs = {
   showBonusCoins: function () { return HSGame.showAd('bonus_coins'); },
   canShowFreeCoins: function () { return HSGame.canShowAd('free_coins'); },
   showFreeCoins: function () { return HSGame.showAd('free_coins'); },
+  canShowFanGift: function () { return HSGame.canShowAd('fan_gift'); },
+  showFanGift: function () { return HSGame.showAd('fan_gift'); },
+  rewardsFanGift: function () { return HSGame.rewards('fan_gift'); },
+  canShowRare: function () { return HSGame.canShowAd('rare_choice'); },
+  showRare: function () { return HSGame.showAd('rare_choice'); },
   canShowSurprise: function () { return HSGame.canShowAd('surprise_food'); },
   showSurprise: function () { return HSGame.showAd('surprise_food'); },
   canShowFashion: function () { return HSGame.canShowAd('fashion_reward'); },
@@ -4078,6 +4085,169 @@ const REQUESTS = {
 module.exports = { DISHES, dish, RESTAURANTS, restaurant, mainsOf, sides, STATIONS, station, stationItems, STATION_ITEMS, RECIPES, RECIPE_BY_ID, TOPPINGS, MYSTERY, REQUESTS };
 
 };
+__mods["src/cook.js"] = function (require, module, exports, __filename, __dirname) {
+'use strict';
+// V4 cooking scene (installed onto Game.prototype), modelled on the reference video:
+// step pips on top · the dish in the middle · 4 choices in the bottom tray + a green ✓ ·
+// pour by holding · hold the tool (fan / fire / oven / mixer / shaker / shaver) ·
+// tap to flip the mould · tap to place toppings · rub to shake the decoration ·
+// "PERFECT!" when the dish matches the viewer request → served on the stream.
+const U = require('./util.js');
+const D = require('./data.js');
+const A = require('./art.js');
+const R = require('./recipes.js');
+const L = require('./levels.js');
+const C = D.COLORS;
+
+const POUR_T = 2.0, HOLD_T = 2.0, FLIP_T = 0.6, SHAKE_NEED = 1100, DONE_T = 1.7;
+const SLOT_KEY = { mold: 'mold', flavor: 'flavor', broth: 'broth', topping: 'topping', ramen_top: 'topping', boba_top: 'topping', deco: 'deco', cup: 'cup', shape: 'shape' };
+const RARE_SLOTS = { flavor: 1, broth: 1, topping: 1, ramen_top: 1, boba_top: 1, deco: 1 };
+const PICK_TEXT = { mold: 'PICK A MOULD', flavor: 'PICK A FLAVOUR', broth: 'PICK THE BROTH', topping: 'PICK A TOPPING', ramen_top: 'PICK A TOPPING', boba_top: 'PICK A TOPPING', deco: 'PICK A DECORATION', cup: 'PICK A CUP', shape: 'PICK A SHAPE' };
+
+function install(Game) {
+  const P = Game.prototype;
+  P.enterCook = function () {
+    const r = this.run, lv = L.level(r.level), rc = R.RECIPES[lv.recipe];
+    this.ck = { lv: lv, rc: rc, req: lv.request, dish: { recipe: lv.recipe }, step: 0, sel: null, prog: 0, st: { fill: 0, set: false, flipped: false, tops: 0, deco: 0 }, holdId: null, rub: null, flipT: -1, doneT: -1, t: 0, perfect: false, opts: null, rare: null, rareKey: null, rareUsed: false };
+    this.trans = 0.4; this.audio.play('whoosh'); this.prepStep(); this.setState('cook');
+  };
+  P.curCookStep = function () { const k = this.ck; return k.rc.steps[k.step]; };
+  // the 4 choices for a pick step (always contains the requested one)
+  P.prepStep = function () {
+    const k = this.ck, st = this.curCookStep(); k.sel = null; k.prog = 0; k.opts = null;
+    if (st && st.t === 'pick') {
+      const all = R.options(st.slot, k.lv.n); const key = SLOT_KEY[st.slot]; const want = k.req[key];
+      let pick = all.slice(); if (pick.length > 4) { const w = pick.filter(function (o) { return o.id === want; }); const rest = pick.filter(function (o) { return o.id !== want; }); for (let i = rest.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); const t = rest[i]; rest[i] = rest[j]; rest[j] = t; } pick = w.concat(rest.slice(0, 4 - w.length)); pick.sort(function (a, b) { return all.indexOf(a) - all.indexOf(b); }); }
+      k.opts = pick;
+      // one rare choice behind an opt-in ad (a later-level option, else one not shown) — once per dish, never in the first streams
+      k.rare = null;
+      if (!k.rareUsed && RARE_SLOTS[st.slot] && this.canRare()) {
+        const all2 = R.OPT[st.slot].map(function (o) { return R.OPT_BY[st.slot][o[0]]; });
+        const later = all2.filter(function (o) { return o.unlock > k.lv.n; }); const unseen = all2.filter(function (o) { return pick.indexOf(o) < 0; });
+        const pool = later.length ? later : unseen; if (pool.length) k.rare = pool[Math.floor(Math.random() * pool.length)];
+      }
+    }
+  };
+  P.cookNext = function () {
+    const k = this.ck; k.step++; this.audio.play('ding', { gain: 0.6 }); this.spawnSparkles(this.W / 2, this.H * 0.45, 10);
+    if (k.step >= k.rc.steps.length) { k.doneT = 0; const key = k.rc.taste === 'broth' ? 'broth' : 'flavor'; k.perfect = (k.dish[key] === k.req[key] || k.rareKey === key) && (k.dish.topping === k.req.topping || k.rareKey === 'topping'); this.audio.play(k.perfect ? 'levelup' : 'win'); this.spawnConfetti(this.W / 2, this.H * 0.35, 60); return; }
+    this.prepStep();
+  };
+  P.cookTap = function (id) {
+    const k = this.ck; if (!k || this.state !== 'cook') return false;
+    if (id.indexOf('cko_') === 0) { const st = this.curCookStep(); if (!st || st.t !== 'pick') return true; const oid = id.slice(4); k.sel = oid; k.dish[SLOT_KEY[st.slot]] = oid; this.audio.play('pop'); this.vibrate('short'); return true; }
+    if (id === 'ck_ok') { if (k.sel) this.cookNext(); return true; }
+    if (id === 'ck_rare') { this.watchRare(); return true; }
+    return false;
+  };
+  // rare choice: the viewers love a rare ingredient — it counts as what they asked for
+  P.canRare = function () { return this.hs.hasAds() && this.hs.canShowRare && (this.profile.get('streams') || 0) >= 3 && this.hs.canShowRare(); };
+  P.watchRare = function () {
+    const k = this.ck; if (!k || !k.rare || k.rareUsed || this.adBusy || !this.canRare()) return;
+    const self = this, st = this.curCookStep(), o = k.rare, key = SLOT_KEY[st.slot];
+    this.adRun('rare_choice', this.hs.showRare(), function (r) {
+      if (r === null) { self.showToast('No ad right now'); return; }
+      if (self.ck !== k || self.curCookStep() !== st) return;
+      k.rareUsed = true; k.rareKey = key; k.sel = o.id; k.dish[key] = o.id; k.opts = k.opts.concat([o]); k.rare = null;
+      self.audio.play('levelup'); self.spawnConfetti(self.W / 2, self.H * 0.4, 30); self.showToast('RARE ' + o.name.toUpperCase() + '!', 'The viewers will love it');
+    });
+  };
+  P.cookArea = function () { return { x: this.W / 2, y: this.H * 0.46, r: Math.min(150, this.W * 0.3) }; };
+  P.toolPos = function () { const a = this.cookArea(); return { x: a.x + a.r * 1.05, y: a.y - a.r * 0.55 }; };
+  P.cookTouch = function (kind, id, x, y) {
+    const k = this.ck; if (!k || this.state !== 'cook' || k.doneT >= 0) return false;
+    const st = this.curCookStep(); if (!st) return false; const a = this.cookArea(); const inA = U.dist(x, y, a.x, a.y) < a.r + 40; const tp = this.toolPos(); const onTool = U.dist(x, y, tp.x, tp.y) < 70;
+    if (kind === 'start') {
+      if ((st.t === 'pour' || st.t === 'hold') && (inA || onTool)) { k.holdId = id; return true; }
+      if (st.t === 'flip' && inA && k.flipT < 0) { k.flipT = 0; this.audio.play('whoosh'); return true; }
+      if (st.t === 'place' && inA) { k.st.tops = Math.min(st.n, k.st.tops + 1); this.audio.play('pop', { rate: 1 + k.st.tops * 0.15 }); this.vibrate('short'); this.spawnSparkles(x, y, 5); if (k.st.tops >= st.n) this.cookNext(); return true; }
+      if (st.t === 'shake' && inA) { k.rub = { tid: id, x: x, y: y }; return true; }
+      return false;
+    }
+    if (kind === 'move') { if (k.rub && k.rub.tid === id) { const d = U.dist(x, y, k.rub.x, k.rub.y); k.rub.x = x; k.rub.y = y; k.st.deco = Math.min(1, k.st.deco + d / SHAKE_NEED); if (Math.random() < d / 400) this.audio.play('fizz', { gain: 0.25, minGap: 0.12 }); if (k.st.deco >= 1) { k.rub = null; this.cookNext(); } return true; } return k.holdId === id; }
+    if (k.holdId === id) { k.holdId = null; return true; }
+    if (k.rub && k.rub.tid === id) { k.rub = null; return true; }
+    return false;
+  };
+  P.updateCook = function (dt) {
+    const k = this.ck; if (!k) return; k.t += dt;
+    if (k.doneT >= 0) { k.doneT += dt; if (k.doneT >= DONE_T) this.cookServed(); return; }
+    const st = this.curCookStep(); if (!st) return;
+    if (st.t === 'pour' && k.holdId !== null) { k.st.fill = Math.min(1, k.st.fill + dt / POUR_T); if (Math.random() < dt * 6) this.audio.play('gulp', { gain: 0.25, minGap: 0.2 }); if (k.st.fill >= 1) { k.holdId = null; this.cookNext(); } }
+    if (st.t === 'hold' && k.holdId !== null) { k.prog = Math.min(1, k.prog + dt / HOLD_T); if (Math.random() < dt * 5) this.audio.play(st.tool === 'fire' || st.tool === 'oven' ? 'fire' : st.tool === 'fan' ? 'shiver' : 'fizz', { gain: 0.25, minGap: 0.25 }); if (k.prog >= 1) { k.holdId = null; k.st.set = true; this.cookNext(); } }
+    if (st.t === 'flip' && k.flipT >= 0) { k.flipT += dt; if (k.flipT >= FLIP_T) { k.flipT = -1; k.st.flipped = true; this.audio.play('drop'); this.vibrate('short'); this.cookNext(); } }
+  };
+  // the dish is ready → back to the stream, served as 3 portions
+  P.cookServed = function () {
+    const k = this.ck; const r = this.run; this.ck = null;
+    r.dish = Object.assign({}, k.dish); r.perfect = k.perfect; r.phase = 'open'; r.pt = 0;
+    this.trans = 0.4; this.saveRun(); this.setState('stream');
+    this.floatText(k.perfect ? 'JUST LIKE THEY ASKED!' : 'SERVED!', this.W / 2, this.H * 0.47, C.gold, 26, true);
+    this.setFace('open', 1.2); for (let i = 0; i < 3; i++) this.pushChat('bite');
+  };
+  // ── drawing ──
+  P.drawCook = function () {
+    const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, k = this.ck, top = this.top(), bottom = this.bottom();
+    if (!k) return;
+    A.kitchenBg(ctx, W, H);
+    this.coinsHud(top);
+    const steps = k.rc.steps, st = this.curCookStep();
+    // step pips (bunnies in the video)
+    const pw = Math.min(30, (W - 160) / steps.length);
+    for (let i = 0; i < steps.length; i++) { const px = 24 + i * pw + pw / 2, py = top + 40; A.circle(ctx, px, py, pw * 0.4, i < k.step ? C.pink : i === k.step ? '#fff' : 'rgba(255,255,255,0.6)', 3); if (i < k.step) A.heart(ctx, px, py + 1, pw * 0.18, '#fff', 0); }
+    // request reminder
+    const req = k.req; ui.panel(W / 2 - 150, top + 72, 300, 58, '#fff7fb', C.pinkDark, 18, 3);
+    R.draw(ctx, A, req, W / 2 - 112, top + 101, 46, { flipped: true, set: true, fill: 1, tops: 1, deco: 0 });
+    ui.label('VIEWER WANTS: ' + R.dishName(req).toUpperCase(), W / 2 + 14, top + 92, 13, C.text); const ts = R.opt(R.toppingSlot(req.recipe), req.topping); ui.label('with ' + (ts ? ts.name : ''), W / 2 + 14, top + 112, 12, C.textLight);
+    // instruction
+    const text = k.doneT >= 0 ? '' : !st ? '' : st.t === 'pick' ? PICK_TEXT[st.slot] : st.t === 'pour' ? (st.text || 'HOLD TO POUR') : st.t === 'hold' ? st.text + ' · HOLD!' : st.t === 'flip' ? 'TAP TO FLIP IT OUT!' : st.t === 'place' ? (st.text || 'TAP TO ADD TOPPINGS') + ' (' + k.st.tops + '/' + st.n + ')' : 'RUB TO SPRINKLE!';
+    if (text) ui.label(text, W / 2, top + 158, 22, C.white, 'center', { stroke: 6 });
+    // the dish
+    const a = this.cookArea(); const flipping = k.flipT >= 0;
+    A.ellipse(ctx, a.x, a.y + a.r * 0.62, a.r * 0.95, a.r * 0.2, 'rgba(91,61,59,0.12)', 0);
+    if (flipping) { const t = k.flipT / FLIP_T; ctx.save(); ctx.translate(a.x, a.y); ctx.rotate(Math.PI * t); ctx.translate(-a.x, -a.y); R.draw(ctx, A, k.dish, a.x, a.y, a.r * 1.9, k.st); ctx.restore(); }
+    else R.draw(ctx, A, k.dish, a.x, a.y, a.r * 1.9, k.st);
+    // pour stream / tool
+    if (st && st.t === 'pour') { const fo = R.opt(st.from, k.dish[SLOT_KEY[st.from]]); const bx = a.x + a.r * 0.6, by = a.y - a.r * 1.05; ctx.save(); ctx.translate(bx, by); ctx.rotate(k.holdId !== null ? -0.9 : -0.3); R.drawOption(ctx, A, st.from === 'broth' ? 'broth' : 'flavor', fo || { color: '#ff9fc4' }, 0, 0, 34); ctx.restore(); if (k.holdId !== null && fo) { ctx.strokeStyle = fo.color; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(bx - 26, by + 10); ctx.quadraticCurveTo(bx - 40, by + 60, a.x + 6, a.y - a.r * 0.2); ctx.stroke(); } ui.bar(a.x - 80, a.y + a.r + 26, 160, 12, k.st.fill, C.pink, 'rgba(255,255,255,0.7)'); }
+    if (st && st.t === 'hold') { const tp = this.toolPos(); this.drawTool(st.tool, tp.x, tp.y, k.holdId !== null); ui.bar(a.x - 80, a.y + a.r + 26, 160, 12, k.prog, st.tool === 'fire' || st.tool === 'oven' ? '#ff7a3a' : C.blue, 'rgba(255,255,255,0.7)'); }
+    if (st && st.t === 'shake') { ui.bar(a.x - 80, a.y + a.r + 26, 160, 12, k.st.deco, C.yellow, 'rgba(255,255,255,0.7)'); const dop = R.opt('deco', k.dish.deco); if (dop) { const sx = a.x + Math.sin(this.time * 8) * 20, sy = a.y - a.r * 0.95; ctx.save(); ctx.translate(sx, sy); ctx.rotate(Math.sin(this.time * 8) * 0.3); R.drawOption(ctx, A, 'deco', dop, 0, 0, 30); ctx.restore(); } }
+    if (st && (st.t === 'place' || st.t === 'flip' || st.t === 'shake') && !k.holdId) { const p = 0.4 + 0.3 * Math.sin(this.time * 6); ctx.strokeStyle = 'rgba(255,255,255,' + p + ')'; ctx.lineWidth = 5; ctx.setLineDash([10, 10]); ctx.beginPath(); ctx.arc(a.x, a.y, a.r * 0.9, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]); }
+    // bottom tray for choices + ✓
+    if (st && st.t === 'pick' && k.opts) {
+      const n = k.opts.length, cw = Math.min(110, (W - 40 - (n - 1) * 10) / n), x0 = (W - (n * cw + (n - 1) * 10)) / 2, ty = bottom - 150;
+      A.rr(ctx, 10, ty - 14, W - 20, 150, 26); ctx.fillStyle = 'rgba(255,255,255,0.75)'; ctx.fill();
+      const rare = k.rare; const n2 = n + (rare ? 1 : 0); const cw2 = Math.min(110, (W - 40 - (n2 - 1) * 10) / n2), x02 = (W - (n2 * cw2 + (n2 - 1) * 10)) / 2;
+      for (let i = 0; i < n; i++) { const o = k.opts[i], cw = cw2, x = x02 + i * (cw + 10), on = k.sel === o.id; ui.panel(x, ty, cw, 112, on ? '#eafff0' : '#fff', on ? C.greenDark : C.pink, 18, on ? 5 : 3); R.drawOption(ctx, A, st.slot, o, x + cw / 2, ty + 46, 30); ui.label(o.name, x + cw / 2, ty + 96, 12, C.text); ui.hotspot('cko_' + o.id, x, ty, cw, 112); }
+      if (rare) { const x = x02 + n * (cw2 + 10), gl = 0.5 + 0.5 * Math.sin(this.time * 5); ui.panel(x, ty, cw2, 112, '#fff6d6', C.goldDark, 18, 4); R.drawOption(ctx, A, st.slot, rare, x + cw2 / 2, ty + 46, 30); A.star(ctx, x + cw2 - 14, ty + 14, 9 + gl * 2, C.gold, 2); A.rr(ctx, x + 8, ty + 80, cw2 - 16, 26, 13); ctx.fillStyle = C.blue; ctx.fill(); ui.label('▶ RARE', x + cw2 / 2, ty + 94, 12, C.white); ui.hotspot('ck_rare', x, ty, cw2, 112); }
+      if (k.sel) { const pulse = 1 + Math.sin(this.time * 6) * 0.06; ctx.save(); ctx.translate(a.x + a.r + 20, a.y + a.r * 0.4); ctx.scale(pulse, pulse); A.circle(ctx, 0, 0, 34, C.green, 4); ctx.strokeStyle = '#fff'; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(-14, 0); ctx.lineTo(-4, 11); ctx.lineTo(15, -12); ctx.stroke(); ctx.restore(); ui.hotspot('ck_ok', a.x + a.r - 16, a.y + a.r * 0.4 - 36, 72, 72); }
+    }
+    // done: PERFECT! / YUMMY!
+    if (k.doneT >= 0) {
+      const t = k.doneT; ui.dim(Math.min(0.35, t)); const s = U.easeOutBack(Math.min(1, t * 2.5));
+      ctx.save(); ctx.translate(W / 2, H * 0.24); ctx.scale(s, s); A.rr(ctx, -170, -44, 340, 88, 40); ctx.fillStyle = C.pink; ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = C.pinkDark; ctx.stroke(); ui.title(k.perfect ? 'PERFECT!' : 'YUMMY!', 0, 2, 46, C.white, C.pinkDark); ctx.restore();
+      ui.label(k.perfect ? 'exactly what the viewer asked for!' : 'not what they asked, but it looks so good!', W / 2, H * 0.24 + 66, 15, C.white, 'center', { stroke: 4 });
+      R.draw(ctx, A, k.dish, W / 2, H * 0.48, a.r * 1.7, k.st);
+    }
+  };
+  P.drawTool = function (tool, x, y, on) {
+    const ctx = this.ctx, t = this.time;
+    ctx.save(); ctx.translate(x, y);
+    if (tool === 'fan') { A.circle(ctx, 0, 0, 48, '#fff', 4); const sp = on ? t * 18 : t * 2; for (let i = 0; i < 3; i++) { ctx.save(); ctx.rotate(sp + i * 2.094); A.ellipse(ctx, 0, -22, 13, 20, ['#cdb0ff', '#9fe37a', '#8fd1ff'][i], 3); ctx.restore(); } A.circle(ctx, 0, 0, 8, C.pink, 3); A.rr(ctx, -6, 46, 12, 30, 5); ctx.fillStyle = '#fff'; ctx.fill(); if (on) for (let i = 0; i < 5; i++) { const px = -60 - ((t * 120 + i * 30) % 120), py = (i - 2) * 16; ctx.globalAlpha = 0.7; A.star(ctx, px, py, 5, '#bfe9ff', 0); ctx.globalAlpha = 1; } }
+    else if (tool === 'fire' || tool === 'oven') { A.rr(ctx, -46, 10, 92, 30, 10); ctx.fillStyle = '#6b6b7a'; ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = '#5b3d3b'; ctx.stroke(); const h = on ? 34 : 12; for (let i = -2; i <= 2; i++) { const fx = i * 16, fh = h + Math.sin(t * 14 + i) * 6; ctx.beginPath(); ctx.moveTo(fx - 8, 10); ctx.quadraticCurveTo(fx - 9, 10 - fh * 0.6, fx, 10 - fh); ctx.quadraticCurveTo(fx + 9, 10 - fh * 0.6, fx + 8, 10); ctx.closePath(); ctx.fillStyle = on ? 'rgba(255,140,40,0.95)' : 'rgba(120,170,255,0.9)'; ctx.fill(); } A.text(ctx, tool === 'oven' ? 'OVEN' : 'FIRE', 0, 28, 13, '#fff', 0); }
+    else { // mixer / shaker / shaver
+      const wob = on ? Math.sin(t * 30) * 6 : 0; ctx.translate(wob, 0);
+      A.rr(ctx, -26, -46, 52, 76, 14); ctx.fillStyle = tool === 'shaver' ? '#bfe9ff' : tool === 'mixer' ? '#ffd1e3' : '#fff0c2'; ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = '#5b3d3b'; ctx.stroke();
+      A.circle(ctx, 0, -10, 12, '#fff', 3); A.text(ctx, tool.toUpperCase(), 0, 20, 11, '#5b3d3b', 0);
+      if (on) for (let i = 0; i < 4; i++) A.circle(ctx, -40 + Math.random() * 80, 40 + Math.random() * 20, 3, '#fff', 0);
+    }
+    ctx.restore();
+    this.ui.label(on ? '' : 'HOLD', x, y + 90, 14, C.white, 'center', { stroke: 4 });
+  };
+}
+
+module.exports = { install, SLOT_KEY };
+
+};
 __mods["src/data.js"] = function (require, module, exports, __filename, __dirname) {
 'use strict';
 // All game content: food catalogue, categories, tastes, levels, streamers,
@@ -4234,6 +4404,8 @@ const SC = require('./scenes.js');
 const ST = require('./stream.js');
 const WR = require('./wardrobe.js');
 const WS = require('./wardrobe-scene.js');
+const CK = require('./cook.js');
+const R = require('./recipes.js');
 const C = D.COLORS;
 
 const DESIGN_W = 540;
@@ -4357,6 +4529,7 @@ class Game {
     if (this.state === 'market') this.updateMarket(dt);
     else if (this.state === 'checkout') this.updateCheckout(dt);
     else if (this.sceneUpdate(dt)) { /* delivery / arrive / buffet / kitchen */ }
+    else if (this.state === 'cook') this.updateCook(dt);
     else if (this.state === 'stream') this.updateStream(dt);
     else if (this.state === 'result') this.result.t += dt;
     else if (this.state === 'home') { if (Math.random() < dt * 0.8) this.spawnReaction(); }
@@ -4377,16 +4550,19 @@ class Game {
     if (this.frozen) return;
     if (kind === 'start') {
       this.audio.unlock();
+      if (this.cookTouch('start', id, x, y)) return;
       if (this.streamTouch('start', id, x, y)) return;
       if (this.sceneTouch('start', id, x, y)) return;
       if (this.state === 'checkout' && !this.checkout.done) { const it = this.hitCheckoutItem(x, y); if (it) { this.checkout.auto = false; this.drag = { id: id, item: it, ox: it.x - x, oy: it.y - y, sx: x, sy: y, moved: false }; this.audio.play('pop', { gain: 0.5 }); return; } }
       this.ui.touchStart(id, x, y);
     } else if (kind === 'move') {
+      if (this.cookTouch('move', id, x, y)) return;
       if (this.streamTouch('move', id, x, y)) return;
       if (this.sceneTouch('move', id, x, y)) return;
       if (this.drag && this.drag.id === id && this.drag.item) { const d = this.drag; d.item.x = x + d.ox; d.item.y = y + d.oy; if (U.dist(x, y, d.sx, d.sy) > 12) d.moved = true; if (this.state === 'checkout') this.checkScanner(d.item); return; }
       this.ui.touchMove(id, x, y);
     } else {
+      if (this.cookTouch('end', id, x, y)) return;
       if (this.streamTouch('end', id, x, y)) return;
       if (this.sceneTouch('end', id, x, y)) return;
       if (this.drag && this.drag.id === id && this.drag.item) { const d = this.drag; this.drag = null; if (d.item) d.item.drag = false; if (this.state === 'checkout' && !d.moved && !d.item.scanned) this.flyToScanner(d.item); else if (this.state === 'checkout') this.checkScanner(d.item); return; }
@@ -4401,6 +4577,7 @@ class Game {
     const self = this, p = this.profile, hs = this.hs;
     this.audio.play('click', { gain: 0.6 });
     if (this.sceneTap(id)) return;
+    if (this.cookTap(id)) return;
     switch (id) {
       case 'play': if (this.run) this.beginStream(); else this.startStream(this.curLevel()); break;
       case 'wardrobe': if (this.curLevel() < WR.OPEN_AT && (this.profile.get('levels_done') || 0) < WR.OPEN_AT) { this.audio.play('error'); this.showToast('Wardrobe opens after stream ' + WR.OPEN_AT); } else { this.wardTab = this.wardTab || 0; this.setState('wardrobe'); } break;
@@ -4424,6 +4601,8 @@ class Game {
       case 'resume': this.setState('stream'); break;
       case 'leave': this.saveRun(); this.setState('home'); break;
       case 'bonus_ad': this.watchBonus(); break;
+      case 'cook_go': if (this.state === 'stream' && this.run && this.run.phase === 'request') this.enterCook(); break;
+      case 'fangift_ad': this.watchFanGift(); break;
       case 'surprise_ad': this.watchSurprise(); break;
       case 'boost_ad': this.watchBoost(); break;
       case 'fashion_ad': this.watchFashion(); break;
@@ -4515,6 +4694,12 @@ class Game {
       for (let i = 0; i < 10; i++) self.spawnHeart(true); self.floatText('VIRAL BOOST!  +' + U.fmtViewers(v), self.W / 2, self.H * 0.47, C.gold, 28, true); self.audio.play('levelup'); self.saveRun();
     });
   }
+  // fan gift: a rewarded ad offered between pickups on the stream (never while chewing), once per stream
+  watchFanGift() {
+    const r = this.run; if (this.adBusy || !r || r.giftAd || r.phase !== 'open' || !this.canFanGift()) return;
+    const self = this; r.giftAd = true;
+    this.adRun('fan_gift', this.hs.showFanGift(), function (res) { if (res === null) { if (self.run) self.run.giftAd = false; self.showToast('No ad right now'); return; } self.spawnConfetti(self.W / 2, self.H * 0.3, 30); self.audio.play('cash'); for (let i = 0; i < 8; i++) self.spawnHeart(true); self.saveRun(); });
+  }
   // fashion reward: an ad that gives one wardrobe item you do not own yet (shop items only; level gifts stay level gifts)
   fashionPool() { const s = WR.state(this.profile), out = []; for (let i = 0; i < WR.ITEMS.length; i++) { const it = WR.ITEMS[i]; if (it.price > 0 && s.own.indexOf(it.id) < 0) out.push(it.id); } return out; }
   canFashion() { return this.hs.hasAds() && this.fashionPool().length > 0 && this.hs.canShowFashion(); }
@@ -4551,6 +4736,7 @@ class Game {
       case 'hsshop': this.drawByName(this.popupFrom && this.popupFrom !== 'coins' ? this.popupFrom : 'home'); this.drawShop(); break;
       case 'popup': this.drawHome(); this.drawPopup(); break;
       case 'wardrobe': this.drawWardrobe(); break;
+      case 'cook': this.drawCook(); break;
       case 'settings': this.drawHome(); this.drawSettings(); break;
       default: this.sceneDraw();
     }
@@ -4583,7 +4769,7 @@ class Game {
     const hp = this.headPos(), sd = this.streamerDef(); A.streamer(ctx, sd, hp.x, hp.y + 30, hp.s, { expr: 'yum', t: this.time, bob: Math.sin(this.time * 1.6) * 4, look: WR.look(p, sd.id) });
     A.phoneStick(ctx, W * 0.1, H * 0.4, 0.9, this.time);
     // today's food waiting on the table
-    const d = K.dish(this.run ? this.run.food : lv.food); A.pack(ctx, d, this.run ? this.run.pack : lv.pack, W * 0.8, H * 0.555, 96, 'sealed', 0, 0, this.time);
+    if (this.run && !this.run.recipe) A.pack(ctx, K.dish(this.run.food), this.run.pack, W * 0.8, H * 0.555, 96, 'sealed', 0, 0, this.time); else R.draw(ctx, A, this.run && this.run.dish ? this.run.dish : lv.request, W * 0.8, H * 0.555, 84, { flipped: true, set: true, fill: 1, tops: 2, deco: 1 });
     this.drawReactions();
     const top = this.hud({});
     const hasLogo = A.logo(ctx, W / 2, top + 168, 340);
@@ -4829,18 +5015,24 @@ class Game {
     n = n || 5; this.profile.set('coins', Math.max(5000, this.profile.get('coins') || 0));
     if (n > 1 && (this.profile.get('level') || 1) < n) { this.profile.set('level', n); this.profile.set('levels_done', n - 1); this.profile.set('streams', n - 1); }
     if (kind === 'home' || kind === 'levels' || kind === 'streamers' || kind === 'settings' || kind === 'wardrobe') { this.run = null; this.saveRun(); this.setState(kind === 'wardrobe' && this.curLevel() < WR.OPEN_AT ? 'home' : kind); return; }
-    const sides = { market: 'market', checkout: 'market', delivery: 'delivery', arrive: 'delivery', buffet: 'buffet', kitchen: 'kitchen', cook: 'kitchen' };
+    const sides = { market: 'market', checkout: 'market', delivery: 'delivery', arrive: 'delivery', buffet: 'buffet' };
     if (sides[kind]) {
       this.run = null; this.enterActivity(sides[kind]);
-      if (kind === 'cook') this.kitStart();
       if (kind === 'checkout' || kind === 'arrive') this.sceneAutoFill();
       return;
     }
     this.startStream(n); const r = this.run; const self = this;
     const step = function (secs) { for (let i = 0; i < secs * 60; i++) self.update(1 / 60); };
-    if (kind === 'sealed' || kind === 'stream') { for (let i = 0; i < 3; i++) this.pushChat('idle'); return; }
-    this.openPack(); step(0.9); if (kind === 'open') return;
-    const feed = function () { self.carry = { tid: 9, x: 0, y: 0, drag: false, fx: self.packPos().x, fy: self.packPos().y, ft: 0, back: false }; r.phase = 'carry'; r.pt = 0; };
+    if (kind === 'request' || kind === 'stream' || kind === 'sealed') { for (let i = 0; i < 3; i++) this.pushChat('idle'); return; }
+    this.enterCook(); const k = this.ck;
+    const cookTo = function (stop) { let g = 0; while (self.ck && self.ck.doneT < 0 && g++ < 30) { const st = self.curCookStep(); if (stop && st.t === stop) return true; if (st.t === 'pick') { const want = k.req[CK.SLOT_KEY[st.slot]]; self.cookTap('cko_' + (want && k.opts.some(function (o) { return o.id === want; }) ? want : k.opts[0].id)); self.cookTap('ck_ok'); } else if (st.t === 'pour') k.st.fill = 0.999, k.holdId = 1, step(0.1), k.holdId = null; else if (st.t === 'hold') k.prog = 0.999, k.holdId = 1, step(0.1), k.holdId = null; else if (st.t === 'flip') k.flipT = 0.59, step(0.1); else if (st.t === 'place') { k.st.tops = st.n - 1; const a = self.cookArea(); self.cookTouch('start', 1, a.x, a.y); } else if (st.t === 'shake') { k.st.deco = 0.999; const a = self.cookArea(); self.cookTouch('start', 1, a.x, a.y); self.cookTouch('move', 1, a.x + 40, a.y); } } return false; };
+    if (kind === 'cook') { cookTo('pour'); return; }
+    if (kind === 'cookpick') { return; }
+    if (kind === 'cooktool') { cookTo('hold'); return; }
+    if (kind === 'cooktop') { cookTo('place'); return; }
+    cookTo(null); if (kind === 'perfect') { step(0.6); return; }
+    step(2); if (kind === 'open') return;
+    const feed = function () { const pp = self.platePos(r.pickups); self.carry = { tid: 9, x: pp.x, y: pp.y, drag: false, fx: pp.x, fy: pp.y, ft: 0, back: false }; r.phase = 'carry'; r.pt = 0; };
     feed(); step(0.5);
     if (kind === 'chew') { step(1.0); return; }
     step(2.0); if (kind === 'react') return;
@@ -4853,26 +5045,25 @@ class Game {
 SC.install(Game);
 ST.install(Game);
 WS.install(Game);
+CK.install(Game);
 
 module.exports = { Game };
 
 };
 __mods["src/levels.js"] = function (require, module, exports, __filename, __dirname) {
 'use strict';
-// V3: 40 livestreams, ONE food per stream (docs/GAME-DESIGN-V3.md §4).
-// Each stream: open the package → 3 pickups × 3 bites → viral finish.
-// Levels only decide WHICH food, which fan event, and what unlocks — the
-// eating itself is the same relaxed loop every time.
+// V4: 40 levels. Each = a viewer request → COOK the dish (choices) → eat it on the
+// stream as 3 portions × 3 bites → viral finish (docs/GAME-DESIGN-V4.md).
+// Packaged foods (packOf / PACK_INFO) are still used by the optional activities.
 const D = require('./data.js');
 const K = require('./catalog.js');
 
 const CHAPTERS = [
-  { n: 1, name: 'SNACK ROOKIE', view: 0 },
+  { n: 1, name: 'FIRST KITCHEN', view: 0 },
   { n: 2, name: 'SWEET TOOTH', view: 1 },
   { n: 3, name: 'RISING STAR', view: 2 },
   { n: 4, name: 'COZY NIGHTS', view: 3 },
-  { n: 5, name: 'SUPERSTAR', view: 4 },
-  { n: 6, name: 'MUKBANG LEGEND', view: 2 }
+  { n: 5, name: 'SUPERSTAR', view: 4 }
 ];
 const PER_CHAPTER = 8;
 
@@ -4892,93 +5083,58 @@ const PACK_INFO = {
 };
 
 // fan events (no timing pressure: everything is optional or automatic)
-//   hearts: floating hearts to tap (always on) · gift: a fan gift box drops (tap for coins)
-//   superchat: a big donation banner (auto) · wave: the chat floods (auto viewer surge)
-//   spotlight: "TRENDING #1" camera zoom (auto) · duet: a fan joins the call (auto, then hearts burst)
 const EVENTS = ['hearts', 'gift', 'superchat', 'wave', 'spotlight', 'duet'];
 
-// [food id, title, fan event, unlocks...]  unlock ids: food: is automatic; mode:<id>, look:<wardrobe id>, streamer:<id>, wardrobe
+// V4: every level = a viewer request for ONE dish you cook first, then eat on the stream.
+// [recipe, fan event, extra unlocks]. Choice unlocks (new moulds, flavours, toppings…) come from recipes.js.
+const R = require('./recipes.js');
 const RAW = [
-  // Ch.1 SNACK ROOKIE
-  ['cat_chips',      'First Crunch',          'hearts',    []],
-  ['honey_puffs',    'Honey Puff Pop',        'hearts',    []],
-  ['cheese_noodle',  'Slurp Time',            'gift',      ['mode:market']],
-  ['soda_pop',       'Fizzy Fun',             'gift',      []],
-  ['straw_cake',     'Cake Day',              'superchat', []],
-  ['rainbow_candy',  'Rainbow Crunch',        'gift',      ['wardrobe', 'look:hair_bow']],
-  ['peach_milk',     'Peachy Sip',            'wave',      ['mode:delivery']],
-  ['chili_noodle',   'Too Spicy!',            'superchat', []],
-  // Ch.2 SWEET TOOTH
-  ['mint_choc',      'Brain Freeze',          'wave',      []],
-  ['kfc_chicken',    'Crispy Chicken Party',  'gift',      ['streamer:kiko']],
-  ['matcha_roll',    'Matcha Moment',         'spotlight', ['mode:buffet']],
-  ['gummy_bears',    'Sour Squad',            'superchat', []],
-  ['bubble_tea',     'Boba Break',            'wave',      ['look:acc_glasses_round']],
-  ['seaweed_crisps', 'Ocean Crunch',          'gift',      []],
-  ['banana_milk',    'Banana Milk Bliss',     'spotlight', ['mode:kitchen']],
-  ['pizza',          'Pizza Night',           'duet',      ['look:outfit_sunny']],
-  // Ch.3 RISING STAR
-  ['melon_bowl',     'Melon Jelly',           'wave',      []],
-  ['choco_pretzel',  'Pretzel Twist',         'gift',      []],
-  ['tteokbokki',     'Fire Rice Cakes',       'superchat', ['look:hair_cat_ears']],
-  ['blue_moon',      'Blue Moon Scoop',       'spotlight', ['streamer:momo']],
-  ['mango_cheese',   'Mango Cheesecake',      'duet',      []],
-  ['berry_smoothie', 'Berry Blast',           'wave',      ['look:acc_headphones']],
-  ['sushi_set',      'Sushi Platter',         'gift',      []],
-  ['sakura_noodle',  'Sakura Slurp',          'spotlight', ['look:outfit_sakura']],
-  // Ch.4 COZY NIGHTS
-  ['sea_noodle',     'Seafood Cup',           'wave',      []],
-  ['choco_mousse',   'Midnight Mousse',       'duet',      []],
-  ['cheese_burger',  'Burger Bite',           'gift',      ['look:outfit_chef']],
-  ['straw_swirl',    'Strawberry Swirl',      'superchat', []],
-  ['dumplings',      'Dumpling Feast',        'wave',      ['look:hair_flowers']],
-  ['rainbow_crepe',  'Rainbow Crepe',         'spotlight', []],
-  ['mini_hotpot',    'Hotpot for One',        'duet',      ['look:acc_heart_glasses']],
-  ['cookie_cream',   'Cookies & Cream',       'gift',      []],
-  // Ch.5 SUPERSTAR
-  ['bean_noodle',    'Black Bean Slurp',      'wave',      []],
-  ['grape_bunch',    'Grape Pop',             'spotlight', ['look:hair_bunny_ears']],
-  ['curry_rice',     'Curry Comfort',         'duet',      []],
-  ['mango_sorbet',   'Mango Sorbet',          'superchat', ['look:outfit_star']],
-  ['seafood_boil',   'Seafood Boil Mania',    'duet',      []],
-  ['berry_tart',     'Berry Tart',            'gift',      ['look:acc_scarf']],
-  ['choco_sundae',   'Sundae Supreme',        'spotlight', []],
-  ['golden_parfait', 'Superstar Finale',      'duet',      ['look:hair_crown']],
-  // Ch.6 MUKBANG LEGEND (encore chapter: rarer foods, funnier reactions)
-  ['shroom_noodle',  'Forest Noodles',        'wave',      []],
-  ['matcha_latte',   'Matcha Latte Art',      'spotlight', []],
-  ['spicy_wings',    'Wing Challenge',        'superchat', []],
-  ['mango_cubes',    'Mango Party',           'gift',      []],
-  ['pasta',          'Creamy Pasta Twirl',    'duet',      []],
-  ['choco_ramen',    'Chocolate Ramen?!',     'wave',      []],
-  ['straw_plate',    'Strawberry Field',      'spotlight', []],
-  ['mochi',          'Mochi Stretch',         'gift',      []],
-  ['pickle_icecream','Pickle Ice Cream?!',    'superchat', []],
-  ['berry_mix',      'Legend Finale',         'duet',      []]
+  // Ch.1 SNACK ROOKIE → "FIRST KITCHEN"
+  ['jelly', 'hearts', []], ['jelly', 'gift', []], ['pudding', 'gift', ['mode:market']], ['cupcake', 'superchat', []],
+  ['boba', 'wave', []], ['jelly', 'gift', ['wardrobe', 'look:hair_bow']], ['ramen', 'superchat', ['mode:delivery']], ['pudding', 'wave', []],
+  // Ch.2
+  ['parfait', 'spotlight', []], ['cupcake', 'gift', ['streamer:kiko']], ['boba', 'duet', ['mode:buffet']], ['donut', 'superchat', []],
+  ['ramen', 'wave', ['look:acc_glasses_round']], ['jelly', 'gift', []], ['bingsu', 'spotlight', []], ['parfait', 'duet', ['look:outfit_sunny']],
+  // Ch.3
+  ['donut', 'wave', []], ['pudding', 'gift', []], ['ramen', 'superchat', ['look:hair_cat_ears']], ['boba', 'spotlight', ['streamer:momo']],
+  ['cupcake', 'duet', []], ['bingsu', 'wave', ['look:acc_headphones']], ['jelly', 'gift', []], ['parfait', 'spotlight', ['look:outfit_sakura']],
+  // Ch.4
+  ['ramen', 'wave', []], ['donut', 'duet', []], ['pudding', 'gift', ['look:outfit_chef']], ['boba', 'superchat', []],
+  ['bingsu', 'wave', ['look:hair_flowers']], ['cupcake', 'spotlight', []], ['ramen', 'duet', ['look:acc_heart_glasses']], ['jelly', 'gift', []],
+  // Ch.5
+  ['parfait', 'wave', []], ['donut', 'spotlight', ['look:hair_bunny_ears']], ['boba', 'duet', []], ['bingsu', 'superchat', ['look:outfit_star']],
+  ['ramen', 'duet', []], ['cupcake', 'gift', ['look:acc_scarf']], ['pudding', 'spotlight', []], ['jelly', 'duet', ['look:hair_crown']]
 ];
 const LEVEL_COUNT = RAW.length;
 
-// viewer goal: 500 → ~2M (log curve), start = 30 %
-function goalOf(n) { const g = 500 * Math.pow(4000, (n - 1) / (LEVEL_COUNT - 1)); const m = Math.pow(10, Math.max(1, Math.floor(Math.log10(g)) - 1)); return Math.round(g / m) * m; }
+// viewer goal: 500 → ~1M (log curve), start = 30 %
+function goalOf(n) { const g = 500 * Math.pow(2000, (n - 1) / (LEVEL_COUNT - 1)); const m = Math.pow(10, Math.max(1, Math.floor(Math.log10(g)) - 1)); return Math.round(g / m) * m; }
 function roundTo(v) { const m = Math.pow(10, Math.max(1, Math.floor(Math.log10(v)) - 1)); return Math.round(v / m) * m; }
-
+const SLOT_NAME = { mold: 'MOULD', flavor: 'FLAVOUR', broth: 'BROTH', topping: 'TOPPING', ramen_top: 'RAMEN TOPPING', boba_top: 'BOBA TOPPING', deco: 'DECORATION', cup: 'CUP', shape: 'DONUT SHAPE' };
+// the request: the newest flavour + topping the player can pick at this level (shows off what just unlocked)
+function requestFor(recipe, n, i) {
+  const rc = R.RECIPES[recipe], fslot = rc.taste === 'broth' ? 'broth' : 'flavor', tslot = R.toppingSlot(recipe);
+  const fs = R.options(fslot, n), ts = R.options(tslot, n);
+  // something that just unlocked at this level wins; otherwise rotate through what is open (L1: strawberry + cherry)
+  const fresh = function (list) { for (let k = 0; k < list.length; k++) if (list[k].unlock === n && n > 1) return list[k]; return null; };
+  const f = fresh(fs) || fs[(i * 3) % fs.length], t = fresh(ts) || ts[(i * 5) % ts.length];
+  const req = { recipe: recipe }; req[fslot] = f.id; req.topping = t.id;
+  return req;
+}
 const LEVELS = [];
-const seenTastes = {}, seenPacks = {}, seenSounds = {};
+const seenRecipes = {};
 for (let i = 0; i < RAW.length; i++) {
   const r = RAW[i], n = i + 1, ch = Math.min(CHAPTERS.length - 1, Math.floor(i / PER_CHAPTER));
-  const d = K.dish(r[0]); if (!d) throw new Error('levels: unknown food ' + r[0]);
-  const pack = packOf(d);
-  const goal = goalOf(n);
-  // what is new in this stream (shown before / after it)
+  const goal = goalOf(n), rc = R.RECIPES[r[0]];
   const news = [];
-  if (!seenPacks[pack]) { seenPacks[pack] = 1; if (n > 1) news.push('NEW PACKAGE: ' + PACK_INFO[pack].open); }
-  if (!seenTastes[d.taste]) { seenTastes[d.taste] = 1; if (n > 1) news.push('NEW REACTION: ' + D.TASTES[d.taste].name.toUpperCase() + ' FACE'); }
-  if (!seenSounds[d.sound]) { seenSounds[d.sound] = 1; if (n > 1) news.push('NEW ASMR SOUND'); }
+  if (!seenRecipes[r[0]]) { seenRecipes[r[0]] = 1; if (n > 1) news.push('NEW RECIPE: ' + rc.name.toUpperCase()); }
+  for (const slot in R.OPT) for (let k = 0; k < R.OPT[slot].length; k++) { const o = R.OPT[slot][k]; if (o[3] === n && n > 1) news.push('NEW ' + SLOT_NAME[slot] + ': ' + o[1].toUpperCase()); }
+  const req = requestFor(r[0], n, i);
   LEVELS.push({
     n: n, chapter: ch + 1, chapterName: CHAPTERS[ch].name, view: CHAPTERS[ch].view, bg: CHAPTERS[ch].view, loc: 'home',
-    title: r[1], food: d.id, pack: pack, event: r[2], unlocks: r[3], news: news,
+    recipe: r[0], request: req, title: R.dishName(req), event: r[1], unlocks: r[2], news: news,
     goal: goal, goal3: roundTo(goal * 1.3), startViewers: roundTo(goal * 0.3),
-    cpb: 6 + 2 * n // coins per bite
+    cpb: 6 + 2 * n, reward: 100 + 20 * n // coins per bite · request reward (bigger when the dish matches the request)
   });
 }
 function level(n) { return LEVELS[Math.max(1, Math.min(LEVEL_COUNT, n | 0)) - 1]; }
@@ -4988,8 +5144,7 @@ function level(n) { return LEVELS[Math.max(1, Math.min(LEVEL_COUNT, n | 0)) - 1]
 const MODES = [
   { id: 'market',   name: 'SUPERMARKET', short: 'SHOP',   unlock: 3,  color: '#ffd7a3', dark: '#f0a860' },
   { id: 'delivery', name: 'DELIVERY',    short: 'ORDER',  unlock: 7,  color: '#ff8fb3', dark: '#d85e8e' },
-  { id: 'buffet',   name: 'BUFFET',      short: 'BUFFET', unlock: 11, color: '#ffb199', dark: '#c93b1d' },
-  { id: 'kitchen',  name: 'COOKING',     short: 'COOK',   unlock: 15, color: '#9fe3c9', dark: '#5fbf9f' }
+  { id: 'buffet',   name: 'BUFFET',      short: 'BUFFET', unlock: 11, color: '#ffb199', dark: '#c93b1d' }
 ];
 function modeOf(id) { for (let i = 0; i < MODES.length; i++) if (MODES[i].id === id) return MODES[i]; return null; }
 // level an unlock id is granted at
@@ -5004,7 +5159,178 @@ function sideConfig(mode, reached) {
   return base;
 }
 
-module.exports = { LEVELS, LEVEL_COUNT, CHAPTERS, PER_CHAPTER, EVENTS, PACK_INFO, MODES, modeOf, level, goalOf, packOf, sideConfig, unlockLevel };
+module.exports = { LEVELS, LEVEL_COUNT, CHAPTERS, PER_CHAPTER, EVENTS, PACK_INFO, MODES, modeOf, level, goalOf, packOf, sideConfig, unlockLevel, SLOT_NAME };
+
+};
+__mods["src/recipes.js"] = function (require, module, exports, __filename, __dirname) {
+'use strict';
+// V4 cooking (docs/GAME-DESIGN-V4.md): recipes made of quick steps with CHOICES
+// (mould / flavour / topping / decoration / container), modelled on the
+// reference video: pick a mould ✓ → pick a flavour ✓ → pour → cool with the
+// fan → flip onto the plate → pick a topping ✓ → place it → pick a decoration ✓
+// → shake → "PERFECT!" → the dish is served as 3 portions on the stream.
+// Also the vector renderer for a cooked dish (fallback until bitmap art).
+
+// ── options per slot ── [id, name, colour, unlock level, extra]
+const OPT = {
+  mold:   [['dome', 'Dome', '#ffd1e3', 1], ['star', 'Star', '#fff0c2', 1], ['heart', 'Heart', '#ffc2d6', 1], ['flower', 'Flower', '#d9d4ff', 1], ['bunny', 'Bunny', '#e9fbf3', 12], ['crown', 'Crown', '#fff3b0', 25]],
+  flavor: [['strawberry', 'Strawberry', '#ff4a5f', 1, 'sweet'], ['mango', 'Mango', '#ffb830', 1, 'sweet'], ['matcha', 'Matcha', '#7ec46a', 1, 'savory'], ['grape', 'Grape', '#9b5fe0', 1, 'sour'], ['blueberry', 'Blueberry', '#5b7be8', 6, 'sour'], ['peach', 'Peach', '#ff9f8a', 9, 'sweet'], ['chocolate', 'Chocolate', '#7a4b2f', 14, 'sweet'], ['milk', 'Milk', '#fff3e6', 18, 'sweet'], ['sakura', 'Sakura', '#ffb3cf', 22, 'sweet'], ['lemon', 'Lemon', '#ffe34d', 28, 'sour'], ['soda', 'Soda', '#7fd4ff', 33, 'fizzy']],
+  broth:  [['shoyu', 'Shoyu', '#b5651d', 1, 'savory'], ['miso', 'Miso', '#e0a83a', 1, 'savory'], ['spicy', 'Spicy', '#e8402a', 1, 'spicy'], ['creamy', 'Creamy', '#f6e8d0', 1, 'savory'], ['curry', 'Curry', '#d98a1a', 26, 'spicy']],
+  topping: [['cherry', 'Cherry', '#e8203a', 1], ['strawberry_t', 'Strawberry', '#ff4a5f', 1], ['blueberry_t', 'Blueberry', '#4a5fd8', 1], ['mint', 'Mint Leaf', '#4fbf6a', 1], ['cream', 'Cream', '#fff8ef', 5], ['kiwi', 'Kiwi', '#8fd44a', 8], ['peach_t', 'Peach', '#ffb39a', 11], ['mochi', 'Mochi', '#ffe6f0', 15], ['choco_stick', 'Choco Stick', '#6b3f24', 20], ['sakura_t', 'Sakura', '#ff9fc4', 24], ['gold_star', 'Gold Star', '#ffd23f', 30]],
+  ramen_top: [['egg', 'Soft Egg', '#ffd95e', 1], ['chashu', 'Chashu', '#c9805a', 1], ['scallion', 'Scallion', '#5fbf5a', 1], ['naruto', 'Naruto', '#ffffff', 1], ['corn', 'Corn', '#ffe066', 16], ['nori', 'Nori', '#2f4a3a', 21]],
+  boba_top: [['pearls', 'Pearls', '#3d2a24', 1], ['jelly_cubes', 'Jelly Cubes', '#9fe37a', 1], ['pudding_t', 'Pudding', '#ffd27a', 1], ['red_bean', 'Red Bean', '#9a3a3a', 1], ['popping', 'Popping Boba', '#ff8fb3', 19]],
+  deco:   [['sprinkles', 'Sprinkles', '#ff9fc4', 1], ['hearts', 'Hearts', '#ff5a8a', 1], ['stars', 'Stars', '#ffd23f', 1], ['pearls_d', 'Sugar Pearls', '#ffffff', 1], ['snow', 'Snow Sugar', '#eef6ff', 10], ['gold', 'Gold Flakes', '#ffcc33', 16], ['cocoa', 'Cocoa Dust', '#7a4b2f', 20]],
+  cup:    [['pink', 'Pink', '#ffc2d6', 1], ['mint_c', 'Mint', '#bff0dd', 1], ['lavender', 'Lavender', '#ddd0ff', 1], ['lemon_c', 'Lemon', '#fff0a8', 1], ['sky', 'Sky', '#c8e8ff', 13]],
+  shape:  [['ring', 'Ring', '#f3c58b', 1], ['heart_d', 'Heart', '#f3c58b', 1], ['star_d', 'Star', '#f3c58b', 1], ['bear', 'Bear', '#f3c58b', 1]]
+};
+const OPT_BY = {}; for (const s in OPT) { OPT_BY[s] = {}; for (let i = 0; i < OPT[s].length; i++) { const o = OPT[s][i]; OPT_BY[s][o[0]] = { id: o[0], name: o[1], color: o[2], unlock: o[3], taste: o[4] || null, slot: s }; } }
+function opt(slot, id) { return OPT_BY[slot] && OPT_BY[slot][id] || null; }
+function options(slot, level) { return OPT[slot].filter(function (o) { return o[3] <= level; }).map(function (o) { return OPT_BY[slot][o[0]]; }); }
+
+// ── recipes: steps ──
+//   pick  { slot }            — 4 choices in the bottom tray, tap one, ✓ to confirm
+//   pour  { from: slot }      — hold the bottle over the mould until it is full
+//   hold  { tool, text }      — hold the tool (fan / fire / mixer / shaver) until the bar fills
+//   flip                      — tap to unmould onto the plate
+//   place { n }               — tap the dish n times to place the chosen topping
+//   shake                     — rub back and forth to shake the decoration on
+const RECIPES = {
+  jelly:   { name: 'Jelly', make: 'MAKE JELLY', taste: 'flavor', sound: 'soft', container: 'mold', steps: [{ t: 'pick', slot: 'mold' }, { t: 'pick', slot: 'flavor' }, { t: 'pour', from: 'flavor' }, { t: 'hold', tool: 'fan', text: 'COOL IT DOWN' }, { t: 'flip' }, { t: 'pick', slot: 'topping' }, { t: 'place', n: 3 }, { t: 'pick', slot: 'deco' }, { t: 'shake' }] },
+  pudding: { name: 'Pudding', make: 'MAKE PUDDING', taste: 'flavor', sound: 'soft', container: 'mold', steps: [{ t: 'pick', slot: 'mold' }, { t: 'pick', slot: 'flavor' }, { t: 'pour', from: 'flavor' }, { t: 'hold', tool: 'fan', text: 'CHILL IT' }, { t: 'flip' }, { t: 'pick', slot: 'topping' }, { t: 'place', n: 2 }, { t: 'pick', slot: 'deco' }, { t: 'shake' }] },
+  cupcake: { name: 'Cupcake', make: 'BAKE CUPCAKES', taste: 'flavor', sound: 'soft', container: 'cup', steps: [{ t: 'pick', slot: 'cup' }, { t: 'hold', tool: 'oven', text: 'BAKE IT' }, { t: 'pick', slot: 'flavor' }, { t: 'pour', from: 'flavor', text: 'PIPE THE FROSTING' }, { t: 'pick', slot: 'topping' }, { t: 'place', n: 2 }, { t: 'pick', slot: 'deco' }, { t: 'shake' }] },
+  boba:    { name: 'Boba Tea', make: 'MAKE BOBA', taste: 'flavor', sound: 'gulp', container: 'cup', steps: [{ t: 'pick', slot: 'cup' }, { t: 'pick', slot: 'boba_top' }, { t: 'place', n: 3, text: 'DROP IN THE TOPPING' }, { t: 'pick', slot: 'flavor' }, { t: 'pour', from: 'flavor' }, { t: 'hold', tool: 'shaker', text: 'SHAKE IT UP' }, { t: 'pick', slot: 'deco' }, { t: 'shake' }] },
+  ramen:   { name: 'Ramen', make: 'COOK RAMEN', taste: 'broth', sound: 'slurp', container: 'bowl', steps: [{ t: 'pick', slot: 'cup' }, { t: 'pick', slot: 'broth' }, { t: 'pour', from: 'broth' }, { t: 'hold', tool: 'fire', text: 'BOIL THE NOODLES' }, { t: 'pick', slot: 'ramen_top' }, { t: 'place', n: 3 }, { t: 'pick', slot: 'deco' }, { t: 'shake', text: 'SPRINKLE IT' }] },
+  parfait: { name: 'Parfait', make: 'MAKE A PARFAIT', taste: 'flavor', sound: 'lick', container: 'glass', steps: [{ t: 'pick', slot: 'flavor' }, { t: 'pour', from: 'flavor' }, { t: 'hold', tool: 'mixer', text: 'WHIP THE CREAM' }, { t: 'pick', slot: 'topping' }, { t: 'place', n: 3 }, { t: 'pick', slot: 'deco' }, { t: 'shake' }] },
+  donut:   { name: 'Donut', make: 'FRY DONUTS', taste: 'flavor', sound: 'bite', container: 'donut', steps: [{ t: 'pick', slot: 'shape' }, { t: 'hold', tool: 'fire', text: 'FRY IT GOLDEN' }, { t: 'pick', slot: 'flavor' }, { t: 'pour', from: 'flavor', text: 'DIP IN THE GLAZE' }, { t: 'pick', slot: 'topping' }, { t: 'place', n: 2 }, { t: 'pick', slot: 'deco' }, { t: 'shake' }] },
+  bingsu:  { name: 'Bingsu', make: 'MAKE BINGSU', taste: 'cold', sound: 'lick', container: 'bowl', steps: [{ t: 'pick', slot: 'cup' }, { t: 'hold', tool: 'shaver', text: 'SHAVE THE ICE' }, { t: 'pick', slot: 'flavor' }, { t: 'pour', from: 'flavor', text: 'DRIZZLE THE SYRUP' }, { t: 'pick', slot: 'topping' }, { t: 'place', n: 3 }, { t: 'pick', slot: 'deco' }, { t: 'shake' }] }
+};
+// the taste the streamer reacts to
+function tasteOf(dish) { const r = RECIPES[dish.recipe]; if (r.taste === 'cold') return 'cold'; const o = r.taste === 'broth' ? opt('broth', dish.broth) : opt('flavor', dish.flavor); return (o && o.taste) || 'sweet'; }
+function colorOf(dish) { const r = RECIPES[dish.recipe]; const o = r.taste === 'broth' ? opt('broth', dish.broth) : opt('flavor', dish.flavor); return o ? o.color : '#ff9fc4'; }
+function toppingSlot(recipe) { return recipe === 'ramen' ? 'ramen_top' : recipe === 'boba' ? 'boba_top' : 'topping'; }
+function dishName(dish) { const r = RECIPES[dish.recipe]; const o = r.taste === 'broth' ? opt('broth', dish.broth) : opt('flavor', dish.flavor); return (o ? o.name + ' ' : '') + r.name; }
+
+// ── vector renderer ──
+// st: { fill 0..1, set bool (jelly set), flipped bool, tops n placed, deco 0..1, portion bool (small, plated) }
+function draw(ctx, A, dish, x, y, size, st) {
+  st = st || {}; const R = RECIPES[dish.recipe]; const s = size / 100; const col = colorOf(dish);
+  const OUT = '#5b3d3b';
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  const fs = function (fill, lw) { if (fill) { ctx.fillStyle = fill; ctx.fill(); } if (lw) { ctx.lineWidth = lw; ctx.strokeStyle = OUT; ctx.stroke(); } };
+  const plate = function () { A.ellipse(ctx, 0, 34, 50, 13, '#e9f3ff', 4); A.ellipse(ctx, 0, 33, 38, 8, '#f8fbff', 0); };
+  const tops = st.tops === undefined ? 3 : st.tops, deco = st.deco === undefined ? 1 : st.deco;
+  const topOpt = opt(toppingSlot(dish.recipe), dish.topping), decoOpt = opt('deco', dish.deco);
+  const drawTop = function (tx, ty, k) { if (!topOpt) return; const c = topOpt.color, id = topOpt.id, r = 7 * (k || 1);
+    if (id === 'cherry') { ctx.strokeStyle = '#4a7a3a'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(tx, ty - r); ctx.quadraticCurveTo(tx + 4, ty - r * 2.2, tx + 8, ty - r * 2.4); ctx.stroke(); A.circle(ctx, tx, ty, r, c, 2.5); A.circle(ctx, tx - r * 0.35, ty - r * 0.35, r * 0.28, 'rgba(255,255,255,0.7)', 0); }
+    else if (id === 'mint') { ctx.save(); ctx.translate(tx, ty); ctx.rotate(-0.5); A.ellipse(ctx, -4, 0, 7, 3.5, c, 2); A.ellipse(ctx, 4, 0, 7, 3.5, c, 2); ctx.restore(); }
+    else if (id === 'cream') { A.circle(ctx, tx, ty, r * 1.2, c, 2.5); A.circle(ctx, tx, ty - r, r * 0.8, c, 2.5); }
+    else if (id === 'choco_stick') { ctx.save(); ctx.translate(tx, ty); ctx.rotate(0.4); A.rr(ctx, -2.5, -14, 5, 22, 2); fs(c, 2); ctx.restore(); }
+    else if (id === 'gold_star') A.star(ctx, tx, ty, r * 1.2, c, 2);
+    else if (id === 'sakura_t') { for (let i = 0; i < 5; i++) { const a = i * Math.PI * 2 / 5; A.circle(ctx, tx + Math.cos(a) * r * 0.6, ty + Math.sin(a) * r * 0.6, r * 0.5, c, 1.5); } }
+    else if (id === 'egg') { A.ellipse(ctx, tx, ty, r * 1.4, r, '#fff', 2.5); A.circle(ctx, tx, ty, r * 0.6, c, 0); }
+    else if (id === 'chashu') { A.circle(ctx, tx, ty, r * 1.3, c, 2.5); A.circle(ctx, tx, ty, r * 0.7, '#f3c9a8', 0); }
+    else if (id === 'scallion') { for (let i = 0; i < 3; i++) A.circle(ctx, tx + (i - 1) * 5, ty + (i % 2) * 3, 2.5, c, 1); }
+    else if (id === 'naruto') { A.circle(ctx, tx, ty, r * 1.1, '#fff', 2.5); ctx.strokeStyle = '#ff7fa8'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(tx, ty, r * 0.5, 0, Math.PI * 1.6); ctx.stroke(); }
+    else if (id === 'nori') { A.rr(ctx, tx - 6, ty - 12, 12, 18, 2); fs(c, 2); }
+    else if (id === 'pearls' || id === 'red_bean' || id === 'popping') { for (let i = 0; i < 3; i++) A.circle(ctx, tx + (i - 1) * 6, ty + (i % 2) * 4, 3.5, c, 1.2); }
+    else if (id === 'jelly_cubes' || id === 'pudding_t') { A.rr(ctx, tx - 5, ty - 5, 10, 10, 2); fs(c, 1.5); }
+    else { A.circle(ctx, tx, ty, r, c, 2.5); A.circle(ctx, tx - r * 0.35, ty - r * 0.35, r * 0.28, 'rgba(255,255,255,0.6)', 0); }
+  };
+  const drawDeco = function (cx, cy, w, h) { if (!decoOpt || deco <= 0) return; const n = Math.round(12 * deco); for (let i = 0; i < n; i++) { const px = cx + ((i * 37) % 100 / 100 - 0.5) * w, py = cy + ((i * 61) % 100 / 100 - 0.5) * h; const id = decoOpt.id;
+    if (id === 'hearts') A.heart(ctx, px, py, 3, decoOpt.color, 0); else if (id === 'stars' || id === 'gold') A.star(ctx, px, py, 2.6, decoOpt.color, 0); else if (id === 'sprinkles') { ctx.save(); ctx.translate(px, py); ctx.rotate(i); ctx.fillStyle = ['#ff7fa8', '#7fd4ff', '#ffe066', '#9fe37a'][i % 4]; ctx.fillRect(-3, -1, 6, 2.2); ctx.restore(); } else A.circle(ctx, px, py, 1.8, decoOpt.color, 0); } };
+  const moldPath = function (m, w, h, oy) { ctx.beginPath();
+    if (m === 'star') { for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, rr = i % 2 ? w * 0.6 : w; ctx.lineTo(Math.cos(a) * rr, oy + Math.sin(a) * h * 0.55 + h * 0.15); } ctx.closePath(); }
+    else if (m === 'heart') { ctx.moveTo(0, oy + h * 0.55); ctx.bezierCurveTo(-w * 1.3, oy - h * 0.1, -w * 0.5, oy - h * 0.75, 0, oy - h * 0.3); ctx.bezierCurveTo(w * 0.5, oy - h * 0.75, w * 1.3, oy - h * 0.1, 0, oy + h * 0.55); }
+    else if (m === 'flower') { for (let i = 0; i < 6; i++) { const a = i * Math.PI / 3; ctx.moveTo(Math.cos(a) * w * 0.5 + w * 0.45, oy + Math.sin(a) * h * 0.4); ctx.arc(Math.cos(a) * w * 0.5, oy + Math.sin(a) * h * 0.4, w * 0.45, 0, Math.PI * 2); } }
+    else if (m === 'bunny') { ctx.ellipse(0, oy + h * 0.1, w, h * 0.45, 0, 0, Math.PI * 2); ctx.moveTo(-w * 0.2, oy - h * 0.3); ctx.ellipse(-w * 0.4, oy - h * 0.55, w * 0.22, h * 0.4, -0.2, 0, Math.PI * 2); ctx.moveTo(w * 0.6, oy - h * 0.55); ctx.ellipse(w * 0.4, oy - h * 0.55, w * 0.22, h * 0.4, 0.2, 0, Math.PI * 2); }
+    else if (m === 'crown') { ctx.moveTo(-w, oy + h * 0.5); ctx.lineTo(-w, oy - h * 0.3); ctx.lineTo(-w * 0.5, oy); ctx.lineTo(0, oy - h * 0.5); ctx.lineTo(w * 0.5, oy); ctx.lineTo(w, oy - h * 0.3); ctx.lineTo(w, oy + h * 0.5); ctx.closePath(); }
+    else { ctx.moveTo(-w, oy + h * 0.5); ctx.quadraticCurveTo(-w, oy - h * 0.7, 0, oy - h * 0.7); ctx.quadraticCurveTo(w, oy - h * 0.7, w, oy + h * 0.5); ctx.closePath(); } };
+  const c = R.container;
+  if (c === 'mold') {
+    // before flip: the mould (container) with liquid; after flip: the set jelly on a plate
+    if (!st.flipped) {
+      ctx.save(); ctx.scale(1, -1); moldPath(dish.mold || 'dome', 38, 50, 4); ctx.restore(); fs('rgba(255,255,255,0.85)', 4);
+      if (st.fill > 0) { ctx.save(); ctx.scale(1, -1); moldPath(dish.mold || 'dome', 38, 50, 4); ctx.restore(); ctx.save(); ctx.clip(); ctx.fillStyle = st.set ? col : shade(col, 0.25); ctx.globalAlpha = st.set ? 1 : 0.85; ctx.fillRect(-50, 32 - 60 * st.fill, 100, 80); ctx.restore(); ctx.globalAlpha = 1; }
+      ctx.save(); ctx.scale(1, -1); moldPath(dish.mold || 'dome', 38, 50, 4); ctx.restore(); fs(null, 4);
+    } else {
+      plate();
+      moldPath(dish.mold || 'dome', 36, 48, 0); fs(col, 4);
+      moldPath(dish.mold || 'dome', 36, 48, 0); ctx.save(); ctx.clip(); ctx.fillStyle = 'rgba(255,255,255,0.35)'; ctx.fillRect(-30, -30, 14, 60); ctx.fillStyle = 'rgba(0,0,0,0.08)'; ctx.fillRect(10, -30, 30, 70); ctx.restore();
+      if (dish.recipe === 'pudding') { ctx.save(); moldPath(dish.mold || 'dome', 36, 48, 0); ctx.clip(); ctx.fillStyle = '#9a5a1a'; ctx.fillRect(-50, -40, 100, 16); ctx.restore(); }
+      drawDeco(0, -2, 52, 34);
+      for (let i = 0; i < Math.min(tops, 3); i++) drawTop([0, -14, 14][i], -30 + [0, 8, 8][i], 1);
+    }
+  } else if (c === 'cup' && dish.recipe === 'cupcake') {
+    const cc = (opt('cup', dish.cup) || { color: '#ffc2d6' }).color;
+    ctx.beginPath(); ctx.moveTo(-28, 0); ctx.lineTo(28, 0); ctx.lineTo(20, 36); ctx.lineTo(-20, 36); ctx.closePath(); fs(cc, 4);
+    ctx.strokeStyle = 'rgba(255,255,255,0.6)'; ctx.lineWidth = 3; for (let i = -2; i <= 2; i++) { ctx.beginPath(); ctx.moveTo(i * 10, 2); ctx.lineTo(i * 7, 34); ctx.stroke(); }
+    if (st.set !== false) { A.ellipse(ctx, 0, -2, 32, 14, '#e8b267', 4); }
+    if (st.fill > 0) { const k = st.fill; A.ellipse(ctx, 0, -8, 30 * k + 2, 14 * k + 2, col, 4); if (k > 0.5) A.ellipse(ctx, 0, -20, 22 * k, 12 * k, col, 4); if (k > 0.8) A.circle(ctx, 0, -32, 10, col, 4); drawDeco(0, -16, 50, 30); for (let i = 0; i < Math.min(tops, 2); i++) drawTop(i ? 10 : -6, -38 + i * 8, 1); }
+  } else if (c === 'cup') { // boba
+    const cc = (opt('cup', dish.cup) || { color: '#c8e8ff' }).color;
+    ctx.beginPath(); ctx.moveTo(-28, -38); ctx.lineTo(28, -38); ctx.lineTo(22, 40); ctx.lineTo(-22, 40); ctx.closePath(); fs('rgba(255,255,255,0.85)', 4);
+    ctx.save(); ctx.beginPath(); ctx.moveTo(-28, -38); ctx.lineTo(28, -38); ctx.lineTo(22, 40); ctx.lineTo(-22, 40); ctx.closePath(); ctx.clip();
+    if (st.fill > 0) { ctx.fillStyle = shade(col, 0.15); ctx.fillRect(-30, 40 - 74 * st.fill, 60, 80); }
+    for (let i = 0; i < Math.min(tops, 3) * 3; i++) drawTop(-14 + (i % 3) * 14, 32 - Math.floor(i / 3) * 6, 0.8);
+    if (deco > 0 && decoOpt) { ctx.fillStyle = 'rgba(255,255,255,0.9)'; ctx.fillRect(-30, -38, 60, 10 * deco); drawDeco(0, -33, 40, 6); }
+    ctx.restore();
+    A.rr(ctx, -30, 0, 60, 8, 3); fs(cc, 3);
+    ctx.lineWidth = 7; ctx.strokeStyle = shade(cc, -0.3); ctx.beginPath(); ctx.moveTo(8, -20); ctx.lineTo(16, -56); ctx.stroke();
+  } else if (c === 'bowl') {
+    const cc = (opt('cup', dish.cup) || { color: '#ffc2d6' }).color;
+    ctx.beginPath(); ctx.moveTo(-46, -4); ctx.quadraticCurveTo(-44, 40, 0, 40); ctx.quadraticCurveTo(44, 40, 46, -4); ctx.closePath(); fs(cc, 4);
+    if (dish.recipe === 'bingsu') { if (st.set !== false) { ctx.beginPath(); ctx.moveTo(-40, -4); ctx.quadraticCurveTo(-30, -46, 0, -46); ctx.quadraticCurveTo(30, -46, 40, -4); ctx.closePath(); fs('#f4fbff', 4); if (st.fill > 0) { ctx.save(); ctx.clip(); ctx.globalAlpha = 0.85; ctx.fillStyle = col; for (let i = 0; i < 5; i++) { ctx.beginPath(); ctx.ellipse(-24 + i * 12, -30 + (i % 2) * 8, 10, 22 * st.fill, 0.3, 0, Math.PI * 2); ctx.fill(); } ctx.restore(); ctx.globalAlpha = 1; } drawDeco(0, -26, 50, 26); for (let i = 0; i < Math.min(tops, 3); i++) drawTop([0, -16, 16][i], -46 + [0, 10, 10][i], 1); } }
+    else { // ramen
+      A.ellipse(ctx, 0, -4, 46, 12, shade(cc, -0.1), 4);
+      if (st.fill > 0) { A.ellipse(ctx, 0, -4, 40 * Math.min(1, st.fill + 0.2), 9, col, 0); }
+      if (st.set) { ctx.strokeStyle = '#ffe2a0'; ctx.lineWidth = 3; for (let i = 0; i < 6; i++) { ctx.beginPath(); ctx.moveTo(-30 + i * 10, -6); ctx.quadraticCurveTo(-26 + i * 10, -14, -22 + i * 10, -4); ctx.stroke(); } }
+      for (let i = 0; i < Math.min(tops, 3); i++) drawTop([-18, 6, 22][i], [-8, -10, -4][i], 1.1);
+      drawDeco(0, -6, 60, 10);
+      ctx.lineWidth = 5; ctx.strokeStyle = '#c49a6c'; ctx.beginPath(); ctx.moveTo(10, -16); ctx.lineTo(44, -52); ctx.moveTo(18, -14); ctx.lineTo(50, -46); ctx.stroke();
+    }
+  } else if (c === 'glass') { // parfait
+    ctx.beginPath(); ctx.moveTo(-26, -40); ctx.lineTo(26, -40); ctx.lineTo(14, 22); ctx.lineTo(-14, 22); ctx.closePath(); fs('rgba(255,255,255,0.9)', 4);
+    A.rr(ctx, -4, 22, 8, 12, 2); fs('#fff', 3); A.ellipse(ctx, 0, 36, 20, 5, '#fff', 3);
+    ctx.save(); ctx.beginPath(); ctx.moveTo(-26, -40); ctx.lineTo(26, -40); ctx.lineTo(14, 22); ctx.lineTo(-14, 22); ctx.closePath(); ctx.clip();
+    const lv = st.fill || 0; for (let i = 0; i < 4; i++) { if (lv * 4 > i) { ctx.fillStyle = i % 2 ? '#fff8ef' : shade(col, i * 0.1); ctx.fillRect(-30, 22 - (i + 1) * 15, 60, 15); } } ctx.restore();
+    if (st.set) { A.circle(ctx, -10, -44, 12, '#fff8ef', 3); A.circle(ctx, 10, -44, 12, '#fff8ef', 3); A.circle(ctx, 0, -54, 11, '#fff8ef', 3); }
+    drawDeco(0, -46, 40, 16); for (let i = 0; i < Math.min(tops, 3); i++) drawTop([0, -14, 14][i], -62 + [0, 8, 8][i], 1);
+  } else if (c === 'donut') {
+    plate(); const sh = dish.shape || 'ring';
+    const ring = function (fill, lw, k) { ctx.beginPath(); if (sh === 'heart_d') { ctx.moveTo(0, 26 * k); ctx.bezierCurveTo(-56 * k, -4 * k, -24 * k, -38 * k, 0, -16 * k); ctx.bezierCurveTo(24 * k, -38 * k, 56 * k, -4 * k, 0, 26 * k); } else if (sh === 'star_d') { for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, r = (i % 2 ? 22 : 40) * k; ctx.lineTo(Math.cos(a) * r, Math.sin(a) * r); } ctx.closePath(); } else if (sh === 'bear') { ctx.arc(0, 0, 34 * k, 0, Math.PI * 2); ctx.moveTo(-14 * k, -30 * k); ctx.arc(-24 * k, -30 * k, 12 * k, 0, Math.PI * 2); ctx.moveTo(34 * k, -30 * k); ctx.arc(24 * k, -30 * k, 12 * k, 0, Math.PI * 2); } else ctx.arc(0, 0, 38 * k, 0, Math.PI * 2); fs(fill, lw); };
+    ring(st.set === false ? '#f6dcae' : '#e0a060', 4, 1);
+    if (st.fill > 0) { ctx.globalAlpha = Math.min(1, st.fill * 1.5); ring(col, 0, 0.86); ctx.globalAlpha = 1; }
+    if (sh === 'ring') { A.circle(ctx, 0, 0, 12, '#e9f3ff', 4); }
+    drawDeco(0, 0, 60, 50); for (let i = 0; i < Math.min(tops, 2); i++) drawTop(i ? 18 : -16, i ? -14 : -18, 1);
+  }
+  ctx.restore();
+}
+function shade(hex, amt) { let h = hex.replace('#', ''); if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2]; const n = parseInt(h, 16); let r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255; const f = function (c) { return Math.round(Math.max(0, Math.min(255, amt > 0 ? c + (255 - c) * amt : c * (1 + amt)))); }; return '#' + ((1 << 24) + (f(r) << 16) + (f(g) << 8) + f(b)).toString(16).slice(1); }
+// an option's little icon in the tray
+function drawOption(ctx, A, slot, o, x, y, r) {
+  if (slot === 'mold') { ctx.save(); ctx.translate(x, y); const k = r / 40; ctx.scale(k, k); draw(ctx, A, { recipe: 'jelly', mold: o.id, flavor: 'strawberry' }, 0, 6, 64, { flipped: true, tops: 0, deco: 0 }); ctx.restore(); return; }
+  if (slot === 'flavor' || slot === 'broth') { A.rr(ctx, x - r * 0.35, y - r * 0.9, r * 0.7, r * 0.4, r * 0.1); ctx.fillStyle = '#f3e1c8'; ctx.fill(); ctx.beginPath(); ctx.moveTo(x - r * 0.25, y - r * 0.5); ctx.lineTo(x - r * 0.7, y); ctx.quadraticCurveTo(x - r * 0.7, y + r * 0.9, x, y + r * 0.9); ctx.quadraticCurveTo(x + r * 0.7, y + r * 0.9, x + r * 0.7, y); ctx.lineTo(x + r * 0.25, y - r * 0.5); ctx.closePath(); ctx.fillStyle = 'rgba(255,255,255,0.9)'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = '#5b3d3b'; ctx.stroke(); A.circle(ctx, x, y + r * 0.35, r * 0.48, o.color, 0); A.circle(ctx, x - r * 0.18, y + r * 0.2, r * 0.12, 'rgba(255,255,255,0.7)', 0); return; }
+  if (slot === 'cup') { ctx.beginPath(); ctx.moveTo(x - r * 0.6, y - r * 0.6); ctx.lineTo(x + r * 0.6, y - r * 0.6); ctx.lineTo(x + r * 0.45, y + r * 0.7); ctx.lineTo(x - r * 0.45, y + r * 0.7); ctx.closePath(); ctx.fillStyle = o.color; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = '#5b3d3b'; ctx.stroke(); return; }
+  if (slot === 'shape') { ctx.save(); ctx.translate(x, y); const k = r / 46; ctx.scale(k, k); draw(ctx, A, { recipe: 'donut', shape: o.id, flavor: 'strawberry' }, 0, 0, 80, { set: true, fill: 0, tops: 0, deco: 0 }); ctx.restore(); return; }
+  if (slot === 'deco') { A.circle(ctx, x, y, r * 0.75, '#fff', 3); ctx.save(); ctx.translate(x, y); for (let i = 0; i < 7; i++) { const a = i * 0.9, d = (i % 3) * r * 0.18; if (o.id === 'hearts') A.heart(ctx, Math.cos(a) * d, Math.sin(a) * d, r * 0.12, o.color, 0); else if (o.id === 'stars' || o.id === 'gold') A.star(ctx, Math.cos(a) * d, Math.sin(a) * d, r * 0.12, o.color, 0); else if (o.id === 'sprinkles') { ctx.save(); ctx.rotate(a); ctx.fillStyle = ['#ff7fa8', '#7fd4ff', '#ffe066', '#9fe37a'][i % 4]; ctx.fillRect(d - 4, -1.5, 8, 3); ctx.restore(); } else A.circle(ctx, Math.cos(a) * d, Math.sin(a) * d, r * 0.07, o.color === '#ffffff' || o.color === '#eef6ff' ? '#c8d8f0' : o.color, 0); } ctx.restore(); return; }
+  // toppings
+  ctx.save(); ctx.translate(x, y); ctx.scale(r / 10, r / 10); drawTopOnly(ctx, A, slot, o); ctx.restore();
+}
+function drawTopOnly(ctx, A, slot, o) {
+  const c = o.color, id = o.id;
+  if (id === 'cherry') { A.circle(ctx, 0, 1, 6, c, 1.5); ctx.strokeStyle = '#4a7a3a'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(0, -5); ctx.quadraticCurveTo(3, -9, 6, -9); ctx.stroke(); }
+  else if (id === 'mint' || id === 'scallion') { A.ellipse(ctx, -3, 0, 5, 2.5, c, 1.2); A.ellipse(ctx, 3, 0, 5, 2.5, c, 1.2); }
+  else if (id === 'choco_stick' || id === 'nori') { A.rr(ctx, -2, -8, 4, 16, 1.5); ctx.fillStyle = c; ctx.fill(); }
+  else if (id === 'gold_star') A.star(ctx, 0, 0, 7, c, 1.2);
+  else if (id === 'egg') { A.ellipse(ctx, 0, 0, 8, 6, '#fff', 1.5); A.circle(ctx, 0, 0, 3.5, c, 0); }
+  else if (id === 'naruto') { A.circle(ctx, 0, 0, 7, '#fff', 1.5); ctx.strokeStyle = '#ff7fa8'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(0, 0, 3, 0, Math.PI * 1.6); ctx.stroke(); }
+  else if (id === 'pearls' || id === 'red_bean' || id === 'popping') { for (let i = 0; i < 3; i++) A.circle(ctx, (i - 1) * 4.5, (i % 2) * 3, 2.8, c, 0.8); }
+  else if (id === 'jelly_cubes' || id === 'pudding_t') { A.rr(ctx, -5, -5, 10, 10, 2); ctx.fillStyle = c; ctx.fill(); }
+  else if (id === 'sakura_t') { for (let i = 0; i < 5; i++) { const a = i * Math.PI * 2 / 5; A.circle(ctx, Math.cos(a) * 3.5, Math.sin(a) * 3.5, 3, c, 0.8); } }
+  else A.circle(ctx, 0, 0, 6.5, c, 1.5);
+}
+
+module.exports = { OPT, OPT_BY, opt, options, RECIPES, tasteOf, colorOf, toppingSlot, dishName, draw, drawOption };
 
 };
 __mods["src/scenes.js"] = function (require, module, exports, __filename, __dirname) {
@@ -5476,6 +5802,7 @@ const A = require('./art.js');
 const K = require('./catalog.js');
 const L = require('./levels.js');
 const WR = require('./wardrobe.js');
+const R = require('./recipes.js');
 const C = D.COLORS;
 
 const PICKUPS = 3, BITES = 3;
@@ -5494,7 +5821,8 @@ function install(Game) {
   const P = Game.prototype;
 
   // ── starting a stream ──
-  P.startStream = function (n) { const lv = L.level(n); this.sessionLevels++; this.trans = 0.3; this.newRun({ level: lv.n, food: lv.food, pack: lv.pack, loc: 'home', view: lv.view, cost: 0, cpb: lv.cpb, event: lv.event }); this.beginStream(); };
+  // V4: a level starts on the stream with the viewer's request; the dish is cooked first (cook.js), then eaten
+  P.startStream = function (n) { const lv = L.level(n); this.sessionLevels++; this.trans = 0.3; this.newRun({ level: lv.n, food: null, recipe: lv.recipe, request: lv.request, pack: 'plates', phase: 'request', loc: 'home', view: lv.view, cost: 0, cpb: lv.cpb, event: lv.event }); this.beginStream(); };
   // activities end here: one chosen food, a bonus stream that never advances the level
   P.startFoodStream = function (foodId, o) {
     o = o || {}; const d = K.dish(foodId) || K.dish('cat_chips'); const reached = this.curLevel(); const lv = L.level(reached);
@@ -5505,9 +5833,9 @@ function install(Game) {
   P.newRun = function (o) {
     const lv = L.level(o.level || o.goalLevel || 1);
     const goal = o.level ? lv.goal : Math.round(lv.goal * 0.8), start = o.level ? lv.startViewers : Math.round(lv.startViewers * 0.8);
-    this.run = { v: 3, level: o.level || 0, side: o.side || null, food: o.food, pack: o.pack, loc: o.loc, view: o.view, event: o.event, toppings: o.toppings || null,
+    this.run = { v: o.recipe ? 4 : 3, level: o.level || 0, side: o.side || null, food: o.food, recipe: o.recipe || null, request: o.request || null, dish: o.dish || null, perfect: false, pack: o.pack, loc: o.loc, view: o.view, event: o.event, toppings: o.toppings || null,
       cost: o.cost || 0, cpb: o.cpb, goal: goal, goal3: Math.round(goal * 1.3), start: start, hu: Math.max(1, (goal - start) * 1.0 / (PICKUPS * BITES)),
-      viewers: start, peak: start, coins: 0, pickups: 0, bites: 0, phase: 'sealed', pt: 0, hearts: 0, gift: null, giftTaken: false, eventDone: false, t: 0, finaleDone: false };
+      viewers: start, peak: start, coins: 0, pickups: 0, bites: 0, phase: o.phase || 'sealed', pt: 0, hearts: 0, gift: null, giftTaken: false, eventDone: false, t: 0, finaleDone: false };
     this.saveRun();
   };
   P.beginStream = function () {
@@ -5520,13 +5848,21 @@ function install(Game) {
     this.pushChat('idle');
     this.setState('stream');
   };
+  // the food being eaten as a dish-like record (cooked V4 dish or a catalog food)
+  P.runFood = function () {
+    const r = this.run; if (!r.recipe) return K.dish(r.food);
+    const d = r.dish || r.request, col = R.colorOf(d), rc = R.RECIPES[r.recipe];
+    return { id: r.recipe, name: R.dishName(d), taste: R.tasteOf(d), sound: rc.sound, c1: col, c3: col, tags: [], bites: 3 };
+  };
+  P.platePos = function (i) { const W = this.W, H = this.H; return { x: W * [0.24, 0.5, 0.76][i], y: H * (i === 1 ? 0.7 : 0.655), size: Math.min(150, W * 0.27) }; };
+  P.nextPlate = function () { return this.run.pickups; }; // plates are eaten left → right
   P.streamLevel = function () { const r = this.run; return L.level(r.level || r.goalLevel || this.curLevel()); };
   P.packPos = function () { return { x: this.W / 2, y: this.H * 0.665, size: Math.min(250, this.W * 0.46) }; };
 
   // ── save / resume (run_json v3; older runs are dropped — the level itself is kept) ──
   P.saveRun = function () {
     const r = this.run; if (!r) { this.profile.set('run_json', ''); return; }
-    const o = {}; const keys = ['v', 'level', 'side', 'food', 'pack', 'loc', 'view', 'event', 'toppings', 'cost', 'cpb', 'goal', 'goal3', 'start', 'hu', 'viewers', 'peak', 'coins', 'pickups', 'bites', 'phase', 'hearts', 'giftTaken', 'eventDone', 'goalLevel'];
+    const o = {}; const keys = ['v', 'level', 'side', 'food', 'recipe', 'request', 'dish', 'perfect', 'giftAd', 'pack', 'loc', 'view', 'event', 'toppings', 'cost', 'cpb', 'goal', 'goal3', 'start', 'hu', 'viewers', 'peak', 'coins', 'pickups', 'bites', 'phase', 'hearts', 'giftTaken', 'eventDone', 'goalLevel'];
     for (let i = 0; i < keys.length; i++) o[keys[i]] = r[keys[i]];
     o.viewers = Math.round(o.viewers); o.peak = Math.round(o.peak);
     this.profile.set('run_json', JSON.stringify(o));
@@ -5535,7 +5871,9 @@ function install(Game) {
     try {
       const r = JSON.parse(this.profile.get('run_json') || 'null');
       if (!r) return;
-      if (r.v !== 3 || !K.dish(r.food)) { this.profile.set('run_json', ''); return; } // V1/V2 multi-food runs: start the level fresh
+      const ok = (r.v === 3 && K.dish(r.food)) || (r.v === 4 && R.RECIPES[r.recipe]);
+      if (!ok) { this.profile.set('run_json', ''); return; } // V1/V2 multi-food runs: start the level fresh
+      if (r.v === 4 && !r.dish) r.phase = 'request'; // closed while cooking: cook again
       r.t = 0; r.pt = 0; this.run = r;
     } catch (e) { this.run = null; this.profile.set('run_json', ''); }
   };
@@ -5547,9 +5885,10 @@ function install(Game) {
       // optional extras first: hearts, the fan gift
       for (let i = this.hearts.length - 1; i >= 0; i--) { const h = this.hearts[i]; if (!h.taken && U.dist(x, y, h.x, h.y) < 40) { this.tapHeart(h); return true; } }
       if (r.gift && !r.giftTaken && U.dist(x, y, r.gift.x, r.gift.y) < 60) { this.tapGift(); return true; }
-      const pk = this.packPos(); const onPack = Math.abs(x - pk.x) < pk.size * 0.55 && Math.abs(y - pk.y) < pk.size * 0.55;
+      let pk = this.packPos(); let onPack = Math.abs(x - pk.x) < pk.size * 0.55 && Math.abs(y - pk.y) < pk.size * 0.55;
+      if (r.recipe) { onPack = false; for (let i = r.pickups; i < PICKUPS; i++) { const pp = this.platePos(i); if (U.dist(x, y, pp.x, pp.y) < pp.size * 0.6) onPack = true; } }
       if (onPack && r.phase === 'sealed') { this.openPack(); return true; }
-      if (onPack && r.phase === 'open') { this.carry = { tid: id, x: x, y: y, sx: x, sy: y, moved: false, drag: true }; r.phase = 'carry'; r.pt = 0; this.audio.play('pop', { gain: 0.5 }); return true; }
+      if (onPack && r.phase === 'open') { if (r.recipe) { const pp = this.platePos(r.pickups); x = pp.x; y = pp.y; } this.carry = { tid: id, x: x, y: y, sx: x, sy: y, moved: false, drag: true }; r.phase = 'carry'; r.pt = 0; this.audio.play('pop', { gain: 0.5 }); return true; }
       return false;
     }
     const c = this.carry; if (!c || c.tid !== id || !c.drag) return false;
@@ -5567,7 +5906,7 @@ function install(Game) {
 
   // ── one bite of the current pickup ──
   P.biteNow = function () {
-    const r = this.run, d = K.dish(r.food), beat = BEAT[Math.min(r.pickups, PICKUPS - 1)];
+    const r = this.run, d = this.runFood(), beat = BEAT[Math.min(r.pickups, PICKUPS - 1)];
     const taste = d.tastes ? d.tastes[r.bites % d.tastes.length] : d.taste;
     const hype = Math.round(r.hu * beat.mult * [0.9, 1.0, 1.1][r.bites] * (0.9 + 0.1 * D.TASTES[taste].mult) * (0.95 + Math.random() * 0.1));
     this.addViewers(hype); r.coins += r.cpb; this.profile.add('coins', r.cpb);
@@ -5586,7 +5925,7 @@ function install(Game) {
   P.spawnCrumbs = function (x, y, d) { for (let i = 0; i < 6; i++) this.confetti.push({ x: x + (Math.random() - 0.5) * 30, y: y, vx: (Math.random() - 0.5) * 160, vy: -60 - Math.random() * 120, life: 0, max: 0.7, color: i % 2 ? d.c1 : d.c3, r: 2.5 + Math.random() * 2.5, rot: 0, spin: 4 }); };
   // the emotional beat after each pickup
   P.pickupDone = function () {
-    const r = this.run, d = K.dish(r.food), k = r.pickups, beat = BEAT[Math.min(k, PICKUPS - 1)];
+    const r = this.run, d = this.runFood(), k = r.pickups, beat = BEAT[Math.min(k, PICKUPS - 1)];
     r.pickups++; r.bites = 0; r.phase = 'react'; r.pt = 0;
     const W = this.W, H = this.H;
     r.banner = { text: beat.title, sub: k === 0 ? (TASTE_LINE[d.sound] || 'SO GOOD!') : k === 1 ? U.fmtViewers(r.viewers) + ' WATCHING!' : 'ONE MORE…', t: 0 };
@@ -5631,7 +5970,7 @@ function install(Game) {
         const c = this.carry; if (!c) { r.phase = 'open'; break; }
         if (!c.drag) {
           c.ft += dt / T.carry; const pk = this.packPos(), m = this.mouth(); const k = U.easeInOut(Math.min(1, c.ft));
-          const tx = c.back ? pk.x : m.x, ty = c.back ? pk.y - 20 : m.y;
+          const home = r.recipe ? this.platePos(r.pickups) : pk; const tx = c.back ? home.x : m.x, ty = c.back ? home.y - 20 : m.y;
           c.x = U.lerp(c.fx, tx, k); c.y = U.lerp(c.fy, ty, k) - Math.sin(k * Math.PI) * (c.back ? 30 : 60);
           if (c.ft >= 1) { if (c.back) { this.carry = null; r.phase = 'open'; } else this.deliver(); }
         }
@@ -5651,9 +5990,11 @@ function install(Game) {
   };
   P.viralFinish = function () {
     const r = this.run, W = this.W, H = this.H;
-    const bonus = r.cpb * 3; r.coins += bonus; this.profile.add('coins', bonus);
-    this.addViewers(Math.round(r.goal * FINALE_BOOST));
-    r.banner = { text: 'VIRAL!', sub: U.fmtViewers(r.peak) + ' VIEWERS  ·  +' + bonus + ' COINS', t: 0, big: true };
+    let bonus = r.cpb * 3;
+    if (r.recipe && r.level) { const lv = L.level(r.level); r.mission = Math.round(lv.reward * (r.perfect ? 1.5 : 1)); bonus += r.mission; }
+    r.coins += bonus; this.profile.add('coins', bonus);
+    this.addViewers(Math.round(r.goal * (FINALE_BOOST + (r.perfect ? 0.12 : 0))));
+    r.banner = { text: r.mission ? 'MISSION COMPLETE!' : 'VIRAL!', sub: U.fmtViewers(r.peak) + ' VIEWERS  ·  +' + bonus + ' COINS', t: 0, big: true };
     this.setFace('yum', T.finale); this.audio.play('win'); this.spawnConfetti(W / 2, H * 0.4, 80); this.vibrate('long');
     for (let i = 0; i < 20; i++) this.spawnReaction(i % 2 ? 'heart' : null);
     this.pushChat('milestone', U.fmtViewers(r.peak)); this.pushChat('finish');
@@ -5663,13 +6004,14 @@ function install(Game) {
   // ── result ──
   P.finishRun = function () {
     const r = this.run, p = this.profile; if (!r) return;
-    const stars = r.peak >= r.goal3 ? 3 : r.peak >= r.goal ? 2 : 1;
+    let stars = r.peak >= r.goal3 ? 3 : r.peak >= r.goal ? 2 : 1; if (r.perfect && stars < 3) stars++; // matching the request is worth a star
     p.add('streams', 1);
     if (r.peak > (p.get('best_viewers') || 0)) p.set('best_viewers', Math.round(r.peak));
-    const res = { side: r.side, food: r.food, stars: stars, peak: Math.round(r.peak), goal: r.goal, coins: r.coins, hearts: r.hearts, gift: r.giftTaken, unlocks: [], firstClear: false, bonusTaken: false, t: 0 };
+    const fid = r.recipe || r.food;
+    const res = { side: r.side, food: r.food, dish: r.dish, perfect: r.perfect, mission: r.mission || 0, stars: stars, peak: Math.round(r.peak), goal: r.goal, coins: r.coins, hearts: r.hearts, gift: r.giftTaken, unlocks: [], firstClear: false, bonusTaken: false, t: 0 };
     // collection: every food eaten once is in the food book
     let book; try { book = JSON.parse(p.get('foods_json') || '[]'); } catch (e) { book = []; }
-    if (book.indexOf(r.food) < 0) { book.push(r.food); p.set('foods_json', JSON.stringify(book)); res.unlocks.push('FOOD BOOK: ' + K.dish(r.food).name.toUpperCase()); }
+    if (book.indexOf(fid) < 0) { book.push(fid); p.set('foods_json', JSON.stringify(book)); res.unlocks.push('FOOD BOOK: ' + (r.recipe ? R.RECIPES[r.recipe].name : K.dish(r.food).name).toUpperCase()); }
     if (r.level) {
       const lv = L.level(r.level); res.lv = lv;
       const st = this.stars(); if (stars > (st[lv.n] || 0)) st[lv.n] = stars; p.set('stars_json', JSON.stringify(st));
@@ -5706,22 +6048,37 @@ function install(Game) {
     A.phoneStick(ctx, W * 0.08, H * 0.38, 0.85, this.time);
     ctx.restore();
     if (r) {
-      const pk = this.packPos(), d = K.dish(r.food);
+      let pk = this.packPos(); const d = this.runFood();
       const ph = r.phase, e = Math.min(1, r.pickups / PICKUPS);
-      const state = ph === 'sealed' ? 'sealed' : ph === 'opening' ? 'opening' : (ph === 'empty' || ph === 'finale') ? 'empty' : 'open';
       const glow = (ph === 'sealed' || ph === 'open') && !still;
-      if (glow) { ctx.globalAlpha = 0.25 + 0.15 * Math.sin(this.time * 5); A.circle(ctx, pk.x, pk.y, pk.size * 0.55, '#fff8d0', 0); ctx.globalAlpha = 1; }
-      A.pack(ctx, d, r.pack, pk.x, pk.y + (glow ? Math.sin(this.time * 3) * 3 : 0), pk.size, state, ph === 'opening' ? r.pt / T.opening : 0, e, this.time, r.toppings);
-      // pickup pips
-      for (let i = 0; i < PICKUPS; i++) { const px = pk.x + (i - 1) * 34, py = pk.y + pk.size * 0.5 + 18; A.circle(ctx, px, py, 11, i < r.pickups ? C.pink : 'rgba(255,255,255,0.85)', 3); if (i < r.pickups) A.heart(ctx, px, py + 1, 5, '#fff', 0); }
-      // the portion on its way to the mouth
-      if (this.carry) A.portion(ctx, d, this.carry.x, this.carry.y, 110, this.time);
+      if (r.recipe) {
+        // V4: the cooked dish, served as 3 portions on plates (eaten left → right)
+        const served = !!r.dish && ph !== 'request';
+        for (let i = 0; i < PICKUPS; i++) {
+          const pp = this.platePos(i); A.ellipse(ctx, pp.x, pp.y + pp.size * 0.32, pp.size * 0.48, pp.size * 0.13, '#e9f3ff', 4); A.ellipse(ctx, pp.x, pp.y + pp.size * 0.31, pp.size * 0.36, pp.size * 0.08, '#f8fbff', 0);
+          if (!served || i < r.pickups) continue;
+          if (this.carry && i === r.pickups) continue;
+          const bob = glow && i === r.pickups ? Math.sin(this.time * 4) * 3 : 0;
+          if (glow && i === r.pickups) { ctx.globalAlpha = 0.25 + 0.15 * Math.sin(this.time * 5); A.circle(ctx, pp.x, pp.y, pp.size * 0.5, '#fff8d0', 0); ctx.globalAlpha = 1; }
+          R.draw(ctx, A, r.dish, pp.x, pp.y + bob, pp.size, { flipped: true, set: true, fill: 1, tops: 3, deco: 1 });
+        }
+        pk = this.platePos(1);
+        if (this.carry && r.dish) R.draw(ctx, A, r.dish, this.carry.x, this.carry.y, 100, { flipped: true, set: true, fill: 1, tops: 3, deco: 1 });
+        if (ph === 'request' && !still) this.drawRequest();
+      } else {
+        const state = ph === 'sealed' ? 'sealed' : ph === 'opening' ? 'opening' : (ph === 'empty' || ph === 'finale') ? 'empty' : 'open';
+        if (glow) { ctx.globalAlpha = 0.25 + 0.15 * Math.sin(this.time * 5); A.circle(ctx, pk.x, pk.y, pk.size * 0.55, '#fff8d0', 0); ctx.globalAlpha = 1; }
+        A.pack(ctx, d, r.pack, pk.x, pk.y + (glow ? Math.sin(this.time * 3) * 3 : 0), pk.size, state, ph === 'opening' ? r.pt / T.opening : 0, e, this.time, r.toppings);
+        for (let i = 0; i < PICKUPS; i++) { const px = pk.x + (i - 1) * 34, py = pk.y + pk.size * 0.5 + 18; A.circle(ctx, px, py, 11, i < r.pickups ? C.pink : 'rgba(255,255,255,0.85)', 3); if (i < r.pickups) A.heart(ctx, px, py + 1, 5, '#fff', 0); }
+        if (this.carry) A.portion(ctx, d, this.carry.x, this.carry.y, 110, this.time);
+      }
       // mouth target while carrying
       if (ph === 'carry' && this.carry && this.carry.drag) { const m = this.mouth(); const a = 0.4 + 0.25 * Math.sin(this.time * 8); ctx.strokeStyle = 'rgba(255,255,255,' + a + ')'; ctx.lineWidth = 5; ctx.setLineDash([10, 10]); ctx.beginPath(); ctx.arc(m.x, m.y, MOUTH_R - 10, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]); }
       // hints
       if (!still) {
         if (ph === 'sealed') ui.label('TAP · ' + L.PACK_INFO[r.pack].open + '!', W / 2, pk.y - pk.size * 0.62, 20, C.white, 'center', { stroke: 6 });
-        else if (ph === 'open') ui.label(r.pickups === 0 ? 'TAP OR DRAG A BITE TO HER MOUTH' : 'NEXT BITE!  (' + (r.pickups + 1) + '/' + PICKUPS + ')', W / 2, pk.y - pk.size * 0.62, r.pickups === 0 ? 17 : 20, C.white, 'center', { stroke: 6 });
+        else if (ph === 'open') ui.label(r.pickups === 0 ? 'TAP OR DRAG A PLATE TO HER MOUTH' : 'NEXT ONE!  (' + (r.pickups + 1) + '/' + PICKUPS + ')', W / 2, pk.y - pk.size * 0.62 - (r.recipe ? 10 : 0), r.pickups === 0 ? 17 : 20, C.white, 'center', { stroke: 6 });
+        if (ph === 'open' && r.pickups >= 1 && !r.giftAd && this.canFanGift()) this.drawFanGiftBtn();
       }
       // fan gift
       if (r.gift && !r.giftTaken) { const g = r.gift; const drop = Math.min(1, g.t * 2.5); A.mysteryBox(ctx, g.x, U.lerp(-60, g.y, U.easeOutCubic(drop)), 90, this.time, 0, true); if (drop >= 1) ui.label('TAP!', g.x, g.y + 56, 15, C.white, 'center', { stroke: 4 }); }
@@ -5749,6 +6106,28 @@ function install(Game) {
     // beat banner
     if (r.banner && !still) { const b = r.banner; const k = U.easeOutBack(Math.min(1, b.t * 3)); const a = b.big ? 1 : Math.min(1, (1.6 - b.t) * 3); ctx.globalAlpha = Math.max(0, a); ctx.save(); ctx.translate(W / 2, H * 0.47); ctx.scale(k, k); ui.title(b.text, 0, 0, b.big ? 64 : 36, b.big ? C.yellow : C.white, C.pinkDark); if (b.sub) ui.label(b.sub, 0, b.big ? 48 : 34, b.big ? 20 : 18, C.white, 'center', { stroke: 5 }); ctx.restore(); ctx.globalAlpha = 1; }
   };
+  // the viewer's request (start of every level) and the big MAKE button
+  P.drawRequest = function () {
+    const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, r = this.run, req = r.request, lv = L.level(r.level), top = this.top();
+    const y = top + 118, a = Math.min(1, r.t * 3); ctx.globalAlpha = a;
+    ui.panel(30, y, W - 60, 104, '#ffffff', C.lavenderDark, 22, 4); A.rr(ctx, 30, y, W - 60, 30, 14); ctx.fillStyle = '#efe4ff'; ctx.fill();
+    ui.label('VIEWER REQUEST', W / 2, y + 16, 14, C.lavenderDark);
+    A.avatar(ctx, D.AVATARS[r.level % D.AVATARS.length], 64, y + 66, 20);
+    R.draw(ctx, A, req, W / 2 - 40, y + 64, 66, { flipped: true, set: true, fill: 1, tops: 1, deco: 0 });
+    ui.label(R.dishName(req), W / 2 + 70, y + 54, 16, C.text); const ts = R.opt(R.toppingSlot(req.recipe), req.topping); ui.label('+ ' + (ts ? ts.name : ''), W / 2 + 70, y + 74, 12, C.textLight);
+    A.coin(ctx, W - 86, y + 92, 8); ui.label(String(lv.reward), W - 72, y + 93, 13, C.goldDark, 'left');
+    ctx.globalAlpha = 1;
+    const by = this.bottom() - 190, pulse = 1 + Math.sin(this.time * 5) * 0.04;
+    ctx.save(); ctx.translate(W / 2, by + 36); ctx.scale(pulse, pulse); ctx.translate(-W / 2, -(by + 36));
+    ui.button('cook_go', W * 0.18, by, W * 0.64, 72, R.RECIPES[r.recipe].make, { color: C.yellow, dark: C.yellowDark, size: 26 }); ctx.restore();
+    if (r.level === 1 && (this.profile.get('streams') || 0) === 0) { const fx = W * 0.7 + Math.sin(this.time * 4) * 6, fy = by + 60 + Math.cos(this.time * 4) * 6; A.circle(ctx, fx, fy, 16, 'rgba(255,255,255,0.85)', 3); ui.label('TAP!', fx, fy + 30, 14, C.white, 'center', { stroke: 4 }); }
+  };
+  P.canFanGift = function () { return this.hs.hasAds() && this.hs.canShowFanGift && this.hs.canShowFanGift() && (this.profile.get('streams') || 0) >= 2; };
+  P.drawFanGiftBtn = function () {
+    const ui = this.ui, ctx = this.ctx, W = this.W, top = this.top(), y = top + 120;
+    ui.panel(24, y, W - 150, 54, '#ffe6f0', C.pinkDark, 20, 3); A.avatar(ctx, 'bear', 52, y + 27, 17); ui.label('I have a gift for you!', 80, y + 20, 13, C.text, 'left'); const g = this.hs.rewardsFanGift ? this.hs.rewardsFanGift() : null; ui.label(g ? this.itemsText(g) : '', 80, y + 39, 12, C.goldDark, 'left');
+    ui.button('fangift_ad', W - 170, y + 6, 120, 42, '▶ GET', { color: C.green, dark: C.greenDark, size: 17 });
+  };
   P.drawResult = function () {
     const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, res = this.result, hs = this.hs;
     ui.dim(0.4);
@@ -5757,9 +6136,10 @@ function install(Game) {
     ui.title(res.stars >= 3 ? 'SUPER VIRAL!' : res.stars >= 2 ? 'VIRAL STREAM!' : 'GREAT STREAM!', W / 2, py + 46, 36, C.white, C.pinkDark);
     ui.label(res.lv ? 'STREAM ' + res.lv.n + ' · ' + res.lv.title.toUpperCase() : (L.modeOf(res.side) ? L.modeOf(res.side).name : 'BONUS') + ' STREAM', W / 2, py + 76, 13, C.textLight);
     for (let k = 0; k < 3; k++) { const on = k < res.stars; const sc = on ? U.easeOutBack(Math.min(1, Math.max(0, res.t * 2 - k * 0.5))) : 1; ctx.save(); ctx.translate(W / 2 + (k - 1) * 70, py + 116); ctx.scale(sc, sc); A.uiStar(ctx, 0, 0, 28, on, '#e8e0e0', 4); ctx.restore(); }
-    A.food(ctx, K.dish(res.food), W / 2 - 150, py + 116, 70, 0, this.time);
+    if (res.dish) R.draw(ctx, A, res.dish, W / 2 - 150, py + 116, 70, { flipped: true, set: true, fill: 1, tops: 3, deco: 1 }); else A.food(ctx, K.dish(res.food), W / 2 - 150, py + 116, 70, 0, this.time);
+
     ui.label('PEAK ' + U.fmtViewers(res.peak) + '  (goal ' + U.fmtViewers(res.goal) + ')', W / 2, py + 166, 20, C.text);
-    ui.label('hearts tapped ' + res.hearts + (res.gift ? '  ·  fan gift ✓' : ''), W / 2, py + 192, 13, C.textLight);
+    ui.label(res.mission ? 'MISSION +' + res.mission + (res.perfect ? '  ·  PERFECT MATCH ★' : '') : 'hearts tapped ' + res.hearts + (res.gift ? '  ·  fan gift ✓' : ''), W / 2, py + 192, 13, res.mission ? C.pinkDark : C.textLight);
     A.coin(ctx, W / 2 - 60, py + 226, 12); ui.label('+' + U.fmtCoins(res.coins), W / 2 + 8, py + 226, 26, C.goldDark);
     let y = py + 258;
     if (res.firstClear) { const rb = hs.rewardsLevelBonus(); if (rb) { ui.label('LEVEL BONUS  ' + this.itemsText(rb), W / 2, y, 15, C.pinkDark); y += 24; } }
