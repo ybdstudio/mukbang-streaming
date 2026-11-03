@@ -42,6 +42,12 @@ Ví dụ Jelly: chọn khuôn → chọn vị → rót → làm lạnh (quạt) 
 - Tủ đồ mở ở màn 6; quà trang phục ở các màn 13/16/19/22/24/27/29/31/34/36/38/40. Streamer Kiko mở ở màn 10, Momo ở màn 20.
 - Mục tiêu viewer tăng dần từ 500 lên khoảng 1 triệu. Xu mỗi miếng = 6 + 2n. Thưởng mission = 100 + 20n.
 
+## 4b. Báo trước tính năng & rời phòng stream
+
+- Tính năng mở theo tiến trình: Shop ở level 3, Wardrobe ở 6, Delivery ở 7, Kiko ở 10, Buffet ở 11, Momo ở 20.
+- Ở màn kết quả, **2 stream trước** khi một tính năng mở, game hiện popup **COMING SOON** (Shop mở quá sớm nên báo trước 1 stream). Đến stream nó mở, game hiện popup **NEW FEATURE!** với nút GO NOW (đi thẳng tới Shop / Wardrobe / Streamers) và LATER. Nút GO NOW vẫn qua interstitial stream_end như các nút chuyển màn khác.
+- Trên màn VIEWER REQUEST có hàng nút **HOME · SHOP · WARDROBE** (chỉ hiện các mục đã mở) để rời phòng stream. Yêu cầu của viewer được giữ lại, bấm PLAY sẽ quay về. Người chơi mới ở stream đầu tiên không thấy hàng nút này.
+
 ## 5. Quảng cáo (13 vị trí, cooldown 30 s trên dashboard)
 
 | # | Vị trí | Loại | Ở đâu / khi nào | Người chơi nhận |
@@ -82,4 +88,5 @@ Giả định: tỉ lệ có quảng cáo 90%, mỗi quảng cáo 20 giây, mỗ
 
 - Mới: `src/recipes.js` (dữ liệu và vẽ vector), `src/cook.js` (màn bếp).
 - Sửa: `src/levels.js` (40 màn V4), `src/stream.js` (yêu cầu / 3 đĩa / mission / quà fan), `src/game.js`, `game.js` gốc (wrapper cho mọi vị trí), `mukbang-bang.hs-dashboard.json` (13 vị trí).
+- Art: yêu cầu cho Codex nằm ở `docs/ART-REQUEST-V4.md` (wardrobe, nấu ăn, popup tính năng).
 - Art còn thiếu: sprite cho lựa chọn (khuôn, chai vị, topping, đồ trang trí) và dụng cụ (quạt, lửa, lò…). Hiện đang vẽ bằng vector fallback trong recipes.js / cook.js.

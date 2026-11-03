@@ -215,6 +215,10 @@ class Game {
       case 'cook_go': if (this.state === 'stream' && this.run && this.run.phase === 'request') this.enterCook(); break;
       case 'fangift_ad': this.watchFanGift(); break;
       case 'hype_ad': this.watchHype(); break;
+      case 'req_home': if (this.run) this.saveRun(); this.setState('home'); break;
+      case 'feat_block': break;
+      case 'feat_ok': case 'feat_later': if (this.result) this.result.featureDone = true; break;
+      case 'feat_go': if (this.result && this.result.feature) { const f = this.result.feature.f; this.result.featureDone = true; this.afterResultAd(function () { if (f.go === 'wardrobe') { self.wardTab = 0; self.setState('wardrobe'); } else if (f.go === 'streamers') self.setState('streamers'); else self.enterActivity(f.go.slice(5)); }); } break;
       case 'unlock_level_ad': this.watchUnlockLevel(); break;
       case 'surprise_ad': this.watchSurprise(); break;
       case 'boost_ad': this.watchBoost(); break;
@@ -322,6 +326,7 @@ class Game {
     });
   }
   // unlock the next locked level early (levels screen); the level bonus still pays once, when it is cleared
+  __featureFor(n) { return ST.featureFor(n); }
   nextLockedLevel() { const n = this.curLevel() + 1; return n <= L.LEVEL_COUNT ? n : 0; }
   canUnlockLevel() { return this.hs.hasAds() && this.nextLockedLevel() > 0 && (this.profile.get('streams') || 0) >= 2 && this.hs.canShowUnlockLevel && this.hs.canShowUnlockLevel(); }
   watchUnlockLevel() {

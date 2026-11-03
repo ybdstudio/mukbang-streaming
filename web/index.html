@@ -4644,6 +4644,10 @@ class Game {
       case 'cook_go': if (this.state === 'stream' && this.run && this.run.phase === 'request') this.enterCook(); break;
       case 'fangift_ad': this.watchFanGift(); break;
       case 'hype_ad': this.watchHype(); break;
+      case 'req_home': if (this.run) this.saveRun(); this.setState('home'); break;
+      case 'feat_block': break;
+      case 'feat_ok': case 'feat_later': if (this.result) this.result.featureDone = true; break;
+      case 'feat_go': if (this.result && this.result.feature) { const f = this.result.feature.f; this.result.featureDone = true; this.afterResultAd(function () { if (f.go === 'wardrobe') { self.wardTab = 0; self.setState('wardrobe'); } else if (f.go === 'streamers') self.setState('streamers'); else self.enterActivity(f.go.slice(5)); }); } break;
       case 'unlock_level_ad': this.watchUnlockLevel(); break;
       case 'surprise_ad': this.watchSurprise(); break;
       case 'boost_ad': this.watchBoost(); break;
@@ -4751,6 +4755,7 @@ class Game {
     });
   }
   // unlock the next locked level early (levels screen); the level bonus still pays once, when it is cleared
+  __featureFor(n) { return ST.featureFor(n); }
   nextLockedLevel() { const n = this.curLevel() + 1; return n <= L.LEVEL_COUNT ? n : 0; }
   canUnlockLevel() { return this.hs.hasAds() && this.nextLockedLevel() > 0 && (this.profile.get('streams') || 0) >= 2 && this.hs.canShowUnlockLevel && this.hs.canShowUnlockLevel(); }
   watchUnlockLevel() {
@@ -5877,6 +5882,17 @@ const R = require('./recipes.js');
 const C = D.COLORS;
 
 const PICKUPS = 3, BITES = 3;
+// features that open with progress: previewed 2 streams before, then a "NEW!" popup with GO NOW
+const FEATURES = L.MODES.map(function (m) { return { id: 'mode:' + m.id, at: m.unlock, name: m.name, color: m.color, dark: m.dark, go: 'side_' + m.id,
+    desc: { market: 'Shop for snacks and eat them on a bonus stream', delivery: 'Order from restaurants and eat the delivery live', buffet: 'Stream from a buffet restaurant' }[m.id] }; })
+  .concat([{ id: 'wardrobe', at: WR.OPEN_AT, name: 'WARDROBE', color: '#cdb0ff', dark: '#a98ae6', go: 'wardrobe', desc: 'Dress up your streamer: outfits, hair and extras' }])
+  .concat(D.STREAMERS.filter(function (s) { return s.unlock > 1; }).map(function (s) { return { id: 'streamer:' + s.id, at: s.unlock, name: s.name.toUpperCase(), color: s.top, dark: s.topDark, go: 'streamers', desc: 'A new streamer joins the channel', streamer: s }; }))
+  .sort(function (a, b) { return a.at - b.at; });
+function featureFor(reached) {
+  for (let i = 0; i < FEATURES.length; i++) if (FEATURES[i].at === reached) return { kind: 'open', f: FEATURES[i] };
+  for (let i = 0; i < FEATURES.length; i++) { const rem = FEATURES[i].at - reached; if (rem === 2 || (rem === 1 && FEATURES[i].at <= 3)) return { kind: 'preview', f: FEATURES[i], rem: rem }; }
+  return null;
+}
 const T = { opening: 0.75, carry: 0.45, bite: 0.85, firstBite: 0.2, react: 1.5, empty: 1.0, finale: 2.8 };
 const CHEW = T.firstBite + T.bite * (BITES - 1) + 0.55;  // whole chew sequence
 const MOUTH_R = 92;
@@ -6097,6 +6113,7 @@ function install(Game) {
         }
         if (lv.n < L.LEVEL_COUNT) { const nx = L.level(lv.n + 1); for (let i = 0; i < nx.news.length && i < 1; i++) res.unlocks.push('NEXT: ' + nx.news[i]); }
       }
+      if (res.firstClear && lv.n < L.LEVEL_COUNT) res.feature = featureFor(lv.n + 1);
       if (lv.n >= (p.get('level') || 1)) p.set('level', Math.min(L.LEVEL_COUNT, lv.n + 1));
     }
     if ((p.get('streams') || 0) === 1) this.hs.claimFirstStream();
@@ -6189,9 +6206,10 @@ function install(Game) {
     ui.label(R.dishName(req), W / 2 + 70, y + 54, 16, C.text); const ts = R.opt(R.toppingSlot(req.recipe), req.topping); ui.label('+ ' + (ts ? ts.name : ''), W / 2 + 70, y + 74, 12, C.textLight);
     A.coin(ctx, W - 86, y + 92, 8); ui.label(String(lv.reward), W - 72, y + 93, 13, C.goldDark, 'left');
     ctx.globalAlpha = 1;
-    const by = this.bottom() - 190, pulse = 1 + Math.sin(this.time * 5) * 0.04;
+    const by = this.bottom() - 262, pulse = 1 + Math.sin(this.time * 5) * 0.04;
     ctx.save(); ctx.translate(W / 2, by + 36); ctx.scale(pulse, pulse); ctx.translate(-W / 2, -(by + 36));
     ui.button('cook_go', W * 0.18, by, W * 0.64, 72, R.RECIPES[r.recipe].make, { color: C.yellow, dark: C.yellowDark, size: 26 }); ctx.restore();
+    this.drawLeaveRow();
     if (r.level === 1 && (this.profile.get('streams') || 0) === 0) { const fx = W * 0.7 + Math.sin(this.time * 4) * 6, fy = by + 60 + Math.cos(this.time * 4) * 6; A.circle(ctx, fx, fy, 16, 'rgba(255,255,255,0.85)', 3); ui.label('TAP!', fx, fy + 30, 14, C.white, 'center', { stroke: 4 }); }
   };
   P.canFanGift = function () { return this.hs.hasAds() && this.hs.canShowFanGift && this.hs.canShowFanGift() && (this.profile.get('streams') || 0) >= 2; };
@@ -6206,6 +6224,35 @@ function install(Game) {
     const ui = this.ui, ctx = this.ctx, W = this.W, top = this.top(), y = top + 120;
     ui.panel(24, y, W - 150, 54, '#ffe6f0', C.pinkDark, 20, 3); A.avatar(ctx, 'bear', 52, y + 27, 17); ui.label('I have a gift for you!', 80, y + 20, 13, C.text, 'left'); const g = this.hs.rewardsFanGift ? this.hs.rewardsFanGift() : null; ui.label(g ? this.itemsText(g) : '', 80, y + 39, 12, C.goldDark, 'left');
     ui.button('fangift_ad', W - 170, y + 6, 120, 42, '▶ GET', { color: C.green, dark: C.greenDark, size: 17 });
+  };
+  P.drawFeature = function (fe) {
+    const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, f = fe.f, open = fe.kind === 'open';
+    ui.dim(0.35); ui.hotspot('feat_block', 0, 0, W, H);
+    const pw = W - 70, ph2 = 330, px = 35, py = H * 0.5 - ph2 / 2, s = U.easeOutBack(Math.min(1, ((this.result && this.result.t) || 1) * 2 - 1.2));
+    ctx.save(); ctx.translate(W / 2, py + ph2 / 2); ctx.scale(Math.max(0.01, s), Math.max(0.01, s)); ctx.translate(-W / 2, -(py + ph2 / 2));
+    ui.panel(px, py, pw, ph2, '#fff', f.dark, 28, 5);
+    A.rr(ctx, px, py, pw, 50, 24); ctx.fillStyle = f.color; ctx.fill();
+    ui.title(open ? 'NEW FEATURE!' : 'COMING SOON', W / 2, py + 27, 26, C.white, f.dark);
+    // icon
+    const ix = W / 2, iy = py + 118;
+    if (f.streamer) A.streamer(ctx, f.streamer, ix, iy + 6, 0.32, { expr: 'yum', t: this.time, blink: 0 });
+    else { A.circle(ctx, ix, iy, 48, f.color, 5); A.star(ctx, ix, iy, 26, '#fff', 3); if (!open) A.lock(ctx, ix + 34, iy + 30, 22); }
+    for (let i = 0; i < 6; i++) { const a = this.time * 1.5 + i * 1.05; A.star(ctx, ix + Math.cos(a) * 72, iy + Math.sin(a) * 50, 6, C.gold, 1); }
+    ui.title(f.name, W / 2, py + 196, 30, C.white, f.dark);
+    ui.label(f.desc, W / 2, py + 228, 14, C.text);
+    ui.label(open ? 'Open now from the home screen' : 'Opens in ' + fe.rem + ' stream' + (fe.rem > 1 ? 's' : '') + '!', W / 2, py + 250, 13, open ? C.greenDark : C.pinkDark);
+    if (open) { ui.button('feat_go', px + 20, py + ph2 - 70, pw / 2 - 26, 54, 'GO NOW', { color: C.green, dark: C.greenDark, size: 20 }); ui.button('feat_later', W / 2 + 6, py + ph2 - 70, pw / 2 - 26, 54, 'LATER', { color: C.lavender, dark: C.lavenderDark, size: 20 }); }
+    else ui.button('feat_ok', W / 2 - 80, py + ph2 - 70, 160, 54, 'OK!', { color: f.color, dark: f.dark, size: 22 });
+    ctx.restore();
+  };
+  // the request screen: you may leave the stream room (the request waits)
+  P.drawLeaveRow = function () {
+    const ui = this.ui, W = this.W, y = this.bottom() - 178, items = [['req_home', 'HOME', C.lavender, C.lavenderDark]];
+    if (this.modeOpen('market')) items.push(['side_market', 'SHOP', '#ffd7a3', '#f0a860']);
+    if (this.curLevel() >= WR.OPEN_AT || (this.profile.get('levels_done') || 0) >= WR.OPEN_AT) items.push(['wardrobe', 'WARDROBE', '#cdb0ff', '#a98ae6']);
+    if (items.length < 2 && (this.profile.get('streams') || 0) === 0) return;
+    const bw = Math.min(130, (W * 0.64 - (items.length - 1) * 8) / items.length), x0 = W / 2 - (items.length * bw + (items.length - 1) * 8) / 2;
+    for (let i = 0; i < items.length; i++) ui.button(items[i][0], x0 + i * (bw + 8), y, bw, 42, items[i][1], { color: items[i][2], dark: items[i][3], size: 14, radius: 14 });
   };
   P.drawResult = function () {
     const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, res = this.result, hs = this.hs;
@@ -6225,6 +6272,7 @@ function install(Game) {
     for (let i = 0; i < res.unlocks.length; i++) { ui.label('★ ' + res.unlocks[i], W / 2, y, 15, C.greenDark); y += 26; }
     if (res.stars < 3) ui.label('tip: tap the floating hearts for 3 stars', W / 2, py + ph - 14, 12, C.textLight);
     y = py + ph + 14;
+    if (res.feature && !res.featureDone && res.t > 0.6) { this.drawFeature(res.feature); return; }
     const bonus = hs.rewardsBonusCoins();
     if (hs.hasAds() && hs.canShowBonusCoins() && bonus && !res.bonusTaken) { ui.button('bonus_ad', 40, y, W - 80, 56, '▶  WATCH AD:  ' + this.itemsText(bonus), { color: C.blue, dark: C.blueDark, size: 17 }); y += 68; }
     if (res.lv) {
@@ -6239,7 +6287,7 @@ function install(Game) {
   };
 }
 
-module.exports = { install, PICKUPS, BITES, T, MOUTH_R, CHEW };
+module.exports = { install, FEATURES, featureFor, PICKUPS, BITES, T, MOUTH_R, CHEW };
 
 };
 __mods["src/ui.js"] = function (require, module, exports, __filename, __dirname) {

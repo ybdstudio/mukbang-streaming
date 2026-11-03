@@ -85,7 +85,7 @@ const INIT = { level: 1, levels_done: 0, coins: 500, streamer: 0, stars_json: '{
 function run(g, seconds) { const steps = Math.round(seconds * 60); for (let i = 0; i < steps; i++) { g.lastT = g.lastT || 1000; g.frame(g.lastT + 1000 / 60); } }
 const K390 = g => 390 / g.W;
 function hasBtn(g, id) { run(g, 1 / 60); return !!g.ui.buttons.find(b => b.id === id); }
-async function tap(g, p, id) { run(g, 1 / 60); const b = g.ui.buttons.find(b => b.id === id); if (!b) throw new Error('no button ' + id + ' in state ' + g.state + ' (have: ' + g.ui.buttons.map(b => b.id).join(',') + ')'); const k = K390(g), x = (b.x + b.w / 2) * k, y = (b.y + b.h / 2) * k; p.touch('start', 1, x, y); p.touch('end', 1, x, y); await flush(); run(g, 1 / 60); }
+let featSeen = []; async function tap(g, p, id) { run(g, 1 / 60); if (g.state === 'result' && g.result && g.result.feature && !g.result.featureDone && !/^feat_/.test(id)) { run(g, 0.7); const fb = g.ui.buttons.find(b => b.id === 'feat_ok' || b.id === 'feat_later'); if (fb) { featSeen.push(g.result.feature.kind + ':' + g.result.feature.f.id); const k0 = K390(g); p.touch('start', 1, (fb.x + fb.w / 2) * k0, (fb.y + fb.h / 2) * k0); p.touch('end', 1, (fb.x + fb.w / 2) * k0, (fb.y + fb.h / 2) * k0); await flush(); run(g, 1 / 60); } } const b = g.ui.buttons.find(b => b.id === id); if (!b) throw new Error('no button ' + id + ' in state ' + g.state + ' (have: ' + g.ui.buttons.map(b => b.id).join(',') + ')'); const k = K390(g), x = (b.x + b.w / 2) * k, y = (b.y + b.h / 2) * k; p.touch('start', 1, x, y); p.touch('end', 1, x, y); await flush(); run(g, 1 / 60); }
 function touchAt(g, p, x, y) { const k = K390(g); p.touch('start', 3, x * k, y * k); run(g, 0.03); p.touch('end', 3, x * k, y * k); run(g, 0.03); }
 function drag(g, p, x0, y0, x1, y1, steps) { const k = K390(g); p.touch('start', 2, x0 * k, y0 * k); run(g, 0.05); for (let i = 1; i <= (steps || 10); i++) { p.touch('move', 2, (x0 + (x1 - x0) * i / (steps || 10)) * k, (y0 + (y1 - y0) * i / (steps || 10)) * k); run(g, 0.02); } p.touch('end', 2, x1 * k, y1 * k); run(g, 0.05); }
 function runUntil(g, cond, max) { for (let i = 0; i < (max || 20) * 60 && !cond(); i++) run(g, 1 / 60); return cond(); }
@@ -177,6 +177,26 @@ seed(2);
   const legacy = fakeProfile(Object.assign({}, INIT, { level: 4, streams: 3, run_json: JSON.stringify({ v: 2, level: 4, items: [{ id: 'chili_noodle', eaten: 1 }] }) }));
   const g4 = new Game(fakePlatform(), fakeHs(legacy, 'ok')); run(g4, 0.1);
   check('a V1/V2 multi-food run is dropped safely; level & coins kept', !g4.run && legacy.get('run_json') === '' && legacy.get('level') === 4);
+}
+seed(7);
+{ // feature previews 2 streams before, then NEW FEATURE → GO NOW; leaving the stream room from the request
+  const FE = ST.FEATURES; check('features: shop 3, wardrobe 6, delivery 7, Kiko 10, buffet 11, Momo 20', FE.map(f => f.id + '@' + f.at).join() === 'mode:market@3,wardrobe@6,mode:delivery@7,streamer:kiko@10,mode:buffet@11,streamer:momo@20', FE.map(f => f.id + '@' + f.at));
+  const pre = []; for (let n = 1; n < 40; n++) { const fe = ST.featureFor(n + 1); if (fe) pre.push(n + ':' + fe.kind[0] + ':' + fe.f.id.replace(/^.*:/, '')); }
+  check('each feature: a preview before it opens, then an "open" popup', FE.every(f => pre.some(x => x.endsWith(':p:' + f.id.replace(/^.*:/, ''))) && pre.some(x => x.endsWith(':o:' + f.id.replace(/^.*:/, '')))), pre);
+  check('previews come 2 streams before (shop: 1, it opens at 3)', pre.indexOf('3:p:wardrobe') >= 0 && pre.indexOf('4:p:delivery') >= 0 && pre.indexOf('1:p:market') >= 0 && pre.indexOf('2:o:market') >= 0, pre);
+  const prof = fakeProfile(Object.assign({}, INIT, { level: 4, levels_done: 3, streams: 3, coins: 2000 })); const p = fakePlatform(), g = new Game(p, fakeHs(prof, 'ok')); g.hsReady = true; run(g, 0.1);
+  await tap(g, p, 'play'); await eatAll(g, p, 'tap'); run(g, 0.8);
+  check('after stream 4: COMING SOON popup (delivery in 2 streams), result buttons hidden', hasBtn(g, 'feat_ok') && !hasBtn(g, 'next') && g.result.feature.f.id === 'mode:delivery');
+  await tap(g, p, 'feat_ok'); check('OK closes it, NEXT is back', hasBtn(g, 'next'));
+  await tap(g, p, 'next'); await eatAll(g, p, 'tap'); run(g, 0.8);
+  check('after stream 5: NEW FEATURE popup with GO NOW / LATER', hasBtn(g, 'feat_go') && hasBtn(g, 'feat_later') && g.result.feature.kind === 'open');
+  await tap(g, p, 'feat_go'); await flush(); check('GO NOW → the wardrobe', g.state === 'wardrobe');
+  await tap(g, p, 'home'); await tap(g, p, 'play'); check('the next stream waits with its request', g.state === 'stream' && g.run.phase === 'request' && g.run.level === 6);
+  check('request screen: HOME / SHOP / WARDROBE to leave the stream room', hasBtn(g, 'req_home') && hasBtn(g, 'side_market') && hasBtn(g, 'wardrobe'));
+  await tap(g, p, 'side_market'); check('SHOP from the stream → supermarket', g.state === 'market');
+  const g2 = new Game(fakePlatform(), fakeHs(prof, 'ok')); g2.hsReady = true; run(g2, 0.1); await tap(g2, g2.p, 'play'); await tap(g2, g2.p, 'req_home'); check('HOME from the request keeps the run (resume later)', g2.state === 'home' && g2.run && g2.run.phase === 'request');
+  await tap(g2, g2.p, 'play'); check('…and PLAY returns to the same request', g2.state === 'stream' && g2.run.level === 6);
+  const pn = fakePlatform(), gn = new Game(pn, fakeHs(fakeProfile(INIT), 'ok')); gn.hsReady = true; run(gn, 0.2); check('a brand-new player sees no leave buttons (first stream stays focused)', !hasBtn(gn, 'req_home'));
 }
 // ═════════ data ═════════
 {
@@ -364,5 +384,6 @@ console.log('\n── Simulation (human time estimate; ad counts from the game\'
 console.log('persona     total(with ads)  playtime   S5      S10     S20     S30     S40   side  ward  imps  imps/5min avg (min–max)  first 5 min');
 for (const r of report) { const avg = r.win.length ? (r.win.reduce((a, c) => a + c, 0) / r.win.length) : 0; console.log(r.name.padEnd(11) + fmt(r.b.clock).padStart(10) + fmt(r.b.play).padStart(13) + [5, 10, 20, 30, 40].map(n => fmt(r.b.at[n] || 0).padStart(8)).join('') + String(r.b.sides).padStart(6) + String(r.b.wards).padStart(6) + String(r.b.imps.length).padStart(6) + ('   ' + avg.toFixed(1) + ' (' + Math.min(...r.win) + '–' + Math.max(...r.win) + ')').padEnd(26) + String(r.first5).padStart(6)); }
 const avgR = report.find(r => r.name === 'average'); console.log('average ad_stats:', JSON.stringify(avgR.stats));
+console.log('feature popups seen by the test players:', featSeen.length);
 console.log(fails ? ('\n' + fails + ' FAILED') : '\nall passed');
 process.exit(fails ? 1 : 0);
