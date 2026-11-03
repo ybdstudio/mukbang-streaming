@@ -265,6 +265,18 @@ seed(4);
   const b = bot('average'); await eatStream(g, p, b); run(g, 2.5);
   check('fan gift stream pays coins and clears the level', g.state === 'result' && prof.get('coins') > 20 && prof.get('levels_done') === 8, prof.get('coins'));
 }
+seed(9);
+{ // SETTINGS: unlock-all exists only in the web/artifact build and leaves the level bonuses intact
+  const prof = fakeProfile(Object.assign({}, INIT, { level: 3, levels_done: 2, streams: 2 })); const p = fakePlatform(); const g = new Game(p, fakeHs(prof, 'ok')); g.hsReady = true; run(g, 0.1);
+  await tap(g, p, 'settings'); check('SETTINGS opens from home', g.state === 'settings');
+  check('TikTok build: no unlock-all button', !hasBtn(g, 'unlock_all')); g.unlockAll(); check('TikTok build: unlockAll does nothing', prof.get('level') === 3);
+  const p2 = fakePlatform(); p2.devTools = true; const prof2 = fakeProfile(Object.assign({}, INIT, { level: 3, levels_done: 2, streams: 2, coins: 3000 })); const hs2 = fakeHs(prof2, 'ok'); const g2 = new Game(p2, hs2); g2.hsReady = true; run(g2, 0.1);
+  await tap(g2, p2, 'settings'); await tap(g2, p2, 'unlock_all');
+  check('web build: UNLOCK ALL LEVELS opens all 30 levels and every streamer', prof2.get('level') === 30 && g2.curLevel() === 30, prof2.get('level'));
+  check('…levels_done untouched (first clears still pay)', prof2.get('levels_done') === 2);
+  await tap(g2, p2, 'settings_close'); await tap(g2, p2, 'levels'); await tap(g2, p2, 'page1'); await tap(g2, p2, 'lvl25'); g2.sceneAutoFill(); for (let i = 0; i < 60 && g2.state !== 'stream'; i++) run(g2, 0.1);
+  check('…and a locked-before level (25) can be played', g2.state === 'stream' && g2.run.level === 25, g2.state);
+}
 seed(8);
 { // encore rounds: a later level keeps going with new food after the first table is cleared
   const p = fakePlatform(), prof = fakeProfile(Object.assign({}, INIT, { level: 13, levels_done: 12, streams: 12, coins: 5000 })), hs = fakeHs(prof, 'ok'); const g = new Game(p, hs); g.hsReady = true; run(g, 0.1);

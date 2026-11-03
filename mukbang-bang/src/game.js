@@ -400,6 +400,9 @@ class Game {
       case 'streamers': this.setState('streamers'); break;
       case 'home': this.setState('home'); break;
       case 'sound': p.set('sound', !p.get('sound')); this.audio.setMuted(!p.get('sound')); break;
+      case 'settings': this.setState('settings'); break;
+      case 'settings_close': this.setState('home'); break;
+      case 'unlock_all': this.unlockAll(); break;
       case 'coins': this.popupFrom = this.state; this.setState('coins'); break;
       case 'coins_close': this.setState(this.popupFrom || 'home'); break;
       case 'free_coins': this.watchFreeCoins(); break;
@@ -486,6 +489,7 @@ class Game {
       case 'hsshop': this.drawByName(this.popupFrom && this.popupFrom !== 'coins' ? this.popupFrom : 'home'); this.drawShop(); break;
       case 'popup': this.drawHome(); this.drawPopup(); break;
       case 'care': this.drawHome(); this.drawCare(); break;
+      case 'settings': this.drawHome(); this.drawSettings(); break;
       default: this.sceneDraw();
     }
     if (this.trans > 0) { ctx.globalAlpha = this.trans / 0.35; ctx.fillStyle = C.cream; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = 1; }
@@ -536,7 +540,7 @@ class Game {
     ui.button('streamers', bx0 + bw / 2 + 6, y0 + 90, bw / 2 - 6, 60, 'STREAMERS', { color: C.lavender, dark: C.lavenderDark, size: 20, sub: 'PICK YOUR STAR' });
     const shop = hs.hasShop();
     if (shop) ui.button('hsshop', bx0, y0 + 164, bw / 2 - 6, 56, 'SHOP', { color: C.yellow, dark: C.yellowDark, size: 20 });
-    ui.button('sound', shop ? bx0 + bw / 2 + 6 : bx0, y0 + 164, shop ? bw / 2 - 6 : bw, 56, p.get('sound') ? 'SOUND ON' : 'SOUND OFF', { color: C.blue, dark: C.blueDark, size: 20 });
+    ui.button('settings', shop ? bx0 + bw / 2 + 6 : bx0, y0 + 164, shop ? bw / 2 - 6 : bw, 56, 'SETTINGS', { color: C.blue, dark: C.blueDark, size: 20 });
     const best = p.get('best_viewers') || 0;
     ui.label('CH.' + lv.chapter + ' ' + lv.chapterName + '  ·  ' + lv.title.toUpperCase(), W / 2, y0 - 22, 15, C.white, 'center', { stroke: 4 });
     if (best) ui.label('BEST STREAM  ' + U.fmtViewers(best) + ' VIEWERS', W / 2, y0 + 246, 15, C.white, 'center', { stroke: 4 });
@@ -835,6 +839,28 @@ class Game {
     ui.label(reward ? 'REWARD:  ' + this.itemsText(reward) : 'REWARD: none right now', W / 2, y + 10, 17, C.goldDark);
     ui.button('popup_go', 50, y + 44, (W - 110) / 2, 58, 'GO', { color: C.pink, dark: C.pinkDark, size: 24 });
     ui.button('popup_close', 60 + (W - 110) / 2, y + 44, (W - 110) / 2, 58, 'LATER', { color: C.lavender, dark: C.lavenderDark, size: 20 });
+  }
+  // Settings: sound, and — only in the web / artifact build (platform.devTools) — a tester's "unlock all levels".
+  // It only opens the levels: levels_done is untouched, so each first clear still pays its level bonus once.
+  unlockAll() {
+    if (!this.p.devTools) return;
+    if ((this.profile.get('level') || 1) < L.LEVEL_COUNT) this.profile.set('level', L.LEVEL_COUNT);
+    this.audio.play('levelup'); this.spawnConfetti(this.W / 2, this.H * 0.4, 40); this.showToast('All ' + L.LEVEL_COUNT + ' levels unlocked', 'Kiko & Momo too — open LEVELS to pick one');
+  }
+  drawSettings() {
+    const ui = this.ui, W = this.W, H = this.H, p = this.profile, dev = !!this.p.devTools;
+    ui.dim(0.5);
+    const ph = dev ? 330 : 240, py = (H - ph) / 2;
+    ui.panel(40, py, W - 80, ph, C.cream, C.outline, 26);
+    ui.title('SETTINGS', W / 2, py + 46, 32, C.white, C.pinkDark);
+    let y = py + 88;
+    ui.button('sound', 64, y, W - 128, 58, p.get('sound') ? 'SOUND ON' : 'SOUND OFF', { color: C.blue, dark: C.blueDark, size: 20 }); y += 72;
+    if (dev) {
+      const all = this.curLevel() >= L.LEVEL_COUNT;
+      ui.button('unlock_all', 64, y, W - 128, 58, all ? 'ALL LEVELS UNLOCKED' : 'UNLOCK ALL LEVELS', { color: all ? '#e0d6d6' : C.yellow, dark: all ? '#bfb0b0' : C.yellowDark, size: 19, disabled: all });
+      ui.label('test build only — not in the TikTok version', W / 2, y + 72, 13, C.textLight); y += 90;
+    }
+    ui.button('settings_close', 64, y, W - 128, 52, 'CLOSE', { color: C.lavender, dark: C.lavenderDark, size: 18 });
   }
   // low-coins popup: the free fan gift (never a softlock) or more coins
   drawCare() {

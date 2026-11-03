@@ -75,6 +75,8 @@ const body = `<div id="err"></div>
 <script>
 /* Game art (mukbang-bang/assets/), inlined. */
 ${assetScript}
+/* Web / artifact build only: tester tools in SETTINGS (unlock all levels). */
+var __HS_DEV = true;
 </script>
 <script>
 /* HS kit web shim (tt-web-shim.js) — browser stand-in for TikTok's tt API. Not part of the TikTok upload. */

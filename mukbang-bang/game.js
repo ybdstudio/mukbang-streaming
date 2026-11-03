@@ -88,6 +88,8 @@ function makePlatform() {
     vibrate: function (kind) { try { if (kind === 'long') tt.vibrateLong({}); else tt.vibrateShort({}); } catch (e) { /* optional */ } },
     createAudioContext: function () { return tt.createWebAudioContext(); },
     createCanvas: function () { return tt.createCanvas(); },
+    // tester tools (unlock all levels): only the web / artifact build defines __HS_DEV — never the TikTok package
+    devTools: typeof __HS_DEV !== 'undefined' && __HS_DEV === true,
     // Bitmap art: a path inside the game package (assets/...). The single-file
     // web build inlines the files as data URIs in __HS_ASSETS.
     loadImage: function (path, done) {
