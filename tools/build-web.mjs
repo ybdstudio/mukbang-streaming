@@ -1,0 +1,88 @@
+// Builds the single-file web version of Mukbang Bang.
+// It is the SAME game folder (game.js + src/*) running in a browser through the
+// HS kit's own tt-web-shim.js, with a tiny CommonJS registry in place of
+// TikTok's require(). Nothing here is uploaded to TikTok.
+//   node tools/build-web.mjs   → web/index.html (standalone) + web/mukbang-bang-artifact.html (claude.ai artifact)
+import { readFileSync, writeFileSync, readdirSync, mkdirSync, existsSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, join, resolve } from 'node:path';
+
+const here = dirname(fileURLToPath(import.meta.url));
+const root = resolve(here, '..');
+const gameDir = join(root, 'mukbang-bang');
+const kitDir = process.env.HS_KIT || 'D:/New/REF/hs-sdk-1.1.3/hs-sdk-1.1.3';
+const outDir = join(root, 'web');
+if (!existsSync(outDir)) mkdirSync(outDir, { recursive: true });
+
+const files = ['game.js', 'hs-game.js', 'hs-sdk.min.js', ...readdirSync(join(gameDir, 'src')).filter((f) => /\.(js|json)$/.test(f)).map((f) => 'src/' + f)];
+let registry = '';
+for (const f of files) {
+  // The SDK's UTF-8 decoder holds a literal U+FFFD; escape it so the page carries no replacement characters.
+  const src = readFileSync(join(gameDir, f), 'utf8').replace(/\uFFFD/g, '\\uFFFD');
+  const body = f.endsWith('.json') ? 'module.exports = ' + src.trim() + ';' : src;
+  registry += `__mods[${JSON.stringify(f)}] = function (require, module, exports, __filename, __dirname) {\n${body}\n};\n`;
+}
+const loader = `
+(function () {
+  var __mods = {}; var __cache = {};
+  ${registry}
+  function norm(p) { var out = []; p.split('/').forEach(function (s) { if (!s || s === '.') return; if (s === '..') { out.pop(); return; } out.push(s); }); return out.join('/'); }
+  function makeRequire(from) {
+    return function (req) {
+      var dir = from.indexOf('/') >= 0 ? from.slice(0, from.lastIndexOf('/') + 1) : '';
+      var key = norm(dir + req);
+      if (!__mods[key] && __mods[key + '.js']) key = key + '.js';
+      if (!__mods[key]) throw new Error('module not found: ' + req + ' from ' + from);
+      if (__cache[key]) return __cache[key].exports;
+      var m = { exports: {} }; __cache[key] = m;
+      __mods[key].call(m.exports, makeRequire(key), m, m.exports, key, dir);
+      return m.exports;
+    };
+  }
+  makeRequire('')('./game.js');
+})();
+`;
+const shim = readFileSync(join(kitDir, 'web', 'tt-web-shim.js'), 'utf8');
+const DESC = 'Mukbang Bang: shop at the supermarket, scan at the checkout, then eat it all on a live stream. Same code as the TikTok mini game.';
+const style = `
+  /* Layout: one canvas in a phone-shaped box, centred on wide screens; the game paints its own HUD. */
+  :root { --bg: #ffe3ea; --bg2: #ffd1dc; --err: #b3261e; --fg: #5b3d3b; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #3a2a3a; --bg2: #46324a; --fg: #ffe3ea; color-scheme: dark; } }
+  :root[data-theme="dark"] { --bg: #3a2a3a; --bg2: #46324a; --fg: #ffe3ea; color-scheme: dark; }
+  html, body { height: 100%; margin: 0; color: var(--fg); overflow: hidden; touch-action: none; -webkit-user-select: none; user-select: none;
+    background: var(--bg) repeating-conic-gradient(var(--bg2) 0% 25%, var(--bg) 0% 50%) 0 0 / 56px 56px !important; }
+  canvas.hs-screen { display: block; position: fixed; left: 0; top: 0; width: 100vw; height: 100vh; box-shadow: 0 0 0 4px #5b3d3b, 0 12px 40px rgba(91,61,59,0.35); }
+  #err { position: fixed; left: max(16px, env(safe-area-inset-left, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); bottom: 8px; background: var(--err); color: #fff; font: 13px/1.4 monospace; padding: 8px 10px; border-radius: 8px; display: none; white-space: pre-wrap; z-index: 9; }
+`;
+const errScript = `window.addEventListener('error', function (e) { var d = document.getElementById('err'); d.style.display = 'block'; d.textContent += (e.message || e) + '\\n'; });`;
+const body = `<div id="err"></div>
+<script>${errScript}</script>
+<script>
+/* HS kit web shim (tt-web-shim.js) — browser stand-in for TikTok's tt API. Not part of the TikTok upload. */
+${shim}
+</script>
+<script>
+${loader}
+</script>
+`;
+const html = `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>Mukbang Bang</title>
+<meta name="description" content="${DESC}">
+<style>${style}</style>
+</head>
+<body>
+${body}</body>
+</html>
+`;
+writeFileSync(join(outDir, 'index.html'), html);
+// Artifact variant: claude.ai wraps the file in its own document skeleton, so this is a fragment.
+const artifact = `<title>Mukbang Bang</title>
+<meta name="description" content="${DESC}">
+<style>${style}</style>
+${body}`;
+writeFileSync(join(outDir, 'mukbang-bang-artifact.html'), artifact);
+console.log('web/index.html ' + (html.length / 1024).toFixed(0) + ' KB · web/mukbang-bang-artifact.html ' + (artifact.length / 1024).toFixed(0) + ' KB · modules: ' + files.length);

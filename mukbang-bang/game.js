@@ -49,21 +49,32 @@ function makePlatform() {
   var info = tt.getSystemInfoSync();
   var canvas = tt.createCanvas();
   var dpr = Math.min(3, info.pixelRatio || 1);
-  var cssW = info.windowWidth, cssH = info.windowHeight;
-  canvas.width = Math.round(cssW * dpr); canvas.height = Math.round(cssH * dpr);
+  // winW/winH = the window size the platform reports (touches arrive in it);
+  // cssW/cssH = the game's own box. On a phone they are the same. In a wide
+  // browser window (desktop preview) the game keeps a phone-shaped box centred
+  // in the window, so the portrait layout never gets squashed.
+  var winW = info.windowWidth, winH = info.windowHeight, cssW = winW, cssH = winH;
   var ctx = canvas.getContext('2d');
   var safe = info.safeArea || null;
   var touchHandler = null, resizeHandler = null;
-  function fwd(kind) { return function (e) { var list = kind === 'end' ? (e.changedTouches || e.touches) : (e.touches || e.changedTouches); if (!touchHandler || !list) return; for (var i = 0; i < list.length; i++) { var t = list[i]; touchHandler(kind, t.identifier, t.clientX, t.clientY); } }; }
+  function fit() {
+    cssW = winW; cssH = winH;
+    if (winW / winH > 0.62) cssW = Math.round(winH * 0.5);
+    canvas.width = Math.round(cssW * dpr); canvas.height = Math.round(cssH * dpr);
+    if (canvas.style) { canvas.style.width = cssW + 'px'; canvas.style.height = cssH + 'px'; canvas.style.left = Math.round((winW - cssW) / 2) + 'px'; canvas.style.top = '0px'; }
+    if (cssW !== winW) safe = null;
+  }
+  fit();
+  function fwd(kind) { return function (e) { var list = kind === 'end' ? (e.changedTouches || e.touches) : (e.touches || e.changedTouches); if (!touchHandler || !list) return; for (var i = 0; i < list.length; i++) { var t = list[i]; touchHandler(kind, t.identifier, t.clientX * cssW / winW, t.clientY * cssH / winH); } }; }
   tt.onTouchStart(fwd('start')); tt.onTouchMove(fwd('move')); tt.onTouchEnd(fwd('end')); tt.onTouchCancel(fwd('end'));
   if (tt.setKeepScreenOn) tt.setKeepScreenOn({ keepScreenOn: true });
   // Browsers resize (rotation, desktop windows); TikTok never does. Polled once per frame.
   function poll() {
     try {
       if (typeof window === 'undefined' || !window.innerWidth) return;
-      if (window.innerWidth === cssW && window.innerHeight === cssH) return;
-      cssW = window.innerWidth; cssH = window.innerHeight;
-      canvas.width = Math.round(cssW * dpr); canvas.height = Math.round(cssH * dpr);
+      if (window.innerWidth === winW && window.innerHeight === winH) return;
+      var i2 = tt.getSystemInfoSync(); winW = i2.windowWidth; winH = i2.windowHeight; safe = i2.safeArea || null;
+      fit();
       if (resizeHandler) resizeHandler();
     } catch (e) { /* not a browser */ }
   }
