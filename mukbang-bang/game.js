@@ -29,18 +29,19 @@ var DEFAULTS = {
 var profile = HSGame.profile({
   level: 1,            // next level to play (1..30)
   levels_done: 0,      // highest level cleared (level_bonus paid once per level)
-  coins: 1000,         // spent in the supermarket, earned on the stream
+  coins: 500,          // spent on food (shop, delivery, buffet, kitchen), earned on the stream
   streamer: 0,         // selected streamer (0..2)
   stars_json: '{}',    // stars per level, JSON string
   run_json: '',        // a stream in progress (bought food not yet eaten) — resumes after a restart
   streams: 0,          // finished streams
   best_viewers: 0,     // best peak viewers
+  combo_best: 0,       // V2: best ASMR combo
   no_ads: 0,           // > 0 = bought "No Ads" (number field so the shop item credits itself)
   sound: true
 }, {
   save: 'cloud',
   local: ['sound'],
-  merge: { level: 'max', levels_done: 'max', streams: 'max', best_viewers: 'max', no_ads: 'max' },
+  merge: { level: 'max', levels_done: 'max', streams: 'max', best_viewers: 'max', combo_best: 'max', no_ads: 'max' },
   summary: 'level'
 });
 
@@ -159,7 +160,7 @@ raf(loop);
 tt.onHide(function () { game.freeze(true); });
 tt.onShow(function () { game.freeze(false); });
 
-// Browser-only helpers: #auto=market|checkout|stream|result|levels|streamers[:level] jumps to a screen (screenshots, QA). Harmless on TikTok (no location).
+// Browser-only helpers: #auto=<screen>[:level] (home levels streamers care market checkout delivery arrive buffet kitchen cook stream result) jumps to a screen (screenshots, QA). Harmless on TikTok (no location).
 try {
   if (typeof window !== 'undefined' && window.location && /auto=/.test(window.location.hash)) {
     var m = /auto=(\w+)(?::(\d+))?/.exec(window.location.hash);

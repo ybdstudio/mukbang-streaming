@@ -1,6 +1,6 @@
 # Mukbang Bang V2 — thiết kế gameplay (Phase 1: audit + design)
 
-Ngày 03/11/2026 · trạng thái: **CHỜ CHỦ DỰ ÁN DUYỆT** trước khi code Phase 2.
+Ngày 03/11/2026 · trạng thái: **Phase 1 đã duyệt · Phase 2 xong** (xem §16).
 Nguồn yêu cầu: brief "Mukbang Bang V2.0 — Gameplay & Monetization Overhaul" + "Four Food Sources Update".
 Theo chủ dự án: **bỏ phần KPI quảng cáo (8 impression / 5 phút) và hệ thống tracking/analytics** khỏi phạm vi V2.
 
@@ -421,9 +421,39 @@ Mọi thứ mới có **fallback canvas** (hình đơn giản cùng bảng màu)
 4. **Phase 5**: QA, mô phỏng 30 level, kích thước gói, báo cáo.
 5. Song song: `ART-REQUEST-V2.md` cho Codex.
 
-## 15. Cần chủ dự án quyết
-1. **Bối cảnh "ở nhà"**: phòng stream + cảnh cửa sổ đổi theo chương (tái dùng 5 nền) — đồng ý?
-2. **Art mới (~240 ảnh)**: gửi Codex làm theo ART-REQUEST-V2; trong lúc chờ, game chạy bằng hình canvas đơn giản — đồng ý?
-3. **Trang trí phòng** làm chỗ tiêu coin — có làm không, hay để sau?
-4. **L1 bỏ siêu thị** (vào stream luôn với 3 món bày sẵn) và **coin khởi đầu 500** — đồng ý?
-5. Phạm vi thời lượng: chấp nhận ~44′ trong bảng hiện tại rồi cắt dần khi có số đo thật?
+## 15. Quyết định của chủ dự án (03/11/2026)
+1. Bối cảnh "ở nhà" = phòng stream + cảnh cửa sổ đổi theo chương (tái dùng 5 nền) — **OK**.
+2. Art mới gửi Codex theo `docs/ART-REQUEST-V2.md`; trong lúc chờ chạy hình canvas — **OK**.
+3. Trang trí phòng (chỗ tiêu coin) — **để sau**.
+4. L1 vào stream luôn với 3 món bày sẵn; coin khởi đầu 500 — **OK**.
+5. Thời lượng: chấp nhận ~44′ và **tăng lên**, không cắt.
+6. Bỏ KPI quảng cáo và tracking.
+
+## 16. Báo cáo Phase 2 (03/11/2026)
+
+**Đã làm**
+- Dữ liệu: `src/catalog.js` (4 catalog: 36 món siêu thị, 10 món chính + 6 món phụ delivery, 5 trạm buffet × 6 + trạm dessert dùng lại art, 7 công thức DIY + 19 topping, 4 món mystery), `src/levels.js` (30 level dữ liệu: chương, nguồn, cơ chế, request, mystery, challenge, **vòng encore**, goal 800 → 1,5M).
+- Cơ chế: `src/mech.js` — combo (khoảng cách 2,5 s, ×1,2/1,5/2/2,5), perfect bite (vòng miệng trong 44), thanh cay (ON FIRE ≥ 60, TOO HOT ở 100 → reset combo, không thua; đồ uống −35, lạnh −20, chua −15), fan request (10 s, +8 % goal, chỉ hỏi thứ có trên bàn), mystery (5 kết quả, pity), challenge, năng lực Luna/Kiko/Momo.
+- 4 nguồn đồ ăn (`src/scenes.js` + `game.js`): siêu thị tự quét (kéo tay vẫn được), app YUMGO (tab nhà hàng, món chính + phụ, ORDER, xe giao 2,4 s – chạm để bỏ qua, hộp mở bằng chạm trong stream), buffet (gắp bằng kẹp kéo/chạm, đĩa N ô, thưởng đa dạng/đĩa cay, vé), bếp DIY (bộ nguyên liệu + topping, 5 loại thao tác: rub/tap/stir/hold/drop, thưởng "homemade").
+- Stream: ở nhà (cửa sổ theo chương) hoặc nhà hàng; HUD mới (combo, nhiệt, yêu cầu, thử thách, vòng); **vòng encore** khi bàn trống (fan gửi thêm / mystery / món cay + nước / request rush) — kéo dài level sau bằng hoạt động mới.
+- Economy: coin đầu 500, món trả ×1,4 chi phí (miễn phí: giá trị danh nghĩa 120 + 15n), tip ở 25/50/75/100/135 % goal, encore trả ×0,6; **Fan Gift miễn phí** khi thiếu coin; interstitial từ L7.
+- Người mới vào thẳng stream L1; `run_json` v2 (mode, hộp đóng, vòng còn lại, combo/cay) và đọc được run V1.
+- Test (`tools/sim-test.mjs`): 79 kiểm tra + mô phỏng 5 hồ sơ × 30 level qua input thật; thời gian người = thời gian game khi thao tác + chi phí suy nghĩ/chạm theo hồ sơ (không tính thời gian bot chạy). `hs-check` 0 ❌.
+
+**Mô phỏng 30 level (thời gian người ước tính)**
+```
+persona think/tap costs) ──
+persona          L3      L6     L12     L18     L24     L30   taps/drags  stars  min coins  end coins  fan gifts  interst.  rewarded
+beginner      1'44"   4'31"  12'11"  22'39"  35'09"  52'02"          749     71        500      17756          0        23         0
+average       1'22"   3'31"   9'43"  18'11"  28'21"  41'56"          786     73        500      18722          0        23         0
+skilled       1'13"   2'59"   8'12"  15'15"  24'08"  35'34"          833     83        500      20963          0        23         0
+adUser        2'58"   6'38"  15'54"  27'19"  40'26"  57'17"          816     78        500      28524          0        23        30
+noAds         1'25"   3'34"   9'18"  17'05"  26'41"  40'04"          786     76        500      18578          0         0         0
+average: seconds per level (incl. food source + result): 17 30 33 35 42 50 50 58 52 55 61 67 75 84 75 81 75 83 94 96 104 94 91 97 126 127 110 140 122 157
+```
+- Bot cho điểm trung bình **~42′** cho 30 level (beginner ~52′, skilled ~36′). Ad user: +30 s mỗi rewarded ad xem.
+- Không blocker, không cần Fan Gift ở cả 5 hồ sơ; số dư không bao giờ dưới 500.
+- **Coin dư ~18–21K cuối game** → cần chỗ tiêu (trang trí phòng — để sau theo quyết định 3).
+- 5 phút đầu (average): L1 17 s → L6 ≈ 3′30″; 4 nguồn đồ ăn + mystery + 2 trạm buffet + combo/cay/request đã xuất hiện.
+
+**Chưa làm (Phase 3)**: Duo Mukbang (L16+), fan voting (L13), multi-request cùng lúc, Checkout Rush, finale 3 nguồn (L30 hiện là delivery + mystery), nút đổi nguồn ở Home, subpackage `art2/` (khi có art), ad place mới (Phase 4). Thời lượng sẽ tăng thêm khi có các mục này.
