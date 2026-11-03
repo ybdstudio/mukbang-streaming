@@ -24,3 +24,7 @@ mukbang-bang-android.zip
 
 # handoff zips (made on request, not part of the repo)
 handoff/
+
+# handoff-only copies (kit lives outside the game folder; ref video/images are large)
+_kit/
+_ref/
