@@ -7,6 +7,7 @@
 const U = require('./util.js');
 const D = require('./data.js');
 const S = require('./sprites.js');
+const WR = require('./wardrobe.js');
 const C = D.COLORS;
 const OUT = C.outline;
 const TAU = Math.PI * 2;
@@ -572,12 +573,24 @@ function streamerParts(ch) {
   return head && body && face ? { sp: sp, head: head, body: body, face: face } : null;
 }
 function streamer(ctx, ch, x, y, s, st) {
-  const P = streamerParts(ch); if (!P) { streamerVec(ctx, ch, x, y, s, st); return; }
+  const lk = st && st.look; const outfit = lk ? WR.BY_ID[lk.outfit] : null;
+  const P = streamerParts(ch);
+  if (!P) {
+    // vector fallback: sweater colour swap + the same overlays in vector face units (R = 95)
+    const ch2 = outfit && outfit.color ? Object.assign({}, ch, { top: outfit.color, topDark: outfit.dark }) : ch;
+    streamerVec(ctx, ch2, x, y, s, st);
+    if (lk) { ctx.save(); ctx.translate(x, y + ((st && st.bob) || 0)); ctx.scale(s, s); WR.drawBody(ctx, module.exports, lk, { nx: 0, ny: 95 * 0.72, bw: 200 }); WR.drawHead(ctx, module.exports, lk, { cx: 0, cy: 0, r: 95, ey: 4, ny: 95 * 0.8 }, ch, st && st.t); ctx.restore(); }
+    return;
+  }
   st = st || {}; const expr = S.EXPR[st.expr] ? st.expr : 'idle'; const t = st.t || 0; const sp = P.sp;
   const k = S.STREAMER_K * s;
   ctx.save(); ctx.translate(x, y + (st.bob || 0)); ctx.scale(k, k); ctx.translate(-sp.headAnchor[0], -sp.headAnchor[1]);
   // now in head-image pixels
-  ctx.drawImage(P.body, sp.neckOnHead[0] - sp.bodyAnchor[0], sp.neckOnHead[1] - sp.bodyAnchor[1]);
+  // outfit: another streamer's sweater layer (same pose) or a vector overlay on top of our own
+  let body = P.body, bodyAnchor = sp.bodyAnchor;
+  if (outfit && outfit.body && S.STREAMERS[outfit.body]) { const ob = S.get(S.STREAMERS[outfit.body].body); if (ob) { body = ob; bodyAnchor = S.STREAMERS[outfit.body].bodyAnchor; } }
+  ctx.drawImage(body, sp.neckOnHead[0] - bodyAnchor[0], sp.neckOnHead[1] - bodyAnchor[1]);
+  if (lk) WR.drawBody(ctx, module.exports, lk, { nx: sp.neckOnHead[0], ny: sp.neckOnHead[1], bw: 343 });
   ctx.drawImage(P.head, 0, 0);
   const ex = S.EXPR[expr]; let eyes = ex[0], mouth = ex[1];
   if ((expr === 'idle' || expr === 'open') && st.blink) eyes = 'eyes_blink';
@@ -595,6 +608,7 @@ function streamer(ctx, ch, x, y, s, st) {
   S.cell(ctx, P.face, S.FACE[mouth], S.FACE_MOUTH_AT[0] + mx, S.FACE_MOUTH_AT[1] + my, 240, 120);
   if (ex[2]) S.cell(ctx, P.face, S.FACE[ex[2]], S.FACE_FX_AT[0] + dx, S.FACE_FX_AT[1] + dy + Math.sin(t * 6) * 4, 240, 120);
   if (expr === 'fizzy') for (let i = 0; i < 3; i++) sparkle(ctx, ey[0] + [-180, 185, 140][i], ey[1] + [-70, -40, 120][i], 18 + Math.sin(t * 12 + i) * 6, '#fff');
+  if (lk) WR.drawHead(ctx, module.exports, lk, { cx: sp.headAnchor[0], cy: sp.headAnchor[1] - (sp.headAnchor[1] - ey[1]) * 0.2, r: sp.faceRadius, ey: ey[1], ny: sp.neckOnHead[1] }, ch, t);
   ctx.restore();
 }
 function mouthPos(x, y, s, bob, ch) {
@@ -832,4 +846,49 @@ function flames(ctx, x, y, r, t) {
   }
 }
 
-module.exports = { dishVec, mysteryBox, takeoutBox, homeRoom, restaurantBg, kitchenBg, tongs, buffetPan, scooter, flames, rr, circle, ellipse, shade, text, coin, star, uiStar, heart, eyeIcon, sparkle, lock, reaction, avatar, food, streamer, mouthPos, background, backgroundLive, table, phoneStick, livePill, profileBadge, coinPill, storeBackground, shelfBoard, priceTag, basket, machine, conveyor, cashier, cloud, logo };
+// ─── V3: one package on the table + the portion carried to the mouth ───
+// state: 'sealed' · 'opening' (k 0..1) · 'open' (e = pickups / 3) · 'empty'
+function pack(ctx, f, kind, x, y, size, state, k, e, t, toppings) {
+  const s = size / 100;
+  if (state === 'empty') { ctx.globalAlpha = 0.85; food(ctx, f, x, y, size, 1, t); ctx.globalAlpha = 1; for (let i = 0; i < 5; i++) circle(ctx, x - size * 0.25 + i * size * 0.12, y + size * 0.36 + (i % 2) * 4, size * 0.018, f.c3 || OUT, 0); return; }
+  const showFood = state === 'open' || (state === 'opening' && (kind === 'bag' || kind === 'cup' || kind === 'bottle' || k > 0.4));
+  if (kind === 'box' || kind === 'dome') {
+    if (showFood) { food(ctx, f, x, y, size, state === 'open' ? e : 0, t); toppingDots(ctx, toppings, x, y, size, state === 'open' ? e : 0); }
+    const lift = state === 'sealed' ? 0 : U.easeInOut(k); if (state === 'open') return;
+    ctx.save(); ctx.globalAlpha = 1 - Math.max(0, lift - 0.6) / 0.4; ctx.translate(x, y - lift * size * 0.7); ctx.rotate(-lift * 0.4); ctx.scale(s, s);
+    if (kind === 'box') { rr(ctx, -46, -36, 92, 74, 10); fillStroke(ctx, '#f3c58b', 4); ctx.fillStyle = '#e8b267'; ctx.fillRect(-42, -8, 84, 6); circle(ctx, 0, 8, 18, f.c1, 3); text(ctx, '♥', 0, 9, 18, '#fff', 0); }
+    else { ellipse(ctx, 0, 34, 50, 10, '#e9eef8', 4); ctx.beginPath(); ctx.moveTo(-46, 32); ctx.quadraticCurveTo(-46, -36, 0, -40); ctx.quadraticCurveTo(46, -36, 46, 32); ctx.closePath(); fillStroke(ctx, '#dfe3ee', 4); ellipse(ctx, -16, -10, 10, 18, 'rgba(255,255,255,0.7)', 0); circle(ctx, 0, -44, 7, '#c9cdd9', 3); }
+    ctx.restore(); ctx.globalAlpha = 1; return;
+  }
+  // bag / cup / bottle: the package itself is the food art; a seal sits on top
+  food(ctx, f, x, y, size, state === 'open' ? e : 0, t); toppingDots(ctx, toppings, x, y, size, state === 'open' ? e : 0);
+  if (state === 'open') return;
+  const g = state === 'sealed' ? 0 : U.easeInOut(k);
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  if (kind === 'bag') { ctx.translate(g * 40, -38 - g * 60); ctx.rotate(g * 0.9); ctx.globalAlpha = 1 - g; rr(ctx, -40, -6, 80, 14, 4); fillStroke(ctx, '#ffffff', 3); ctx.strokeStyle = 'rgba(91,61,59,0.5)'; ctx.lineWidth = 2; ctx.setLineDash([4, 4]); ctx.beginPath(); ctx.moveTo(-36, 1); ctx.lineTo(36, 1); ctx.stroke(); ctx.setLineDash([]); }
+  else if (kind === 'cup') { ctx.translate(-g * 50, -34 - g * 30); ctx.rotate(-g * 1.1); ctx.globalAlpha = 1 - g * 0.9; ellipse(ctx, 0, 0, 40, 11, f.c2 || '#fff', 4); text(ctx, 'OPEN', 0, 1, 10, f.c3 || OUT, 0); rr(ctx, 36, -4, 14, 8, 3); fillStroke(ctx, f.c1, 2); }
+  else { ctx.translate(0, -48 - g * 70); ctx.rotate(g * 2.5); ctx.globalAlpha = 1 - g; rr(ctx, -12, -8, 24, 16, 4); fillStroke(ctx, f.c1 || C.pink, 3); }
+  ctx.restore(); ctx.globalAlpha = 1;
+  if (state === 'opening' && kind === 'bottle' && g > 0.2) { for (let i = 0; i < 6; i++) { const a = -Math.PI / 2 + (i - 2.5) * 0.3; circle(ctx, x + Math.cos(a) * size * 0.3 * g, y - size * 0.5 + Math.sin(a) * size * 0.3 * g, size * 0.025, 'rgba(255,255,255,0.9)', 0); } }
+}
+function toppingDots(ctx, toppings, x, y, size, e) {
+  if (!toppings || !toppings.length || e >= 1) return; const K2 = require('./catalog.js');
+  for (let i = 0; i < toppings.length; i++) { const tp = K2.TOPPINGS[toppings[i]]; if (!tp) continue; const a = i / toppings.length * Math.PI * 2; circle(ctx, x + Math.cos(a) * size * 0.16 * (1 - e), y - size * 0.2 + Math.sin(a) * size * 0.05, size * 0.045, tp[1], 2); }
+}
+// one bite-sized portion (on chopsticks, fork, spoon or a sip) at (x, y)
+function portion(ctx, f, x, y, size, t) {
+  const s = size / 100; ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.rotate(Math.sin((t || 0) * 6) * 0.05);
+  const tags = f.tags || [], cat = f.cat;
+  const kind = tags.indexOf('drink') >= 0 || cat === 'drinks' ? 'sip' : tags.indexOf('noodle') >= 0 || cat === 'noodles' ? 'noodle' : cat === 'icecream' || (tags.indexOf('cold') >= 0 && tags.indexOf('dessert') >= 0) ? 'scoop' : tags.indexOf('dessert') >= 0 || cat === 'cakes' ? 'cake' : cat === 'snacks' || tags.indexOf('crunchy') >= 0 ? 'chip' : cat === 'fruit' || tags.indexOf('fruit') >= 0 ? 'fruit' : 'chunk';
+  const stick = function (x0, y0, x1, y1, col) { ctx.lineCap = 'round'; ctx.strokeStyle = OUT; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke(); ctx.strokeStyle = col; ctx.lineWidth = 4.5; ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke(); };
+  if (kind === 'noodle') { stick(-6, -40, 30, 40, '#c49a6c'); stick(6, -42, 40, 34, '#c49a6c'); ctx.strokeStyle = f.c1; ctx.lineWidth = 5; for (let i = 0; i < 5; i++) { ctx.beginPath(); ctx.moveTo(-14 + i * 6, -30); ctx.quadraticCurveTo(-22 + i * 7, 0, -10 + i * 5, 26 + (i % 2) * 6); ctx.stroke(); } }
+  else if (kind === 'sip') { ctx.beginPath(); ctx.moveTo(-20, -26); ctx.lineTo(20, -26); ctx.lineTo(15, 30); ctx.lineTo(-15, 30); ctx.closePath(); fillStroke(ctx, 'rgba(255,255,255,0.9)', 4); ctx.fillStyle = f.c1; ctx.fillRect(-17, -8, 33, 36); ctx.lineWidth = 6; ctx.strokeStyle = f.c3 || C.pink; ctx.beginPath(); ctx.moveTo(6, 0); ctx.lineTo(12, -46); ctx.stroke(); }
+  else if (kind === 'scoop') { stick(10, 14, 40, 44, '#d9dbe6'); ellipse(ctx, 4, 6, 18, 9, '#d9dbe6', 3); circle(ctx, 2, -6, 16, f.c1, 4); circle(ctx, -4, -11, 4, 'rgba(255,255,255,0.7)', 0); }
+  else if (kind === 'cake') { stick(8, 8, 40, 44, '#d9dbe6'); rr(ctx, -18, -20, 34, 28, 6); fillStroke(ctx, f.c2 || '#fff5f7', 4); rr(ctx, -18, -26, 34, 10, 5); fillStroke(ctx, f.c1, 3); }
+  else if (kind === 'chip') { ctx.beginPath(); ctx.moveTo(-20, 12); ctx.quadraticCurveTo(0, -30, 22, 8); ctx.quadraticCurveTo(0, 22, -20, 12); ctx.closePath(); fillStroke(ctx, f.c1, 4); circle(ctx, -2, 0, 3, f.c3 || OUT, 0); circle(ctx, 8, 6, 2.5, f.c3 || OUT, 0); }
+  else if (kind === 'fruit') { stick(6, 6, 38, 44, '#d9dbe6'); ellipse(ctx, 0, -6, 17, 14, f.c1, 4); ellipse(ctx, -5, -11, 4, 3, 'rgba(255,255,255,0.6)', 0); }
+  else { stick(-6, -40, 26, 42, '#c49a6c'); stick(6, -42, 36, 36, '#c49a6c'); ellipse(ctx, 0, -14, 20, 15, f.c1, 4); ellipse(ctx, -6, -19, 5, 3, 'rgba(255,255,255,0.5)', 0); }
+  ctx.restore();
+}
+
+module.exports = { pack, portion, dishVec, mysteryBox, takeoutBox, homeRoom, restaurantBg, kitchenBg, tongs, buffetPan, scooter, flames, rr, circle, ellipse, shade, text, coin, star, uiStar, heart, eyeIcon, sparkle, lock, reaction, avatar, food, streamer, mouthPos, background, backgroundLive, table, phoneStick, livePill, profileBadge, coinPill, storeBackground, shelfBoard, priceTag, basket, machine, conveyor, cashier, cloud, logo };

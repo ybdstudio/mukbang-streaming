@@ -592,6 +592,8 @@ var DEFAULTS = {
     first_stream:    { coins: 200, $limit: 'once' },      // the player's first finished stream
     bonus_coins:     { coins: 300 },                      // rewarded ad place on the result screen
     free_coins:      { coins: 200 },                      // rewarded ad place behind the "+" next to the coins
+    // no entries for "surprise_food", "fashion_reward", "viral_boost": those ads only let the game go on
+    // (a rare-food bonus stream / a wardrobe item / a hype boost for this stream) — watched = {} → continue
     // no "stream_end" entry: that interstitial gives nothing, it only continues to the next level
     share:           { coins: 100, $limit: 'daily' },
     tiktok_shortcut: { coins: 300 },
@@ -613,7 +615,10 @@ var profile = HSGame.profile({
   run_json: '',        // a stream in progress (bought food not yet eaten) — resumes after a restart
   streams: 0,          // finished streams
   best_viewers: 0,     // best peak viewers
-  combo_best: 0,       // V2: best ASMR combo
+  combo_best: 0,       // V2: best ASMR combo (kept for old saves)
+  foods_json: '[]',    // V3: food book — every food eaten once
+  wardrobe_json: '{}', // V3: owned looks + equipped look per streamer
+  ad_stats: '{}',      // V3: ad requests / impressions / completions / rewards per place (measured, local)
   no_ads: 0,           // > 0 = bought "No Ads" (number field so the shop item credits itself)
   sound: true
 }, {
@@ -706,6 +711,12 @@ var hs = {
   showBonusCoins: function () { return HSGame.showAd('bonus_coins'); },
   canShowFreeCoins: function () { return HSGame.canShowAd('free_coins'); },
   showFreeCoins: function () { return HSGame.showAd('free_coins'); },
+  canShowSurprise: function () { return HSGame.canShowAd('surprise_food'); },
+  showSurprise: function () { return HSGame.showAd('surprise_food'); },
+  canShowFashion: function () { return HSGame.canShowAd('fashion_reward'); },
+  showFashion: function () { return HSGame.showAd('fashion_reward'); },
+  canShowBoost: function () { return HSGame.canShowAd('viral_boost'); },
+  showBoost: function () { return HSGame.showAd('viral_boost'); },
   // TikTok review buttons
   profileMissionDone: function () { return HSGame.tiktokMission.done('profile'); },
   shortcutMissionDone: function () { return HSGame.tiktokMission.done('shortcut'); },
@@ -2943,6 +2954,7 @@ __mods["src/art.js"] = function (require, module, exports, __filename, __dirname
 const U = require('./util.js');
 const D = require('./data.js');
 const S = require('./sprites.js');
+const WR = require('./wardrobe.js');
 const C = D.COLORS;
 const OUT = C.outline;
 const TAU = Math.PI * 2;
@@ -3508,12 +3520,24 @@ function streamerParts(ch) {
   return head && body && face ? { sp: sp, head: head, body: body, face: face } : null;
 }
 function streamer(ctx, ch, x, y, s, st) {
-  const P = streamerParts(ch); if (!P) { streamerVec(ctx, ch, x, y, s, st); return; }
+  const lk = st && st.look; const outfit = lk ? WR.BY_ID[lk.outfit] : null;
+  const P = streamerParts(ch);
+  if (!P) {
+    // vector fallback: sweater colour swap + the same overlays in vector face units (R = 95)
+    const ch2 = outfit && outfit.color ? Object.assign({}, ch, { top: outfit.color, topDark: outfit.dark }) : ch;
+    streamerVec(ctx, ch2, x, y, s, st);
+    if (lk) { ctx.save(); ctx.translate(x, y + ((st && st.bob) || 0)); ctx.scale(s, s); WR.drawBody(ctx, module.exports, lk, { nx: 0, ny: 95 * 0.72, bw: 200 }); WR.drawHead(ctx, module.exports, lk, { cx: 0, cy: 0, r: 95, ey: 4, ny: 95 * 0.8 }, ch, st && st.t); ctx.restore(); }
+    return;
+  }
   st = st || {}; const expr = S.EXPR[st.expr] ? st.expr : 'idle'; const t = st.t || 0; const sp = P.sp;
   const k = S.STREAMER_K * s;
   ctx.save(); ctx.translate(x, y + (st.bob || 0)); ctx.scale(k, k); ctx.translate(-sp.headAnchor[0], -sp.headAnchor[1]);
   // now in head-image pixels
-  ctx.drawImage(P.body, sp.neckOnHead[0] - sp.bodyAnchor[0], sp.neckOnHead[1] - sp.bodyAnchor[1]);
+  // outfit: another streamer's sweater layer (same pose) or a vector overlay on top of our own
+  let body = P.body, bodyAnchor = sp.bodyAnchor;
+  if (outfit && outfit.body && S.STREAMERS[outfit.body]) { const ob = S.get(S.STREAMERS[outfit.body].body); if (ob) { body = ob; bodyAnchor = S.STREAMERS[outfit.body].bodyAnchor; } }
+  ctx.drawImage(body, sp.neckOnHead[0] - bodyAnchor[0], sp.neckOnHead[1] - bodyAnchor[1]);
+  if (lk) WR.drawBody(ctx, module.exports, lk, { nx: sp.neckOnHead[0], ny: sp.neckOnHead[1], bw: 343 });
   ctx.drawImage(P.head, 0, 0);
   const ex = S.EXPR[expr]; let eyes = ex[0], mouth = ex[1];
   if ((expr === 'idle' || expr === 'open') && st.blink) eyes = 'eyes_blink';
@@ -3531,6 +3555,7 @@ function streamer(ctx, ch, x, y, s, st) {
   S.cell(ctx, P.face, S.FACE[mouth], S.FACE_MOUTH_AT[0] + mx, S.FACE_MOUTH_AT[1] + my, 240, 120);
   if (ex[2]) S.cell(ctx, P.face, S.FACE[ex[2]], S.FACE_FX_AT[0] + dx, S.FACE_FX_AT[1] + dy + Math.sin(t * 6) * 4, 240, 120);
   if (expr === 'fizzy') for (let i = 0; i < 3; i++) sparkle(ctx, ey[0] + [-180, 185, 140][i], ey[1] + [-70, -40, 120][i], 18 + Math.sin(t * 12 + i) * 6, '#fff');
+  if (lk) WR.drawHead(ctx, module.exports, lk, { cx: sp.headAnchor[0], cy: sp.headAnchor[1] - (sp.headAnchor[1] - ey[1]) * 0.2, r: sp.faceRadius, ey: ey[1], ny: sp.neckOnHead[1] }, ch, t);
   ctx.restore();
 }
 function mouthPos(x, y, s, bob, ch) {
@@ -3768,7 +3793,52 @@ function flames(ctx, x, y, r, t) {
   }
 }
 
-module.exports = { dishVec, mysteryBox, takeoutBox, homeRoom, restaurantBg, kitchenBg, tongs, buffetPan, scooter, flames, rr, circle, ellipse, shade, text, coin, star, uiStar, heart, eyeIcon, sparkle, lock, reaction, avatar, food, streamer, mouthPos, background, backgroundLive, table, phoneStick, livePill, profileBadge, coinPill, storeBackground, shelfBoard, priceTag, basket, machine, conveyor, cashier, cloud, logo };
+// ─── V3: one package on the table + the portion carried to the mouth ───
+// state: 'sealed' · 'opening' (k 0..1) · 'open' (e = pickups / 3) · 'empty'
+function pack(ctx, f, kind, x, y, size, state, k, e, t, toppings) {
+  const s = size / 100;
+  if (state === 'empty') { ctx.globalAlpha = 0.85; food(ctx, f, x, y, size, 1, t); ctx.globalAlpha = 1; for (let i = 0; i < 5; i++) circle(ctx, x - size * 0.25 + i * size * 0.12, y + size * 0.36 + (i % 2) * 4, size * 0.018, f.c3 || OUT, 0); return; }
+  const showFood = state === 'open' || (state === 'opening' && (kind === 'bag' || kind === 'cup' || kind === 'bottle' || k > 0.4));
+  if (kind === 'box' || kind === 'dome') {
+    if (showFood) { food(ctx, f, x, y, size, state === 'open' ? e : 0, t); toppingDots(ctx, toppings, x, y, size, state === 'open' ? e : 0); }
+    const lift = state === 'sealed' ? 0 : U.easeInOut(k); if (state === 'open') return;
+    ctx.save(); ctx.globalAlpha = 1 - Math.max(0, lift - 0.6) / 0.4; ctx.translate(x, y - lift * size * 0.7); ctx.rotate(-lift * 0.4); ctx.scale(s, s);
+    if (kind === 'box') { rr(ctx, -46, -36, 92, 74, 10); fillStroke(ctx, '#f3c58b', 4); ctx.fillStyle = '#e8b267'; ctx.fillRect(-42, -8, 84, 6); circle(ctx, 0, 8, 18, f.c1, 3); text(ctx, '♥', 0, 9, 18, '#fff', 0); }
+    else { ellipse(ctx, 0, 34, 50, 10, '#e9eef8', 4); ctx.beginPath(); ctx.moveTo(-46, 32); ctx.quadraticCurveTo(-46, -36, 0, -40); ctx.quadraticCurveTo(46, -36, 46, 32); ctx.closePath(); fillStroke(ctx, '#dfe3ee', 4); ellipse(ctx, -16, -10, 10, 18, 'rgba(255,255,255,0.7)', 0); circle(ctx, 0, -44, 7, '#c9cdd9', 3); }
+    ctx.restore(); ctx.globalAlpha = 1; return;
+  }
+  // bag / cup / bottle: the package itself is the food art; a seal sits on top
+  food(ctx, f, x, y, size, state === 'open' ? e : 0, t); toppingDots(ctx, toppings, x, y, size, state === 'open' ? e : 0);
+  if (state === 'open') return;
+  const g = state === 'sealed' ? 0 : U.easeInOut(k);
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
+  if (kind === 'bag') { ctx.translate(g * 40, -38 - g * 60); ctx.rotate(g * 0.9); ctx.globalAlpha = 1 - g; rr(ctx, -40, -6, 80, 14, 4); fillStroke(ctx, '#ffffff', 3); ctx.strokeStyle = 'rgba(91,61,59,0.5)'; ctx.lineWidth = 2; ctx.setLineDash([4, 4]); ctx.beginPath(); ctx.moveTo(-36, 1); ctx.lineTo(36, 1); ctx.stroke(); ctx.setLineDash([]); }
+  else if (kind === 'cup') { ctx.translate(-g * 50, -34 - g * 30); ctx.rotate(-g * 1.1); ctx.globalAlpha = 1 - g * 0.9; ellipse(ctx, 0, 0, 40, 11, f.c2 || '#fff', 4); text(ctx, 'OPEN', 0, 1, 10, f.c3 || OUT, 0); rr(ctx, 36, -4, 14, 8, 3); fillStroke(ctx, f.c1, 2); }
+  else { ctx.translate(0, -48 - g * 70); ctx.rotate(g * 2.5); ctx.globalAlpha = 1 - g; rr(ctx, -12, -8, 24, 16, 4); fillStroke(ctx, f.c1 || C.pink, 3); }
+  ctx.restore(); ctx.globalAlpha = 1;
+  if (state === 'opening' && kind === 'bottle' && g > 0.2) { for (let i = 0; i < 6; i++) { const a = -Math.PI / 2 + (i - 2.5) * 0.3; circle(ctx, x + Math.cos(a) * size * 0.3 * g, y - size * 0.5 + Math.sin(a) * size * 0.3 * g, size * 0.025, 'rgba(255,255,255,0.9)', 0); } }
+}
+function toppingDots(ctx, toppings, x, y, size, e) {
+  if (!toppings || !toppings.length || e >= 1) return; const K2 = require('./catalog.js');
+  for (let i = 0; i < toppings.length; i++) { const tp = K2.TOPPINGS[toppings[i]]; if (!tp) continue; const a = i / toppings.length * Math.PI * 2; circle(ctx, x + Math.cos(a) * size * 0.16 * (1 - e), y - size * 0.2 + Math.sin(a) * size * 0.05, size * 0.045, tp[1], 2); }
+}
+// one bite-sized portion (on chopsticks, fork, spoon or a sip) at (x, y)
+function portion(ctx, f, x, y, size, t) {
+  const s = size / 100; ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.rotate(Math.sin((t || 0) * 6) * 0.05);
+  const tags = f.tags || [], cat = f.cat;
+  const kind = tags.indexOf('drink') >= 0 || cat === 'drinks' ? 'sip' : tags.indexOf('noodle') >= 0 || cat === 'noodles' ? 'noodle' : cat === 'icecream' || (tags.indexOf('cold') >= 0 && tags.indexOf('dessert') >= 0) ? 'scoop' : tags.indexOf('dessert') >= 0 || cat === 'cakes' ? 'cake' : cat === 'snacks' || tags.indexOf('crunchy') >= 0 ? 'chip' : cat === 'fruit' || tags.indexOf('fruit') >= 0 ? 'fruit' : 'chunk';
+  const stick = function (x0, y0, x1, y1, col) { ctx.lineCap = 'round'; ctx.strokeStyle = OUT; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke(); ctx.strokeStyle = col; ctx.lineWidth = 4.5; ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke(); };
+  if (kind === 'noodle') { stick(-6, -40, 30, 40, '#c49a6c'); stick(6, -42, 40, 34, '#c49a6c'); ctx.strokeStyle = f.c1; ctx.lineWidth = 5; for (let i = 0; i < 5; i++) { ctx.beginPath(); ctx.moveTo(-14 + i * 6, -30); ctx.quadraticCurveTo(-22 + i * 7, 0, -10 + i * 5, 26 + (i % 2) * 6); ctx.stroke(); } }
+  else if (kind === 'sip') { ctx.beginPath(); ctx.moveTo(-20, -26); ctx.lineTo(20, -26); ctx.lineTo(15, 30); ctx.lineTo(-15, 30); ctx.closePath(); fillStroke(ctx, 'rgba(255,255,255,0.9)', 4); ctx.fillStyle = f.c1; ctx.fillRect(-17, -8, 33, 36); ctx.lineWidth = 6; ctx.strokeStyle = f.c3 || C.pink; ctx.beginPath(); ctx.moveTo(6, 0); ctx.lineTo(12, -46); ctx.stroke(); }
+  else if (kind === 'scoop') { stick(10, 14, 40, 44, '#d9dbe6'); ellipse(ctx, 4, 6, 18, 9, '#d9dbe6', 3); circle(ctx, 2, -6, 16, f.c1, 4); circle(ctx, -4, -11, 4, 'rgba(255,255,255,0.7)', 0); }
+  else if (kind === 'cake') { stick(8, 8, 40, 44, '#d9dbe6'); rr(ctx, -18, -20, 34, 28, 6); fillStroke(ctx, f.c2 || '#fff5f7', 4); rr(ctx, -18, -26, 34, 10, 5); fillStroke(ctx, f.c1, 3); }
+  else if (kind === 'chip') { ctx.beginPath(); ctx.moveTo(-20, 12); ctx.quadraticCurveTo(0, -30, 22, 8); ctx.quadraticCurveTo(0, 22, -20, 12); ctx.closePath(); fillStroke(ctx, f.c1, 4); circle(ctx, -2, 0, 3, f.c3 || OUT, 0); circle(ctx, 8, 6, 2.5, f.c3 || OUT, 0); }
+  else if (kind === 'fruit') { stick(6, 6, 38, 44, '#d9dbe6'); ellipse(ctx, 0, -6, 17, 14, f.c1, 4); ellipse(ctx, -5, -11, 4, 3, 'rgba(255,255,255,0.6)', 0); }
+  else { stick(-6, -40, 26, 42, '#c49a6c'); stick(6, -42, 36, 36, '#c49a6c'); ellipse(ctx, 0, -14, 20, 15, f.c1, 4); ellipse(ctx, -6, -19, 5, 3, 'rgba(255,255,255,0.5)', 0); }
+  ctx.restore();
+}
+
+module.exports = { pack, portion, dishVec, mysteryBox, takeoutBox, homeRoom, restaurantBg, kitchenBg, tongs, buffetPan, scooter, flames, rr, circle, ellipse, shade, text, coin, star, uiStar, heart, eyeIcon, sparkle, lock, reaction, avatar, food, streamer, mouthPos, background, backgroundLive, table, phoneStick, livePill, profileBadge, coinPill, storeBackground, shelfBoard, priceTag, basket, machine, conveyor, cashier, cloud, logo };
 
 };
 __mods["src/audio.js"] = function (require, module, exports, __filename, __dirname) {
@@ -4111,8 +4181,8 @@ function newShelfAt(n) { for (let i = 0; i < CATS.length; i++) if (CATS[i].unloc
 // ─── streamers ───
 const STREAMERS = [
   { id: 'luna', name: 'Luna', unlock: 1,  hair: '#cdb0ff', hairDark: '#a98ae6', skin: '#ffe6d6', top: '#9fe3c9', topDark: '#5fbf9f', style: 'buns',  acc: 'bow',   accColor: '#ff7fa8', eye: '#4a3340' },
-  { id: 'kiko', name: 'Kiko', unlock: 8,  hair: '#ffa552', hairDark: '#e07f2a', skin: '#ffe3cf', top: '#ffd95e', topDark: '#e0b52a', style: 'bob',   acc: 'star',  accColor: '#ffe066', eye: '#3d2b2b' },
-  { id: 'momo', name: 'Momo', unlock: 16, hair: '#4f5fae', hairDark: '#36427f', skin: '#ffe9dc', top: '#ffb3c7', topDark: '#e8759a', style: 'long',  acc: 'beret', accColor: '#b878e8', eye: '#2f2f4a' }
+  { id: 'kiko', name: 'Kiko', unlock: 10,  hair: '#ffa552', hairDark: '#e07f2a', skin: '#ffe3cf', top: '#ffd95e', topDark: '#e0b52a', style: 'bob',   acc: 'star',  accColor: '#ffe066', eye: '#3d2b2b' },
+  { id: 'momo', name: 'Momo', unlock: 20, hair: '#4f5fae', hairDark: '#36427f', skin: '#ffe9dc', top: '#ffb3c7', topDark: '#e8759a', style: 'long',  acc: 'beret', accColor: '#b878e8', eye: '#2f2f4a' }
 ];
 
 // ─── live chat ───
@@ -4160,19 +4230,15 @@ const UIM = require('./ui.js');
 const AU = require('./audio.js');
 const L = require('./levels.js');
 const K = require('./catalog.js');
-const M = require('./mech.js');
 const SC = require('./scenes.js');
+const ST = require('./stream.js');
+const WR = require('./wardrobe.js');
+const WS = require('./wardrobe-scene.js');
 const C = D.COLORS;
 
 const DESIGN_W = 540;
 const REACTIONS = ['heart', 'like', 'star', 'laugh', 'love', 'cool', 'smile'];
-const AD_FREE_LEVELS = 6;        // V2: interstitials start after level 6 (first chapter is ad-free)
-const BITE_GAP = 0.72;           // seconds between bites while the food is held at the mouth
-const MOUTH_RADIUS = 92;
-const RETURN = 1.4;              // bite pay returns this × what the food cost (or its nominal value when free)
-const HYPE_SPREAD = 1.45;        // expected average multiplier (taste × combo) the viewer goal is tuned for
-const TIP_AT = [0.25, 0.5, 0.75, 1, 1.35]; // × goal: viewer milestones that pay a small tip
-const INTRO = { bite: 'DRAG FOOD TO THE MOUTH', combo: 'KEEP EATING FOR A COMBO!', spice: 'SPICY FILLS THE HEAT METER · DRINKS COOL DOWN', requests: 'FANS ASK FOR FOOD · FEED WHAT THEY WANT!', mystery: 'TAP THE GIFT TO OPEN A MYSTERY BOX!' };
+const AD_FREE_STREAMS = 3;       // the first 3 streams are ad-free; after that every natural transition may show one (dashboard cooldown 30 s)
 
 class Game {
   constructor(platform, hs) {
@@ -4194,8 +4260,9 @@ class Game {
     platform.onTouch(this.onTouch.bind(this));
     this.audio.setMuted(!this.profile.get('sound'));
     this.restoreRun();
-    // V2: a brand-new player starts inside the first livestream (first interaction in < 3 s)
-    if (!this.run && !(this.profile.get('streams') || 0) && this.curLevel() === 1) this.startLevel(1);
+    this.hearts = [];
+    // a brand-new player starts inside the first livestream: the package is on the table (first tap < 3 s)
+    if (!this.run && !(this.profile.get('streams') || 0) && this.curLevel() === 1) this.startStream(1);
   }
   // ── plumbing ──
   resize() { const p = this.p; this.scale = p.width() * p.dpr() / DESIGN_W; this.W = DESIGN_W; this.H = Math.round(p.height() / p.width() * DESIGN_W); this.ui.W = this.W; this.ui.H = this.H; }
@@ -4210,56 +4277,22 @@ class Game {
   streamerDef() { return D.STREAMERS[U.clamp(this.profile.get('streamer') || 0, 0, D.STREAMERS.length - 1)]; }
   curLevel() { return U.clamp(this.profile.get('level') || 1, 1, L.LEVEL_COUNT); }
   stars() { try { return JSON.parse(this.profile.get('stars_json') || '{}'); } catch (e) { return {}; } }
-  // ── the run (a level in progress) persists in the profile so a closed app resumes the stream ──
-  saveRun() {
-    if (!this.run) { this.profile.set('run_json', ''); return; }
-    const r = this.run, items = [];
-    for (let i = 0; i < r.items.length; i++) { const it = r.items[i]; const o = { id: it.id, eaten: it.eaten, done: !!it.done }; if (it.boxed) o.boxed = 1; if (it.mystery) o.mystery = 1; if (it.gold) o.gold = 1; if (it.toppings) o.toppings = it.toppings; if (it.encore) o.encore = 1; items.push(o); }
-    this.profile.set('run_json', JSON.stringify({ v: 2, level: r.level, mode: r.mode, items: items, viewers: Math.round(r.viewers), peak: Math.round(r.peak), coins: r.coins, ms: r.ms, cost: r.cost, hu: r.hu, cpb: r.cpb, queue: r.queue, round: r.round, mech: r.mech ? r.mech.save() : null }));
-  }
-  restoreRun() {
-    try {
-      const r = JSON.parse(this.profile.get('run_json') || 'null');
-      if (!r || !r.items || !r.items.length) return;
-      const items = r.items.filter(function (it) { return !!K.dish(it.id) || it.mystery; });
-      if (!items.length) return;
-      const lv = L.level(r.level);
-      // v1 runs (no "v") were supermarket streams with the old economy: rebuild the pay units from the items
-      this.createRun(lv, items, r.cost || 0, { mode: r.mode || 'market', keep: r });
-    } catch (e) { this.run = null; }
-  }
   // ── level flow ──
-  startLevel(n) {
-    const lv = L.level(n); this.sessionLevels++; this.flies.length = 0; this.trans = 0.35;
-    if (lv.mode !== 'prestock' && (this.profile.get('coins') || 0) < lv.minCost) { this.care = { lv: lv }; this.setState('care'); return; }
-    if (lv.mode === 'prestock') { this.createRun(lv, lv.prestock.map(function (id) { return { id: id }; }), 0, { mode: 'prestock' }); this.beginStream(); return; }
-    if (lv.mode === 'delivery') { this.enterDelivery(lv); return; }
-    if (lv.mode === 'buffet') { this.enterBuffet(lv); return; }
-    if (lv.mode === 'kitchen') { this.enterKitchen(lv); return; }
-    this.market = { lv: lv, cats: lv.market.shelves, pick: lv.market.pick, cat: 0, basket: [], shake: 0 };
-    this.setState('market');
-  }
-  // The free fan gift: three cheap snacks when the player cannot afford the level (never a softlock, no ad needed).
-  takeCarePack() { const lv = this.care.lv; this.care = null; this.createRun(lv, L.CARE_PACK.map(function (id) { return { id: id }; }), 0, { mode: 'care' }); this.beginStream(); }
-  // A run = the food on the table + its pay units. `items`: [{ id, boxed?, mystery?, toppings? }]
-  createRun(lv, items, cost, opts) {
-    opts = opts || {}; const keep = opts.keep || null;
-    const list = [];
-    for (let i = 0; i < items.length; i++) { const s = items[i]; list.push({ id: s.id, eaten: s.eaten || 0, done: !!s.done, boxed: !!s.boxed, mystery: !!s.mystery, gold: !!s.gold, encore: !!s.encore, toppings: s.toppings || null }); }
-    if (!keep) for (let i = 0; i < lv.mystery; i++) list.push({ id: 'mystery', eaten: 0, done: false, mystery: true });
-    // later rounds are decided now (saved with the run, so a resumed stream gets the same food)
-    const queue = keep ? (keep.queue || []) : this.buildRounds(lv, opts.mode || lv.mode);
-    let bites = 0; for (let i = 0; i < list.length; i++) { const d = K.dish(list[i].id); bites += d ? d.bites : 3; }
-    for (let q = 0; q < queue.length; q++) for (let i = 0; i < queue[q].items.length; i++) { const d = K.dish(queue[q].items[i].id); bites += (d ? d.bites : 3) * 0.75; }
-    const startMult = 1 + (opts.bonus || 0);
-    const start = Math.round(lv.startViewers * startMult);
-    const hu = keep && keep.hu ? keep.hu : Math.max(1, (lv.goal - lv.startViewers) / (bites * HYPE_SPREAD));
-    const cpb = keep && keep.cpb ? keep.cpb : Math.max(1, Math.round(Math.max(cost, L.nominalCost(lv.n)) * RETURN / bites));
-    this.run = { level: lv.n, lv: lv, mode: opts.mode || lv.mode, items: list, cost: cost, hu: hu, cpb: cpb,
-      viewers: keep ? (keep.viewers || start) : start, peak: keep ? (keep.peak || keep.viewers || start) : start, coins: keep ? (keep.coins || 0) : 0, ms: keep ? (keep.ms || 0) : 0,
-      queue: queue, round: keep ? (keep.round || 0) : 0, roundT: 0, bonusText: opts.bonusText || '', t: 0, endT: -1, chatT: 1.2, reactT: 0, mechSave: keep ? keep.mech : null };
-    if (keep && keep.v !== 2) { this.run.ms = 0; } // v1 milestone index meant absolute viewers
-    this.saveRun();
+  startLevel(n) { this.startStream(n); }
+  // optional activities from the home screen — each ends in a one-food bonus stream
+  modeOpen(id) { const m = L.modeOf(id); return !!m && Math.max(this.curLevel(), (this.profile.get('levels_done') || 0) + 1) >= m.unlock; }
+  enterActivity(id) {
+    const m = L.modeOf(id); if (!m) return;
+    if (!this.modeOpen(id)) { this.audio.play('error'); this.showToast(m.name + ' opens at stream ' + m.unlock); return; }
+    const lv = L.sideConfig(id, this.curLevel()); const coins = this.profile.get('coins') || 0;
+    let min = 0;
+    if (id === 'market') { min = 1e9; for (let i = 0; i < lv.market.shelves.length; i++) min = Math.min(min, D.CAT_BY_ID[lv.market.shelves[i]].price); }
+    else if (id === 'delivery') { min = 1e9; for (let i = 0; i < lv.delivery.rest.length; i++) K.mainsOf(lv.delivery.rest[i]).forEach(function (d) { min = Math.min(min, d.price); }); }
+    else if (id === 'buffet') min = lv.buffet.fee; else if (id === 'kitchen') min = K.RECIPE_BY_ID[lv.kitchen.recipe].price;
+    if (coins < min) { this.audio.play('error'); this.showToast('Need ' + U.fmtCoins(min) + ' coins', 'Main streams are always free — earn more there!'); return; }
+    this.flies.length = 0; this.trans = 0.3;
+    if (id === 'delivery') this.enterDelivery(lv); else if (id === 'buffet') this.enterBuffet(lv); else if (id === 'kitchen') this.enterKitchen(lv);
+    else { this.market = { lv: lv, cats: lv.market.shelves, pick: 1, cat: 0, basket: [], shake: 0 }; this.setState('market'); }
   }
   marketTotal() { let t = 0; for (let i = 0; i < this.market.basket.length; i++) t += K.dish(this.market.basket[i]).price; return t; }
   beginCheckout() {
@@ -4285,163 +4318,12 @@ class Game {
     if (!left) {
       c.done = true; c.thankT = 0; this.audio.play('cash');
       this.profile.add('coins', -c.total);
-      const items = []; for (let i = 0; i < c.items.length; i++) items.push({ id: c.items[i].id });
-      this.createRun(c.lv, items, c.total, { mode: 'market' });
-    }
-  }
-  beginStream() {
-    const r = this.run; r.lv = L.level(r.level); r.t = 0; r.endT = -1; r.chatT = 1.0; r.reactT = 0; r.challengePaid = false; r.smoke = 0;
-    r.mech = new M.Mech(r.lv, this.streamerDef().id); r.mech.load(r.mechSave); r.mechSave = null;
-    r.intro = r.lv.intro && (this.profile.get('levels_done') || 0) < r.lv.n ? INTRO[r.lv.intro] : '';
-    for (let i = 0; i < r.items.length; i++) { const it = r.items[i]; it.drag = false; it.x = it.y = undefined; it.open = 0; }
-    this.reactions.length = 0; this.chat.length = 0; this.floats.length = 0; this.confetti.length = 0;
-    this.face = { expr: 'idle', until: 0, blink: false, blinkT: 2, t: 0 };
-    this.layoutStream();
-    this.pushChat('idle');
-    this.setState('stream');
-  }
-  layoutStream() {
-    const r = this.run, W = this.W, H = this.H, n = r.items.length;
-    const per = n <= 3 ? 3 : n <= 6 ? 3 : 4;
-    const rows = []; for (let i = 0; i < n; i += per) { const row = []; for (let k = i; k < Math.min(n, i + per); k++) row.push(k); rows.push(row); }
-    if (rows.length > 1 && rows[rows.length - 1].length === 1 && rows[0].length > 2) rows[rows.length - 1].unshift(rows[rows.length - 2].pop());
-    const y1 = H * 0.615, y2 = H * 0.78; r.itemSize = per === 4 ? 104 : 124;
-    for (let ri = 0; ri < rows.length; ri++) {
-      const row = rows[ri]; const cnt = row.length;
-      const xs = cnt === 1 ? [0.5] : cnt === 2 ? [0.34, 0.66] : cnt === 3 ? [0.22, 0.5, 0.78] : [0.14, 0.38, 0.62, 0.86];
-      for (let k = 0; k < cnt; k++) { const it = r.items[row[k]]; it.hx = W * xs[k]; it.hy = ri === 0 ? y1 : y2; if (!it.drag || it.x === undefined) { it.x = it.hx; it.y = it.hy; } }
+      c.food = c.items[0].id;
     }
   }
   headPos() { return { x: this.W / 2, y: this.H * 0.305, s: Math.min(1, this.H / 1000) }; }
   mouth() { const h = this.headPos(); return A.mouthPos(h.x, h.y, h.s, this.face.bob || 0, this.streamerDef()); }
-  bite(it) {
-    const r = this.run, f = K.dish(it.id); if (!f) return;
-    const m = this.mouth(); const dist = U.dist(it.x === undefined ? m.x : it.x, it.y === undefined ? m.y : it.y, m.x, m.y);
-    const taste = f.tastes ? f.tastes[it.eaten % f.tastes.length] : f.taste;
-    const res = r.mech.bite(f, dist, { taste: taste });
-    it.eaten++;
-    const hype = Math.round(r.hu * D.TASTES[taste].mult * res.hypeMult * (it.gold ? 1.5 : 1) * (0.9 + Math.random() * 0.2));
-    const coins = Math.max(1, Math.round(r.cpb * res.coinMult * (it.gold ? 2 : 1) * (res.perfect ? 1.1 : 1) * (it.encore ? 0.6 : 1)));
-    r.viewers += hype; r.peak = Math.max(r.peak, r.viewers); r.coins += coins;
-    this.profile.add('coins', coins);
-    this.setFace(D.TASTES[taste].face, 0.8);
-    this.audio.play(f.sound || 'bite', { rate: 0.9 + Math.random() * 0.25, gain: res.perfect ? 1.2 : 1 });
-    if (taste === 'spicy') this.audio.play('fire'); else if (taste === 'cold') this.audio.play('shiver'); else if (taste === 'fizzy') this.audio.play('fizz'); else if (taste === 'sour') this.audio.play('sour'); else if (taste === 'sweet') this.audio.play('sweet', { gain: 0.6 });
-    this.vibrate('short');
-    this.floatText('+' + U.fmtViewers(hype), m.x + 70, m.y - 30, C.white, 20);
-    this.floatText('+' + coins, m.x - 80, m.y - 40, C.gold, 18, true);
-    for (let i = 0; i < 4; i++) this.spawnReaction();
-    if (Math.random() < 0.5) this.pushChat(Math.random() < 0.5 ? taste : 'bite');
-    this.mechEvents(res.events);
-    this.checkMilestones();
-    if (it.challengeT > 0 && it.eaten >= f.bites) { const b = Math.round(r.cpb * 3); r.coins += b; this.profile.add('coins', b); this.floatText('SPICY CHALLENGE! +' + b, this.W / 2, this.H * 0.44, C.gold, 26, true); }
-    if (it.eaten >= f.bites) {
-      it.done = true; this.drag = null;
-      this.spawnSparkles(it.x, it.y, 14); this.floatText('Yum!', it.x, it.y - 40, C.pink, 26);
-      this.audio.play('pop'); this.pushChat('finish');
-      let left = 0; for (let i = 0; i < r.items.length; i++) if (!r.items[i].done) left++;
-      if (!left) { if (r.queue && r.queue.length) r.roundT = 0.9; else { r.endT = 0; this.setFace('yum', 9); this.audio.play('win'); this.spawnConfetti(this.W / 2, this.H * 0.4, 50); } }
-    }
-    this.saveRun();
-  }
-  // the encore rounds of a level → [{ type, items: [{ id, boxed?, mystery?, encore }] }]
-  buildRounds(lv, mode) {
-    const out = []; const pool = mode === 'care' ? L.CARE_PACK : L.sourcePool(lv);
-    const pick = function (list) { return list[Math.floor(Math.random() * list.length)]; };
-    for (let i = 0; i < lv.rounds.length; i++) {
-      const sp = lv.rounds[i], items = [];
-      for (let k = 0; k < sp.count; k++) {
-        if (sp.type === 'mystery') items.push({ id: 'mystery', mystery: true, encore: true });
-        else if (sp.type === 'spicy') items.push({ id: k === sp.count - 1 ? pick(L.COOL_DRINKS) : pick(L.SPICY_COURSE), encore: true });
-        else items.push({ id: pick(pool), boxed: mode === 'delivery', encore: true });
-      }
-      out.push({ type: sp.type, items: items });
-    }
-    return out;
-  }
-  nextRound() {
-    const r = this.run, q = r.queue.shift(); r.round++;
-    r.items = r.items.filter(function (it) { return !it.done; });
-    for (let i = 0; i < q.items.length; i++) { const s = q.items[i]; r.items.push({ id: s.id, eaten: 0, done: false, boxed: !!s.boxed, mystery: !!s.mystery, encore: true, open: 0 }); }
-    r.mech.rush = q.type === 'rush'; if (r.mech.rush && r.mech.reqT > 2) r.mech.reqT = 1.5;
-    this.layoutStream(); for (let i = 0; i < r.items.length; i++) { const it = r.items[i]; it.x = it.hx; it.y = it.hy - 60; }
-    const sub = { encore: 'FANS SENT MORE FOOD!', mystery: 'MYSTERY GIFTS!', spicy: 'SPICY CHALLENGE COURSE!', rush: 'FAN REQUEST RUSH!' }[q.type];
-    this.floatText('ROUND ' + (r.round + 1), this.W / 2, this.H * 0.44, C.pink, 38, true); this.floatText(sub, this.W / 2, this.H * 0.44 + 40, C.white, 20, true);
-    this.audio.play('levelup', { gain: 0.7 }); this.spawnConfetti(this.W / 2, this.H * 0.5, 24); this.pushChat(q.type === 'spicy' ? 'spicy' : 'bite'); this.setFace('yum', 1);
-    this.saveRun();
-  }
-  // turn mechanic events into feedback
-  mechEvents(ev) {
-    const r = this.run, W = this.W, H = this.H, m = this.mouth();
-    for (let i = 0; i < ev.length; i++) {
-      const e = ev[i];
-      if (e.type === 'perfect') { this.floatText(e.streak > 2 ? 'PERFECT x' + e.streak + '!' : 'PERFECT!', m.x, m.y - 90, C.yellow, 24, true); this.spawnSparkles(m.x, m.y, 8); }
-      else if (e.type === 'comboMilestone') { this.floatText('COMBO x' + e.combo + '!', W / 2, H * 0.47, C.pink, 32, true); this.spawnConfetti(W / 2, H * 0.45, 16); this.audio.play('like'); this.pushChat('bite'); }
-      else if (e.type === 'comboLost') this.floatText('combo x' + e.combo + ' ended', W * 0.78, H * 0.24, C.textLight, 16);
-      else if (e.type === 'onFire') { this.floatText('ON FIRE!', W / 2, H * 0.47, '#ff7a3a', 34, true); this.audio.play('fire', { gain: 1.2 }); this.pushChat('spicy'); }
-      else if (e.type === 'tooHot') { this.setFace('spicy', 1.6); r.smoke = 1.6; this.floatText('TOO HOT!!', W / 2, H * 0.47, C.red, 38, true); this.audio.play('error'); this.vibrate('long'); this.pushChat('spicy'); }
-      else if (e.type === 'request') { this.audio.play('blip', { gain: 0.9 }); this.chat.push({ avatar: D.AVATARS[Math.floor(Math.random() * D.AVATARS.length)], text: e.text, life: 0, hot: true }); if (this.chat.length > 4) this.chat.shift(); }
-      else if (e.type === 'reqDone') { r.viewers += e.boost; r.peak = Math.max(r.peak, r.viewers); this.floatText('FANS LOVE IT!  +' + U.fmtViewers(e.boost), W / 2, H * 0.44, C.gold, 28, true); for (let k = 0; k < 10; k++) this.spawnReaction('heart'); this.audio.play('levelup', { gain: 0.6 }); this.pushChat('bite'); }
-      else if (e.type === 'reqMissed') this.pushChat('idle');
-      else if (e.type === 'kikoHearts') { for (let k = 0; k < 3; k++) this.spawnReaction('heart'); }
-      else if (e.type === 'challenge') { const b = Math.round(r.cpb * 4); r.coins += b; this.profile.add('coins', b); r.challengePaid = true; this.floatText('CHALLENGE CLEAR!  +' + b, W / 2, H * 0.42, C.gold, 28, true); this.spawnConfetti(W / 2, H * 0.4, 30); this.audio.play('levelup'); }
-    }
-  }
-  checkMilestones() {
-    const r = this.run, lv = r.lv;
-    while (r.ms < TIP_AT.length && r.viewers >= lv.goal * TIP_AT[r.ms]) {
-      const k = TIP_AT[r.ms]; r.ms++;
-      const tip = Math.round(5 + 2 * lv.n + r.cpb * 0.5); r.coins += tip; this.profile.add('coins', tip);
-      const big = k === 1 ? 'GOAL REACHED!' : k > 1 ? 'SUPER STREAM!' : U.fmtViewers(lv.goal * k) + ' VIEWERS!';
-      this.floatText(big, this.W / 2, this.H * 0.47, C.gold, 34, true);
-      this.floatText('tips +' + tip, this.W / 2, this.H * 0.47 + 36, C.white, 20);
-      this.audio.play('ding'); this.spawnConfetti(this.W / 2, this.H * 0.45, k >= 1 ? 40 : 20);
-      this.pushChat('milestone', U.fmtViewers(lv.goal * k));
-    }
-  }
-  // tap on a closed delivery box or a mystery gift on the table
-  openItem(it) {
-    const r = this.run; if (it.open > 0) return;
-    it.open = 0.001; this.audio.play('pop'); this.vibrate('short');
-  }
-  finishOpen(it) {
-    const r = this.run, m = this.mouth();
-    if (it.boxed) { it.boxed = false; this.spawnSparkles(it.x, it.y, 12); this.setFace('open', 0.6); this.pushChat('bite'); this.saveRun(); return; }
-    if (!it.mystery) return;
-    const pool = []; for (let i = 0; i < r.items.length; i++) if (!r.items[i].mystery && K.dish(r.items[i].id)) pool.push(r.items[i].id);
-    const out = r.mech.mystery(pool.length ? pool : ['cat_chips']);
-    it.mystery = false; it.id = out.id; it.kind = out.kind; it.gold = out.kind === 'rare'; it.eaten = 0;
-    const label = { delicious: 'DELICIOUS!', spicy: 'SUPER SPICY!', frozen: 'FROZEN!', rare: 'RARE DESSERT!', funny: 'WAIT... WHAT?!' }[out.kind];
-    const face = { delicious: 'yum', spicy: 'spicy', frozen: 'cold', rare: 'yum', funny: 'sour' }[out.kind];
-    this.setFace(face, 1.2); this.floatText(label, it.x, it.y - 70, out.kind === 'rare' ? C.gold : C.white, 26, true);
-    this.floatText(K.dish(out.id).name, it.x, it.y - 40, C.white, 16);
-    if (out.kind === 'spicy') { it.challengeT = 8; this.floatText('EAT IT IN 8 S!', this.W / 2, this.H * 0.47, '#ff7a3a', 28, true); }
-    if (out.kind === 'frozen') { r.mech.combo += 3; }
-    if (out.kind === 'funny') { r.viewers += Math.round(r.lv.goal * 0.05); this.pushChat('sour'); }
-    this.spawnConfetti(it.x, it.y, 24); this.audio.play(out.kind === 'rare' ? 'levelup' : 'confetti');
-    this.saveRun();
-  }
   setFace(expr, dur) { this.face.expr = expr; this.face.until = this.time + dur; this.face.t = 0; }
-  finishRun() {
-    const r = this.run, p = this.profile, lv = r.lv;
-    const stars = r.peak >= lv.goal3 ? 3 : r.peak >= lv.goal ? 2 : 1;
-    if (r.mech && r.mech.best > (p.get('combo_best') || 0)) p.set('combo_best', r.mech.best);
-    const st = this.stars(); const before = st[lv.n] || 0; if (stars > before) st[lv.n] = stars; p.set('stars_json', JSON.stringify(st));
-    p.add('streams', 1);
-    if (r.peak > (p.get('best_viewers') || 0)) p.set('best_viewers', Math.round(r.peak));
-    const firstClear = lv.n > (p.get('levels_done') || 0);
-    if (firstClear) { p.set('levels_done', lv.n); this.hs.claimLevelBonus(); }
-    if (lv.n >= (p.get('level') || 1)) p.set('level', Math.min(L.LEVEL_COUNT, lv.n + 1));
-    if ((p.get('streams') || 0) === 1) this.hs.claimFirstStream();
-    const unlocks = [];
-    // what the NEXT level brings (shown once, on the first clear)
-    if (firstClear && lv.n < L.LEVEL_COUNT) { const nx = L.level(lv.n + 1); for (let i = 0; i < nx.unlocks.length && i < 2; i++) unlocks.push('NEXT: ' + nx.unlocks[i]); }
-    this.result = { lv: lv, stars: stars, peak: Math.round(r.peak), coins: r.coins, firstClear: firstClear, unlocks: unlocks, bonusTaken: false, t: 0,
-      combo: r.mech ? r.mech.best : 0, perfects: r.mech ? r.mech.perfects : 0, requests: r.mech ? r.mech.reqDone : 0, challenge: r.mech && lv.challenge ? (r.mech.challengeDone ? 'done' : 'missed') : '' };
-    this.run = null; this.saveRun();
-    if (unlocks.length) this.audio.play('levelup');
-    this.setState('result');
-  }
   // ── effects ──
   floatText(str, x, y, color, size, big) { this.floats.push({ str: str, x: x, y: y, color: color, size: size || 20, life: 0, max: big ? 1.6 : 1.1, big: !!big }); if (this.floats.length > 12) this.floats.shift(); }
   spawnReaction(kind) { const left = Math.random() < 0.5; const x = left ? this.W * (0.05 + Math.random() * 0.14) : this.W * (0.8 + Math.random() * 0.15); this.reactions.push({ kind: kind || REACTIONS[Math.floor(Math.random() * REACTIONS.length)], x: x, y: this.H * (0.55 + Math.random() * 0.25), vy: 70 + Math.random() * 60, sway: Math.random() * 6, life: 0, max: 2.2 + Math.random(), s: 12 + Math.random() * 8 }); if (this.reactions.length > 40) this.reactions.shift(); }
@@ -4487,29 +4369,7 @@ class Game {
     const c = this.checkout; c.flash = Math.max(0, c.flash - dt * 3);
     if (c.auto && !c.done) { c.autoT -= dt; if (c.autoT <= 0) { c.autoT = 0.32; for (let i = 0; i < c.items.length; i++) { const it = c.items[i]; if (!it.scanned && !it.fly && !(this.drag && this.drag.item === it)) { this.flyToScanner(it); break; } } } }
     for (let i = 0; i < c.items.length; i++) { const it = c.items[i]; if (it.fly) { it.fly.t += dt * 2.5; const k = U.easeInOut(it.fly.t); it.x = U.lerp(it.fly.x0, it.fly.x1, k); it.y = U.lerp(it.fly.y0, it.fly.y1, k) - Math.sin(k * Math.PI) * 60; if (it.fly.t >= 1) { it.fly = null; this.scanItem(it); } } else if (this.drag && this.drag.item === it) { /* follows the finger */ } else if (!it.scanned) { it.x = U.damp(it.x, it.hx, 12, dt); it.y = U.damp(it.y, it.hy, 12, dt); } }
-    if (c.done) { c.thankT += dt; if (c.thankT > 1.0) this.beginStream(); }
-  }
-  updateStream(dt) {
-    const r = this.run; r.t += dt; if (r.smoke > 0) r.smoke = Math.max(0, r.smoke - dt);
-    if (r.roundT > 0) { r.roundT -= dt; if (r.roundT <= 0) { r.roundT = 0; this.nextRound(); } }
-    // opening boxes / mystery gifts
-    for (let i = 0; i < r.items.length; i++) { const it = r.items[i]; if (it.open > 0 && (it.boxed || it.mystery)) { it.open += dt * 2.4; if (it.open >= 1) { it.open = 0; this.finishOpen(it); } } if (it.challengeT > 0 && !it.done) it.challengeT = Math.max(0, it.challengeT - dt); }
-    // mechanics: combo timeout, spice cooling, fan requests (only for food still on the table)
-    if (r.endT < 0 && r.mech) { const tags = []; for (let i = 0; i < r.items.length; i++) { const it = r.items[i]; if (it.done || it.boxed || it.mystery) continue; const d = K.dish(it.id); if (d) for (let k = 0; k < d.tags.length; k++) if (tags.indexOf(d.tags[k]) < 0) tags.push(d.tags[k]); } this.mechEvents(r.mech.update(dt, tags)); }
-    // items drift home when not held
-    for (let i = 0; i < r.items.length; i++) { const it = r.items[i]; if (it.done) continue; if (this.drag && this.drag.item === it) continue; it.x = U.damp(it.x, it.hx, 14, dt); it.y = U.damp(it.y, it.hy, 14, dt); }
-    // feeding: held at the mouth → bites on a timer
-    if (this.drag && this.drag.item && !this.drag.item.done && this.state === 'stream') {
-      const d = this.drag, m = this.mouth(); const near = U.dist(d.item.x, d.item.y, m.x, m.y) < MOUTH_RADIUS;
-      if (near) { if (this.face.expr === 'idle') this.face.expr = 'open'; d.biteT -= dt; if (d.biteT <= 0) { this.bite(d.item); d.biteT = BITE_GAP; } }
-      else { d.biteT = Math.min(d.biteT, 0.25); if (this.face.expr === 'open') this.face.expr = 'idle'; }
-    } else if (this.face.expr === 'open') this.face.expr = 'idle';
-    // viewers drift: slowly decay toward a floor when nobody eats (keeps the number alive)
-    if (r.endT < 0) { const floor = r.lv.startViewers; if (r.viewers > floor) r.viewers = Math.max(floor, r.viewers - r.viewers * 0.004 * dt); }
-    // ambient reactions & chat
-    r.reactT -= dt; if (r.reactT < 0) { this.spawnReaction(); r.reactT = 0.35 + Math.random() * 0.7; }
-    r.chatT -= dt; if (r.chatT < 0) { this.pushChat('idle'); r.chatT = 2.5 + Math.random() * 2.5; }
-    if (r.endT >= 0) { r.endT += dt; if (r.endT > 2.0) this.finishRun(); }
+    if (c.done) { c.thankT += dt; if (c.thankT > 1.0 && this.state === 'checkout') this.startFoodStream(c.food, { side: 'market', cost: c.total }); }
   }
   // ── input ──
   onTouch(kind, id, cx, cy) {
@@ -4517,21 +4377,22 @@ class Game {
     if (this.frozen) return;
     if (kind === 'start') {
       this.audio.unlock();
+      if (this.streamTouch('start', id, x, y)) return;
       if (this.sceneTouch('start', id, x, y)) return;
-      if (this.state === 'stream' && this.run && this.run.endT < 0) { const it = this.hitStreamItem(x, y); if (it && (it.boxed || it.mystery)) { this.openItem(it); return; } if (it) { this.drag = { id: id, item: it, ox: it.x - x, oy: it.y - y, biteT: 0.22, sx: x, sy: y, moved: false }; it.drag = true; this.audio.play('pop', { gain: 0.5 }); return; } }
       if (this.state === 'checkout' && !this.checkout.done) { const it = this.hitCheckoutItem(x, y); if (it) { this.checkout.auto = false; this.drag = { id: id, item: it, ox: it.x - x, oy: it.y - y, sx: x, sy: y, moved: false }; this.audio.play('pop', { gain: 0.5 }); return; } }
       this.ui.touchStart(id, x, y);
     } else if (kind === 'move') {
+      if (this.streamTouch('move', id, x, y)) return;
       if (this.sceneTouch('move', id, x, y)) return;
       if (this.drag && this.drag.id === id && this.drag.item) { const d = this.drag; d.item.x = x + d.ox; d.item.y = y + d.oy; if (U.dist(x, y, d.sx, d.sy) > 12) d.moved = true; if (this.state === 'checkout') this.checkScanner(d.item); return; }
       this.ui.touchMove(id, x, y);
     } else {
+      if (this.streamTouch('end', id, x, y)) return;
       if (this.sceneTouch('end', id, x, y)) return;
       if (this.drag && this.drag.id === id && this.drag.item) { const d = this.drag; this.drag = null; if (d.item) d.item.drag = false; if (this.state === 'checkout' && !d.moved && !d.item.scanned) this.flyToScanner(d.item); else if (this.state === 'checkout') this.checkScanner(d.item); return; }
       const b = this.ui.touchEnd(id, x, y); if (b) this.tap(b.id);
     }
   }
-  hitStreamItem(x, y) { const r = this.run; for (let i = r.items.length - 1; i >= 0; i--) { const it = r.items[i]; if (it.done) continue; if (U.dist(x, y, it.x, it.y) < 64) return it; } return null; }
   hitCheckoutItem(x, y) { const c = this.checkout; for (let i = c.items.length - 1; i >= 0; i--) { const it = c.items[i]; if (it.scanned || it.fly) continue; if (U.dist(x, y, it.x, it.y) < 56) return it; } return null; }
   scannerRect() { const r = this.machineRect(); return { x: r.x + r.w * 0.22, y: r.y + r.h * 0.72, w: r.w * 0.56, h: r.h * 0.3 }; }
   checkScanner(it) { if (it.scanned || it.fly) return; const s = this.scannerRect(); if (it.x > s.x && it.x < s.x + s.w && it.y > s.y && it.y < s.y + s.h) { this.drag = null; this.scanItem(it); } }
@@ -4541,11 +4402,10 @@ class Game {
     this.audio.play('click', { gain: 0.6 });
     if (this.sceneTap(id)) return;
     switch (id) {
-      case 'care_take': this.takeCarePack(); break;
-      case 'care_coins': this.popupFrom = 'home'; this.care = null; this.setState('coins'); break;
-      case 'play': if (this.run) this.beginStream(); else this.startLevel(this.curLevel()); break;
+      case 'play': if (this.run) this.beginStream(); else this.startStream(this.curLevel()); break;
+      case 'wardrobe': if (this.curLevel() < WR.OPEN_AT && (this.profile.get('levels_done') || 0) < WR.OPEN_AT) { this.audio.play('error'); this.showToast('Wardrobe opens after stream ' + WR.OPEN_AT); } else { this.wardTab = this.wardTab || 0; this.setState('wardrobe'); } break;
       case 'levels': this.levelPage = Math.floor((this.curLevel() - 1) / 15); this.setState('levels'); break;
-      case 'page0': case 'page1': this.levelPage = +id.slice(4); break;
+      case 'page0': case 'page1': case 'page2': this.levelPage = +id.slice(4); break;
       case 'streamers': this.setState('streamers'); break;
       case 'home': this.setState('home'); break;
       case 'sound': p.set('sound', !p.get('sound')); this.audio.setMuted(!p.get('sound')); break;
@@ -4564,8 +4424,13 @@ class Game {
       case 'resume': this.setState('stream'); break;
       case 'leave': this.saveRun(); this.setState('home'); break;
       case 'bonus_ad': this.watchBonus(); break;
-      case 'next': this.afterResultAd(function () { self.startLevel(Math.min(L.LEVEL_COUNT, self.result.lv.n + 1)); }); break;
-      case 'replay': this.afterResultAd(function () { self.startLevel(self.result.lv.n); }); break;
+      case 'surprise_ad': this.watchSurprise(); break;
+      case 'boost_ad': this.watchBoost(); break;
+      case 'fashion_ad': this.watchFashion(); break;
+      case 'res_home': this.afterResultAd(function () { self.setState('home'); }); break;
+      case 'res_main': this.afterResultAd(function () { self.startStream(self.curLevel()); }); break;
+      case 'next': this.afterResultAd(function () { self.startStream(Math.min(L.LEVEL_COUNT, self.result.lv.n + 1)); }); break;
+      case 'replay': this.afterResultAd(function () { self.startStream(self.result.lv.n); }); break;
       case 'share': this.popup = 'share'; this.setState('popup'); break;
       case 'mission_profile': this.popup = 'profile'; this.setState('popup'); break;
       case 'mission_shortcut': this.popup = 'shortcut'; this.setState('popup'); break;
@@ -4577,7 +4442,9 @@ class Game {
         if (this.popup !== 'share') { this.popup = null; this.setState('home'); }
         break;
       default:
-        if (id.indexOf('item') === 0) this.pickItem(+id.slice(4));
+        if (id.indexOf('side_') === 0) { const mode = id.slice(5); if (this.state === 'result') this.afterResultAd(function () { self.enterActivity(mode); }); else this.enterActivity(mode); }
+        else if (this.wardrobeTap(id)) { /* wardrobe */ }
+        else if (id.indexOf('item') === 0) this.pickItem(+id.slice(4));
         else if (id.indexOf('bk') === 0) this.removeBasket(+id.slice(2));
         else if (id.indexOf('lvl') === 0) this.startLevel(+id.slice(3));
         else if (id.indexOf('str') === 0) this.pickStreamer(+id.slice(3));
@@ -4596,22 +4463,68 @@ class Game {
   removeBasket(i) { const m = this.market; if (i < m.basket.length) { m.basket.splice(i, 1); this.audio.play('drop'); } }
   pickStreamer(i) { const s = D.STREAMERS[i]; if (!s) return; if (this.run) { this.audio.play('error'); this.showToast('Finish the stream first'); return; } if (this.curLevel() < s.unlock && (this.profile.get('levels_done') || 0) + 1 < s.unlock) { this.audio.play('error'); this.showToast('Reach level ' + s.unlock + ' to unlock ' + s.name); return; } this.profile.set('streamer', i); this.audio.play('sweet'); }
   // ── ads (every showAd runs inside the tap that asked for it) ──
+  // Measured, not assumed: every request / impression / completion / reward is counted per place
+  // (profile ad_stats + a session log for "impressions in the last 5 minutes"). A null result = not shown.
+  adStats() { try { return JSON.parse(this.profile.get('ad_stats') || '{}'); } catch (e) { return {}; } }
+  adCount(place, key) { const st = this.adStats(); st[place] = st[place] || { req: 0, imp: 0, done: 0, grant: 0, fail: 0 }; st[place][key]++; this.profile.set('ad_stats', JSON.stringify(st)); }
+  adRun(place, promise, after) {
+    const self = this; this.adBusy = true; this.adCount(place, 'req');
+    const t0 = this.clock();
+    return promise.then(function (r) {
+      self.adBusy = false;
+      if (r === null || r === undefined) { self.adCount(place, 'fail'); after(null); return; }
+      self.adCount(place, 'imp'); self.adCount(place, 'done'); (self.adLog = self.adLog || []).push(t0);
+      let granted = false; for (const k in r) if (k.charAt(0) !== '$') granted = true; if (granted) self.adCount(place, 'grant');
+      after(r);
+    }, function () { self.adBusy = false; self.adCount(place, 'fail'); after(null); });
+  }
+  clock() { return this.wall !== undefined ? this.wall : this.time; }
+  adsLast5min() { const now = this.clock(), log = this.adLog || []; let n = 0; for (let i = 0; i < log.length; i++) if (now - log[i] <= 300) n++; return n; }
+  noAds() { return (this.profile.get('no_ads') || 0) > 0; }
   afterResultAd(go) {
-    const self = this; const noAds = (this.profile.get('no_ads') || 0) > 0;
-    const eligible = this.result && this.result.lv.n > AD_FREE_LEVELS;
-    if (noAds || !eligible || this.adBusy || !this.hs.canShowStreamEnd()) { go(); return; }
-    this.adBusy = true;
-    this.hs.showStreamEnd().then(function () { self.adBusy = false; go(); }, function () { self.adBusy = false; go(); });
+    const eligible = (this.profile.get('streams') || 0) > AD_FREE_STREAMS;
+    if (this.noAds() || !eligible || this.adBusy || !this.hs.canShowStreamEnd()) { go(); return; }
+    this.adRun('stream_end', this.hs.showStreamEnd(), function () { go(); });
   }
   watchBonus() {
     if (this.adBusy || !this.hs.canShowBonusCoins()) return;
-    const self = this; this.adBusy = true; this.result.bonusTaken = true;
-    this.hs.showBonusCoins().then(function (r) { self.adBusy = false; if (r === null) { self.result.bonusTaken = false; self.showToast('No ad right now'); } }, function () { self.adBusy = false; self.result.bonusTaken = false; });
+    const self = this; this.result.bonusTaken = true;
+    this.adRun('bonus_coins', this.hs.showBonusCoins(), function (r) { if (r === null) { self.result.bonusTaken = false; self.showToast('No ad right now'); } });
   }
   watchFreeCoins() {
     if (this.adBusy || !this.hs.canShowFreeCoins()) return;
-    const self = this; this.adBusy = true;
-    this.hs.showFreeCoins().then(function (r) { self.adBusy = false; if (r === null) self.showToast('No ad right now'); }, function () { self.adBusy = false; });
+    const self = this; this.adRun('free_coins', this.hs.showFreeCoins(), function (r) { if (r === null) self.showToast('No ad right now'); });
+  }
+  // surprise food: an ad that unlocks a rare-food bonus stream (home screen, never during a stream)
+  canSurprise() { return this.hs.hasAds() && !this.run && this.curLevel() > AD_FREE_STREAMS && this.hs.canShowSurprise(); }
+  watchSurprise() {
+    if (this.adBusy || !this.canSurprise()) return;
+    const self = this; this.adRun('surprise_food', this.hs.showSurprise(), function (r) {
+      if (r === null) { self.showToast('No ad right now'); return; }
+      const pool = ['golden_parfait', 'rainbow_crepe', 'sushi_set', 'seafood_boil', 'blue_moon', 'choco_ramen', 'pickle_icecream', 'wasabi_cake'];
+      self.startFoodStream(pool[Math.floor(Math.random() * pool.length)], { side: 'surprise' }); self.showToast('SURPRISE FOOD!', 'A rare bonus stream');
+    });
+  }
+  // viral boost: only while the package is still sealed (never interrupts eating)
+  canBoost() { const r = this.run; return this.hs.hasAds() && r && r.phase === 'sealed' && !r.boosted && (this.profile.get('streams') || 0) >= AD_FREE_STREAMS && this.hs.canShowBoost(); }
+  watchBoost() {
+    if (this.adBusy || !this.canBoost()) return;
+    const self = this; this.adRun('viral_boost', this.hs.showBoost(), function (r) {
+      const run = self.run; if (r === null || !run) { if (r === null) self.showToast('No ad right now'); return; }
+      run.boosted = true; const v = Math.round(run.goal * 0.25); run.viewers += v; run.peak = Math.max(run.peak, run.viewers);
+      for (let i = 0; i < 10; i++) self.spawnHeart(true); self.floatText('VIRAL BOOST!  +' + U.fmtViewers(v), self.W / 2, self.H * 0.47, C.gold, 28, true); self.audio.play('levelup'); self.saveRun();
+    });
+  }
+  // fashion reward: an ad that gives one wardrobe item you do not own yet (shop items only; level gifts stay level gifts)
+  fashionPool() { const s = WR.state(this.profile), out = []; for (let i = 0; i < WR.ITEMS.length; i++) { const it = WR.ITEMS[i]; if (it.price > 0 && s.own.indexOf(it.id) < 0) out.push(it.id); } return out; }
+  canFashion() { return this.hs.hasAds() && this.fashionPool().length > 0 && this.hs.canShowFashion(); }
+  watchFashion() {
+    if (this.adBusy || !this.canFashion()) return;
+    const self = this; this.adRun('fashion_reward', this.hs.showFashion(), function (r) {
+      if (r === null) { self.showToast('No ad right now'); return; }
+      const pool = self.fashionPool(); if (!pool.length) return; const id = pool[Math.floor(Math.random() * pool.length)];
+      WR.grant(self.profile, id); WR.equip(self.profile, self.streamerDef().id, id); self.showToast('NEW LOOK: ' + WR.BY_ID[id].name.toUpperCase(), 'Equipped!'); self.audio.play('levelup'); self.spawnConfetti(self.W / 2, self.H * 0.3, 40);
+    });
   }
   openShop() {
     const self = this; this.setState('hsshop'); this.shopLoading = true; this.shopItems = null;
@@ -4637,7 +4550,7 @@ class Game {
       case 'coins': this.drawByName(this.popupFrom); this.drawCoinsPopup(); break;
       case 'hsshop': this.drawByName(this.popupFrom && this.popupFrom !== 'coins' ? this.popupFrom : 'home'); this.drawShop(); break;
       case 'popup': this.drawHome(); this.drawPopup(); break;
-      case 'care': this.drawHome(); this.drawCare(); break;
+      case 'wardrobe': this.drawWardrobe(); break;
       case 'settings': this.drawHome(); this.drawSettings(); break;
       default: this.sceneDraw();
     }
@@ -4664,16 +4577,17 @@ class Game {
   // ── HOME ──
   drawHome() {
     const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, hs = this.hs, p = this.profile;
-    const lv = L.level(this.run ? this.run.level : this.curLevel());
+    const lv = L.level(this.run && this.run.level ? this.run.level : this.curLevel());
     A.homeRoom(ctx, lv.view, this.p.createCanvas, W, H, this.scale, this.time);
     A.table(ctx, lv.view, W, H * 0.5, H);
-    const hp = this.headPos(); A.streamer(ctx, this.streamerDef(), hp.x, hp.y + 30, hp.s, { expr: 'yum', t: this.time, bob: Math.sin(this.time * 1.6) * 4 });
+    const hp = this.headPos(), sd = this.streamerDef(); A.streamer(ctx, sd, hp.x, hp.y + 30, hp.s, { expr: 'yum', t: this.time, bob: Math.sin(this.time * 1.6) * 4, look: WR.look(p, sd.id) });
     A.phoneStick(ctx, W * 0.1, H * 0.4, 0.9, this.time);
+    // today's food waiting on the table
+    const d = K.dish(this.run ? this.run.food : lv.food); A.pack(ctx, d, this.run ? this.run.pack : lv.pack, W * 0.8, H * 0.555, 96, 'sealed', 0, 0, this.time);
     this.drawReactions();
     const top = this.hud({});
     const hasLogo = A.logo(ctx, W / 2, top + 168, 340);
     if (!hasLogo) { ui.title('MUKBANG', W / 2, top + 130, 60, C.white, C.pinkDark); ui.title('BANG', W / 2, top + 190, 72, C.yellow, C.pinkDark); }
-    ui.label('shop · order · cook · eat live', W / 2, top + (hasLogo ? 254 : 236), 18, C.white, 'center', { stroke: 5 });
     // TikTok review buttons (HSGame decides whether they exist on this platform)
     let bx = 16; const by = top + 100;
     if (hs.hasMissions()) {
@@ -4681,18 +4595,24 @@ class Game {
       if (!hs.shortcutMissionDone()) { ui.button('mission_shortcut', bx, by, 96, 44, 'LAUNCH', { size: 14, badge: true, sub: 'REWARD', color: C.lavender, dark: C.lavenderDark }); bx += 104; }
     }
     if (hs.hasShare() && hs.canShare()) { ui.button('share', bx, by, 96, 44, 'SHARE', { size: 14, badge: hs.shareAvailable(), sub: 'FRIENDS', color: C.blue, dark: C.blueDark }); bx += 104; }
-    // menu
-    const y0 = H * 0.6; const bw = W * 0.76, bx0 = W * 0.12;
-    const playText = this.run ? 'RESUME STREAM' : 'PLAY  LEVEL ' + this.curLevel();
-    ui.button('play', bx0, y0, bw, 76, playText, { color: C.pink, dark: C.pinkDark, size: 28 });
-    ui.button('levels', bx0, y0 + 90, bw / 2 - 6, 60, 'LEVELS', { color: C.mint, dark: C.mintDark, size: 22, sub: L.LEVEL_COUNT + ' STREAMS' });
-    ui.button('streamers', bx0 + bw / 2 + 6, y0 + 90, bw / 2 - 6, 60, 'STREAMERS', { color: C.lavender, dark: C.lavenderDark, size: 20, sub: 'PICK YOUR STAR' });
+    // main button: straight into the eating
+    const y0 = H * 0.585; const bw = W * 0.8, bx0 = W * 0.1;
+    ui.label(this.run ? 'YOUR STREAM IS WAITING' : 'STREAM ' + lv.n + ' · ' + lv.title.toUpperCase(), W / 2, y0 - 16, 15, C.white, 'center', { stroke: 4 });
+    const pulse = 1 + Math.sin(this.time * 4) * 0.025; ctx.save(); ctx.translate(W / 2, y0 + 40); ctx.scale(pulse, pulse); ctx.translate(-W / 2, -(y0 + 40));
+    ui.button('play', bx0, y0, bw, 80, this.run ? 'RESUME MUKBANG' : 'START MUKBANG', { color: C.pink, dark: C.pinkDark, size: 30 }); ctx.restore();
+    // optional activities
+    let y = y0 + 94; const mw = (bw - 18) / 4;
+    for (let i = 0; i < L.MODES.length; i++) { const m = L.MODES[i], open = this.modeOpen(m.id); ui.button('side_' + m.id, bx0 + i * (mw + 6), y, mw, 58, open ? m.short : '', { color: open ? m.color : '#e0d6d6', dark: open ? m.dark : '#bfb0b0', size: 14, radius: 16, sub: open ? '' : 'LV ' + m.unlock, icon: open ? null : function (c, w, h) { A.lock(c, w / 2, h / 2 - 6, 20); } }); }
+    y += 70;
+    const wOpen = Math.max(this.curLevel(), (p.get('levels_done') || 0)) >= WR.OPEN_AT;
+    ui.button('levels', bx0, y, bw / 3 - 6, 54, 'LEVELS', { color: C.mint, dark: C.mintDark, size: 17 });
+    ui.button('wardrobe', bx0 + bw / 3 + 3, y, bw / 3 - 6, 54, wOpen ? 'WARDROBE' : '', { color: wOpen ? C.lavender : '#e0d6d6', dark: wOpen ? C.lavenderDark : '#bfb0b0', size: 15, sub: wOpen ? '' : 'LV ' + WR.OPEN_AT, icon: wOpen ? null : function (c, w, h) { A.lock(c, w / 2, h / 2 - 6, 20); } });
+    ui.button('streamers', bx0 + 2 * bw / 3 + 6, y, bw / 3 - 6, 54, 'STARS', { color: C.blue, dark: C.blueDark, size: 17 });
+    y += 64;
     const shop = hs.hasShop();
-    if (shop) ui.button('hsshop', bx0, y0 + 164, bw / 2 - 6, 56, 'SHOP', { color: C.yellow, dark: C.yellowDark, size: 20 });
-    ui.button('settings', shop ? bx0 + bw / 2 + 6 : bx0, y0 + 164, shop ? bw / 2 - 6 : bw, 56, 'SETTINGS', { color: C.blue, dark: C.blueDark, size: 20 });
-    const best = p.get('best_viewers') || 0;
-    ui.label('CH.' + lv.chapter + ' ' + lv.chapterName + '  ·  ' + lv.title.toUpperCase(), W / 2, y0 - 22, 15, C.white, 'center', { stroke: 4 });
-    if (best) ui.label('BEST STREAM  ' + U.fmtViewers(best) + ' VIEWERS', W / 2, y0 + 246, 15, C.white, 'center', { stroke: 4 });
+    if (shop) ui.button('hsshop', bx0, y, bw / 2 - 5, 48, 'SHOP', { color: C.yellow, dark: C.yellowDark, size: 17 });
+    ui.button('settings', shop ? bx0 + bw / 2 + 5 : bx0, y, shop ? bw / 2 - 5 : bw, 48, 'SETTINGS', { color: C.lavender, dark: C.lavenderDark, size: 16 });
+    if (this.canSurprise()) ui.button('surprise_ad', W - 128, H * 0.47, 112, 52, '▶ SURPRISE', { color: C.yellow, dark: C.yellowDark, size: 14, sub: 'RARE FOOD', badge: true });
   }
   // ── LEVELS ──
   drawLevels() {
@@ -4706,16 +4626,15 @@ class Game {
     const cols = 5, cw = (W - 50 - (cols - 1) * 8) / cols, ch = 84, gx = 25, gy = top + 140;
     const base = this.levelPage * 15;
     for (let j = 0; j < 15; j++) {
-      const n = base + j + 1; const x = gx + (j % cols) * (cw + 8), y = gy + Math.floor(j / cols) * (ch + 10);
+      const n = base + j + 1; if (n > L.LEVEL_COUNT) break; const x = gx + (j % cols) * (cw + 8), y = gy + Math.floor(j / cols) * (ch + 10);
       const open = n <= unlocked; const lvn = L.level(n); const bgi = lvn.view; const col = [C.blue, C.pink, C.lavender, C.yellow, C.mint][bgi], dk = [C.blueDark, C.pinkDark, C.lavenderDark, C.yellowDark, C.mintDark][bgi];
       ui.button('lvl' + n, x, y, cw, ch, open ? String(n) : '', { color: open ? col : '#e0d6d6', dark: open ? dk : '#bfb0b0', disabled: !open, size: 28, radius: 18, icon: open ? null : function (c, w, h) { A.lock(c, w / 2, h / 2, 26); } });
-      if (open) ui.label({ prestock: 'LIVE', market: 'SHOP', delivery: 'ORDER', buffet: 'BUFFET', kitchen: 'COOK' }[lvn.mode], x + cw / 2, y + 16, 10, C.white, 'center', { stroke: 3 });
       if (open) { const s = st[n] || 0; for (let k = 0; k < 3; k++) A.uiStar(ctx, x + cw / 2 + (k - 1) * 18, y + ch - 16, 7, k < s, 'rgba(255,255,255,0.6)', 2); }
     }
     const by = gy + 3 * (ch + 10) + 10;
-    ui.button('page0', W * 0.12, by, W * 0.36, 52, 'LEVELS 1–15', { color: this.levelPage === 0 ? C.pink : C.blue, dark: this.levelPage === 0 ? C.pinkDark : C.blueDark, size: 17 });
-    ui.button('page1', W * 0.52, by, W * 0.36, 52, 'LEVELS 16–30', { color: this.levelPage === 1 ? C.pink : C.blue, dark: this.levelPage === 1 ? C.pinkDark : C.blueDark, size: 17 });
-    ui.label('Reach the viewer goal for 2 stars · beat it by 35% for 3', W / 2, by + 78, 14, C.text);
+    const pages = Math.ceil(L.LEVEL_COUNT / 15), pw = (W - 60 - (pages - 1) * 10) / pages;
+    for (let i = 0; i < pages; i++) ui.button('page' + i, 30 + i * (pw + 10), by, pw, 52, (i * 15 + 1) + '–' + Math.min(L.LEVEL_COUNT, i * 15 + 15), { color: this.levelPage === i ? C.pink : C.blue, dark: this.levelPage === i ? C.pinkDark : C.blueDark, size: 17 });
+    ui.label('Reach the viewer goal for 2 stars · tap hearts for 3', W / 2, by + 78, 14, C.text);
   }
   // ── STREAMERS ──
   drawStreamers() {
@@ -4731,15 +4650,14 @@ class Game {
       const s = D.STREAMERS[i]; const x = 30 + i * (cw + 12); const open = reach >= s.unlock;
       ui.panel(x, y, cw, chh, open ? '#fff' : '#eee', cur === i ? C.gold : C.outline, 22, cur === i ? 6 : 4);
       ctx.save(); A.rr(ctx, x + 4, y + 4, cw - 8, chh - 8, 18); ctx.clip();
-      if (open) A.streamer(ctx, s, x + cw / 2, y + chh * 0.33, cw / 95 * 0.36, { expr: cur === i ? 'yum' : 'idle', t: this.time, blink: this.face.blink });
+      if (open) A.streamer(ctx, s, x + cw / 2, y + chh * 0.33, cw / 95 * 0.36, { expr: cur === i ? 'yum' : 'idle', t: this.time, blink: this.face.blink, look: WR.look(p, s.id) });
       else { ctx.globalAlpha = 0.35; A.streamer(ctx, s, x + cw / 2, y + chh * 0.33, cw / 95 * 0.36, { expr: 'idle' }); ctx.globalAlpha = 1; A.lock(ctx, x + cw / 2, y + chh * 0.4, 40); }
       ctx.restore();
       ui.label(s.name, x + cw / 2, y + chh - 54, 22, C.text);
       ui.label(open ? (cur === i ? 'SELECTED' : 'TAP TO PICK') : 'LEVEL ' + s.unlock, x + cw / 2, y + chh - 26, 13, open ? C.pinkDark : C.textLight);
       ui.hotspot('str' + i, x, y, cw, chh);
     }
-    const ab = ['Luna: PERFECT bites +15% viewers', 'Kiko: SWEET food +20% coins', 'Momo: COLD food keeps combos going'];
-    for (let i = 0; i < ab.length; i++) ui.label(ab[i], W / 2, y + chh + 36 + i * 24, 15, C.text);
+    ui.label('Dress them up in the WARDROBE!', W / 2, y + chh + 40, 15, C.text);
   }
   // ── MARKET ──
   // Shelf rows: two food rows, plus a locked preview row when a shelf is still to unlock. Spread over the free height.
@@ -4760,7 +4678,7 @@ class Game {
     ui.label(cat.name, W / 2, top + 153, 24, C.text);
     ui.button('cat_prev', W * 0.2 - 58, top + 128, 50, 48, '‹', { color: C.blue, dark: C.blueDark, size: 32, radius: 16 });
     ui.button('cat_next', W * 0.8 + 8, top + 128, 50, 48, '›', { color: C.blue, dark: C.blueDark, size: 32, radius: 16 });
-    ui.label('LEVEL ' + lv.n + '  ·  GOAL ' + U.fmtViewers(lv.goal) + ' VIEWERS  ·  PICK ' + m.pick, W / 2, top + 194, 14, C.text);
+    ui.label('PICK ONE PACKAGE FOR A BONUS STREAM', W / 2, top + 194, 14, C.text);
     // shelves
     const foods = D.foodsOf(catId); const total = this.marketTotal(); const coins = p.get('coins') || 0;
     for (let row = 0; row < 2; row++) { const sp = this.shelfPos(row * 3); A.shelfBoard(ctx, 18, sp.y + 52, W - 36, 30, cat.dark); }
@@ -4821,87 +4739,6 @@ class Game {
     for (let i = 0; i < c.items.length; i++) { const it = c.items[i]; if (it.scanned) continue; const held = this.drag && this.drag.item === it; A.food(ctx, K.dish(it.id), it.x, it.y, held ? 100 : 86, 0, this.time); }
     if (!c.done) { let left = 0; for (let i = 0; i < c.items.length; i++) if (!c.items[i].scanned) left++; ui.label(left ? (c.auto ? 'Scanning…  (drag to scan yourself)' : 'Drag each item onto the scanner  (' + left + ' left)') : '', W / 2, cy + Math.min(120, this.bottom() - cy - 60) + 30, 15, C.text); }
   }
-  // ── STREAM ──
-  drawStream(still) {
-    const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, r = this.run;
-    const lv = r ? r.lv : (this.result ? this.result.lv : L.level(this.curLevel()));
-    if (lv.loc === 'restaurant') A.restaurantBg(ctx, W, H, this.time); else A.homeRoom(ctx, lv.view, this.p.createCanvas, W, H, this.scale, this.time);
-    // streamer behind the table
-    const hp = this.headPos(); const fc = this.face; const mech = r && r.mech;
-    if (mech && mech.onFire) A.flames(ctx, hp.x, hp.y + (fc.bob || 0) - 10, 92 * hp.s, this.time);
-    A.streamer(ctx, this.streamerDef(), hp.x, hp.y, hp.s, { expr: fc.expr, t: fc.t, blink: fc.blink, bob: fc.bob });
-    if (r && r.smoke > 0) { ctx.globalAlpha = Math.min(1, r.smoke); for (let k = -1; k <= 1; k += 2) for (let i = 0; i < 3; i++) { const sy = hp.y - 20 - ((this.time * 60 + i * 20) % 60); A.circle(ctx, hp.x + k * (100 + i * 8) * hp.s, sy, 10 + i * 4, 'rgba(255,255,255,0.8)', 0); } ctx.globalAlpha = 1; }
-    A.table(ctx, lv.view, W, H * 0.5, H);
-    A.phoneStick(ctx, W * 0.08, H * 0.38, 0.85, this.time);
-    if (r) {
-      // items on the table (held one drawn last, bigger)
-      let held = null; const sz = r.itemSize || 124;
-      for (let i = 0; i < r.items.length; i++) { const it = r.items[i]; if (it.done) continue; if (this.drag && this.drag.item === it) { held = it; continue; } this.drawItem(it, it.x, it.y, sz); }
-      if (held) { const m = this.mouth(); const near = U.dist(held.x, held.y, m.x, m.y) < MOUTH_RADIUS; ctx.save(); if (near) { ctx.translate(held.x, held.y); ctx.rotate(Math.sin(this.time * 25) * 0.08); ctx.translate(-held.x, -held.y); } this.drawItem(held, held.x, held.y, sz + 12); ctx.restore(); }
-      // mouth target while feeding: outer ring = eat zone, inner gold ring = PERFECT zone
-      if (!still && r.endT < 0 && this.drag && this.drag.item && !this.drag.item.done) { const m = this.mouth(); const a = 0.35 + 0.25 * Math.sin(this.time * 8); ctx.strokeStyle = 'rgba(255,255,255,' + a + ')'; ctx.lineWidth = 5; ctx.setLineDash([10, 10]); ctx.beginPath(); ctx.arc(m.x, m.y, MOUTH_RADIUS - 10, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]); ctx.strokeStyle = 'rgba(255,217,94,' + (a + 0.3) + ')'; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(m.x, m.y, M.PERFECT_R, 0, Math.PI * 2); ctx.stroke(); }
-      if (!still && r.t < 5 && r.endT < 0 && !this.drag) ui.label(r.intro || INTRO.bite, W / 2, H * 0.52, r.intro && r.intro.length > 30 ? 16 : 20, C.white, 'center', { stroke: 6 });
-    }
-    this.drawReactions();
-    // chat (fan requests highlighted)
-    const chatY = this.bottom() - 30;
-    for (let i = this.chat.length - 1, k = 0; i >= 0 && k < 3; i--, k++) {
-      const c = this.chat[i]; const a = c.life < 0.25 ? c.life / 0.25 : 1; ctx.globalAlpha = a * (k === 2 ? 0.55 : 1);
-      const y = chatY - k * 46 + (1 - a) * 20; const fs = c.hot ? 16 : 15; const tw = ui.measure(c.text, fs) + 26;
-      A.avatar(ctx, c.avatar, 40, y, 18);
-      ui.panel(66, y - 18, Math.min(tw, W - 90), 36, c.hot ? '#fff4b8' : 'rgba(255,255,255,0.92)', c.hot ? C.goldDark : C.outline, 14, 3);
-      ui.label(c.text, 79, y + 1, fs, C.text, 'left');
-    }
-    ctx.globalAlpha = 1;
-    const top = this.hud({ viewers: r ? U.fmtViewers(r.viewers) : U.fmtViewers(this.result ? this.result.peak : 0) });
-    if (r && !still) ui.button('pause', W - 56, top + 70, 40, 40, 'II', { color: C.lavender, dark: C.lavenderDark, size: 16, radius: 20 });
-    if (!r) return;
-    // goal bar
-    const t = r.peak / lv.goal3; ui.bar(W / 2 - 92, top + 70, 184, 16, Math.min(1, t), t >= 1 ? C.gold : t >= lv.goal / lv.goal3 ? C.green : C.pink); const gx = W / 2 - 92 + 184 * (lv.goal / lv.goal3); ctx.fillStyle = C.outline; ctx.fillRect(gx - 1, top + 66, 3, 24); ui.label('GOAL ' + U.fmtViewers(lv.goal), W / 2, top + 98, 12, C.white, 'center', { stroke: 4 });
-    let hy = top + 112;
-    // spice meter
-    if (lv.mech.spice && mech) {
-      const sp = mech.spice / M.SPICE_MAX; const hot = mech.onFire;
-      ui.label('HEAT', W / 2 - 112, hy + 8, 12, hot ? '#ff7a3a' : C.white, 'right', { stroke: 4 });
-      ui.bar(W / 2 - 92, hy, 184, 14, sp, sp >= 0.6 ? '#ff5a3a' : '#ffb84d', 'rgba(255,255,255,0.7)');
-      ctx.fillStyle = C.outline; ctx.fillRect(W / 2 - 92 + 184 * 0.6 - 1, hy - 3, 3, 20);
-      hy += 26;
-    }
-    if (lv.rounds.length) { ui.label('ROUND ' + (r.round + 1) + '/' + (lv.rounds.length + 1), 20, top + 98, 12, C.white, 'left', { stroke: 4 }); }
-    // challenge
-    if (lv.challenge && mech) { ui.label((mech.challengeDone ? '✓ ' : 'CHALLENGE  ') + mech.challengeText(), W / 2, hy + 6, 13, mech.challengeDone ? C.gold : C.white, 'center', { stroke: 4 }); hy += 22; }
-    // fan request bubble
-    if (mech && mech.req) {
-      const q = mech.req, bw = Math.min(W - 60, ui.measure(q.text, 20) + 70), bx = (W - bw) / 2, by = hy + 4; const pulse = 1 + Math.sin(this.time * 8) * 0.03;
-      ctx.save(); ctx.translate(W / 2, by + 24); ctx.scale(pulse, pulse); ctx.translate(-W / 2, -(by + 24));
-      ui.panel(bx, by, bw, 48, '#fff4b8', C.goldDark, 22, 4); A.heart(ctx, bx + 26, by + 24, 9, C.red, 2); ui.label(q.text, W / 2 + 12, by + 24, 20, C.text);
-      ui.bar(bx + 20, by + 40, bw - 40, 5, q.t / q.max, C.pink, 'rgba(0,0,0,0.08)');
-      ctx.restore();
-    }
-    // combo badge beside the face
-    if (mech && mech.combo >= 2) {
-      const cx = W - 62, cy = top + 160, mult = M.comboMult(mech.combo); const k = 1 + Math.max(0, 0.25 - mech.gap) * 0.8;
-      ctx.save(); ctx.translate(cx, cy); ctx.scale(k, k);
-      A.circle(ctx, 0, 0, 38, mult > 1 ? C.pink : C.lavender, 4);
-      ctx.strokeStyle = '#fff'; ctx.lineWidth = 5; ctx.beginPath(); ctx.arc(0, 0, 30, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * Math.max(0, 1 - mech.gap / mech.gapMax)); ctx.stroke();
-      ui.label('x' + mech.combo, 0, -4, 24, C.white, 'center', { stroke: 5 }); ui.label('COMBO', 0, 18, 10, C.white, 'center', { stroke: 3 });
-      ctx.restore();
-      if (mult > 1) ui.label('VIEWERS x' + mult, cx, cy + 52, 12, C.yellow, 'center', { stroke: 4 });
-    }
-    if (r.endT >= 0 && !still) { const k = U.easeOutBack(Math.min(1, r.endT * 2)); ctx.save(); ctx.translate(W / 2, H * 0.47); ctx.scale(k, k); ui.title('STREAM COMPLETE!', 0, 0, 40, C.white, C.pinkDark); ctx.restore(); }
-  }
-  // one item on the stream table: food, closed take-away box or mystery gift
-  drawItem(it, x, y, size) {
-    const ctx = this.ctx;
-    if (it.mystery) { A.mysteryBox(ctx, x, y, size, this.time, Math.min(1, it.open || 0), false); return; }
-    const f = K.dish(it.id); if (!f) return;
-    if (it.boxed) { const rs = K.restaurant(f.group); A.takeoutBox(ctx, x, y - (it.open || 0) * 30, size, rs ? rs.color : C.pink, rs ? rs.icon : 'GO', this.time); if (!it.open) this.ui.label('TAP', x, y + size * 0.5, 13, C.white, 'center', { stroke: 4 }); return; }
-    if (it.gold) { ctx.globalAlpha = 0.5 + 0.3 * Math.sin(this.time * 6); A.circle(ctx, x, y, size * 0.5, 'rgba(255,217,94,0.6)', 0); ctx.globalAlpha = 1; }
-    const e = it.eaten / f.bites;
-    A.food(ctx, f, x, y, size, e, this.time);
-    if (it.toppings && e < 1) { const n = it.toppings.length; for (let i = 0; i < n; i++) { const tp = K.TOPPINGS[it.toppings[i]]; if (!tp) continue; const a = i / Math.max(1, n) * Math.PI * 2; A.circle(ctx, x + Math.cos(a) * size * 0.16 * (1 - e), y - size * 0.18 + Math.sin(a) * size * 0.06, size * 0.05, tp[1], 2); } }
-    if (it.challengeT > 0) this.ui.label(Math.ceil(it.challengeT) + 's', x, y - size * 0.55, 18, '#ff7a3a', 'center', { stroke: 5 });
-  }
   drawPause() {
     const ui = this.ui, W = this.W, H = this.H;
     ui.dim(0.5);
@@ -4910,31 +4747,6 @@ class Game {
     ui.button('resume', W * 0.2, H * 0.3 + 96, W * 0.6, 62, 'RESUME', { color: C.green, dark: C.greenDark, size: 24 });
     ui.button('leave', W * 0.2, H * 0.3 + 170, W * 0.6, 54, 'HOME (KEEP STREAM)', { color: C.blue, dark: C.blueDark, size: 16 });
     ui.button('sound', W * 0.2, H * 0.3 + 236, W * 0.6, 48, this.profile.get('sound') ? 'SOUND ON' : 'SOUND OFF', { color: C.lavender, dark: C.lavenderDark, size: 16 });
-  }
-  // ── RESULT ──
-  drawResult() {
-    const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, res = this.result, hs = this.hs;
-    ui.dim(0.4);
-    const ph = 352 + res.unlocks.length * 26 + (res.challenge ? 22 : 0); const py = Math.max(this.top() + 110, H * 0.14);
-    ui.panel(24, py, W - 48, ph, C.cream, C.outline, 26);
-    ui.title('STREAM OVER!', W / 2, py + 46, 40, C.white, C.pinkDark); ui.label('LEVEL ' + res.lv.n + ' · ' + res.lv.title.toUpperCase(), W / 2, py + 78, 13, C.textLight);
-    for (let k = 0; k < 3; k++) { const on = k < res.stars; const sc = on ? U.easeOutBack(Math.min(1, Math.max(0, res.t * 2 - k * 0.5))) : 1; ctx.save(); ctx.translate(W / 2 + (k - 1) * 70, py + 118); ctx.scale(sc, sc); A.uiStar(ctx, 0, 0, 28, on, '#e8e0e0', 4); ctx.restore(); }
-    ui.label('PEAK VIEWERS', W / 2, py + 160, 14, C.textLight);
-    ui.label(U.fmtViewers(res.peak) + '   (goal ' + U.fmtViewers(res.lv.goal) + ')', W / 2, py + 184, 24, C.text);
-    ui.label('COINS EARNED', W / 2, py + 222, 14, C.textLight);
-    A.coin(ctx, W / 2 - 60, py + 248, 12); ui.label('+' + U.fmtCoins(res.coins), W / 2 + 8, py + 248, 26, C.goldDark);
-    let y = py + 282;
-    ui.label('BEST COMBO x' + res.combo + '   ·   PERFECT ' + res.perfects + (res.requests ? '   ·   REQUESTS ' + res.requests : ''), W / 2, py + 276, 13, C.textLight); y += 18;
-    if (res.challenge) { ui.label(res.challenge === 'done' ? '★ CHALLENGE CLEAR' : 'challenge missed — try again for the bonus', W / 2, y, 14, res.challenge === 'done' ? C.goldDark : C.textLight); y += 22; }
-    if (res.firstClear) { const rb = hs.rewardsLevelBonus(); if (rb) { ui.label('LEVEL BONUS  ' + this.itemsText(rb), W / 2, y, 15, C.pinkDark); y += 26; } }
-    for (let i = 0; i < res.unlocks.length; i++) { ui.label('★ ' + res.unlocks[i], W / 2, y, 16, C.greenDark); y += 26; }
-    y = py + ph + 16;
-    const bonus = hs.rewardsBonusCoins();
-    if (hs.hasAds() && hs.canShowBonusCoins() && bonus && !res.bonusTaken) { ui.button('bonus_ad', 40, y, W - 80, 56, '▶  WATCH AD:  ' + this.itemsText(bonus), { color: C.blue, dark: C.blueDark, size: 17 }); y += 68; }
-    const canNext = res.lv.n < L.LEVEL_COUNT;
-    ui.button(canNext ? 'next' : 'replay', 40, y, W - 80, 70, canNext ? 'NEXT STREAM  ›' : 'STREAM AGAIN', { color: C.pink, dark: C.pinkDark, size: 26 }); y += 84;
-    ui.button('replay', 40, y, (W - 90) / 2, 56, 'REPLAY', { color: C.mint, dark: C.mintDark, size: 20 });
-    ui.button('home', 50 + (W - 90) / 2, y, (W - 90) / 2, 56, 'HOME', { color: C.lavender, dark: C.lavenderDark, size: 20 });
   }
   // ── COINS popup ──
   drawCoinsPopup() {
@@ -5011,309 +4823,188 @@ class Game {
     }
     ui.button('settings_close', 64, y, W - 128, 52, 'CLOSE', { color: C.lavender, dark: C.lavenderDark, size: 18 });
   }
-  // low-coins popup: the free fan gift (never a softlock) or more coins
-  drawCare() {
-    const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, lv = this.care ? this.care.lv : L.level(this.curLevel());
-    ui.dim(0.5);
-    const ph = 300, py = (H - ph) / 2;
-    ui.panel(36, py, W - 72, ph, C.cream, C.outline, 26);
-    ui.title('LOW ON COINS!', W / 2, py + 46, 30, C.white, C.goldDark);
-    ui.paragraph('Level ' + lv.n + ' needs ' + U.fmtCoins(lv.minCost) + ' coins. Your fans sent a free snack box so the stream can go on!', W / 2, py + 92, W - 130, 16, C.text);
-    ui.button('care_take', 60, py + 150, W - 120, 62, 'FREE FAN GIFT  ›', { color: C.green, dark: C.greenDark, size: 22 });
-    ui.button('care_coins', 60, py + 222, W - 120, 52, 'GET COINS', { color: C.yellow, dark: C.yellowDark, size: 18 });
-  }
-  // Browser-only QA helper: jump to a screen with sample data (#auto=<screen>:<level>)
+  // Browser-only QA helper: jump to a screen (#auto=<screen>[:level])
+  //   home levels streamers settings wardrobe · stream sealed open chew react finale result · market checkout delivery arrive buffet kitchen cook
   autoDemo(kind, n) {
-    n = n || 5;
-    if (kind === 'home') { this.setState('home'); return; }
-    if (kind === 'levels' || kind === 'streamers') { this.setState(kind); return; }
-    if (kind === 'care') { this.profile.set('coins', 0); this.startLevel(Math.max(2, n)); return; }
-    this.profile.set('coins', Math.max(5000, this.profile.get('coins') || 0));
-    const lv = L.level(n); this.startLevel(n);
-    if (this.state !== 'stream') {
-      if (kind === lv.mode || kind === 'cook' && lv.mode === 'kitchen' && (this.kitStart(), true)) return;
-      this.sceneAutoFill();
-      if (kind === 'checkout' || kind === 'arrive') return;
-      if (this.state === 'checkout') { for (let i = 0; i < this.checkout.items.length; i++) this.scanItem(this.checkout.items[i]); this.beginStream(); }
-      if (this.state === 'arrive') this.arriveDone();
-      if (this.state !== 'stream' && this.run) this.beginStream();
+    n = n || 5; this.profile.set('coins', Math.max(5000, this.profile.get('coins') || 0));
+    if (n > 1 && (this.profile.get('level') || 1) < n) { this.profile.set('level', n); this.profile.set('levels_done', n - 1); this.profile.set('streams', n - 1); }
+    if (kind === 'home' || kind === 'levels' || kind === 'streamers' || kind === 'settings' || kind === 'wardrobe') { this.run = null; this.saveRun(); this.setState(kind === 'wardrobe' && this.curLevel() < WR.OPEN_AT ? 'home' : kind); return; }
+    const sides = { market: 'market', checkout: 'market', delivery: 'delivery', arrive: 'delivery', buffet: 'buffet', kitchen: 'kitchen', cook: 'kitchen' };
+    if (sides[kind]) {
+      this.run = null; this.enterActivity(sides[kind]);
+      if (kind === 'cook') this.kitStart();
+      if (kind === 'checkout' || kind === 'arrive') this.sceneAutoFill();
+      return;
     }
-    if (kind === 'stream') { for (let i = 0; i < 4; i++) this.pushChat('idle'); this.run.viewers = this.run.lv.goal * 0.6; this.run.peak = this.run.viewers; if (this.run.mech) { this.run.mech.combo = 7; this.run.mech.spice = 66; this.run.mech.onFire = !!this.run.lv.mech.spice; if (this.run.lv.req) this.run.mech.req = { tag: 'spicy', text: K.REQUESTS.spicy, t: 7, max: 10 }; } return; }
-    for (let i = 0; i < this.run.items.length; i++) { const it = this.run.items[i]; if (it.mystery || it.boxed) { it.open = 0; this.finishOpen(it); if (it.boxed) it.boxed = false; } let g = 0; while (!it.done && g++ < 20) this.bite(it); }
-    this.finishRun();
+    this.startStream(n); const r = this.run; const self = this;
+    const step = function (secs) { for (let i = 0; i < secs * 60; i++) self.update(1 / 60); };
+    if (kind === 'sealed' || kind === 'stream') { for (let i = 0; i < 3; i++) this.pushChat('idle'); return; }
+    this.openPack(); step(0.9); if (kind === 'open') return;
+    const feed = function () { self.carry = { tid: 9, x: 0, y: 0, drag: false, fx: self.packPos().x, fy: self.packPos().y, ft: 0, back: false }; r.phase = 'carry'; r.pt = 0; };
+    feed(); step(0.5);
+    if (kind === 'chew') { step(1.0); return; }
+    step(2.0); if (kind === 'react') return;
+    for (let k = 0; k < 2; k++) { step(1.0); feed(); step(0.5 + 2.3 + 1.5); }
+    if (kind === 'finale') { step(1.3); return; }
+    step(4.5);
   }
 }
 
 SC.install(Game);
+ST.install(Game);
+WS.install(Game);
 
 module.exports = { Game };
 
 };
 __mods["src/levels.js"] = function (require, module, exports, __filename, __dirname) {
 'use strict';
-// V2: the 30 levels as data (docs/GAME-DESIGN-V2.md §6). One generic runner in
-// game.js plays every level; nothing here is code per level.
-//   mode: 'prestock' (food already on the table) · 'market' · 'delivery' · 'buffet' · 'kitchen'
-//   loc:  'home' (window view = chapter background) · 'restaurant'
-//   mech: stream mechanics switched on for this level
-//   req:  fan requests { first: s, every: s }   mystery: gift boxes put on the table
-//   challenge: optional bonus goal { combo: n } | { perfect: n } | { requests: n }
+// V3: 40 livestreams, ONE food per stream (docs/GAME-DESIGN-V3.md §4).
+// Each stream: open the package → 3 pickups × 3 bites → viral finish.
+// Levels only decide WHICH food, which fan event, and what unlocks — the
+// eating itself is the same relaxed loop every time.
 const D = require('./data.js');
 const K = require('./catalog.js');
 
 const CHAPTERS = [
-  { n: 1, name: 'ROOKIE STREAMER', view: 0 },
-  { n: 2, name: 'RISING STAR', view: 1 },
-  { n: 3, name: 'VIRAL QUEEN', view: 2 },
-  { n: 4, name: 'MUKBANG CELEBRITY', view: 3 },
-  { n: 5, name: 'SUPERSTAR LIVE', view: 4 }
+  { n: 1, name: 'SNACK ROOKIE', view: 0 },
+  { n: 2, name: 'SWEET TOOTH', view: 1 },
+  { n: 3, name: 'RISING STAR', view: 2 },
+  { n: 4, name: 'COZY NIGHTS', view: 3 },
+  { n: 5, name: 'SUPERSTAR', view: 4 },
+  { n: 6, name: 'MUKBANG LEGEND', view: 2 }
 ];
-const ALL_SHELVES = ['noodles', 'snacks', 'drinks', 'cakes', 'icecream', 'fruit'];
-const M_BASE = { combo: true };
-function mech(o) { const m = Object.assign({}, M_BASE); for (const k in o) m[k] = o[k]; return m; }
+const PER_CHAPTER = 8;
 
-// goal anchors (log-interpolated): 800 → 10K (L6) → 30K (L12) → 100K (L18) → 300K (L24) → 1M (L29) → 1.5M
-const ANCHORS = [[1, 800], [6, 10000], [12, 30000], [18, 100000], [24, 300000], [29, 1000000], [30, 1500000]];
-function goalOf(n) {
-  for (let i = 0; i < ANCHORS.length - 1; i++) {
-    const a = ANCHORS[i], b = ANCHORS[i + 1];
-    if (n >= a[0] && n <= b[0]) { const t = (n - a[0]) / (b[0] - a[0]); const g = Math.exp(Math.log(a[1]) * (1 - t) + Math.log(b[1]) * t); const m = Math.pow(10, Math.max(0, Math.floor(Math.log10(g)) - 1)); return Math.round(g / m) * m; }
-  }
-  return 1500000;
+// How each food is presented on the table and how it opens.
+//   bag (tear the top) · cup (peel the lid) · bottle (pop the cap) · box (lift the lid) · dome (lift the cloche)
+function packOf(d) {
+  if (d.src === 'market') return { noodles: 'cup', snacks: 'bag', drinks: 'bottle', cakes: 'dome', icecream: 'cup', fruit: 'dome' }[d.cat];
+  if (d.src === 'delivery') return d.shape === 'cup' ? 'bottle' : 'box';
+  return 'dome';
 }
+const PACK_INFO = {
+  bag:    { open: 'TEAR IT OPEN', verb: 'tear', sound: 'crunch' },
+  cup:    { open: 'PEEL THE LID', verb: 'peel', sound: 'slurp' },
+  bottle: { open: 'POP IT OPEN',  verb: 'pop',  sound: 'fizz' },
+  box:    { open: 'OPEN THE BOX', verb: 'lid',  sound: 'pop' },
+  dome:   { open: 'LIFT THE LID', verb: 'dome', sound: 'ding' }
+};
 
+// fan events (no timing pressure: everything is optional or automatic)
+//   hearts: floating hearts to tap (always on) · gift: a fan gift box drops (tap for coins)
+//   superchat: a big donation banner (auto) · wave: the chat floods (auto viewer surge)
+//   spotlight: "TRENDING #1" camera zoom (auto) · duet: a fan joins the call (auto, then hearts burst)
+const EVENTS = ['hearts', 'gift', 'superchat', 'wave', 'spotlight', 'duet'];
+
+// [food id, title, fan event, unlocks...]  unlock ids: food: is automatic; mode:<id>, look:<wardrobe id>, streamer:<id>, wardrobe
 const RAW = [
-  // ── Chapter 1 — ROOKIE STREAMER ──
-  { title: 'First Viral Bite', mode: 'prestock', sec: 35, prestock: ['cat_chips', 'honey_puffs', 'cheese_noodle'], mech: mech({}), intro: 'bite',
-    unlocks: ['Your first livestream!'] },
-  { title: 'Crunchy Combo', mode: 'delivery', sec: 50, delivery: { rest: ['chicken_joy'], mains: 1, sides: 2 }, mech: mech({}), intro: 'combo',
-    unlocks: ['FOOD DELIVERY APP', 'Chicken Joy'] },
-  { title: 'Too Spicy!', mode: 'buffet', sec: 55, buffet: { stations: ['hot'], slots: 3, fee: 300 }, mech: mech({ spice: true }), intro: 'spice',
-    unlocks: ['BUFFET PASS', 'Hot Station'] },
-  { title: 'Fans Choose My Food', mode: 'kitchen', sec: 60, kitchen: { recipe: 'decorate_cake', extras: ['peach_milk'] }, mech: mech({ spice: true, requests: true }), req: { first: 5, every: 12 }, intro: 'requests',
-    unlocks: ['HOME KITCHEN', 'Cake shelf'] },
-  { title: 'Mystery Box', mode: 'market', sec: 50, market: { shelves: ['noodles', 'snacks', 'drinks', 'cakes'], pick: 3 }, mystery: 1, mech: mech({ spice: true, requests: true }), req: { first: 10, every: 14 }, intro: 'mystery',
-    unlocks: ['MYSTERY BOXES'] },
-  { title: 'First 10K Fans', mode: 'buffet', sec: 60, buffet: { stations: ['hot', 'dessert'], slots: 4, fee: 340 }, mech: mech({ spice: true, requests: true }), req: { first: 8, every: 14 }, challenge: { combo: 10 },
-    unlocks: ['Dessert & Ice Bar', '10K FANS TROPHY'] },
-  // ── Chapter 2 — RISING STAR ──
-  { title: 'Sweet vs Sour', mode: 'kitchen', sec: 65, kitchen: { recipe: 'custom_ramen', extras: ['gummy_bears', 'peach_milk'] }, mech: mech({ spice: true, requests: true }), req: { first: 6, every: 12 },
-    unlocks: ['Recipe: Custom Ramen'] },
-  { title: 'Meet Kiko', mode: 'delivery', sec: 65, delivery: { rest: ['chicken_joy', 'mamma_pizza'], mains: 2, sides: 2 }, mech: mech({ spice: true, requests: true }), req: { first: 8, every: 13 },
-    unlocks: ['NEW STREAMER: KIKO', 'Mamma Pizza'] },
-  { title: 'Make My Boba', mode: 'kitchen', sec: 70, kitchen: { recipe: 'make_boba', extras: ['melon_bowl', 'straw_plate'] }, mech: mech({ spice: true, requests: true }), req: { first: 6, every: 12 },
-    unlocks: ['Recipe: Boba', 'Fruit shelf'] },
-  { title: 'Frozen Face', mode: 'buffet', sec: 70, buffet: { stations: ['cold', 'dessert'], slots: 4, fee: 380 }, mech: mech({ spice: true, requests: true }), req: { first: 8, every: 12 },
-    unlocks: ['Sushi & Cold Bar'] },
-  { title: 'Perfect ASMR', mode: 'delivery', sec: 70, delivery: { rest: ['seoul_street', 'chicken_joy', 'mamma_pizza'], mains: 2, sides: 2 }, mech: mech({ spice: true, requests: true }), req: { first: 8, every: 13 }, challenge: { perfect: 6 },
-    unlocks: ['Seoul Street'] },
-  { title: 'First Fan Party', mode: 'market', sec: 75, market: { shelves: ALL_SHELVES, pick: 5 }, mystery: 1, mech: mech({ spice: true, requests: true }), req: { first: 5, every: 9 }, challenge: { requests: 3 },
-    unlocks: ['Party haul'] },
-  // ── Chapter 3 — VIRAL QUEEN ──
-  { title: 'Hot or Cold?', mode: 'buffet', sec: 75, buffet: { stations: ['hotpot', 'cold', 'hot'], slots: 5, fee: 420 }, mech: mech({ spice: true, requests: true }), req: { first: 6, every: 11 },
-    unlocks: ['Hotpot Corner'] },
-  { title: 'Mystery Roulette', mode: 'delivery', sec: 75, delivery: { rest: ['tokyo_box', 'seoul_street', 'mamma_pizza'], mains: 2, sides: 2 }, mystery: 1, mech: mech({ spice: true, requests: true }), req: { first: 8, every: 12 },
-    unlocks: ['Tokyo Box'] },
-  { title: 'Rainbow Dessert', mode: 'kitchen', sec: 80, kitchen: { recipe: 'rainbow_dessert', extras: ['straw_swirl', 'soda_pop'] }, mech: mech({ spice: true, requests: true }), req: { first: 6, every: 11 },
-    unlocks: ['Recipe: Rainbow Dessert'] },
-  { title: 'Meet Momo', mode: 'delivery', sec: 80, delivery: { rest: ['mamma_pizza', 'tokyo_box', 'chicken_joy'], mains: 2, sides: 3 }, mech: mech({ spice: true, requests: true }), req: { first: 8, every: 12 },
-    unlocks: ['NEW STREAMER: MOMO'] },
-  { title: 'Double Trouble', mode: 'buffet', sec: 80, buffet: { stations: ['grill', 'hot', 'dessert'], slots: 5, fee: 460 }, mech: mech({ spice: true, requests: true }), req: { first: 6, every: 11 },
-    unlocks: ['Grill Station'] },
-  { title: '100K Celebration', mode: 'kitchen', sec: 85, kitchen: { recipe: 'party_plate', extras: ['soda_pop', 'rainbow_crepe'] }, mystery: 1, mech: mech({ spice: true, requests: true }), req: { first: 4, every: 8 }, challenge: { requests: 4 },
-    unlocks: ['Recipe: Party Plate', '100K FANS TROPHY'] },
-  // ── Chapter 4 — MUKBANG CELEBRITY ──
-  { title: 'Cozy Night Live', mode: 'delivery', sec: 85, delivery: { rest: ['hot_boil', 'tokyo_box', 'seoul_street'], mains: 2, sides: 2 }, mech: mech({ spice: true, requests: true }), req: { first: 8, every: 12 },
-    unlocks: ['Hot & Boil'] },
-  { title: 'Speed Snack', mode: 'market', sec: 80, market: { shelves: ALL_SHELVES, pick: 6 }, mech: mech({ spice: true, requests: true }), req: { first: 5, every: 10 }, challenge: { combo: 15 },
-    unlocks: [] },
-  { title: 'Fan Order Rush', mode: 'delivery', sec: 90, delivery: { rest: ['chicken_joy', 'mamma_pizza', 'seoul_street', 'tokyo_box', 'hot_boil'], mains: 3, sides: 2 }, mech: mech({ spice: true, requests: true }), req: { first: 4, every: 7 }, challenge: { requests: 5 },
-    unlocks: [] },
-  { title: 'Super Spicy Battle', mode: 'buffet', sec: 90, buffet: { stations: ['lava', 'hot', 'cold'], slots: 5, fee: 520 }, mech: mech({ spice: true, requests: true }), req: { first: 6, every: 11 },
-    unlocks: ['Lava Spicy Station'] },
-  { title: 'Sweet Surprise', mode: 'kitchen', sec: 90, kitchen: { recipe: 'surprise_dessert', extras: ['banana_milk', 'straw_cake'] }, mystery: 1, mech: mech({ spice: true, requests: true }), req: { first: 6, every: 11 },
-    unlocks: ['Recipe: Surprise Dessert'] },
-  { title: 'Celebrity Collab', mode: 'delivery', sec: 95, delivery: { rest: ['hot_boil', 'tokyo_box', 'mamma_pizza'], mains: 2, sides: 3 }, mech: mech({ spice: true, requests: true }), req: { first: 6, every: 10 },
-    unlocks: ['Seafood Boil'] },
-  // ── Chapter 5 — SUPERSTAR LIVE ──
-  { title: 'Neon City Debut', mode: 'buffet', sec: 100, buffet: { stations: ['hot', 'cold', 'hotpot', 'grill', 'lava', 'dessert'], slots: 6, fee: 560 }, mech: mech({ spice: true, requests: true }), req: { first: 6, every: 10 },
-    unlocks: ['Every buffet station'] },
-  { title: 'Mega Mystery Box', mode: 'market', sec: 100, market: { shelves: ALL_SHELVES, pick: 4 }, mystery: 3, mech: mech({ spice: true, requests: true }), req: { first: 6, every: 11 },
-    unlocks: [] },
-  { title: 'ASMR Master', mode: 'kitchen', sec: 105, kitchen: { recipe: 'crispy_fry', extras: ['cola', 'pickled_radish', 'cat_chips'] }, mech: mech({ spice: true, requests: true }), req: { first: 6, every: 10 }, challenge: { perfect: 15 },
-    unlocks: ['Recipe: Crispy Fry'] },
-  { title: 'Ultimate Food Mix', mode: 'delivery', sec: 110, delivery: { rest: ['chicken_joy', 'mamma_pizza', 'seoul_street', 'tokyo_box', 'hot_boil'], mains: 3, sides: 3 }, mystery: 1, mech: mech({ spice: true, requests: true }), req: { first: 6, every: 10 },
-    unlocks: [] },
-  { title: 'Million Viewer Race', mode: 'buffet', sec: 115, buffet: { stations: ['hot', 'cold', 'hotpot', 'grill', 'lava', 'dessert'], slots: 6, fee: 600 }, mystery: 1, mech: mech({ spice: true, requests: true }), req: { first: 4, every: 7 }, challenge: { requests: 6 },
-    unlocks: [] },
-  { title: 'Superstar Mukbang Finale', mode: 'delivery', sec: 120, delivery: { rest: ['chicken_joy', 'mamma_pizza', 'seoul_street', 'tokyo_box', 'hot_boil'], mains: 3, sides: 3 }, mystery: 2, mech: mech({ spice: true, requests: true }), req: { first: 5, every: 8 }, challenge: { combo: 25 },
-    unlocks: ['SUPERSTAR TROPHY'] }
+  // Ch.1 SNACK ROOKIE
+  ['cat_chips',      'First Crunch',          'hearts',    []],
+  ['honey_puffs',    'Honey Puff Pop',        'hearts',    []],
+  ['cheese_noodle',  'Slurp Time',            'gift',      ['mode:market']],
+  ['soda_pop',       'Fizzy Fun',             'gift',      []],
+  ['straw_cake',     'Cake Day',              'superchat', []],
+  ['rainbow_candy',  'Rainbow Crunch',        'gift',      ['wardrobe', 'look:hair_bow']],
+  ['peach_milk',     'Peachy Sip',            'wave',      ['mode:delivery']],
+  ['chili_noodle',   'Too Spicy!',            'superchat', []],
+  // Ch.2 SWEET TOOTH
+  ['mint_choc',      'Brain Freeze',          'wave',      []],
+  ['kfc_chicken',    'Crispy Chicken Party',  'gift',      ['streamer:kiko']],
+  ['matcha_roll',    'Matcha Moment',         'spotlight', ['mode:buffet']],
+  ['gummy_bears',    'Sour Squad',            'superchat', []],
+  ['bubble_tea',     'Boba Break',            'wave',      ['look:acc_glasses_round']],
+  ['seaweed_crisps', 'Ocean Crunch',          'gift',      []],
+  ['banana_milk',    'Banana Milk Bliss',     'spotlight', ['mode:kitchen']],
+  ['pizza',          'Pizza Night',           'duet',      ['look:outfit_sunny']],
+  // Ch.3 RISING STAR
+  ['melon_bowl',     'Melon Jelly',           'wave',      []],
+  ['choco_pretzel',  'Pretzel Twist',         'gift',      []],
+  ['tteokbokki',     'Fire Rice Cakes',       'superchat', ['look:hair_cat_ears']],
+  ['blue_moon',      'Blue Moon Scoop',       'spotlight', ['streamer:momo']],
+  ['mango_cheese',   'Mango Cheesecake',      'duet',      []],
+  ['berry_smoothie', 'Berry Blast',           'wave',      ['look:acc_headphones']],
+  ['sushi_set',      'Sushi Platter',         'gift',      []],
+  ['sakura_noodle',  'Sakura Slurp',          'spotlight', ['look:outfit_sakura']],
+  // Ch.4 COZY NIGHTS
+  ['sea_noodle',     'Seafood Cup',           'wave',      []],
+  ['choco_mousse',   'Midnight Mousse',       'duet',      []],
+  ['cheese_burger',  'Burger Bite',           'gift',      ['look:outfit_chef']],
+  ['straw_swirl',    'Strawberry Swirl',      'superchat', []],
+  ['dumplings',      'Dumpling Feast',        'wave',      ['look:hair_flowers']],
+  ['rainbow_crepe',  'Rainbow Crepe',         'spotlight', []],
+  ['mini_hotpot',    'Hotpot for One',        'duet',      ['look:acc_heart_glasses']],
+  ['cookie_cream',   'Cookies & Cream',       'gift',      []],
+  // Ch.5 SUPERSTAR
+  ['bean_noodle',    'Black Bean Slurp',      'wave',      []],
+  ['grape_bunch',    'Grape Pop',             'spotlight', ['look:hair_bunny_ears']],
+  ['curry_rice',     'Curry Comfort',         'duet',      []],
+  ['mango_sorbet',   'Mango Sorbet',          'superchat', ['look:outfit_star']],
+  ['seafood_boil',   'Seafood Boil Mania',    'duet',      []],
+  ['berry_tart',     'Berry Tart',            'gift',      ['look:acc_scarf']],
+  ['choco_sundae',   'Sundae Supreme',        'spotlight', []],
+  ['golden_parfait', 'Superstar Finale',      'duet',      ['look:hair_crown']],
+  // Ch.6 MUKBANG LEGEND (encore chapter: rarer foods, funnier reactions)
+  ['shroom_noodle',  'Forest Noodles',        'wave',      []],
+  ['matcha_latte',   'Matcha Latte Art',      'spotlight', []],
+  ['spicy_wings',    'Wing Challenge',        'superchat', []],
+  ['mango_cubes',    'Mango Party',           'gift',      []],
+  ['pasta',          'Creamy Pasta Twirl',    'duet',      []],
+  ['choco_ramen',    'Chocolate Ramen?!',     'wave',      []],
+  ['straw_plate',    'Strawberry Field',      'spotlight', []],
+  ['mochi',          'Mochi Stretch',         'gift',      []],
+  ['pickle_icecream','Pickle Ice Cream?!',    'superchat', []],
+  ['berry_mix',      'Legend Finale',         'duet',      []]
 ];
+const LEVEL_COUNT = RAW.length;
+
+// viewer goal: 500 → ~2M (log curve), start = 30 %
+function goalOf(n) { const g = 500 * Math.pow(4000, (n - 1) / (LEVEL_COUNT - 1)); const m = Math.pow(10, Math.max(1, Math.floor(Math.log10(g)) - 1)); return Math.round(g / m) * m; }
+function roundTo(v) { const m = Math.pow(10, Math.max(1, Math.floor(Math.log10(v)) - 1)); return Math.round(v / m) * m; }
 
 const LEVELS = [];
+const seenTastes = {}, seenPacks = {}, seenSounds = {};
 for (let i = 0; i < RAW.length; i++) {
-  const r = RAW[i], n = i + 1, ch = Math.floor(i / 6);
+  const r = RAW[i], n = i + 1, ch = Math.min(CHAPTERS.length - 1, Math.floor(i / PER_CHAPTER));
+  const d = K.dish(r[0]); if (!d) throw new Error('levels: unknown food ' + r[0]);
+  const pack = packOf(d);
   const goal = goalOf(n);
-  const lv = Object.assign({}, r, { n: n, chapter: ch + 1, chapterName: CHAPTERS[ch].name, view: CHAPTERS[ch].view, bg: CHAPTERS[ch].view,
-    loc: r.mode === 'buffet' ? 'restaurant' : 'home', goal: goal, goal3: Math.round(goal * 1.35 / Math.pow(10, Math.max(1, Math.floor(Math.log10(goal)) - 1))) * Math.pow(10, Math.max(1, Math.floor(Math.log10(goal)) - 1)),
-    startViewers: Math.max(100, Math.round(goal * 0.25 / 100) * 100), mystery: r.mystery || 0 });
-  lv.minCost = minCost(lv);
-  lv.rounds = r.rounds || roundsFor(n);
-  LEVELS.push(lv);
-}
-const LEVEL_COUNT = LEVELS.length;
-
-// Extra stream rounds after the first table is cleared (later levels last longer through new
-// activities, not more chewing). type: encore (more food from the same source) · mystery (gift
-// boxes) · spicy (a hot challenge course + a drink) · rush (fan requests every few seconds)
-function roundsFor(n) {
-  if (n === 1) return [];
-  if (n <= 4) return [{ type: 'encore', count: 2 }];
-  if (n === 5) return [{ type: 'mystery', count: 2 }];
-  if (n === 6) return [{ type: 'encore', count: 2 }, { type: 'spicy', count: 2 }];
-  const twist = ['mystery', 'spicy', 'rush'][n % 3];
-  if (n <= 12) return [{ type: 'encore', count: 3 }, { type: twist, count: 2 }];
-  if (n <= 18) return [{ type: 'encore', count: 3 }, { type: twist, count: 3 }, { type: 'encore', count: 3 }];
-  if (n <= 24) return [{ type: 'encore', count: 3 }, { type: twist, count: 3 }, { type: 'encore', count: 3 }, { type: ['rush', 'mystery', 'spicy'][n % 3], count: 3 }];
-  return [{ type: 'encore', count: 3 }, { type: twist, count: 3 }, { type: 'encore', count: 3 }, { type: ['rush', 'mystery', 'spicy'][n % 3], count: 3 }, { type: 'encore', count: 3 }, { type: 'rush', count: 3 }];
-}
-// dishes a level's encore rounds can serve (its own food source)
-function sourcePool(lv) {
-  const out = [];
-  if (lv.mode === 'market') { for (let i = 0; i < D.FOODS.length; i++) if (lv.market.shelves.indexOf(D.FOODS[i].cat) >= 0) out.push(D.FOODS[i].id); }
-  else if (lv.mode === 'delivery') { for (let i = 0; i < lv.delivery.rest.length; i++) K.mainsOf(lv.delivery.rest[i]).forEach(function (d) { out.push(d.id); }); K.sides().forEach(function (d) { out.push(d.id); }); }
-  else if (lv.mode === 'buffet') { for (let i = 0; i < lv.buffet.stations.length; i++) Array.prototype.push.apply(out, K.STATION_ITEMS[lv.buffet.stations[i]]); }
-  else if (lv.mode === 'kitchen') { Array.prototype.push.apply(out, lv.kitchen.extras || []); const d = K.RECIPE_BY_ID[lv.kitchen.recipe].dish; if (d !== 'mystery') out.push(d); out.push('straw_cake', 'banana_milk', 'honey_puffs'); }
-  else Array.prototype.push.apply(out, CARE_PACK.concat(['cheese_noodle', 'rainbow_candy']));
-  return out;
-}
-const SPICY_COURSE = ['spicy_wings', 'tteokbokki', 'chili_noodle', 'kimchi_rice', 'mapo_tofu'];
-const COOL_DRINKS = ['cola', 'iced_lemon_tea', 'peach_milk', 'milk_cooler'];
-
-// cheapest way to play the level (what the player must be able to afford)
-function minCost(lv) {
-  if (lv.mode === 'prestock') return 0;
-  if (lv.mode === 'market') { let p = 1e9; for (let i = 0; i < lv.market.shelves.length; i++) p = Math.min(p, D.CAT_BY_ID[lv.market.shelves[i]].price); return p * lv.market.pick; }
-  if (lv.mode === 'delivery') { const ps = []; for (let i = 0; i < lv.delivery.rest.length; i++) { const ms = K.mainsOf(lv.delivery.rest[i]); for (let j = 0; j < ms.length; j++) ps.push(ms[j].price); } ps.sort(function (a, b) { return a - b; }); let s = 0; for (let i = 0; i < lv.delivery.mains; i++) s += ps[Math.min(i, ps.length - 1)]; return s; }
-  if (lv.mode === 'buffet') return lv.buffet.fee;
-  if (lv.mode === 'kitchen') return K.RECIPE_BY_ID[lv.kitchen.recipe].price;
-  return 0;
+  // what is new in this stream (shown before / after it)
+  const news = [];
+  if (!seenPacks[pack]) { seenPacks[pack] = 1; if (n > 1) news.push('NEW PACKAGE: ' + PACK_INFO[pack].open); }
+  if (!seenTastes[d.taste]) { seenTastes[d.taste] = 1; if (n > 1) news.push('NEW REACTION: ' + D.TASTES[d.taste].name.toUpperCase() + ' FACE'); }
+  if (!seenSounds[d.sound]) { seenSounds[d.sound] = 1; if (n > 1) news.push('NEW ASMR SOUND'); }
+  LEVELS.push({
+    n: n, chapter: ch + 1, chapterName: CHAPTERS[ch].name, view: CHAPTERS[ch].view, bg: CHAPTERS[ch].view, loc: 'home',
+    title: r[1], food: d.id, pack: pack, event: r[2], unlocks: r[3], news: news,
+    goal: goal, goal3: roundTo(goal * 1.3), startViewers: roundTo(goal * 0.3),
+    cpb: 6 + 2 * n // coins per bite
+  });
 }
 function level(n) { return LEVELS[Math.max(1, Math.min(LEVEL_COUNT, n | 0)) - 1]; }
-// The free "fan gift" when the player cannot afford the level: three cheap snacks, no shop.
-const CARE_PACK = ['cat_chips', 'peach_milk', 'honey_puffs'];
-// coin value used for bite pay when the food was free (L1, fan gift) — scales gently with the level
-function nominalCost(n) { return 120 + 15 * n; }
 
-module.exports = { LEVELS, LEVEL_COUNT, CHAPTERS, level, goalOf, minCost, CARE_PACK, nominalCost, roundsFor, sourcePool, SPICY_COURSE, COOL_DRINKS };
-
-};
-__mods["src/mech.js"] = function (require, module, exports, __filename, __dirname) {
-'use strict';
-// V2 stream mechanics as pure logic (no drawing, no platform): ASMR combo,
-// perfect bites, spice meter, fan requests, mystery outcomes, streamer
-// abilities. game.js feeds it bites and time and turns the returned events
-// into effects. Fully testable headless (tools/sim-test.mjs).
-const D = require('./data.js');
-const K = require('./catalog.js');
-
-const COMBO_GAP = 2.5;          // s between bites before the combo breaks
-const COMBO_GAP_COLD = 3.5;     // Momo: after a cold bite
-const PERFECT_R = 44;           // inner mouth radius for a perfect bite (outer eat radius is 92)
-const SPICE_DECAY = 5;          // per second
-const SPICE_FIRE = 60, SPICE_MAX = 100, SPICE_AFTER = 40;
-const REQ_TIME = 10;            // s to answer a fan request
-const REQ_BOOST = 0.08;         // × level goal, viewers added for an answered request
-
-function comboMult(c) { return c >= 30 ? 2.5 : c >= 20 ? 2.0 : c >= 10 ? 1.5 : c >= 5 ? 1.2 : 1; }
-
-class Mech {
-  constructor(lv, streamerId, rand) {
-    this.lv = lv; this.m = lv.mech || {}; this.sid = streamerId; this.rand = rand || Math.random;
-    this.combo = 0; this.best = 0; this.gap = 0; this.gapMax = COMBO_GAP; this.perfects = 0; this.perfectStreak = 0;
-    this.spice = 0; this.onFire = false; this.tooHot = 0;
-    this.req = null; this.reqT = lv.req ? lv.req.first : -1; this.reqDone = 0; this.reqMissed = 0;
-    this.mysteryHistory = [];
-    this.challengeDone = false;
-  }
-  // restore from run_json
-  load(s) { if (!s) return; this.rush = !!s.rush; this.combo = s.combo || 0; this.best = s.best || 0; this.spice = s.spice || 0; this.reqDone = s.reqDone || 0; this.perfects = s.perfects || 0; this.challengeDone = !!s.challengeDone; }
-  save() { return { rush: !!this.rush, combo: this.combo, best: this.best, spice: Math.round(this.spice), reqDone: this.reqDone, perfects: this.perfects, challengeDone: this.challengeDone }; }
-
-  // time passes; `tags` = tags still on the table (requests only ask for something you can eat)
-  update(dt, tags) {
-    const ev = [];
-    if (this.combo > 0) { this.gap += dt; if (this.gap > this.gapMax) { if (this.combo >= 3) ev.push({ type: 'comboLost', combo: this.combo }); this.combo = 0; this.perfectStreak = 0; } }
-    if (this.tooHot > 0) this.tooHot = Math.max(0, this.tooHot - dt);
-    if (this.m.spice) { this.spice = Math.max(0, this.spice - SPICE_DECAY * dt); if (this.onFire && this.spice < SPICE_FIRE - 10) { this.onFire = false; ev.push({ type: 'fireOut' }); } }
-    if (this.m.requests && this.lv.req) {
-      if (this.req) { this.req.t -= dt; if (this.req.t <= 0) { ev.push({ type: 'reqMissed', tag: this.req.tag }); this.reqMissed++; this.req = null; this.reqT = this.lv.req.every; } }
-      else if (this.reqT >= 0) { this.reqT -= dt * (this.rush ? 2.5 : 1); if (this.reqT <= 0) { const r = this.newRequest(tags); if (r) { this.req = r; ev.push({ type: 'request', tag: r.tag, text: r.text }); } else this.reqT = 3; } }
-    }
-    return ev;
-  }
-  newRequest(tags) {
-    const ok = []; for (const t in K.REQUESTS) if (tags && tags.indexOf(t) >= 0) ok.push(t);
-    if (!ok.length) return null;
-    // avoid asking the same thing twice in a row
-    let pick = ok[Math.floor(this.rand() * ok.length)]; if (ok.length > 1 && this.lastReq === pick) pick = ok[(ok.indexOf(pick) + 1) % ok.length];
-    this.lastReq = pick;
-    return { tag: pick, text: K.REQUESTS[pick], t: REQ_TIME, max: REQ_TIME };
-  }
-
-  // a bite of `dish`; `dist` = food centre to mouth. Returns { hypeMult, coinMult, events[] }
-  bite(dish, dist, opts) {
-    opts = opts || {};
-    const ev = []; let hype = 1, coin = 1;
-    const taste = opts.taste || dish.taste;
-    const tags = dish.tags || [];
-    // combo
-    this.combo++; this.gap = 0; this.best = Math.max(this.best, this.combo);
-    this.gapMax = (this.sid === 'momo' && (taste === 'cold' || tags.indexOf('cold') >= 0)) ? COMBO_GAP_COLD : COMBO_GAP;
-    if (this.combo % 5 === 0) ev.push({ type: 'comboMilestone', combo: this.combo });
-    // perfect
-    const perfect = dist <= PERFECT_R;
-    if (perfect) { this.perfects++; this.perfectStreak++; ev.push({ type: 'perfect', streak: this.perfectStreak }); if (this.sid === 'luna') hype *= 1.15; }
-    else this.perfectStreak = 0;
-    hype *= comboMult(this.combo);
-    // spice
-    if (this.m.spice) {
-      const heat = dish.heat || (taste === 'spicy' ? 2 : 0);
-      if (heat > 0 && taste === 'spicy') this.spice += 14 * heat;
-      if (tags.indexOf('drink') >= 0) this.spice -= 35;
-      if (taste === 'cold' || tags.indexOf('cold') >= 0) this.spice -= this.sid === 'momo' ? 30 : 20;
-      if (taste === 'sour') this.spice -= 15;
-      this.spice = Math.max(0, this.spice);
-      if (this.spice >= SPICE_MAX) { this.spice = SPICE_AFTER; this.onFire = false; this.tooHot = 1.5; if (this.combo >= 3) ev.push({ type: 'comboLost', combo: this.combo }); this.combo = 0; this.perfectStreak = 0; ev.push({ type: 'tooHot' }); }
-      else if (this.spice >= SPICE_FIRE && !this.onFire) { this.onFire = true; ev.push({ type: 'onFire' }); }
-      if (this.onFire) hype *= 1.3;
-    }
-    // abilities
-    if (this.sid === 'kiko' && (taste === 'sweet' || tags.indexOf('sweet') >= 0)) { coin *= 1.2; ev.push({ type: 'kikoHearts' }); }
-    // fan request
-    if (this.req && tags.indexOf(this.req.tag) >= 0) { ev.push({ type: 'reqDone', tag: this.req.tag, boost: Math.round(this.lv.goal * REQ_BOOST) }); this.reqDone++; this.req = null; this.reqT = this.lv.req.every; }
-    // challenge
-    if (!this.challengeDone && this.lv.challenge && this.challengeMet()) { this.challengeDone = true; ev.push({ type: 'challenge' }); }
-    return { hypeMult: hype, coinMult: coin, perfect: perfect, events: ev };
-  }
-  challengeMet() { const c = this.lv.challenge; if (!c) return false; if (c.combo) return this.best >= c.combo; if (c.perfect) return this.perfects >= c.perfect; if (c.requests) return this.reqDone >= c.requests; return false; }
-  challengeText() { const c = this.lv.challenge; if (!c) return ''; if (c.combo) return 'COMBO ' + Math.min(this.best, c.combo) + '/' + c.combo; if (c.perfect) return 'PERFECT ' + Math.min(this.perfects, c.perfect) + '/' + c.perfect; if (c.requests) return 'FAN REQUESTS ' + Math.min(this.reqDone, c.requests) + '/' + c.requests; return ''; }
-
-  // mystery box → { kind, id }. `pool` = dish ids of the level (for "delicious").
-  mystery(pool) {
-    const w = K.MYSTERY.weights; let total = 0; for (let i = 0; i < w.length; i++) total += w[i][1];
-    let kind = 'delicious', r = this.rand() * total;
-    for (let i = 0; i < w.length; i++) { r -= w[i][1]; if (r <= 0) { kind = w[i][0]; break; } }
-    // pity: never three "delicious" in a row
-    const h = this.mysteryHistory; if (kind === 'delicious' && h.length >= 2 && h[h.length - 1] === 'delicious' && h[h.length - 2] === 'delicious') kind = 'rare';
-    h.push(kind);
-    const list = kind === 'delicious' ? pool : K.MYSTERY[kind];
-    const id = list[Math.floor(this.rand() * list.length)] || pool[0];
-    return { kind: kind, id: id };
-  }
+// ── optional activities (home screen) ──
+// Each one ends in a single-food bonus stream; it never advances the level.
+const MODES = [
+  { id: 'market',   name: 'SUPERMARKET', short: 'SHOP',   unlock: 3,  color: '#ffd7a3', dark: '#f0a860' },
+  { id: 'delivery', name: 'DELIVERY',    short: 'ORDER',  unlock: 7,  color: '#ff8fb3', dark: '#d85e8e' },
+  { id: 'buffet',   name: 'BUFFET',      short: 'BUFFET', unlock: 11, color: '#ffb199', dark: '#c93b1d' },
+  { id: 'kitchen',  name: 'COOKING',     short: 'COOK',   unlock: 15, color: '#9fe3c9', dark: '#5fbf9f' }
+];
+function modeOf(id) { for (let i = 0; i < MODES.length; i++) if (MODES[i].id === id) return MODES[i]; return null; }
+// level an unlock id is granted at
+function unlockLevel(id) { for (let i = 0; i < LEVELS.length; i++) if (LEVELS[i].unlocks.indexOf(id) >= 0) return LEVELS[i].n; return 0; }
+// The activity's "level" config, sized for ONE food, based on how far the player is.
+function sideConfig(mode, reached) {
+  const base = { n: Math.max(1, Math.min(LEVEL_COUNT, reached)), side: mode, chapter: 1, view: level(reached).view, bg: level(reached).view, loc: mode === 'buffet' ? 'restaurant' : 'home', title: modeOf(mode).name };
+  if (mode === 'market') { const sh = []; for (let i = 0; i < D.CATS.length; i++) if (D.CATS[i].unlock <= Math.max(2, Math.ceil(reached / 3))) sh.push(D.CATS[i].id); base.market = { shelves: sh.length ? sh : ['snacks'], pick: 1 }; }
+  if (mode === 'delivery') base.delivery = { rest: K.RESTAURANTS.filter(function (r) { return r.unlock <= Math.max(2, Math.round(reached * 0.6)); }).map(function (r) { return r.id; }), mains: 1, sides: 0 };
+  if (mode === 'buffet') base.buffet = { stations: K.STATIONS.filter(function (s) { return s.unlock <= Math.max(3, Math.round(reached * 0.6)); }).map(function (s) { return s.id; }), slots: 1, fee: 120 + 8 * reached };
+  if (mode === 'kitchen') { const rs = K.RECIPES.filter(function (r) { return r.unlock <= Math.max(4, Math.round(reached * 0.75)); }); base.kitchen = { recipes: rs.map(function (r) { return r.id; }), recipe: rs[rs.length - 1].id, extras: [] }; }
+  return base;
 }
 
-module.exports = { Mech, comboMult, PERFECT_R, COMBO_GAP, SPICE_FIRE, SPICE_MAX, REQ_TIME, REQ_BOOST };
+module.exports = { LEVELS, LEVEL_COUNT, CHAPTERS, PER_CHAPTER, EVENTS, PACK_INFO, MODES, modeOf, level, goalOf, packOf, sideConfig, unlockLevel };
 
 };
 __mods["src/scenes.js"] = function (require, module, exports, __filename, __dirname) {
@@ -5365,6 +5056,7 @@ function install(Game) {
     if (id === 'bgo') { this.buffetGo(); return true; }
     if (id.indexOf('ktop_') === 0) { this.toggleTopping(id.slice(5)); return true; }
     if (id === 'kgo') { this.kitStart(); return true; }
+    if (id === 'krec') { const k = this.kit, list = k.lv.kitchen.recipes || [k.rec.id]; const i = (list.indexOf(k.rec.id) + 1) % list.length; k.rec = K.RECIPE_BY_ID[list[i]]; k.tops = []; this.audio.play('whoosh', { gain: 0.5 }); return true; }
     return false;
   };
   // QA / tests: complete the current food-source scene without input
@@ -5409,9 +5101,7 @@ function install(Game) {
   };
   P.arriveDone = function () {
     const d = this.deliv; if (this.state !== 'arrive') return;
-    const items = []; for (let i = 0; i < d.mains.length; i++) items.push({ id: d.mains[i], boxed: true }); for (let i = 0; i < d.sides.length; i++) items.push({ id: d.sides[i], boxed: true });
-    this.createRun(d.lv, items, d.cost, { mode: 'delivery' });
-    this.trans = 0.3; this.beginStream();
+    this.startFoodStream(d.mains[0], { side: 'delivery', cost: d.cost });
   };
   P.drawDelivery = function () {
     const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, d = this.deliv, lv = d.lv;
@@ -5500,10 +5190,7 @@ function install(Game) {
     if (b.plate.length < b.lv.buffet.slots) { this.audio.play('error'); this.showToast('Fill your plate first'); return; }
     if ((this.profile.get('coins') || 0) < fee) { this.audio.play('error'); this.showToast('Not enough coins'); return; }
     this.profile.add('coins', -fee); this.audio.play('cash');
-    const bonus = this.buffetBonus();
-    this.createRun(b.lv, b.plate.map(function (id) { return { id: id }; }), fee, { mode: 'buffet', bonus: bonus.v, bonusText: bonus.text });
-    if (bonus.text) this.floatText(bonus.text + '!', this.W / 2, this.H * 0.47, C.gold, 28, true);
-    this.trans = 0.3; this.beginStream();
+    this.startFoodStream(b.plate[0], { side: 'buffet', cost: fee, loc: 'restaurant' });
   };
   P.buffetTouch = function (kind, id, x, y) {
     const b = this.buf;
@@ -5574,13 +5261,9 @@ function install(Game) {
   };
   P.kitFinish = function () {
     const k = this.kit; if (k.phase !== 'done') return; k.phase = 'gone';
-    const items = []; const dish = k.rec.dish;
-    if (dish === 'mystery') items.push({ id: 'mystery', mystery: true }); else items.push({ id: dish, toppings: k.tops.slice() });
-    const ex = k.lv.kitchen.extras || []; for (let i = 0; i < ex.length; i++) items.push({ id: ex[i] });
-    const bonus = 0.06 + 0.04 * k.tops.length;
-    this.createRun(k.lv, items, k.cost, { mode: 'kitchen', bonus: bonus, bonusText: 'HOMEMADE BONUS' });
-    this.floatText('HOMEMADE BONUS +' + Math.round(bonus * 100) + '%', this.W / 2, this.H * 0.47, C.gold, 26, true);
-    this.trans = 0.3; this.beginStream();
+    let dish = k.rec.dish; if (dish === 'mystery') { const pool = K.MYSTERY.rare.concat(K.MYSTERY.funny); dish = pool[Math.floor(Math.random() * pool.length)]; }
+    this.startFoodStream(dish, { side: 'kitchen', cost: k.cost, toppings: k.tops.slice() });
+    this.floatText('HOMEMADE!', this.W / 2, this.H * 0.47, C.gold, 30, true);
   };
   P.updateKitchen = function (dt) {
     const k = this.kit; k.flash = Math.max(0, k.flash - dt);
@@ -5620,11 +5303,11 @@ function install(Game) {
     const dish = k.rec.dish === 'mystery' ? null : K.dish(k.rec.dish);
     if (k.phase === 'choose') {
       ui.title(k.rec.name.toUpperCase(), W / 2, top + 100, 34, C.white, C.pinkDark);
-      ui.label('DIY KITCHEN  ·  LEVEL ' + k.lv.n, W / 2, top + 134, 14, C.text);
+      if ((k.lv.kitchen.recipes || []).length > 1) ui.button('krec', W / 2 - 90, top + 122, 180, 36, 'OTHER RECIPE  ›', { color: C.mint, dark: C.mintDark, size: 14, radius: 14 }); else ui.label('COOKING', W / 2, top + 134, 14, C.text);
       const cy = top + 270; A.circle(ctx, W / 2, cy, 120, 'rgba(255,255,255,0.7)', 4);
       if (dish) A.food(ctx, dish, W / 2, cy, 190, 0, this.time); else A.mysteryBox(ctx, W / 2, cy, 170, this.time, 0, true);
-      let y = cy + 140; const ex = (k.lv.kitchen.extras || []).map(function (id) { return K.dish(id).name; });
-      ui.label('RECIPE KIT  ' + U.fmtCoins(k.rec.price) + ' coins' + (ex.length ? '  ·  + ' + ex.join(', ') : ''), W / 2, y, 14, C.text); y += 30;
+      let y = cy + 140;
+      ui.label('RECIPE KIT  ' + U.fmtCoins(k.rec.price) + ' coins', W / 2, y, 14, C.text); y += 30;
       ui.label('TOPPINGS (OPTIONAL) · EACH ADDS HYPE', W / 2, y, 14, C.textLight); y += 18;
       const tops = k.rec.toppings, cw = Math.min(118, (W - 40 - (tops.length - 1) * 8) / tops.length);
       const x0 = (W - (tops.length * cw + (tops.length - 1) * 8)) / 2;
@@ -5780,6 +5463,326 @@ module.exports = {
 };
 
 };
+__mods["src/stream.js"] = function (require, module, exports, __filename, __dirname) {
+'use strict';
+// V3 livestream (docs/GAME-DESIGN-V3.md §3): ONE food per stream.
+//   sealed ─tap/drag→ opening ─→ open ─tap or drag a portion to the mouth→ chew (3 bites) ─→ react
+//     └─ ×3 pickups (9 bites) ─→ empty ─→ finale ("VIRAL!") ─→ result
+// Relaxed: no timers to beat. Optional extras: tap floating hearts, tap a fan gift.
+// Installed onto Game.prototype.
+const U = require('./util.js');
+const D = require('./data.js');
+const A = require('./art.js');
+const K = require('./catalog.js');
+const L = require('./levels.js');
+const WR = require('./wardrobe.js');
+const C = D.COLORS;
+
+const PICKUPS = 3, BITES = 3;
+const T = { opening: 0.75, carry: 0.45, bite: 0.85, firstBite: 0.2, react: 1.5, empty: 1.0, finale: 2.8 };
+const CHEW = T.firstBite + T.bite * (BITES - 1) + 0.55;  // whole chew sequence
+const MOUTH_R = 92;
+const HEART_BOOST = 0.025, GIFT_BOOST = 0.06, EVENT_BOOST = 0.05, FINALE_BOOST = 0.08;
+const BEAT = [
+  { title: 'FIRST TASTE!', mult: 0.85, chat: 'bite', react: 6 },
+  { title: 'FANS GOING WILD!', mult: 1.0, chat: 'bite', react: 12 },
+  { title: 'LAST BITE!', mult: 1.15, chat: 'finish', react: 18 }
+];
+const TASTE_LINE = { crunch: 'SO CRUNCHY!', slurp: 'SLURRRP!', gulp: 'SO REFRESHING!', soft: 'SO FLUFFY!', lick: 'SO CREAMY!', bite: 'SO TASTY!', fizz: 'FIZZY!' };
+
+function install(Game) {
+  const P = Game.prototype;
+
+  // ── starting a stream ──
+  P.startStream = function (n) { const lv = L.level(n); this.sessionLevels++; this.trans = 0.3; this.newRun({ level: lv.n, food: lv.food, pack: lv.pack, loc: 'home', view: lv.view, cost: 0, cpb: lv.cpb, event: lv.event }); this.beginStream(); };
+  // activities end here: one chosen food, a bonus stream that never advances the level
+  P.startFoodStream = function (foodId, o) {
+    o = o || {}; const d = K.dish(foodId) || K.dish('cat_chips'); const reached = this.curLevel(); const lv = L.level(reached);
+    const cpb = Math.max(4, Math.round(Math.max(o.cost || 0, 60 + 10 * reached) * 1.35 / (PICKUPS * BITES)));
+    this.newRun({ level: 0, side: o.side || 'free', food: d.id, pack: L.packOf(d), loc: o.loc || 'home', view: lv.view, cost: o.cost || 0, cpb: cpb, event: L.EVENTS[1 + Math.floor(Math.random() * (L.EVENTS.length - 1))], toppings: o.toppings || null, goalLevel: reached });
+    this.trans = 0.3; this.beginStream();
+  };
+  P.newRun = function (o) {
+    const lv = L.level(o.level || o.goalLevel || 1);
+    const goal = o.level ? lv.goal : Math.round(lv.goal * 0.8), start = o.level ? lv.startViewers : Math.round(lv.startViewers * 0.8);
+    this.run = { v: 3, level: o.level || 0, side: o.side || null, food: o.food, pack: o.pack, loc: o.loc, view: o.view, event: o.event, toppings: o.toppings || null,
+      cost: o.cost || 0, cpb: o.cpb, goal: goal, goal3: Math.round(goal * 1.3), start: start, hu: Math.max(1, (goal - start) * 1.0 / (PICKUPS * BITES)),
+      viewers: start, peak: start, coins: 0, pickups: 0, bites: 0, phase: 'sealed', pt: 0, hearts: 0, gift: null, giftTaken: false, eventDone: false, t: 0, finaleDone: false };
+    this.saveRun();
+  };
+  P.beginStream = function () {
+    const r = this.run; r.t = 0; r.pt = 0; this.carry = null; r.zoom = 0; r.banner = null;
+    if (r.phase === 'opening') r.phase = 'open';
+    if (r.phase === 'carry' || r.phase === 'react') r.phase = r.pickups >= PICKUPS ? 'empty' : 'open';
+    if (r.phase === 'chew') r.pt = T.firstBite + T.bite * r.bites - 0.01; // resume the chew where the save left it
+    this.reactions.length = 0; this.chat.length = 0; this.floats.length = 0; this.confetti.length = 0; this.hearts = [];
+    this.face = { expr: 'idle', until: 0, blink: false, blinkT: 2, t: 0 };
+    this.pushChat('idle');
+    this.setState('stream');
+  };
+  P.streamLevel = function () { const r = this.run; return L.level(r.level || r.goalLevel || this.curLevel()); };
+  P.packPos = function () { return { x: this.W / 2, y: this.H * 0.665, size: Math.min(250, this.W * 0.46) }; };
+
+  // ── save / resume (run_json v3; older runs are dropped — the level itself is kept) ──
+  P.saveRun = function () {
+    const r = this.run; if (!r) { this.profile.set('run_json', ''); return; }
+    const o = {}; const keys = ['v', 'level', 'side', 'food', 'pack', 'loc', 'view', 'event', 'toppings', 'cost', 'cpb', 'goal', 'goal3', 'start', 'hu', 'viewers', 'peak', 'coins', 'pickups', 'bites', 'phase', 'hearts', 'giftTaken', 'eventDone', 'goalLevel'];
+    for (let i = 0; i < keys.length; i++) o[keys[i]] = r[keys[i]];
+    o.viewers = Math.round(o.viewers); o.peak = Math.round(o.peak);
+    this.profile.set('run_json', JSON.stringify(o));
+  };
+  P.restoreRun = function () {
+    try {
+      const r = JSON.parse(this.profile.get('run_json') || 'null');
+      if (!r) return;
+      if (r.v !== 3 || !K.dish(r.food)) { this.profile.set('run_json', ''); return; } // V1/V2 multi-food runs: start the level fresh
+      r.t = 0; r.pt = 0; this.run = r;
+    } catch (e) { this.run = null; this.profile.set('run_json', ''); }
+  };
+
+  // ── input ──
+  P.streamTouch = function (kind, id, x, y) {
+    const r = this.run; if (!r || this.state !== 'stream') return false;
+    if (kind === 'start') {
+      // optional extras first: hearts, the fan gift
+      for (let i = this.hearts.length - 1; i >= 0; i--) { const h = this.hearts[i]; if (!h.taken && U.dist(x, y, h.x, h.y) < 40) { this.tapHeart(h); return true; } }
+      if (r.gift && !r.giftTaken && U.dist(x, y, r.gift.x, r.gift.y) < 60) { this.tapGift(); return true; }
+      const pk = this.packPos(); const onPack = Math.abs(x - pk.x) < pk.size * 0.55 && Math.abs(y - pk.y) < pk.size * 0.55;
+      if (onPack && r.phase === 'sealed') { this.openPack(); return true; }
+      if (onPack && r.phase === 'open') { this.carry = { tid: id, x: x, y: y, sx: x, sy: y, moved: false, drag: true }; r.phase = 'carry'; r.pt = 0; this.audio.play('pop', { gain: 0.5 }); return true; }
+      return false;
+    }
+    const c = this.carry; if (!c || c.tid !== id || !c.drag) return false;
+    if (kind === 'move') { c.x = x; c.y = y; if (U.dist(x, y, c.sx, c.sy) > 14) c.moved = true; const m = this.mouth(); if (U.dist(x, y, m.x, m.y) < MOUTH_R) this.deliver(); return true; }
+    // release: a tap flies the portion to the mouth; a short drag that missed flies it back
+    c.drag = false; c.fx = c.x; c.fy = c.y; c.ft = 0; c.back = c.moved;
+    if (c.back) this.audio.play('drop', { gain: 0.5 });
+    return true;
+  };
+  P.openPack = function () { const r = this.run; r.phase = 'opening'; r.pt = 0; this.audio.play(L.PACK_INFO[r.pack].sound === 'ding' ? 'ding' : L.PACK_INFO[r.pack].sound, { gain: 1.1 }); this.vibrate('short'); this.setFace('open', 1); this.pushChat('idle'); this.saveRun(); };
+  P.deliver = function () { const r = this.run; if (r.phase !== 'carry') return; this.carry = null; r.phase = 'chew'; r.pt = 0; r.bites = 0; this.setFace('open', 0.3); this.saveRun(); };
+  P.tapHeart = function (h) { const r = this.run; h.taken = true; r.hearts++; const v = Math.round(r.goal * HEART_BOOST); this.addViewers(v); this.floatText('+' + U.fmtViewers(v), h.x, h.y - 20, C.pink, 18); this.spawnSparkles(h.x, h.y, 8); this.audio.play('like', { gain: 0.6 }); };
+  P.tapGift = function () { const r = this.run; r.giftTaken = true; const coins = r.cpb * 4, v = Math.round(r.goal * GIFT_BOOST); r.coins += coins; this.profile.add('coins', coins); this.addViewers(v); this.floatText('FAN GIFT  +' + coins, r.gift.x, r.gift.y - 50, C.gold, 22, true); this.spawnConfetti(r.gift.x, r.gift.y, 24); this.audio.play('cash'); r.gift = null; this.saveRun(); };
+  P.addViewers = function (v) { const r = this.run; r.viewers += v; r.peak = Math.max(r.peak, r.viewers); };
+
+  // ── one bite of the current pickup ──
+  P.biteNow = function () {
+    const r = this.run, d = K.dish(r.food), beat = BEAT[Math.min(r.pickups, PICKUPS - 1)];
+    const taste = d.tastes ? d.tastes[r.bites % d.tastes.length] : d.taste;
+    const hype = Math.round(r.hu * beat.mult * [0.9, 1.0, 1.1][r.bites] * (0.9 + 0.1 * D.TASTES[taste].mult) * (0.95 + Math.random() * 0.1));
+    this.addViewers(hype); r.coins += r.cpb; this.profile.add('coins', r.cpb);
+    this.setFace(r.bites % 2 ? 'chew' : D.TASTES[taste].face, 0.7);
+    this.audio.play(d.sound || 'bite', { rate: 0.9 + Math.random() * 0.25, gain: 0.85 + r.pickups * 0.2 });
+    if (taste === 'spicy') this.audio.play('fire', { gain: 0.6 }); else if (taste === 'cold') this.audio.play('shiver', { gain: 0.6 }); else if (taste === 'fizzy') this.audio.play('fizz', { gain: 0.6 }); else if (taste === 'sour') this.audio.play('sour', { gain: 0.6 }); else if (taste === 'sweet') this.audio.play('sweet', { gain: 0.4 });
+    this.vibrate('short');
+    const m = this.mouth();
+    this.floatText('+' + U.fmtViewers(hype), m.x + 76, m.y - 30, C.white, 20); this.floatText('+' + r.cpb, m.x - 80, m.y - 40, C.gold, 18, true);
+    for (let i = 0; i < 2 + r.pickups * 2; i++) this.spawnReaction();
+    this.spawnCrumbs(m.x, m.y + 18, d);
+    if (Math.random() < 0.55) this.pushChat(Math.random() < 0.5 ? taste : 'bite');
+    r.bites++;
+    this.saveRun();
+  };
+  P.spawnCrumbs = function (x, y, d) { for (let i = 0; i < 6; i++) this.confetti.push({ x: x + (Math.random() - 0.5) * 30, y: y, vx: (Math.random() - 0.5) * 160, vy: -60 - Math.random() * 120, life: 0, max: 0.7, color: i % 2 ? d.c1 : d.c3, r: 2.5 + Math.random() * 2.5, rot: 0, spin: 4 }); };
+  // the emotional beat after each pickup
+  P.pickupDone = function () {
+    const r = this.run, d = K.dish(r.food), k = r.pickups, beat = BEAT[Math.min(k, PICKUPS - 1)];
+    r.pickups++; r.bites = 0; r.phase = 'react'; r.pt = 0;
+    const W = this.W, H = this.H;
+    r.banner = { text: beat.title, sub: k === 0 ? (TASTE_LINE[d.sound] || 'SO GOOD!') : k === 1 ? U.fmtViewers(r.viewers) + ' WATCHING!' : 'ONE MORE…', t: 0 };
+    this.setFace(k === 0 ? D.TASTES[d.taste].face : 'yum', T.react);
+    for (let i = 0; i < beat.react; i++) this.spawnReaction(i % 3 ? null : 'heart');
+    for (let i = 0; i <= k; i++) this.pushChat(i === 0 ? beat.chat : 'idle');
+    this.audio.play(k === 0 ? 'ding' : 'like', { gain: 0.8 });
+    if (k === 1) this.fanEvent();
+    if (k === 1) for (let i = 0; i < 4; i++) this.spawnHeart(true);
+    this.saveRun();
+  };
+  // the level's fan event (automatic, or optional to tap)
+  P.fanEvent = function () {
+    const r = this.run; if (r.eventDone) return; r.eventDone = true; const W = this.W, H = this.H; const ev = r.event;
+    if (ev === 'hearts') { for (let i = 0; i < 8; i++) this.spawnHeart(true); this.floatText('HEART RAIN! TAP THEM!', W / 2, H * 0.47, C.pink, 24, true); }
+    else if (ev === 'gift') { r.gift = { x: W * 0.84, y: H * 0.6, t: 0 }; this.floatText('A FAN SENT A GIFT!', W / 2, H * 0.47, C.gold, 24, true); this.audio.play('confetti'); }
+    else if (ev === 'superchat') { const c = r.cpb * 3; r.coins += c; this.profile.add('coins', c); this.addViewers(Math.round(r.goal * EVENT_BOOST)); r.superchat = { t: 0, coins: c }; this.audio.play('cash'); }
+    else if (ev === 'wave') { for (let i = 0; i < 6; i++) this.pushChat(['bite', 'idle', 'milestone'][i % 3], U.fmtViewers(r.viewers)); this.addViewers(Math.round(r.goal * EVENT_BOOST)); this.floatText('CHAT IS EXPLODING!', W / 2, H * 0.47, C.white, 24, true); }
+    else if (ev === 'spotlight') { r.zoom = 1.6; this.addViewers(Math.round(r.goal * EVENT_BOOST * 1.2)); this.floatText('TRENDING #1', W / 2, H * 0.44, C.gold, 34, true); this.audio.play('levelup', { gain: 0.6 }); }
+    else if (ev === 'duet') { r.duet = { t: 0, avatar: D.AVATARS[Math.floor(Math.random() * D.AVATARS.length)] }; for (let i = 0; i < 6; i++) this.spawnHeart(true); this.addViewers(Math.round(r.goal * EVENT_BOOST)); this.floatText('A FAN JOINED THE STREAM!', W / 2, H * 0.47, C.white, 22, true); }
+  };
+  P.spawnHeart = function (burst) { const W = this.W, H = this.H; const left = Math.random() < 0.5; this.hearts.push({ x: left ? W * (0.07 + Math.random() * 0.14) : W * (0.79 + Math.random() * 0.14), y: H * (0.6 + Math.random() * 0.22) + (burst ? 0 : 40), vy: 34 + Math.random() * 22, life: 0, max: 4.2, sway: Math.random() * 6, taken: false }); };
+
+  // ── update ──
+  P.updateStream = function (dt) {
+    const r = this.run; if (!r) return; r.t += dt; r.pt += dt;
+    if (r.zoom > 0) r.zoom = Math.max(0, r.zoom - dt);
+    if (r.banner) { r.banner.t += dt; if (r.banner.t > 1.6) r.banner = null; }
+    if (r.superchat) { r.superchat.t += dt; if (r.superchat.t > 3) r.superchat = null; }
+    if (r.duet) { r.duet.t += dt; if (r.duet.t > 4) r.duet = null; }
+    if (r.gift) r.gift.t += dt;
+    // floating hearts (tappable bonus) while eating
+    for (let i = this.hearts.length - 1; i >= 0; i--) { const h = this.hearts[i]; h.life += dt; h.y -= h.vy * dt; if (h.life > h.max || h.taken) this.hearts.splice(i, 1); }
+    if ((r.phase === 'chew' || r.phase === 'react') && Math.random() < dt * 0.9) this.spawnHeart(false);
+    // ambient
+    this.ambT = (this.ambT || 0) - dt; if (this.ambT < 0) { this.spawnReaction(); this.ambT = 0.4 + Math.random() * 0.8; }
+    this.chatT = (this.chatT || 0) - dt; if (this.chatT < 0) { this.pushChat('idle'); this.chatT = 2.6 + Math.random() * 2.4; }
+    if (r.viewers > r.start && r.phase !== 'finale') r.viewers = Math.max(r.start, r.viewers - r.viewers * 0.002 * dt);
+    switch (r.phase) {
+      case 'opening': if (r.pt >= T.opening) { r.phase = 'open'; r.pt = 0; this.setFace('yum', 0.8); this.spawnSparkles(this.packPos().x, this.packPos().y, 16); this.pushChat('bite'); this.saveRun(); } break;
+      case 'carry': {
+        const c = this.carry; if (!c) { r.phase = 'open'; break; }
+        if (!c.drag) {
+          c.ft += dt / T.carry; const pk = this.packPos(), m = this.mouth(); const k = U.easeInOut(Math.min(1, c.ft));
+          const tx = c.back ? pk.x : m.x, ty = c.back ? pk.y - 20 : m.y;
+          c.x = U.lerp(c.fx, tx, k); c.y = U.lerp(c.fy, ty, k) - Math.sin(k * Math.PI) * (c.back ? 30 : 60);
+          if (c.ft >= 1) { if (c.back) { this.carry = null; r.phase = 'open'; } else this.deliver(); }
+        }
+        const m = this.mouth(); if (this.carry && U.dist(this.carry.x, this.carry.y, m.x, m.y) < MOUTH_R * 0.6 && this.face.expr !== 'open') this.face.expr = 'open';
+        break;
+      }
+      case 'chew': {
+        const want = r.pt < T.firstBite ? 0 : Math.min(BITES, 1 + Math.floor((r.pt - T.firstBite) / T.bite));
+        while (r.bites < want) this.biteNow();
+        if (r.pt >= CHEW) this.pickupDone();
+        break;
+      }
+      case 'react': if (r.pt >= T.react) { r.pt = 0; if (r.pickups >= PICKUPS) { r.phase = 'empty'; this.audio.play('pop'); this.floatText('ALL GONE!', this.packPos().x, this.packPos().y - 90, C.white, 26, true); } else r.phase = 'open'; this.saveRun(); } break;
+      case 'empty': if (r.pt >= T.empty) { r.phase = 'finale'; r.pt = 0; this.viralFinish(); } break;
+      case 'finale': if (r.pt >= T.finale) this.finishRun(); break;
+    }
+  };
+  P.viralFinish = function () {
+    const r = this.run, W = this.W, H = this.H;
+    const bonus = r.cpb * 3; r.coins += bonus; this.profile.add('coins', bonus);
+    this.addViewers(Math.round(r.goal * FINALE_BOOST));
+    r.banner = { text: 'VIRAL!', sub: U.fmtViewers(r.peak) + ' VIEWERS  ·  +' + bonus + ' COINS', t: 0, big: true };
+    this.setFace('yum', T.finale); this.audio.play('win'); this.spawnConfetti(W / 2, H * 0.4, 80); this.vibrate('long');
+    for (let i = 0; i < 20; i++) this.spawnReaction(i % 2 ? 'heart' : null);
+    this.pushChat('milestone', U.fmtViewers(r.peak)); this.pushChat('finish');
+    this.saveRun();
+  };
+
+  // ── result ──
+  P.finishRun = function () {
+    const r = this.run, p = this.profile; if (!r) return;
+    const stars = r.peak >= r.goal3 ? 3 : r.peak >= r.goal ? 2 : 1;
+    p.add('streams', 1);
+    if (r.peak > (p.get('best_viewers') || 0)) p.set('best_viewers', Math.round(r.peak));
+    const res = { side: r.side, food: r.food, stars: stars, peak: Math.round(r.peak), goal: r.goal, coins: r.coins, hearts: r.hearts, gift: r.giftTaken, unlocks: [], firstClear: false, bonusTaken: false, t: 0 };
+    // collection: every food eaten once is in the food book
+    let book; try { book = JSON.parse(p.get('foods_json') || '[]'); } catch (e) { book = []; }
+    if (book.indexOf(r.food) < 0) { book.push(r.food); p.set('foods_json', JSON.stringify(book)); res.unlocks.push('FOOD BOOK: ' + K.dish(r.food).name.toUpperCase()); }
+    if (r.level) {
+      const lv = L.level(r.level); res.lv = lv;
+      const st = this.stars(); if (stars > (st[lv.n] || 0)) st[lv.n] = stars; p.set('stars_json', JSON.stringify(st));
+      res.firstClear = lv.n > (p.get('levels_done') || 0);
+      if (res.firstClear) {
+        p.set('levels_done', lv.n); this.hs.claimLevelBonus();
+        for (let i = 0; i < lv.unlocks.length; i++) { const u = lv.unlocks[i];
+          if (u.indexOf('look:') === 0) { const it = WR.BY_ID[u.slice(5)]; if (it && WR.grant(p, it.id)) res.unlocks.push('NEW LOOK: ' + it.name.toUpperCase()); }
+          else if (u.indexOf('mode:') === 0) res.unlocks.push('NEW ACTIVITY: ' + L.modeOf(u.slice(5)).name);
+          else if (u.indexOf('streamer:') === 0) res.unlocks.push('NEW STREAMER: ' + u.slice(9).toUpperCase());
+          else if (u === 'wardrobe') res.unlocks.push('WARDROBE OPEN!');
+        }
+        if (lv.n < L.LEVEL_COUNT) { const nx = L.level(lv.n + 1); for (let i = 0; i < nx.news.length && i < 1; i++) res.unlocks.push('NEXT: ' + nx.news[i]); }
+      }
+      if (lv.n >= (p.get('level') || 1)) p.set('level', Math.min(L.LEVEL_COUNT, lv.n + 1));
+    }
+    if ((p.get('streams') || 0) === 1) this.hs.claimFirstStream();
+    this.result = res; this.run = null; this.saveRun(); this.hearts = [];
+    if (res.unlocks.length) this.audio.play('levelup');
+    this.setState('result');
+  };
+
+  // ── drawing ──
+  P.drawStream = function (still) {
+    const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, r = this.run;
+    const lv = r ? this.streamLevel() : (this.result && this.result.lv) || L.level(this.curLevel());
+    const loc = r ? r.loc : 'home', view = r ? r.view : lv.view;
+    const zoom = r && r.zoom > 0 ? 1 + 0.06 * Math.sin(Math.min(1, r.zoom / 1.6) * Math.PI) : 1;
+    ctx.save(); if (zoom !== 1) { ctx.translate(W / 2, H * 0.35); ctx.scale(zoom, zoom); ctx.translate(-W / 2, -H * 0.35); }
+    if (loc === 'restaurant') A.restaurantBg(ctx, W, H, this.time); else A.homeRoom(ctx, view, this.p.createCanvas, W, H, this.scale, this.time);
+    const hp = this.headPos(); const fc = this.face; const sd = this.streamerDef();
+    A.streamer(ctx, sd, hp.x, hp.y, hp.s, { expr: fc.expr, t: fc.t, blink: fc.blink, bob: fc.bob + (r && r.phase === 'chew' ? Math.sin(r.pt * 14) * 3 : 0), look: WR.look(this.profile, sd.id) });
+    A.table(ctx, view, W, H * 0.5, H);
+    A.phoneStick(ctx, W * 0.08, H * 0.38, 0.85, this.time);
+    ctx.restore();
+    if (r) {
+      const pk = this.packPos(), d = K.dish(r.food);
+      const ph = r.phase, e = Math.min(1, r.pickups / PICKUPS);
+      const state = ph === 'sealed' ? 'sealed' : ph === 'opening' ? 'opening' : (ph === 'empty' || ph === 'finale') ? 'empty' : 'open';
+      const glow = (ph === 'sealed' || ph === 'open') && !still;
+      if (glow) { ctx.globalAlpha = 0.25 + 0.15 * Math.sin(this.time * 5); A.circle(ctx, pk.x, pk.y, pk.size * 0.55, '#fff8d0', 0); ctx.globalAlpha = 1; }
+      A.pack(ctx, d, r.pack, pk.x, pk.y + (glow ? Math.sin(this.time * 3) * 3 : 0), pk.size, state, ph === 'opening' ? r.pt / T.opening : 0, e, this.time, r.toppings);
+      // pickup pips
+      for (let i = 0; i < PICKUPS; i++) { const px = pk.x + (i - 1) * 34, py = pk.y + pk.size * 0.5 + 18; A.circle(ctx, px, py, 11, i < r.pickups ? C.pink : 'rgba(255,255,255,0.85)', 3); if (i < r.pickups) A.heart(ctx, px, py + 1, 5, '#fff', 0); }
+      // the portion on its way to the mouth
+      if (this.carry) A.portion(ctx, d, this.carry.x, this.carry.y, 110, this.time);
+      // mouth target while carrying
+      if (ph === 'carry' && this.carry && this.carry.drag) { const m = this.mouth(); const a = 0.4 + 0.25 * Math.sin(this.time * 8); ctx.strokeStyle = 'rgba(255,255,255,' + a + ')'; ctx.lineWidth = 5; ctx.setLineDash([10, 10]); ctx.beginPath(); ctx.arc(m.x, m.y, MOUTH_R - 10, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]); }
+      // hints
+      if (!still) {
+        if (ph === 'sealed') ui.label('TAP · ' + L.PACK_INFO[r.pack].open + '!', W / 2, pk.y - pk.size * 0.62, 20, C.white, 'center', { stroke: 6 });
+        else if (ph === 'open') ui.label(r.pickups === 0 ? 'TAP OR DRAG A BITE TO HER MOUTH' : 'NEXT BITE!  (' + (r.pickups + 1) + '/' + PICKUPS + ')', W / 2, pk.y - pk.size * 0.62, r.pickups === 0 ? 17 : 20, C.white, 'center', { stroke: 6 });
+      }
+      // fan gift
+      if (r.gift && !r.giftTaken) { const g = r.gift; const drop = Math.min(1, g.t * 2.5); A.mysteryBox(ctx, g.x, U.lerp(-60, g.y, U.easeOutCubic(drop)), 90, this.time, 0, true); if (drop >= 1) ui.label('TAP!', g.x, g.y + 56, 15, C.white, 'center', { stroke: 4 }); }
+    }
+    this.drawReactions();
+    // tappable hearts
+    for (let i = 0; i < (this.hearts || []).length; i++) { const h = this.hearts[i]; const a = h.life < 0.3 ? h.life / 0.3 : h.life > h.max - 0.6 ? (h.max - h.life) / 0.6 : 1; ctx.globalAlpha = Math.max(0, a); const hx = h.x + Math.sin(h.life * 2 + h.sway) * 10; h.x += 0; A.reaction(ctx, 'heart', hx, h.y, 20 + Math.sin(this.time * 6 + h.sway) * 2); ctx.globalAlpha = 1; }
+    // chat
+    const chatY = this.bottom() - 30;
+    for (let i = this.chat.length - 1, k = 0; i >= 0 && k < 3; i--, k++) {
+      const c = this.chat[i]; const a = c.life < 0.25 ? c.life / 0.25 : 1; ctx.globalAlpha = a * (k === 2 ? 0.55 : 1);
+      const y = chatY - k * 46 + (1 - a) * 20; const tw = ui.measure(c.text, 15) + 26;
+      A.avatar(ctx, c.avatar, 40, y, 18); ui.panel(66, y - 18, Math.min(tw, W - 90), 36, 'rgba(255,255,255,0.92)', C.outline, 14, 3); ui.label(c.text, 79, y + 1, 15, C.text, 'left');
+    }
+    ctx.globalAlpha = 1;
+    const top = this.hud({ viewers: r ? U.fmtViewers(r.viewers) : U.fmtViewers(this.result ? this.result.peak : 0) });
+    if (r && !still) ui.button('pause', W - 56, top + 70, 40, 40, 'II', { color: C.lavender, dark: C.lavenderDark, size: 16, radius: 20 });
+    if (!r) return;
+    if (!still && this.canBoost()) ui.button('boost_ad', W - 150, H * 0.47, 136, 56, '▶ VIRAL BOOST', { color: C.yellow, dark: C.yellowDark, size: 15, sub: '+25% VIEWERS', badge: true });
+    const t = r.peak / r.goal3; ui.bar(W / 2 - 92, top + 70, 184, 16, Math.min(1, t), t >= 1 ? C.gold : t >= r.goal / r.goal3 ? C.green : C.pink); const gx = W / 2 - 92 + 184 * (r.goal / r.goal3); ctx.fillStyle = C.outline; ctx.fillRect(gx - 1, top + 66, 3, 24);
+    ui.label(r.level ? 'STREAM ' + r.level + ' · ' + this.streamLevel().title.toUpperCase() : L.modeOf(r.side) ? L.modeOf(r.side).name + ' STREAM' : 'BONUS STREAM', W / 2, top + 100, 12, C.white, 'center', { stroke: 4 });
+    // superchat banner / duet bubble
+    if (r.superchat) { const a = Math.min(1, r.superchat.t * 4, (3 - r.superchat.t) * 3); ctx.globalAlpha = Math.max(0, a); ui.panel(40, top + 120, W - 80, 52, '#ffd95e', C.goldDark, 20, 4); ui.label('SUPER CHAT  +' + r.superchat.coins + '  ·  "you are the best!!"', W / 2, top + 146, 16, C.text); ctx.globalAlpha = 1; }
+    if (r.duet) { const a = Math.min(1, r.duet.t * 3, (4 - r.duet.t) * 2); ctx.globalAlpha = Math.max(0, a); ui.panel(W - 140, top + 130, 120, 120, '#fff', C.outline, 18, 4); A.avatar(ctx, r.duet.avatar, W - 80, top + 182, 38); ui.label('FAN DUET', W - 80, top + 236, 12, C.pinkDark); ctx.globalAlpha = 1; }
+    // beat banner
+    if (r.banner && !still) { const b = r.banner; const k = U.easeOutBack(Math.min(1, b.t * 3)); const a = b.big ? 1 : Math.min(1, (1.6 - b.t) * 3); ctx.globalAlpha = Math.max(0, a); ctx.save(); ctx.translate(W / 2, H * 0.47); ctx.scale(k, k); ui.title(b.text, 0, 0, b.big ? 64 : 36, b.big ? C.yellow : C.white, C.pinkDark); if (b.sub) ui.label(b.sub, 0, b.big ? 48 : 34, b.big ? 20 : 18, C.white, 'center', { stroke: 5 }); ctx.restore(); ctx.globalAlpha = 1; }
+  };
+  P.drawResult = function () {
+    const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, res = this.result, hs = this.hs;
+    ui.dim(0.4);
+    const ph = 300 + res.unlocks.length * 26; const py = Math.max(this.top() + 100, H * 0.12);
+    ui.panel(24, py, W - 48, ph, C.cream, C.outline, 26);
+    ui.title(res.stars >= 3 ? 'SUPER VIRAL!' : res.stars >= 2 ? 'VIRAL STREAM!' : 'GREAT STREAM!', W / 2, py + 46, 36, C.white, C.pinkDark);
+    ui.label(res.lv ? 'STREAM ' + res.lv.n + ' · ' + res.lv.title.toUpperCase() : (L.modeOf(res.side) ? L.modeOf(res.side).name : 'BONUS') + ' STREAM', W / 2, py + 76, 13, C.textLight);
+    for (let k = 0; k < 3; k++) { const on = k < res.stars; const sc = on ? U.easeOutBack(Math.min(1, Math.max(0, res.t * 2 - k * 0.5))) : 1; ctx.save(); ctx.translate(W / 2 + (k - 1) * 70, py + 116); ctx.scale(sc, sc); A.uiStar(ctx, 0, 0, 28, on, '#e8e0e0', 4); ctx.restore(); }
+    A.food(ctx, K.dish(res.food), W / 2 - 150, py + 116, 70, 0, this.time);
+    ui.label('PEAK ' + U.fmtViewers(res.peak) + '  (goal ' + U.fmtViewers(res.goal) + ')', W / 2, py + 166, 20, C.text);
+    ui.label('hearts tapped ' + res.hearts + (res.gift ? '  ·  fan gift ✓' : ''), W / 2, py + 192, 13, C.textLight);
+    A.coin(ctx, W / 2 - 60, py + 226, 12); ui.label('+' + U.fmtCoins(res.coins), W / 2 + 8, py + 226, 26, C.goldDark);
+    let y = py + 258;
+    if (res.firstClear) { const rb = hs.rewardsLevelBonus(); if (rb) { ui.label('LEVEL BONUS  ' + this.itemsText(rb), W / 2, y, 15, C.pinkDark); y += 24; } }
+    for (let i = 0; i < res.unlocks.length; i++) { ui.label('★ ' + res.unlocks[i], W / 2, y, 15, C.greenDark); y += 26; }
+    if (res.stars < 3) ui.label('tip: tap the floating hearts for 3 stars', W / 2, py + ph - 14, 12, C.textLight);
+    y = py + ph + 14;
+    const bonus = hs.rewardsBonusCoins();
+    if (hs.hasAds() && hs.canShowBonusCoins() && bonus && !res.bonusTaken) { ui.button('bonus_ad', 40, y, W - 80, 56, '▶  WATCH AD:  ' + this.itemsText(bonus), { color: C.blue, dark: C.blueDark, size: 17 }); y += 68; }
+    if (res.lv) {
+      const canNext = res.lv.n < L.LEVEL_COUNT;
+      ui.button(canNext ? 'next' : 'replay', 40, y, W - 80, 70, canNext ? 'NEXT STREAM  ›' : 'STREAM AGAIN', { color: C.pink, dark: C.pinkDark, size: 26 }); y += 84;
+      ui.button('replay', 40, y, (W - 90) / 2, 56, 'REPLAY', { color: C.mint, dark: C.mintDark, size: 20 });
+    } else {
+      ui.button('side_' + res.side, 40, y, W - 80, 64, 'AGAIN  ›', { color: C.pink, dark: C.pinkDark, size: 24 }); y += 78;
+      ui.button('res_main', 40, y, (W - 90) / 2, 56, 'MAIN STREAM', { color: C.mint, dark: C.mintDark, size: 17 });
+    }
+    ui.button('res_home', 50 + (W - 90) / 2, y, (W - 90) / 2, 56, 'HOME', { color: C.lavender, dark: C.lavenderDark, size: 20 });
+  };
+}
+
+module.exports = { install, PICKUPS, BITES, T, MOUTH_R, CHEW };
+
+};
 __mods["src/ui.js"] = function (require, module, exports, __filename, __dirname) {
 'use strict';
 // Immediate-mode UI on the game canvas: kawaii pastel buttons, panels, labels,
@@ -5925,6 +5928,208 @@ function fmtViewers(n) {
 function fmtCoins(n) { n = Math.max(0, Math.floor(n)); return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ','); }
 function pad2(n) { return (n < 10 ? '0' : '') + n; }
 module.exports = { clamp, lerp, smoothstep, easeOutBack, easeOutCubic, easeInOut, damp, dist, rng, fmtViewers, fmtCoins, pad2 };
+
+};
+__mods["src/wardrobe-scene.js"] = function (require, module, exports, __filename, __dirname) {
+'use strict';
+// V3 Wardrobe screen (installed onto Game.prototype): preview the current
+// streamer, tabs Outfits / Hair / Extras, buy with coins, equip, themed looks,
+// and an optional "free look" rewarded ad.
+const U = require('./util.js');
+const D = require('./data.js');
+const A = require('./art.js');
+const WR = require('./wardrobe.js');
+const C = D.COLORS;
+
+function install(Game) {
+  const P = Game.prototype;
+  P.wardrobeTap = function (id) {
+    if (id.indexOf('wtab') === 0) { this.wardTab = +id.slice(4); this.audio.play('whoosh', { gain: 0.5 }); return true; }
+    if (id.indexOf('witem_') === 0) { this.wardItem(id.slice(6)); return true; }
+    if (id.indexOf('wlook_') === 0) { this.wardLook(id.slice(6)); return true; }
+    if (id.indexOf('wstar') === 0) { const i = +id.slice(5); const s = D.STREAMERS[i]; if (s && this.streamerOpen(s)) { this.profile.set('streamer', i); this.audio.play('sweet'); } else this.audio.play('error'); return true; }
+    return false;
+  };
+  P.streamerOpen = function (s) { return Math.max(this.curLevel(), (this.profile.get('levels_done') || 0) + 1) >= s.unlock; };
+  P.wardItem = function (id) {
+    const it = WR.BY_ID[id]; if (!it) return; const p = this.profile, s = WR.state(p), sid = this.streamerDef().id;
+    if (WR.owns(s, id)) { WR.equip(p, sid, id); this.audio.play('pop'); this.spawnSparkles(this.W / 2, this.H * 0.28, 10); return; }
+    if (it.gift) { this.audio.play('error'); this.showToast('A gift at stream ' + it.gift, 'Keep streaming to unlock it'); return; }
+    const r = WR.buy(p, id);
+    if (r === 'coins') { this.audio.play('error'); this.showToast('Need ' + U.fmtCoins(it.price) + ' coins'); return; }
+    if (r === 'ok') { WR.equip(p, sid, id); this.audio.play('cash'); this.spawnConfetti(this.W / 2, this.H * 0.3, 30); this.showToast('NEW LOOK: ' + it.name.toUpperCase()); }
+  };
+  P.wardLook = function (lid) {
+    const lk = WR.LOOKS.filter(function (l) { return l.id === lid; })[0]; if (!lk) return; const p = this.profile, s = WR.state(p), sid = this.streamerDef().id;
+    for (const slot in lk.set) if (!WR.owns(s, lk.set[slot])) { this.audio.play('error'); this.showToast('Collect every piece first', WR.BY_ID[lk.set[slot]].name + ' is missing'); return; }
+    for (const slot in lk.set) WR.equip(p, sid, lk.set[slot]);
+    this.audio.play('levelup'); this.spawnConfetti(this.W / 2, this.H * 0.3, 40);
+  };
+  P.drawWardrobe = function () {
+    const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, p = this.profile, top = this.top(), bottom = this.bottom();
+    const sd = this.streamerDef(), s = WR.state(p), lk = WR.look(p, sd.id);
+    A.homeRoom(ctx, 2, this.p.createCanvas, W, H, this.scale, this.time); ui.dim(0.12);
+    ui.button('home', 16, top + 14, 48, 48, '✕', { color: C.red, dark: '#c93b55', size: 24, radius: 16 });
+    this.coinsHud(top);
+    ui.title('WARDROBE', W / 2, top + 96, 38, C.white, C.pinkDark);
+    // preview (the face keeps animating: the overlays follow the head)
+    const py = top + 250; A.streamer(ctx, sd, W / 2, py, 0.82, { expr: Math.sin(this.time * 0.8) > 0.6 ? 'chew' : 'yum', t: this.time, blink: this.face.blink, bob: Math.sin(this.time * 1.6) * 3, look: lk });
+    // streamer picker
+    for (let i = 0; i < D.STREAMERS.length; i++) { const st = D.STREAMERS[i], open = this.streamerOpen(st), cur = sd.id === st.id; const bx = 22, byy = top + 140 + i * 62; ui.button('wstar' + i, bx, byy, 84, 52, open ? st.name : 'LV ' + st.unlock, { color: cur ? C.pink : open ? C.lavender : '#e0d6d6', dark: cur ? C.pinkDark : open ? C.lavenderDark : '#bfb0b0', size: 14, radius: 16 }); }
+    // tabs
+    const tabY = py + 150; const tw = (W - 40 - 12) / 3;
+    for (let i = 0; i < WR.SLOTS.length; i++) ui.button('wtab' + i, 20 + i * (tw + 6), tabY, tw, 46, WR.SLOTS[i].name, { color: (this.wardTab || 0) === i ? C.pink : C.lavender, dark: (this.wardTab || 0) === i ? C.pinkDark : C.lavenderDark, size: 16, radius: 16 });
+    // items grid
+    const slot = WR.SLOTS[this.wardTab || 0].id; const items = WR.ITEMS.filter(function (it) { return it.slot === slot; });
+    const cols = 4, cw = (W - 40 - (cols - 1) * 8) / cols, chh = 104; let y = tabY + 56;
+    for (let i = 0; i < items.length; i++) {
+      const it = items[i], x = 20 + (i % cols) * (cw + 8), yy = y + Math.floor(i / cols) * (chh + 8);
+      const owned = WR.owns(s, it.id), on = lk[slot] === it.id;
+      ui.panel(x, yy, cw, chh, on ? '#eafff0' : owned ? '#fff' : '#f4eef0', on ? C.greenDark : C.outline, 16, on ? 5 : 2);
+      this.wardIcon(it, x + cw / 2, yy + 40, sd);
+      ui.label(it.name, x + cw / 2, yy + 76, 11, C.text);
+      ui.label(on ? 'WEARING' : owned ? 'TAP TO WEAR' : it.gift ? 'GIFT · LV ' + it.gift : '', x + cw / 2, yy + 93, 10, on ? C.greenDark : owned ? C.textLight : C.pinkDark);
+      if (!owned && it.price) { A.coin(ctx, x + cw / 2 - 18, yy + 93, 7); ui.label(U.fmtCoins(it.price), x + cw / 2 + 4, yy + 94, 12, C.text, 'left'); }
+      ui.hotspot('witem_' + it.id, x, yy, cw, chh);
+    }
+    y += Math.ceil(items.length / cols) * (chh + 8) + 6;
+    // themed looks
+    ui.label('THEMED LOOKS', W / 2, y + 8, 13, C.white, 'center', { stroke: 4 }); y += 20;
+    const lw = (W - 40 - 12) / 3;
+    for (let i = 0; i < WR.LOOKS.length; i++) { const l = WR.LOOKS[i]; let all = true; for (const k in l.set) if (!WR.owns(s, l.set[k])) all = false; ui.button('wlook_' + l.id, 20 + i * (lw + 6), y, lw, 44, l.name, { color: all ? C.yellow : '#e0d6d6', dark: all ? C.yellowDark : '#bfb0b0', size: 13, radius: 14 }); }
+    y += 54;
+    if (this.canFashion() && y + 52 < bottom) ui.button('fashion_ad', 40, Math.min(y, bottom - 60), W - 80, 52, '▶  WATCH AD: FREE NEW LOOK', { color: C.blue, dark: C.blueDark, size: 17 });
+  };
+  // small preview of an item
+  P.wardIcon = function (it, x, y, sd) {
+    const ctx = this.ctx;
+    if (it.slot === 'outfit') { const col = it.color || (it.overlay === 'apron' ? '#ffffff' : it.overlay === 'bib' ? '#fff3f7' : it.overlay === 'overalls' ? '#cdb0ff' : sd.top); A.rr(ctx, x - 26, y - 20, 52, 44, 14); ctx.fillStyle = col; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = C.outline; ctx.stroke(); if (it.overlay === 'overalls') A.star(ctx, x, y + 6, 8, C.gold, 2); if (it.overlay === 'bib') A.text(ctx, 'YUM', x, y + 2, 10, C.pinkDark, 0); if (it.overlay === 'apron') A.rr(ctx, x - 8, y + 2, 16, 10, 3); return; }
+    if (it.id === 'hair_none' || it.id === 'acc_none') { ctx.strokeStyle = '#cfc2c2'; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(x, y, 16, 0, Math.PI * 2); ctx.moveTo(x - 11, y + 11); ctx.lineTo(x + 11, y - 11); ctx.stroke(); return; }
+    // draw the accessory on a little face
+    A.circle(ctx, x, y + 8, 22, sd.skin || '#ffe6d6', 3);
+    const look = { outfit: 'outfit_default', hair: it.slot === 'hair' ? it.id : 'hair_none', acc: it.slot === 'acc' ? it.id : 'acc_none' };
+    WR.drawHead(ctx, A, look, { cx: x, cy: y + 8, r: 22, ey: y + 6, ny: y + 28 }, sd, this.time);
+  };
+}
+
+module.exports = { install };
+
+};
+__mods["src/wardrobe.js"] = function (require, module, exports, __filename, __dirname) {
+'use strict';
+// V3 Wardrobe (docs/GAME-DESIGN-V3.md §7): outfits, hair accessories, extras
+// and themed looks. A secondary progression: items are level gifts or bought
+// with coins; nothing here touches the eating loop.
+// Overlays are drawn in "face units" relative to the head anchor, so they stay
+// on the face while the streamer chews (the face parts swap, the head does not move).
+const D = require('./data.js');
+const C = D.COLORS;
+
+// slot: outfit | hair | acc.  gift: level that gives it for free · price: coins (buy any time once the wardrobe is open)
+const ITEMS = [
+  { id: 'outfit_default', slot: 'outfit', name: 'My Sweater',    price: 0 },
+  { id: 'outfit_mint',    slot: 'outfit', name: 'Mint Sweater',  price: 500,  body: 'luna', color: '#9fe3c9', dark: '#5fbf9f' },
+  { id: 'outfit_bib',     slot: 'outfit', name: 'Mukbang Bib',   price: 800,  overlay: 'bib' },
+  { id: 'outfit_sunny',   slot: 'outfit', name: 'Sunny Sweater', gift: 16,    body: 'kiko', color: '#ffd95e', dark: '#e0b52a' },
+  { id: 'outfit_sakura',  slot: 'outfit', name: 'Sakura Sweater', gift: 24,   body: 'momo', color: '#ffb3c7', dark: '#e8759a' },
+  { id: 'outfit_chef',    slot: 'outfit', name: 'Chef Apron',    gift: 27,    overlay: 'apron' },
+  { id: 'outfit_star',    slot: 'outfit', name: 'Star Overalls', gift: 36,    overlay: 'overalls' },
+  { id: 'hair_none',      slot: 'hair',   name: 'Nothing',       price: 0 },
+  { id: 'hair_bow',       slot: 'hair',   name: 'Big Bow',       gift: 6 },
+  { id: 'hair_star',      slot: 'hair',   name: 'Star Clip',     price: 300 },
+  { id: 'hair_cat_ears',  slot: 'hair',   name: 'Cat Ears',      gift: 19 },
+  { id: 'hair_beret',     slot: 'hair',   name: 'Red Beret',     price: 900 },
+  { id: 'hair_flowers',   slot: 'hair',   name: 'Flower Crown',  gift: 29 },
+  { id: 'hair_bunny_ears', slot: 'hair',  name: 'Bunny Ears',    gift: 34 },
+  { id: 'hair_crown',     slot: 'hair',   name: 'Star Crown',    gift: 40 },
+  { id: 'acc_none',       slot: 'acc',    name: 'Nothing',       price: 0 },
+  { id: 'acc_blush',      slot: 'acc',    name: 'Heart Stickers', price: 400 },
+  { id: 'acc_glasses_round', slot: 'acc', name: 'Round Glasses', gift: 13 },
+  { id: 'acc_headphones', slot: 'acc',    name: 'Headphones',    gift: 22 },
+  { id: 'acc_heart_glasses', slot: 'acc', name: 'Heart Glasses', gift: 31 },
+  { id: 'acc_scarf',      slot: 'acc',    name: 'Cozy Scarf',    gift: 38 }
+];
+const BY_ID = {}; for (let i = 0; i < ITEMS.length; i++) BY_ID[ITEMS[i].id] = ITEMS[i];
+const SLOTS = [{ id: 'outfit', name: 'OUTFITS' }, { id: 'hair', name: 'HAIR' }, { id: 'acc', name: 'EXTRAS' }];
+const LOOKS = [
+  { id: 'chef', name: 'CHEF LOOK', set: { outfit: 'outfit_chef', hair: 'hair_none', acc: 'acc_glasses_round' } },
+  { id: 'kitty', name: 'KITTY LOOK', set: { outfit: 'outfit_sakura', hair: 'hair_cat_ears', acc: 'acc_blush' } },
+  { id: 'superstar', name: 'SUPERSTAR', set: { outfit: 'outfit_star', hair: 'hair_crown', acc: 'acc_heart_glasses' } }
+];
+const OPEN_AT = 6; // the wardrobe opens with the level-6 gift
+
+// ── profile state: wardrobe_json = { own: [...], eq: { luna: { outfit, hair, acc }, ... } } ──
+function state(profile) { let s; try { s = JSON.parse(profile.get('wardrobe_json') || '{}'); } catch (e) { s = {}; } s.own = s.own || []; s.eq = s.eq || {}; return s; }
+function save(profile, s) { profile.set('wardrobe_json', JSON.stringify(s)); }
+function owns(s, id) { const it = BY_ID[id]; return !!it && (it.price === 0 && !it.gift || s.own.indexOf(id) >= 0); }
+function look(profile, sid) { const s = state(profile); const e = s.eq[sid] || {}; return { outfit: e.outfit || 'outfit_default', hair: e.hair || 'hair_none', acc: e.acc || 'acc_none' }; }
+function grant(profile, id) { const s = state(profile); if (BY_ID[id] && s.own.indexOf(id) < 0) { s.own.push(id); save(profile, s); return true; } return false; }
+function equip(profile, sid, id) { const it = BY_ID[id]; const s = state(profile); if (!it || !owns(s, id)) return false; s.eq[sid] = s.eq[sid] || {}; s.eq[sid][it.slot] = id; save(profile, s); return true; }
+// buy with coins (game currency, spent in the game — not an HS reward)
+function buy(profile, id) { const it = BY_ID[id]; const s = state(profile); if (!it || !it.price || owns(s, id)) return 'no'; if ((profile.get('coins') || 0) < it.price) return 'coins'; profile.add('coins', -it.price); s.own.push(id); save(profile, s); return 'ok'; }
+
+// ── drawing (in the caller's transform) ──
+// F = face frame { cx, cy, r, ey }   B = body frame { nx, ny, bw }   ch = streamer data (hair colour)
+function drawBody(ctx, A, lk, B) {
+  const it = BY_ID[lk.outfit]; if (!it || !it.overlay) return;
+  const x = B.nx, y = B.ny, w = B.bw, lw = w * 0.025;
+  ctx.save(); ctx.lineJoin = 'round';
+  if (it.overlay === 'apron') {
+    ctx.beginPath(); ctx.moveTo(x - w * 0.22, y + w * 0.12); ctx.lineTo(x + w * 0.22, y + w * 0.12); ctx.lineTo(x + w * 0.3, y + w * 1.02); ctx.lineTo(x - w * 0.3, y + w * 1.02); ctx.closePath(); fs(ctx, '#ffffff', lw);
+    A.rr(ctx, x - w * 0.12, y + w * 0.5, w * 0.24, w * 0.16, w * 0.04); fs(ctx, '#ffd1e3', lw * 0.7);
+    ctx.lineWidth = lw * 1.4; ctx.strokeStyle = '#ffffff'; ctx.beginPath(); ctx.moveTo(x - w * 0.2, y + w * 0.14); ctx.lineTo(x - w * 0.12, y - w * 0.02); ctx.moveTo(x + w * 0.2, y + w * 0.14); ctx.lineTo(x + w * 0.12, y - w * 0.02); ctx.stroke();
+  } else if (it.overlay === 'bib') {
+    ctx.beginPath(); ctx.moveTo(x - w * 0.24, y + w * 0.04); ctx.quadraticCurveTo(x, y + w * 0.2, x + w * 0.24, y + w * 0.04); ctx.lineTo(x + w * 0.22, y + w * 0.42); ctx.quadraticCurveTo(x, y + w * 0.62, x - w * 0.22, y + w * 0.42); ctx.closePath(); fs(ctx, '#ffffff', lw);
+    ctx.lineWidth = lw * 1.2; ctx.strokeStyle = C.pink; ctx.setLineDash([w * 0.03, w * 0.025]); ctx.stroke(); ctx.setLineDash([]);
+    A.text(ctx, 'YUM', x, y + w * 0.32, w * 0.11, C.pinkDark, 0);
+  } else if (it.overlay === 'overalls') {
+    A.rr(ctx, x - w * 0.3, y + w * 0.45, w * 0.6, w * 0.62, w * 0.08); fs(ctx, '#cdb0ff', lw);
+    ctx.lineWidth = lw * 2.2; ctx.strokeStyle = '#a98ae6'; ctx.beginPath(); ctx.moveTo(x - w * 0.22, y + w * 0.47); ctx.lineTo(x - w * 0.16, y + w * 0.05); ctx.moveTo(x + w * 0.22, y + w * 0.47); ctx.lineTo(x + w * 0.16, y + w * 0.05); ctx.stroke();
+    A.star(ctx, x, y + w * 0.68, w * 0.1, C.gold, lw * 0.8);
+  }
+  ctx.restore();
+}
+function drawHead(ctx, A, lk, F, ch, t) {
+  const cx = F.cx, cy = F.cy, r = F.r, ey = F.ey, lw = r * 0.04;
+  ctx.save(); ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  // extras on the face first, hair accessories on top
+  const acc = lk.acc;
+  if (acc === 'acc_glasses_round' || acc === 'acc_heart_glasses') {
+    for (let k = -1; k <= 1; k += 2) {
+      const gx = cx + k * r * 0.4;
+      if (acc === 'acc_glasses_round') { ctx.beginPath(); ctx.arc(gx, ey, r * 0.27, 0, Math.PI * 2); ctx.fillStyle = 'rgba(200,230,255,0.25)'; ctx.fill(); ctx.lineWidth = lw * 1.3; ctx.strokeStyle = C.outline; ctx.stroke(); }
+      else { ctx.globalAlpha = 0.85; A.heart(ctx, gx, ey + r * 0.04, r * 0.24, '#ff7fa8', lw); ctx.globalAlpha = 1; }
+    }
+    ctx.lineWidth = lw * 1.2; ctx.strokeStyle = C.outline; ctx.beginPath(); ctx.moveTo(cx - r * 0.13, ey - r * 0.02); ctx.quadraticCurveTo(cx, ey - r * 0.1, cx + r * 0.13, ey - r * 0.02); ctx.stroke();
+  } else if (acc === 'acc_headphones') {
+    ctx.lineWidth = r * 0.12; ctx.strokeStyle = C.outline; ctx.beginPath(); ctx.arc(cx, cy, r * 1.16, Math.PI * 1.08, Math.PI * 1.92); ctx.stroke();
+    ctx.lineWidth = r * 0.08; ctx.strokeStyle = '#ff9fc4'; ctx.beginPath(); ctx.arc(cx, cy, r * 1.16, Math.PI * 1.08, Math.PI * 1.92); ctx.stroke();
+    for (let k = -1; k <= 1; k += 2) { A.ellipse(ctx, cx + k * r * 1.08, cy + r * 0.05, r * 0.2, r * 0.3, '#ff9fc4', lw); A.ellipse(ctx, cx + k * r * 1.1, cy + r * 0.05, r * 0.1, r * 0.18, '#fff3f7', 0); }
+  } else if (acc === 'acc_blush') {
+    for (let k = -1; k <= 1; k += 2) A.heart(ctx, cx + k * r * 0.6, ey + r * 0.38, r * 0.1, '#ff7fa8', lw * 0.6);
+  } else if (acc === 'acc_scarf') {
+    const ny = F.ny || cy + r * 0.95;
+    A.rr(ctx, cx - r * 0.75, ny - r * 0.12, r * 1.5, r * 0.3, r * 0.14); fs(ctx, '#ff7a8a', lw);
+    A.rr(ctx, cx + r * 0.25, ny + r * 0.05, r * 0.26, r * 0.55, r * 0.1); fs(ctx, '#ff7a8a', lw);
+    ctx.lineWidth = lw; ctx.strokeStyle = '#fff3f7'; for (let i = -2; i <= 2; i++) { ctx.beginPath(); ctx.moveTo(cx + i * r * 0.25, ny - r * 0.1); ctx.lineTo(cx + i * r * 0.25, ny + r * 0.16); ctx.stroke(); }
+  }
+  const hair = lk.hair; const hc = (ch && ch.hair) || '#cdb0ff';
+  if (hair === 'hair_bow') { ctx.save(); ctx.translate(cx - r * 0.66, cy - r * 0.92); ctx.rotate(-0.35); A.ellipse(ctx, -r * 0.2, 0, r * 0.22, r * 0.15, '#ff5a8a', lw); A.ellipse(ctx, r * 0.2, 0, r * 0.22, r * 0.15, '#ff5a8a', lw); A.circle(ctx, 0, 0, r * 0.09, '#e8406f', lw * 0.8); ctx.restore(); }
+  else if (hair === 'hair_star') { A.star(ctx, cx - r * 0.66, cy - r * 0.86, r * 0.2, C.gold, lw); }
+  else if (hair === 'hair_cat_ears' || hair === 'hair_bunny_ears') {
+    for (let k = -1; k <= 1; k += 2) {
+      if (hair === 'hair_cat_ears') { ctx.beginPath(); ctx.moveTo(cx + k * r * 0.34, cy - r * 1.0); ctx.lineTo(cx + k * r * 0.74, cy - r * 1.42); ctx.lineTo(cx + k * r * 0.86, cy - r * 0.86); ctx.closePath(); fs(ctx, hc, lw); ctx.beginPath(); ctx.moveTo(cx + k * r * 0.46, cy - r * 1.0); ctx.lineTo(cx + k * r * 0.72, cy - r * 1.28); ctx.lineTo(cx + k * r * 0.78, cy - r * 0.95); ctx.closePath(); ctx.fillStyle = '#ffb3c7'; ctx.fill(); }
+      else { ctx.save(); ctx.translate(cx + k * r * 0.32, cy - r * 1.28); ctx.rotate(k * 0.18); A.ellipse(ctx, 0, 0, r * 0.17, r * 0.5, '#ffffff', lw); A.ellipse(ctx, 0, r * 0.04, r * 0.08, r * 0.34, '#ffd1e3', 0); ctx.restore(); }
+    }
+  }
+  else if (hair === 'hair_beret') { ctx.save(); ctx.translate(cx + r * 0.1, cy - r * 1.0); ctx.rotate(0.15); A.ellipse(ctx, 0, 0, r * 0.85, r * 0.3, '#ff5a5a', lw); A.circle(ctx, 0, -r * 0.3, r * 0.07, '#c93b3b', 0); ctx.restore(); }
+  else if (hair === 'hair_flowers') { const cols = ['#ff9fc4', '#fff3b0', '#cdb0ff', '#9fe3c9', '#ffb199']; for (let i = 0; i < 5; i++) { const a = Math.PI * (1.15 + i * 0.175); const fx = cx + Math.cos(a) * r * 0.98, fy = cy + Math.sin(a) * r * 0.98; for (let p = 0; p < 5; p++) { const pa = p * Math.PI * 2 / 5; A.circle(ctx, fx + Math.cos(pa) * r * 0.08, fy + Math.sin(pa) * r * 0.08, r * 0.07, cols[i], lw * 0.5); } A.circle(ctx, fx, fy, r * 0.05, C.gold, 0); } }
+  else if (hair === 'hair_crown') { const y0 = cy - r * 1.05, w = r * 0.7; ctx.beginPath(); ctx.moveTo(cx - w / 2, y0); ctx.lineTo(cx - w / 2, y0 - r * 0.3); ctx.lineTo(cx - w / 4, y0 - r * 0.14); ctx.lineTo(cx, y0 - r * 0.38); ctx.lineTo(cx + w / 4, y0 - r * 0.14); ctx.lineTo(cx + w / 2, y0 - r * 0.3); ctx.lineTo(cx + w / 2, y0); ctx.closePath(); fs(ctx, C.gold, lw); A.circle(ctx, cx, y0 - r * 0.1, r * 0.06, '#ff7fa8', 0); A.sparkle(ctx, cx + w * 0.7, y0 - r * 0.3 + Math.sin((t || 0) * 4) * r * 0.04, r * 0.08, '#fff'); }
+  ctx.restore();
+}
+function fs(ctx, fill, lw) { ctx.fillStyle = fill; ctx.fill(); if (lw) { ctx.lineWidth = lw; ctx.strokeStyle = C.outline; ctx.stroke(); } }
+
+module.exports = { ITEMS, BY_ID, SLOTS, LOOKS, OPEN_AT, state, save, owns, look, grant, equip, buy, drawBody, drawHead };
 
 };
 

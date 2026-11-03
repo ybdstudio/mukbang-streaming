@@ -100,8 +100,8 @@ function newShelfAt(n) { for (let i = 0; i < CATS.length; i++) if (CATS[i].unloc
 // ─── streamers ───
 const STREAMERS = [
   { id: 'luna', name: 'Luna', unlock: 1,  hair: '#cdb0ff', hairDark: '#a98ae6', skin: '#ffe6d6', top: '#9fe3c9', topDark: '#5fbf9f', style: 'buns',  acc: 'bow',   accColor: '#ff7fa8', eye: '#4a3340' },
-  { id: 'kiko', name: 'Kiko', unlock: 8,  hair: '#ffa552', hairDark: '#e07f2a', skin: '#ffe3cf', top: '#ffd95e', topDark: '#e0b52a', style: 'bob',   acc: 'star',  accColor: '#ffe066', eye: '#3d2b2b' },
-  { id: 'momo', name: 'Momo', unlock: 16, hair: '#4f5fae', hairDark: '#36427f', skin: '#ffe9dc', top: '#ffb3c7', topDark: '#e8759a', style: 'long',  acc: 'beret', accColor: '#b878e8', eye: '#2f2f4a' }
+  { id: 'kiko', name: 'Kiko', unlock: 10,  hair: '#ffa552', hairDark: '#e07f2a', skin: '#ffe3cf', top: '#ffd95e', topDark: '#e0b52a', style: 'bob',   acc: 'star',  accColor: '#ffe066', eye: '#3d2b2b' },
+  { id: 'momo', name: 'Momo', unlock: 20, hair: '#4f5fae', hairDark: '#36427f', skin: '#ffe9dc', top: '#ffb3c7', topDark: '#e8759a', style: 'long',  acc: 'beret', accColor: '#b878e8', eye: '#2f2f4a' }
 ];
 
 // ─── live chat ───

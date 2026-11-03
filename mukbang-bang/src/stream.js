@@ -1,0 +1,317 @@
+'use strict';
+// V3 livestream (docs/GAME-DESIGN-V3.md §3): ONE food per stream.
+//   sealed ─tap/drag→ opening ─→ open ─tap or drag a portion to the mouth→ chew (3 bites) ─→ react
+//     └─ ×3 pickups (9 bites) ─→ empty ─→ finale ("VIRAL!") ─→ result
+// Relaxed: no timers to beat. Optional extras: tap floating hearts, tap a fan gift.
+// Installed onto Game.prototype.
+const U = require('./util.js');
+const D = require('./data.js');
+const A = require('./art.js');
+const K = require('./catalog.js');
+const L = require('./levels.js');
+const WR = require('./wardrobe.js');
+const C = D.COLORS;
+
+const PICKUPS = 3, BITES = 3;
+const T = { opening: 0.75, carry: 0.45, bite: 0.85, firstBite: 0.2, react: 1.5, empty: 1.0, finale: 2.8 };
+const CHEW = T.firstBite + T.bite * (BITES - 1) + 0.55;  // whole chew sequence
+const MOUTH_R = 92;
+const HEART_BOOST = 0.025, GIFT_BOOST = 0.06, EVENT_BOOST = 0.05, FINALE_BOOST = 0.08;
+const BEAT = [
+  { title: 'FIRST TASTE!', mult: 0.85, chat: 'bite', react: 6 },
+  { title: 'FANS GOING WILD!', mult: 1.0, chat: 'bite', react: 12 },
+  { title: 'LAST BITE!', mult: 1.15, chat: 'finish', react: 18 }
+];
+const TASTE_LINE = { crunch: 'SO CRUNCHY!', slurp: 'SLURRRP!', gulp: 'SO REFRESHING!', soft: 'SO FLUFFY!', lick: 'SO CREAMY!', bite: 'SO TASTY!', fizz: 'FIZZY!' };
+
+function install(Game) {
+  const P = Game.prototype;
+
+  // ── starting a stream ──
+  P.startStream = function (n) { const lv = L.level(n); this.sessionLevels++; this.trans = 0.3; this.newRun({ level: lv.n, food: lv.food, pack: lv.pack, loc: 'home', view: lv.view, cost: 0, cpb: lv.cpb, event: lv.event }); this.beginStream(); };
+  // activities end here: one chosen food, a bonus stream that never advances the level
+  P.startFoodStream = function (foodId, o) {
+    o = o || {}; const d = K.dish(foodId) || K.dish('cat_chips'); const reached = this.curLevel(); const lv = L.level(reached);
+    const cpb = Math.max(4, Math.round(Math.max(o.cost || 0, 60 + 10 * reached) * 1.35 / (PICKUPS * BITES)));
+    this.newRun({ level: 0, side: o.side || 'free', food: d.id, pack: L.packOf(d), loc: o.loc || 'home', view: lv.view, cost: o.cost || 0, cpb: cpb, event: L.EVENTS[1 + Math.floor(Math.random() * (L.EVENTS.length - 1))], toppings: o.toppings || null, goalLevel: reached });
+    this.trans = 0.3; this.beginStream();
+  };
+  P.newRun = function (o) {
+    const lv = L.level(o.level || o.goalLevel || 1);
+    const goal = o.level ? lv.goal : Math.round(lv.goal * 0.8), start = o.level ? lv.startViewers : Math.round(lv.startViewers * 0.8);
+    this.run = { v: 3, level: o.level || 0, side: o.side || null, food: o.food, pack: o.pack, loc: o.loc, view: o.view, event: o.event, toppings: o.toppings || null,
+      cost: o.cost || 0, cpb: o.cpb, goal: goal, goal3: Math.round(goal * 1.3), start: start, hu: Math.max(1, (goal - start) * 1.0 / (PICKUPS * BITES)),
+      viewers: start, peak: start, coins: 0, pickups: 0, bites: 0, phase: 'sealed', pt: 0, hearts: 0, gift: null, giftTaken: false, eventDone: false, t: 0, finaleDone: false };
+    this.saveRun();
+  };
+  P.beginStream = function () {
+    const r = this.run; r.t = 0; r.pt = 0; this.carry = null; r.zoom = 0; r.banner = null;
+    if (r.phase === 'opening') r.phase = 'open';
+    if (r.phase === 'carry' || r.phase === 'react') r.phase = r.pickups >= PICKUPS ? 'empty' : 'open';
+    if (r.phase === 'chew') r.pt = T.firstBite + T.bite * r.bites - 0.01; // resume the chew where the save left it
+    this.reactions.length = 0; this.chat.length = 0; this.floats.length = 0; this.confetti.length = 0; this.hearts = [];
+    this.face = { expr: 'idle', until: 0, blink: false, blinkT: 2, t: 0 };
+    this.pushChat('idle');
+    this.setState('stream');
+  };
+  P.streamLevel = function () { const r = this.run; return L.level(r.level || r.goalLevel || this.curLevel()); };
+  P.packPos = function () { return { x: this.W / 2, y: this.H * 0.665, size: Math.min(250, this.W * 0.46) }; };
+
+  // ── save / resume (run_json v3; older runs are dropped — the level itself is kept) ──
+  P.saveRun = function () {
+    const r = this.run; if (!r) { this.profile.set('run_json', ''); return; }
+    const o = {}; const keys = ['v', 'level', 'side', 'food', 'pack', 'loc', 'view', 'event', 'toppings', 'cost', 'cpb', 'goal', 'goal3', 'start', 'hu', 'viewers', 'peak', 'coins', 'pickups', 'bites', 'phase', 'hearts', 'giftTaken', 'eventDone', 'goalLevel'];
+    for (let i = 0; i < keys.length; i++) o[keys[i]] = r[keys[i]];
+    o.viewers = Math.round(o.viewers); o.peak = Math.round(o.peak);
+    this.profile.set('run_json', JSON.stringify(o));
+  };
+  P.restoreRun = function () {
+    try {
+      const r = JSON.parse(this.profile.get('run_json') || 'null');
+      if (!r) return;
+      if (r.v !== 3 || !K.dish(r.food)) { this.profile.set('run_json', ''); return; } // V1/V2 multi-food runs: start the level fresh
+      r.t = 0; r.pt = 0; this.run = r;
+    } catch (e) { this.run = null; this.profile.set('run_json', ''); }
+  };
+
+  // ── input ──
+  P.streamTouch = function (kind, id, x, y) {
+    const r = this.run; if (!r || this.state !== 'stream') return false;
+    if (kind === 'start') {
+      // optional extras first: hearts, the fan gift
+      for (let i = this.hearts.length - 1; i >= 0; i--) { const h = this.hearts[i]; if (!h.taken && U.dist(x, y, h.x, h.y) < 40) { this.tapHeart(h); return true; } }
+      if (r.gift && !r.giftTaken && U.dist(x, y, r.gift.x, r.gift.y) < 60) { this.tapGift(); return true; }
+      const pk = this.packPos(); const onPack = Math.abs(x - pk.x) < pk.size * 0.55 && Math.abs(y - pk.y) < pk.size * 0.55;
+      if (onPack && r.phase === 'sealed') { this.openPack(); return true; }
+      if (onPack && r.phase === 'open') { this.carry = { tid: id, x: x, y: y, sx: x, sy: y, moved: false, drag: true }; r.phase = 'carry'; r.pt = 0; this.audio.play('pop', { gain: 0.5 }); return true; }
+      return false;
+    }
+    const c = this.carry; if (!c || c.tid !== id || !c.drag) return false;
+    if (kind === 'move') { c.x = x; c.y = y; if (U.dist(x, y, c.sx, c.sy) > 14) c.moved = true; const m = this.mouth(); if (U.dist(x, y, m.x, m.y) < MOUTH_R) this.deliver(); return true; }
+    // release: a tap flies the portion to the mouth; a short drag that missed flies it back
+    c.drag = false; c.fx = c.x; c.fy = c.y; c.ft = 0; c.back = c.moved;
+    if (c.back) this.audio.play('drop', { gain: 0.5 });
+    return true;
+  };
+  P.openPack = function () { const r = this.run; r.phase = 'opening'; r.pt = 0; this.audio.play(L.PACK_INFO[r.pack].sound === 'ding' ? 'ding' : L.PACK_INFO[r.pack].sound, { gain: 1.1 }); this.vibrate('short'); this.setFace('open', 1); this.pushChat('idle'); this.saveRun(); };
+  P.deliver = function () { const r = this.run; if (r.phase !== 'carry') return; this.carry = null; r.phase = 'chew'; r.pt = 0; r.bites = 0; this.setFace('open', 0.3); this.saveRun(); };
+  P.tapHeart = function (h) { const r = this.run; h.taken = true; r.hearts++; const v = Math.round(r.goal * HEART_BOOST); this.addViewers(v); this.floatText('+' + U.fmtViewers(v), h.x, h.y - 20, C.pink, 18); this.spawnSparkles(h.x, h.y, 8); this.audio.play('like', { gain: 0.6 }); };
+  P.tapGift = function () { const r = this.run; r.giftTaken = true; const coins = r.cpb * 4, v = Math.round(r.goal * GIFT_BOOST); r.coins += coins; this.profile.add('coins', coins); this.addViewers(v); this.floatText('FAN GIFT  +' + coins, r.gift.x, r.gift.y - 50, C.gold, 22, true); this.spawnConfetti(r.gift.x, r.gift.y, 24); this.audio.play('cash'); r.gift = null; this.saveRun(); };
+  P.addViewers = function (v) { const r = this.run; r.viewers += v; r.peak = Math.max(r.peak, r.viewers); };
+
+  // ── one bite of the current pickup ──
+  P.biteNow = function () {
+    const r = this.run, d = K.dish(r.food), beat = BEAT[Math.min(r.pickups, PICKUPS - 1)];
+    const taste = d.tastes ? d.tastes[r.bites % d.tastes.length] : d.taste;
+    const hype = Math.round(r.hu * beat.mult * [0.9, 1.0, 1.1][r.bites] * (0.9 + 0.1 * D.TASTES[taste].mult) * (0.95 + Math.random() * 0.1));
+    this.addViewers(hype); r.coins += r.cpb; this.profile.add('coins', r.cpb);
+    this.setFace(r.bites % 2 ? 'chew' : D.TASTES[taste].face, 0.7);
+    this.audio.play(d.sound || 'bite', { rate: 0.9 + Math.random() * 0.25, gain: 0.85 + r.pickups * 0.2 });
+    if (taste === 'spicy') this.audio.play('fire', { gain: 0.6 }); else if (taste === 'cold') this.audio.play('shiver', { gain: 0.6 }); else if (taste === 'fizzy') this.audio.play('fizz', { gain: 0.6 }); else if (taste === 'sour') this.audio.play('sour', { gain: 0.6 }); else if (taste === 'sweet') this.audio.play('sweet', { gain: 0.4 });
+    this.vibrate('short');
+    const m = this.mouth();
+    this.floatText('+' + U.fmtViewers(hype), m.x + 76, m.y - 30, C.white, 20); this.floatText('+' + r.cpb, m.x - 80, m.y - 40, C.gold, 18, true);
+    for (let i = 0; i < 2 + r.pickups * 2; i++) this.spawnReaction();
+    this.spawnCrumbs(m.x, m.y + 18, d);
+    if (Math.random() < 0.55) this.pushChat(Math.random() < 0.5 ? taste : 'bite');
+    r.bites++;
+    this.saveRun();
+  };
+  P.spawnCrumbs = function (x, y, d) { for (let i = 0; i < 6; i++) this.confetti.push({ x: x + (Math.random() - 0.5) * 30, y: y, vx: (Math.random() - 0.5) * 160, vy: -60 - Math.random() * 120, life: 0, max: 0.7, color: i % 2 ? d.c1 : d.c3, r: 2.5 + Math.random() * 2.5, rot: 0, spin: 4 }); };
+  // the emotional beat after each pickup
+  P.pickupDone = function () {
+    const r = this.run, d = K.dish(r.food), k = r.pickups, beat = BEAT[Math.min(k, PICKUPS - 1)];
+    r.pickups++; r.bites = 0; r.phase = 'react'; r.pt = 0;
+    const W = this.W, H = this.H;
+    r.banner = { text: beat.title, sub: k === 0 ? (TASTE_LINE[d.sound] || 'SO GOOD!') : k === 1 ? U.fmtViewers(r.viewers) + ' WATCHING!' : 'ONE MORE…', t: 0 };
+    this.setFace(k === 0 ? D.TASTES[d.taste].face : 'yum', T.react);
+    for (let i = 0; i < beat.react; i++) this.spawnReaction(i % 3 ? null : 'heart');
+    for (let i = 0; i <= k; i++) this.pushChat(i === 0 ? beat.chat : 'idle');
+    this.audio.play(k === 0 ? 'ding' : 'like', { gain: 0.8 });
+    if (k === 1) this.fanEvent();
+    if (k === 1) for (let i = 0; i < 4; i++) this.spawnHeart(true);
+    this.saveRun();
+  };
+  // the level's fan event (automatic, or optional to tap)
+  P.fanEvent = function () {
+    const r = this.run; if (r.eventDone) return; r.eventDone = true; const W = this.W, H = this.H; const ev = r.event;
+    if (ev === 'hearts') { for (let i = 0; i < 8; i++) this.spawnHeart(true); this.floatText('HEART RAIN! TAP THEM!', W / 2, H * 0.47, C.pink, 24, true); }
+    else if (ev === 'gift') { r.gift = { x: W * 0.84, y: H * 0.6, t: 0 }; this.floatText('A FAN SENT A GIFT!', W / 2, H * 0.47, C.gold, 24, true); this.audio.play('confetti'); }
+    else if (ev === 'superchat') { const c = r.cpb * 3; r.coins += c; this.profile.add('coins', c); this.addViewers(Math.round(r.goal * EVENT_BOOST)); r.superchat = { t: 0, coins: c }; this.audio.play('cash'); }
+    else if (ev === 'wave') { for (let i = 0; i < 6; i++) this.pushChat(['bite', 'idle', 'milestone'][i % 3], U.fmtViewers(r.viewers)); this.addViewers(Math.round(r.goal * EVENT_BOOST)); this.floatText('CHAT IS EXPLODING!', W / 2, H * 0.47, C.white, 24, true); }
+    else if (ev === 'spotlight') { r.zoom = 1.6; this.addViewers(Math.round(r.goal * EVENT_BOOST * 1.2)); this.floatText('TRENDING #1', W / 2, H * 0.44, C.gold, 34, true); this.audio.play('levelup', { gain: 0.6 }); }
+    else if (ev === 'duet') { r.duet = { t: 0, avatar: D.AVATARS[Math.floor(Math.random() * D.AVATARS.length)] }; for (let i = 0; i < 6; i++) this.spawnHeart(true); this.addViewers(Math.round(r.goal * EVENT_BOOST)); this.floatText('A FAN JOINED THE STREAM!', W / 2, H * 0.47, C.white, 22, true); }
+  };
+  P.spawnHeart = function (burst) { const W = this.W, H = this.H; const left = Math.random() < 0.5; this.hearts.push({ x: left ? W * (0.07 + Math.random() * 0.14) : W * (0.79 + Math.random() * 0.14), y: H * (0.6 + Math.random() * 0.22) + (burst ? 0 : 40), vy: 34 + Math.random() * 22, life: 0, max: 4.2, sway: Math.random() * 6, taken: false }); };
+
+  // ── update ──
+  P.updateStream = function (dt) {
+    const r = this.run; if (!r) return; r.t += dt; r.pt += dt;
+    if (r.zoom > 0) r.zoom = Math.max(0, r.zoom - dt);
+    if (r.banner) { r.banner.t += dt; if (r.banner.t > 1.6) r.banner = null; }
+    if (r.superchat) { r.superchat.t += dt; if (r.superchat.t > 3) r.superchat = null; }
+    if (r.duet) { r.duet.t += dt; if (r.duet.t > 4) r.duet = null; }
+    if (r.gift) r.gift.t += dt;
+    // floating hearts (tappable bonus) while eating
+    for (let i = this.hearts.length - 1; i >= 0; i--) { const h = this.hearts[i]; h.life += dt; h.y -= h.vy * dt; if (h.life > h.max || h.taken) this.hearts.splice(i, 1); }
+    if ((r.phase === 'chew' || r.phase === 'react') && Math.random() < dt * 0.9) this.spawnHeart(false);
+    // ambient
+    this.ambT = (this.ambT || 0) - dt; if (this.ambT < 0) { this.spawnReaction(); this.ambT = 0.4 + Math.random() * 0.8; }
+    this.chatT = (this.chatT || 0) - dt; if (this.chatT < 0) { this.pushChat('idle'); this.chatT = 2.6 + Math.random() * 2.4; }
+    if (r.viewers > r.start && r.phase !== 'finale') r.viewers = Math.max(r.start, r.viewers - r.viewers * 0.002 * dt);
+    switch (r.phase) {
+      case 'opening': if (r.pt >= T.opening) { r.phase = 'open'; r.pt = 0; this.setFace('yum', 0.8); this.spawnSparkles(this.packPos().x, this.packPos().y, 16); this.pushChat('bite'); this.saveRun(); } break;
+      case 'carry': {
+        const c = this.carry; if (!c) { r.phase = 'open'; break; }
+        if (!c.drag) {
+          c.ft += dt / T.carry; const pk = this.packPos(), m = this.mouth(); const k = U.easeInOut(Math.min(1, c.ft));
+          const tx = c.back ? pk.x : m.x, ty = c.back ? pk.y - 20 : m.y;
+          c.x = U.lerp(c.fx, tx, k); c.y = U.lerp(c.fy, ty, k) - Math.sin(k * Math.PI) * (c.back ? 30 : 60);
+          if (c.ft >= 1) { if (c.back) { this.carry = null; r.phase = 'open'; } else this.deliver(); }
+        }
+        const m = this.mouth(); if (this.carry && U.dist(this.carry.x, this.carry.y, m.x, m.y) < MOUTH_R * 0.6 && this.face.expr !== 'open') this.face.expr = 'open';
+        break;
+      }
+      case 'chew': {
+        const want = r.pt < T.firstBite ? 0 : Math.min(BITES, 1 + Math.floor((r.pt - T.firstBite) / T.bite));
+        while (r.bites < want) this.biteNow();
+        if (r.pt >= CHEW) this.pickupDone();
+        break;
+      }
+      case 'react': if (r.pt >= T.react) { r.pt = 0; if (r.pickups >= PICKUPS) { r.phase = 'empty'; this.audio.play('pop'); this.floatText('ALL GONE!', this.packPos().x, this.packPos().y - 90, C.white, 26, true); } else r.phase = 'open'; this.saveRun(); } break;
+      case 'empty': if (r.pt >= T.empty) { r.phase = 'finale'; r.pt = 0; this.viralFinish(); } break;
+      case 'finale': if (r.pt >= T.finale) this.finishRun(); break;
+    }
+  };
+  P.viralFinish = function () {
+    const r = this.run, W = this.W, H = this.H;
+    const bonus = r.cpb * 3; r.coins += bonus; this.profile.add('coins', bonus);
+    this.addViewers(Math.round(r.goal * FINALE_BOOST));
+    r.banner = { text: 'VIRAL!', sub: U.fmtViewers(r.peak) + ' VIEWERS  ·  +' + bonus + ' COINS', t: 0, big: true };
+    this.setFace('yum', T.finale); this.audio.play('win'); this.spawnConfetti(W / 2, H * 0.4, 80); this.vibrate('long');
+    for (let i = 0; i < 20; i++) this.spawnReaction(i % 2 ? 'heart' : null);
+    this.pushChat('milestone', U.fmtViewers(r.peak)); this.pushChat('finish');
+    this.saveRun();
+  };
+
+  // ── result ──
+  P.finishRun = function () {
+    const r = this.run, p = this.profile; if (!r) return;
+    const stars = r.peak >= r.goal3 ? 3 : r.peak >= r.goal ? 2 : 1;
+    p.add('streams', 1);
+    if (r.peak > (p.get('best_viewers') || 0)) p.set('best_viewers', Math.round(r.peak));
+    const res = { side: r.side, food: r.food, stars: stars, peak: Math.round(r.peak), goal: r.goal, coins: r.coins, hearts: r.hearts, gift: r.giftTaken, unlocks: [], firstClear: false, bonusTaken: false, t: 0 };
+    // collection: every food eaten once is in the food book
+    let book; try { book = JSON.parse(p.get('foods_json') || '[]'); } catch (e) { book = []; }
+    if (book.indexOf(r.food) < 0) { book.push(r.food); p.set('foods_json', JSON.stringify(book)); res.unlocks.push('FOOD BOOK: ' + K.dish(r.food).name.toUpperCase()); }
+    if (r.level) {
+      const lv = L.level(r.level); res.lv = lv;
+      const st = this.stars(); if (stars > (st[lv.n] || 0)) st[lv.n] = stars; p.set('stars_json', JSON.stringify(st));
+      res.firstClear = lv.n > (p.get('levels_done') || 0);
+      if (res.firstClear) {
+        p.set('levels_done', lv.n); this.hs.claimLevelBonus();
+        for (let i = 0; i < lv.unlocks.length; i++) { const u = lv.unlocks[i];
+          if (u.indexOf('look:') === 0) { const it = WR.BY_ID[u.slice(5)]; if (it && WR.grant(p, it.id)) res.unlocks.push('NEW LOOK: ' + it.name.toUpperCase()); }
+          else if (u.indexOf('mode:') === 0) res.unlocks.push('NEW ACTIVITY: ' + L.modeOf(u.slice(5)).name);
+          else if (u.indexOf('streamer:') === 0) res.unlocks.push('NEW STREAMER: ' + u.slice(9).toUpperCase());
+          else if (u === 'wardrobe') res.unlocks.push('WARDROBE OPEN!');
+        }
+        if (lv.n < L.LEVEL_COUNT) { const nx = L.level(lv.n + 1); for (let i = 0; i < nx.news.length && i < 1; i++) res.unlocks.push('NEXT: ' + nx.news[i]); }
+      }
+      if (lv.n >= (p.get('level') || 1)) p.set('level', Math.min(L.LEVEL_COUNT, lv.n + 1));
+    }
+    if ((p.get('streams') || 0) === 1) this.hs.claimFirstStream();
+    this.result = res; this.run = null; this.saveRun(); this.hearts = [];
+    if (res.unlocks.length) this.audio.play('levelup');
+    this.setState('result');
+  };
+
+  // ── drawing ──
+  P.drawStream = function (still) {
+    const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, r = this.run;
+    const lv = r ? this.streamLevel() : (this.result && this.result.lv) || L.level(this.curLevel());
+    const loc = r ? r.loc : 'home', view = r ? r.view : lv.view;
+    const zoom = r && r.zoom > 0 ? 1 + 0.06 * Math.sin(Math.min(1, r.zoom / 1.6) * Math.PI) : 1;
+    ctx.save(); if (zoom !== 1) { ctx.translate(W / 2, H * 0.35); ctx.scale(zoom, zoom); ctx.translate(-W / 2, -H * 0.35); }
+    if (loc === 'restaurant') A.restaurantBg(ctx, W, H, this.time); else A.homeRoom(ctx, view, this.p.createCanvas, W, H, this.scale, this.time);
+    const hp = this.headPos(); const fc = this.face; const sd = this.streamerDef();
+    A.streamer(ctx, sd, hp.x, hp.y, hp.s, { expr: fc.expr, t: fc.t, blink: fc.blink, bob: fc.bob + (r && r.phase === 'chew' ? Math.sin(r.pt * 14) * 3 : 0), look: WR.look(this.profile, sd.id) });
+    A.table(ctx, view, W, H * 0.5, H);
+    A.phoneStick(ctx, W * 0.08, H * 0.38, 0.85, this.time);
+    ctx.restore();
+    if (r) {
+      const pk = this.packPos(), d = K.dish(r.food);
+      const ph = r.phase, e = Math.min(1, r.pickups / PICKUPS);
+      const state = ph === 'sealed' ? 'sealed' : ph === 'opening' ? 'opening' : (ph === 'empty' || ph === 'finale') ? 'empty' : 'open';
+      const glow = (ph === 'sealed' || ph === 'open') && !still;
+      if (glow) { ctx.globalAlpha = 0.25 + 0.15 * Math.sin(this.time * 5); A.circle(ctx, pk.x, pk.y, pk.size * 0.55, '#fff8d0', 0); ctx.globalAlpha = 1; }
+      A.pack(ctx, d, r.pack, pk.x, pk.y + (glow ? Math.sin(this.time * 3) * 3 : 0), pk.size, state, ph === 'opening' ? r.pt / T.opening : 0, e, this.time, r.toppings);
+      // pickup pips
+      for (let i = 0; i < PICKUPS; i++) { const px = pk.x + (i - 1) * 34, py = pk.y + pk.size * 0.5 + 18; A.circle(ctx, px, py, 11, i < r.pickups ? C.pink : 'rgba(255,255,255,0.85)', 3); if (i < r.pickups) A.heart(ctx, px, py + 1, 5, '#fff', 0); }
+      // the portion on its way to the mouth
+      if (this.carry) A.portion(ctx, d, this.carry.x, this.carry.y, 110, this.time);
+      // mouth target while carrying
+      if (ph === 'carry' && this.carry && this.carry.drag) { const m = this.mouth(); const a = 0.4 + 0.25 * Math.sin(this.time * 8); ctx.strokeStyle = 'rgba(255,255,255,' + a + ')'; ctx.lineWidth = 5; ctx.setLineDash([10, 10]); ctx.beginPath(); ctx.arc(m.x, m.y, MOUTH_R - 10, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]); }
+      // hints
+      if (!still) {
+        if (ph === 'sealed') ui.label('TAP · ' + L.PACK_INFO[r.pack].open + '!', W / 2, pk.y - pk.size * 0.62, 20, C.white, 'center', { stroke: 6 });
+        else if (ph === 'open') ui.label(r.pickups === 0 ? 'TAP OR DRAG A BITE TO HER MOUTH' : 'NEXT BITE!  (' + (r.pickups + 1) + '/' + PICKUPS + ')', W / 2, pk.y - pk.size * 0.62, r.pickups === 0 ? 17 : 20, C.white, 'center', { stroke: 6 });
+      }
+      // fan gift
+      if (r.gift && !r.giftTaken) { const g = r.gift; const drop = Math.min(1, g.t * 2.5); A.mysteryBox(ctx, g.x, U.lerp(-60, g.y, U.easeOutCubic(drop)), 90, this.time, 0, true); if (drop >= 1) ui.label('TAP!', g.x, g.y + 56, 15, C.white, 'center', { stroke: 4 }); }
+    }
+    this.drawReactions();
+    // tappable hearts
+    for (let i = 0; i < (this.hearts || []).length; i++) { const h = this.hearts[i]; const a = h.life < 0.3 ? h.life / 0.3 : h.life > h.max - 0.6 ? (h.max - h.life) / 0.6 : 1; ctx.globalAlpha = Math.max(0, a); const hx = h.x + Math.sin(h.life * 2 + h.sway) * 10; h.x += 0; A.reaction(ctx, 'heart', hx, h.y, 20 + Math.sin(this.time * 6 + h.sway) * 2); ctx.globalAlpha = 1; }
+    // chat
+    const chatY = this.bottom() - 30;
+    for (let i = this.chat.length - 1, k = 0; i >= 0 && k < 3; i--, k++) {
+      const c = this.chat[i]; const a = c.life < 0.25 ? c.life / 0.25 : 1; ctx.globalAlpha = a * (k === 2 ? 0.55 : 1);
+      const y = chatY - k * 46 + (1 - a) * 20; const tw = ui.measure(c.text, 15) + 26;
+      A.avatar(ctx, c.avatar, 40, y, 18); ui.panel(66, y - 18, Math.min(tw, W - 90), 36, 'rgba(255,255,255,0.92)', C.outline, 14, 3); ui.label(c.text, 79, y + 1, 15, C.text, 'left');
+    }
+    ctx.globalAlpha = 1;
+    const top = this.hud({ viewers: r ? U.fmtViewers(r.viewers) : U.fmtViewers(this.result ? this.result.peak : 0) });
+    if (r && !still) ui.button('pause', W - 56, top + 70, 40, 40, 'II', { color: C.lavender, dark: C.lavenderDark, size: 16, radius: 20 });
+    if (!r) return;
+    if (!still && this.canBoost()) ui.button('boost_ad', W - 150, H * 0.47, 136, 56, '▶ VIRAL BOOST', { color: C.yellow, dark: C.yellowDark, size: 15, sub: '+25% VIEWERS', badge: true });
+    const t = r.peak / r.goal3; ui.bar(W / 2 - 92, top + 70, 184, 16, Math.min(1, t), t >= 1 ? C.gold : t >= r.goal / r.goal3 ? C.green : C.pink); const gx = W / 2 - 92 + 184 * (r.goal / r.goal3); ctx.fillStyle = C.outline; ctx.fillRect(gx - 1, top + 66, 3, 24);
+    ui.label(r.level ? 'STREAM ' + r.level + ' · ' + this.streamLevel().title.toUpperCase() : L.modeOf(r.side) ? L.modeOf(r.side).name + ' STREAM' : 'BONUS STREAM', W / 2, top + 100, 12, C.white, 'center', { stroke: 4 });
+    // superchat banner / duet bubble
+    if (r.superchat) { const a = Math.min(1, r.superchat.t * 4, (3 - r.superchat.t) * 3); ctx.globalAlpha = Math.max(0, a); ui.panel(40, top + 120, W - 80, 52, '#ffd95e', C.goldDark, 20, 4); ui.label('SUPER CHAT  +' + r.superchat.coins + '  ·  "you are the best!!"', W / 2, top + 146, 16, C.text); ctx.globalAlpha = 1; }
+    if (r.duet) { const a = Math.min(1, r.duet.t * 3, (4 - r.duet.t) * 2); ctx.globalAlpha = Math.max(0, a); ui.panel(W - 140, top + 130, 120, 120, '#fff', C.outline, 18, 4); A.avatar(ctx, r.duet.avatar, W - 80, top + 182, 38); ui.label('FAN DUET', W - 80, top + 236, 12, C.pinkDark); ctx.globalAlpha = 1; }
+    // beat banner
+    if (r.banner && !still) { const b = r.banner; const k = U.easeOutBack(Math.min(1, b.t * 3)); const a = b.big ? 1 : Math.min(1, (1.6 - b.t) * 3); ctx.globalAlpha = Math.max(0, a); ctx.save(); ctx.translate(W / 2, H * 0.47); ctx.scale(k, k); ui.title(b.text, 0, 0, b.big ? 64 : 36, b.big ? C.yellow : C.white, C.pinkDark); if (b.sub) ui.label(b.sub, 0, b.big ? 48 : 34, b.big ? 20 : 18, C.white, 'center', { stroke: 5 }); ctx.restore(); ctx.globalAlpha = 1; }
+  };
+  P.drawResult = function () {
+    const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, res = this.result, hs = this.hs;
+    ui.dim(0.4);
+    const ph = 300 + res.unlocks.length * 26; const py = Math.max(this.top() + 100, H * 0.12);
+    ui.panel(24, py, W - 48, ph, C.cream, C.outline, 26);
+    ui.title(res.stars >= 3 ? 'SUPER VIRAL!' : res.stars >= 2 ? 'VIRAL STREAM!' : 'GREAT STREAM!', W / 2, py + 46, 36, C.white, C.pinkDark);
+    ui.label(res.lv ? 'STREAM ' + res.lv.n + ' · ' + res.lv.title.toUpperCase() : (L.modeOf(res.side) ? L.modeOf(res.side).name : 'BONUS') + ' STREAM', W / 2, py + 76, 13, C.textLight);
+    for (let k = 0; k < 3; k++) { const on = k < res.stars; const sc = on ? U.easeOutBack(Math.min(1, Math.max(0, res.t * 2 - k * 0.5))) : 1; ctx.save(); ctx.translate(W / 2 + (k - 1) * 70, py + 116); ctx.scale(sc, sc); A.uiStar(ctx, 0, 0, 28, on, '#e8e0e0', 4); ctx.restore(); }
+    A.food(ctx, K.dish(res.food), W / 2 - 150, py + 116, 70, 0, this.time);
+    ui.label('PEAK ' + U.fmtViewers(res.peak) + '  (goal ' + U.fmtViewers(res.goal) + ')', W / 2, py + 166, 20, C.text);
+    ui.label('hearts tapped ' + res.hearts + (res.gift ? '  ·  fan gift ✓' : ''), W / 2, py + 192, 13, C.textLight);
+    A.coin(ctx, W / 2 - 60, py + 226, 12); ui.label('+' + U.fmtCoins(res.coins), W / 2 + 8, py + 226, 26, C.goldDark);
+    let y = py + 258;
+    if (res.firstClear) { const rb = hs.rewardsLevelBonus(); if (rb) { ui.label('LEVEL BONUS  ' + this.itemsText(rb), W / 2, y, 15, C.pinkDark); y += 24; } }
+    for (let i = 0; i < res.unlocks.length; i++) { ui.label('★ ' + res.unlocks[i], W / 2, y, 15, C.greenDark); y += 26; }
+    if (res.stars < 3) ui.label('tip: tap the floating hearts for 3 stars', W / 2, py + ph - 14, 12, C.textLight);
+    y = py + ph + 14;
+    const bonus = hs.rewardsBonusCoins();
+    if (hs.hasAds() && hs.canShowBonusCoins() && bonus && !res.bonusTaken) { ui.button('bonus_ad', 40, y, W - 80, 56, '▶  WATCH AD:  ' + this.itemsText(bonus), { color: C.blue, dark: C.blueDark, size: 17 }); y += 68; }
+    if (res.lv) {
+      const canNext = res.lv.n < L.LEVEL_COUNT;
+      ui.button(canNext ? 'next' : 'replay', 40, y, W - 80, 70, canNext ? 'NEXT STREAM  ›' : 'STREAM AGAIN', { color: C.pink, dark: C.pinkDark, size: 26 }); y += 84;
+      ui.button('replay', 40, y, (W - 90) / 2, 56, 'REPLAY', { color: C.mint, dark: C.mintDark, size: 20 });
+    } else {
+      ui.button('side_' + res.side, 40, y, W - 80, 64, 'AGAIN  ›', { color: C.pink, dark: C.pinkDark, size: 24 }); y += 78;
+      ui.button('res_main', 40, y, (W - 90) / 2, 56, 'MAIN STREAM', { color: C.mint, dark: C.mintDark, size: 17 });
+    }
+    ui.button('res_home', 50 + (W - 90) / 2, y, (W - 90) / 2, 56, 'HOME', { color: C.lavender, dark: C.lavenderDark, size: 20 });
+  };
+}
+
+module.exports = { install, PICKUPS, BITES, T, MOUTH_R, CHEW };

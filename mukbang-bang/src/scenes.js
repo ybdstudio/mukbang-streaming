@@ -46,6 +46,7 @@ function install(Game) {
     if (id === 'bgo') { this.buffetGo(); return true; }
     if (id.indexOf('ktop_') === 0) { this.toggleTopping(id.slice(5)); return true; }
     if (id === 'kgo') { this.kitStart(); return true; }
+    if (id === 'krec') { const k = this.kit, list = k.lv.kitchen.recipes || [k.rec.id]; const i = (list.indexOf(k.rec.id) + 1) % list.length; k.rec = K.RECIPE_BY_ID[list[i]]; k.tops = []; this.audio.play('whoosh', { gain: 0.5 }); return true; }
     return false;
   };
   // QA / tests: complete the current food-source scene without input
@@ -90,9 +91,7 @@ function install(Game) {
   };
   P.arriveDone = function () {
     const d = this.deliv; if (this.state !== 'arrive') return;
-    const items = []; for (let i = 0; i < d.mains.length; i++) items.push({ id: d.mains[i], boxed: true }); for (let i = 0; i < d.sides.length; i++) items.push({ id: d.sides[i], boxed: true });
-    this.createRun(d.lv, items, d.cost, { mode: 'delivery' });
-    this.trans = 0.3; this.beginStream();
+    this.startFoodStream(d.mains[0], { side: 'delivery', cost: d.cost });
   };
   P.drawDelivery = function () {
     const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, d = this.deliv, lv = d.lv;
@@ -181,10 +180,7 @@ function install(Game) {
     if (b.plate.length < b.lv.buffet.slots) { this.audio.play('error'); this.showToast('Fill your plate first'); return; }
     if ((this.profile.get('coins') || 0) < fee) { this.audio.play('error'); this.showToast('Not enough coins'); return; }
     this.profile.add('coins', -fee); this.audio.play('cash');
-    const bonus = this.buffetBonus();
-    this.createRun(b.lv, b.plate.map(function (id) { return { id: id }; }), fee, { mode: 'buffet', bonus: bonus.v, bonusText: bonus.text });
-    if (bonus.text) this.floatText(bonus.text + '!', this.W / 2, this.H * 0.47, C.gold, 28, true);
-    this.trans = 0.3; this.beginStream();
+    this.startFoodStream(b.plate[0], { side: 'buffet', cost: fee, loc: 'restaurant' });
   };
   P.buffetTouch = function (kind, id, x, y) {
     const b = this.buf;
@@ -255,13 +251,9 @@ function install(Game) {
   };
   P.kitFinish = function () {
     const k = this.kit; if (k.phase !== 'done') return; k.phase = 'gone';
-    const items = []; const dish = k.rec.dish;
-    if (dish === 'mystery') items.push({ id: 'mystery', mystery: true }); else items.push({ id: dish, toppings: k.tops.slice() });
-    const ex = k.lv.kitchen.extras || []; for (let i = 0; i < ex.length; i++) items.push({ id: ex[i] });
-    const bonus = 0.06 + 0.04 * k.tops.length;
-    this.createRun(k.lv, items, k.cost, { mode: 'kitchen', bonus: bonus, bonusText: 'HOMEMADE BONUS' });
-    this.floatText('HOMEMADE BONUS +' + Math.round(bonus * 100) + '%', this.W / 2, this.H * 0.47, C.gold, 26, true);
-    this.trans = 0.3; this.beginStream();
+    let dish = k.rec.dish; if (dish === 'mystery') { const pool = K.MYSTERY.rare.concat(K.MYSTERY.funny); dish = pool[Math.floor(Math.random() * pool.length)]; }
+    this.startFoodStream(dish, { side: 'kitchen', cost: k.cost, toppings: k.tops.slice() });
+    this.floatText('HOMEMADE!', this.W / 2, this.H * 0.47, C.gold, 30, true);
   };
   P.updateKitchen = function (dt) {
     const k = this.kit; k.flash = Math.max(0, k.flash - dt);
@@ -301,11 +293,11 @@ function install(Game) {
     const dish = k.rec.dish === 'mystery' ? null : K.dish(k.rec.dish);
     if (k.phase === 'choose') {
       ui.title(k.rec.name.toUpperCase(), W / 2, top + 100, 34, C.white, C.pinkDark);
-      ui.label('DIY KITCHEN  ·  LEVEL ' + k.lv.n, W / 2, top + 134, 14, C.text);
+      if ((k.lv.kitchen.recipes || []).length > 1) ui.button('krec', W / 2 - 90, top + 122, 180, 36, 'OTHER RECIPE  ›', { color: C.mint, dark: C.mintDark, size: 14, radius: 14 }); else ui.label('COOKING', W / 2, top + 134, 14, C.text);
       const cy = top + 270; A.circle(ctx, W / 2, cy, 120, 'rgba(255,255,255,0.7)', 4);
       if (dish) A.food(ctx, dish, W / 2, cy, 190, 0, this.time); else A.mysteryBox(ctx, W / 2, cy, 170, this.time, 0, true);
-      let y = cy + 140; const ex = (k.lv.kitchen.extras || []).map(function (id) { return K.dish(id).name; });
-      ui.label('RECIPE KIT  ' + U.fmtCoins(k.rec.price) + ' coins' + (ex.length ? '  ·  + ' + ex.join(', ') : ''), W / 2, y, 14, C.text); y += 30;
+      let y = cy + 140;
+      ui.label('RECIPE KIT  ' + U.fmtCoins(k.rec.price) + ' coins', W / 2, y, 14, C.text); y += 30;
       ui.label('TOPPINGS (OPTIONAL) · EACH ADDS HYPE', W / 2, y, 14, C.textLight); y += 18;
       const tops = k.rec.toppings, cw = Math.min(118, (W - 40 - (tops.length - 1) * 8) / tops.length);
       const x0 = (W - (tops.length * cw + (tops.length - 1) * 8)) / 2;

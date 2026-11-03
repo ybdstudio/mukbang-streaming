@@ -1,6 +1,6 @@
 # Mukbang Bang — tiến trình & bàn giao (03/11/2026)
 
-> **V2 đang làm** — thiết kế + báo cáo ở `docs/GAME-DESIGN-V2.md` (Phase 2 xong: 4 nguồn đồ ăn, combo/cay/request/mystery, 30 level dữ liệu, vòng encore). Art V2: `docs/ART-REQUEST-V2.md` (đang chờ Codex; game chạy hình canvas tạm). Các mục V1 bên dưới vẫn đúng trừ vòng chơi/economy (xem V2).
+> **V3 (hiện tại)** — vòng ăn 1 món: mở gói → 3 gắp × 3 miếng → VIRAL; 50 stream; 4 hoạt động tuỳ chọn ở Home; Wardrobe; 6 ad place đo impression thật, cooldown 30 s. Thiết kế + QA: `docs/GAME-DESIGN-V3.md`. Art mới: `docs/ART-DIRECTION-V3.md` (chờ Codex). V2 (`docs/GAME-DESIGN-V2.md`) chỉ còn là lịch sử; các mục V1 bên dưới về HS kit / lệnh / quy ước vẫn đúng.
 
 Tài liệu cho người/AI tiếp quản. Đọc hết file này trước khi sửa code.
 
@@ -21,7 +21,7 @@ Tài liệu cho người/AI tiếp quản. Đọc hết file này trước khi s
 | Lưu tiến trình trong HSGame profile (cloud), stream dở dang khôi phục sau khi tắt app | ✅ |
 | HS kit: rewards, 3 ad place, shop, nút TikTok review (Entry/Launch/Share), pause/resume | ✅ |
 | `hs-check`: **0 ❌, 4 ⚠️** (chỉ thiếu App ID + 3 ad unit id) | ✅ |
-| `tools/sim-test.mjs` V2: **79** kiểm tra + mô phỏng 5 hồ sơ × 30 level, all passed | ✅ |
+| `tools/sim-test.mjs` V3: **85** kiểm tra + mô phỏng 5 hồ sơ × 50 stream (thời gian + impression đo từ ad_stats), all passed | ✅ |
 | Bản web 1 file + artifact claude.ai | ✅ https://claude.ai/artifact/RT6eXomFXizn2A6YfZbhtp (riêng tư, của chủ dự án) |
 | Repo GitHub `greenteeceo/mukbang-bang` (private), nhánh `main` | ✅ commit mới nhất `1f2b304` |
 | **Art bitmap từ Codex (143 ảnh, 2.6 MB) đã tích hợp**: món ăn, 3 streamer ghép lớp + 9 biểu cảm, 5 nền, siêu thị, quầy quét, icon, emoji, avatar, logo. Code vẽ canvas cũ giữ làm fallback | ✅ |
@@ -45,8 +45,9 @@ mukbang bang/
     src/game.js                  class Game: máy trạng thái, run/stream, HUD, siêu thị + quầy quét (tự quét)
     src/scenes.js                V2: màn Delivery (app YUMGO + xe giao), Buffet (kẹp + đĩa), Kitchen (công thức + bước nấu)
     src/catalog.js               V2: 4 catalog món (siêu thị / delivery / buffet / DIY / mystery) + topping + request
-    src/levels.js                V2: 30 level dữ liệu (chương, nguồn, cơ chế, vòng encore, goal)
-    src/mech.js                  V2: combo, perfect, cay, fan request, mystery, năng lực streamer (logic thuần)
+    src/levels.js                V3: 50 stream (1 món/stream), kiểu bao bì, sự kiện fan, mở khoá, cấu hình hoạt động
+    src/stream.js                V3: vòng ăn (sealed → open → 3 gắp × 3 miếng → empty → VIRAL), sự kiện fan, lưu/khôi phục, kết quả
+    src/wardrobe.js / wardrobe-scene.js  V3: dữ liệu + vẽ phụ kiện / màn Wardrobe
   mukbang-bang.hs-dashboard.json dữ liệu dashboard HS (đặt CẠNH game folder, không bên trong)
   tools/sim-test.mjs             test headless: fake platform/profile/HS, chơi trọn level qua tap/drag thật
   tools/shot.sh                  chụp màn hình bằng Chrome headless (cần preview đang chạy)
