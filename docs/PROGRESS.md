@@ -24,7 +24,7 @@ Tài liệu cho người/AI tiếp quản. Đọc hết file này trước khi s
 | HS kit: rewards, 3 ad place, shop, nút TikTok review (Entry/Launch/Share), pause/resume | ✅ |
 | `hs-check`: **0 ❌, 9 ⚠️** (chỉ thiếu App ID + 8 ad unit id) | ✅ |
 | `tools/sim-test.mjs` V4: nấu + ăn bằng thao tác chạm thật, 8 công thức, lưu/tiếp tục, ads; mô phỏng 5 hồ sơ × 40 màn — all passed. Average: playtime 41′, **5.9 imps/5 phút (KPI 8 chưa đạt)** | ✅ |
-| Bản web 1 file + artifact claude.ai | ✅ https://claude.ai/artifact/RT6eXomFXizn2A6YfZbhtp (riêng tư, của chủ dự án) |
+| Bản web 1 file + artifact claude.ai | ✅ https://claude.ai/artifact/UJSpdJhdEptJPLshp2J9Nw (riêng tư, của chủ dự án) |
 | Repo GitHub `greenteeceo/mukbang-bang` (private), nhánh `main` | ✅ commit mới nhất `1f2b304` |
 | **Art bitmap từ Codex (143 ảnh, 2.6 MB) đã tích hợp**: món ăn, 3 streamer ghép lớp + 9 biểu cảm, 5 nền, siêu thị, quầy quét, icon, emoji, avatar, logo. Code vẽ canvas cũ giữ làm fallback | ✅ |
 | Playtest người thật trên điện thoại / TikTok DevTool | ❌ chưa |
