@@ -193,5 +193,27 @@ async function playLevel(g, p, prof, n) {
   check('36 foods, 6 per shelf', D.FOODS.length === 36 && D.CATS.every(c => D.foodsOf(c.id).length === 6));
 }
 
+// ── test 5: bitmap art — every requested image exists, a whole level plays on the sprite path ──
+{
+  const { existsSync } = await import('node:fs');
+  const S = require('./sprites.js');
+  const gameDir = join(here, '..', 'mukbang-bang');
+  const asked = [], missing = [];
+  const p = fakePlatform();
+  p.loadImage = (path, done) => { asked.push(path); if (!existsSync(join(gameDir, path))) { missing.push(path); done(null); } else done({ width: 256, height: 256 }); };
+  const prof = fakeProfile(INIT), hs = fakeHs(prof);
+  const g = new Game(p, hs); g.hsReady = true; run(g, 0.2);
+  check('sprites: preloaded art exists', asked.length > 10 && !missing.length, missing);
+  for (const f of D.FOODS) for (let i = 0; i < D.bitesOf(f); i++) if (!existsSync(join(gameDir, 'assets', S.foodPath(f.id, i)))) missing.push(S.foodPath(f.id, i));
+  for (const b of D.BACKGROUNDS) if (!existsSync(join(gameDir, 'assets', 'bg', b.id + '.jpg'))) missing.push('bg/' + b.id);
+  for (const s of D.STREAMERS) if (!S.STREAMERS[s.id]) missing.push('streamer ' + s.id);
+  check('sprites: 120 food frames, 5 backgrounds, 3 streamers on disk', !missing.length, missing);
+  await playLevel(g, p, prof, 1);
+  check('sprites: level 1 plays through on the sprite path', g.state === 'result' && prof.get('level') >= 2, { state: g.state, level: prof.get('level') });
+  check('sprites: no missing image during play', !missing.length, missing);
+  const h = g.headPos(), m = g.mouth();
+  check('sprites: mouth sits below the head centre', m.y > h.y && m.y - h.y < 60, { h, m });
+}
+
 console.log(fails ? ('\n' + fails + ' FAILED') : '\nall passed');
 process.exit(fails ? 1 : 0);

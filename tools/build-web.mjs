@@ -5,7 +5,7 @@
 //   node tools/build-web.mjs   → web/index.html (standalone) + web/mukbang-bang-artifact.html (claude.ai artifact)
 import { readFileSync, writeFileSync, readdirSync, mkdirSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { dirname, join, resolve } from 'node:path';
+import { dirname, join, resolve, relative, extname } from 'node:path';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const root = resolve(here, '..');
@@ -42,6 +42,21 @@ const loader = `
   makeRequire('')('./game.js');
 })();
 `;
+// Bitmap art: every image under mukbang-bang/assets/ as a data URI,
+// keyed by the same path the game asks for ("assets/food/x.png").
+const MIME = { '.png': 'image/png', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg' };
+const assets = {}; let assetBytes = 0;
+(function walk(dir) {
+  if (!existsSync(dir)) return;
+  for (const e of readdirSync(dir, { withFileTypes: true })) {
+    const p = join(dir, e.name);
+    if (e.isDirectory()) { walk(p); continue; }
+    const mime = MIME[extname(e.name).toLowerCase()]; if (!mime) continue;
+    const buf = readFileSync(p); assetBytes += buf.length;
+    assets[relative(gameDir, p).split(String.fromCharCode(92)).join('/')] = 'data:' + mime + ';base64,' + buf.toString('base64');
+  }
+})(join(gameDir, 'assets'));
+const assetScript = 'var __HS_ASSETS = ' + JSON.stringify(assets) + ';';
 const shim = readFileSync(join(kitDir, 'web', 'tt-web-shim.js'), 'utf8');
 const DESC = 'Mukbang Bang: shop at the supermarket, scan at the checkout, then eat it all on a live stream. Same code as the TikTok mini game.';
 const style = `
@@ -57,6 +72,10 @@ const style = `
 const errScript = `window.addEventListener('error', function (e) { var d = document.getElementById('err'); d.style.display = 'block'; d.textContent += (e.message || e) + '\\n'; });`;
 const body = `<div id="err"></div>
 <script>${errScript}</script>
+<script>
+/* Game art (mukbang-bang/assets/), inlined. */
+${assetScript}
+</script>
 <script>
 /* HS kit web shim (tt-web-shim.js) — browser stand-in for TikTok's tt API. Not part of the TikTok upload. */
 ${shim}
@@ -85,4 +104,4 @@ const artifact = `<title>Mukbang Bang</title>
 <style>${style}</style>
 ${body}`;
 writeFileSync(join(outDir, 'mukbang-bang-artifact.html'), artifact);
-console.log('web/index.html ' + (html.length / 1024).toFixed(0) + ' KB · web/mukbang-bang-artifact.html ' + (artifact.length / 1024).toFixed(0) + ' KB · modules: ' + files.length);
+console.log('web/index.html ' + (html.length / 1024).toFixed(0) + ' KB · web/mukbang-bang-artifact.html ' + (artifact.length / 1024).toFixed(0) + ' KB · modules: ' + files.length + ' · images: ' + Object.keys(assets).length + ' (' + (assetBytes / 1024).toFixed(0) + ' KB)');

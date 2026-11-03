@@ -1,0 +1,531 @@
+[
+  {
+    "id": "chili_noodle",
+    "path": "C:\\Users\\NhimTo-Dung\\Documents\\ChatGPT\\Mukbang Streaming 2\\project\\mukbang bang\\art-src\\style-sample\\chili_noodle-master.png",
+    "prompt": "Use case: stylized-concept. Production game sprite sheet for original Mukbang Bang. Transparent background. A single horizontal strip of FOUR equally sized square cells, each cell 256x256 pixels, total 1024x256. Same Chili Noodle cup registered at identical position in each cell, front view 15 degrees from above, 8% padding. Stage 0 full heaped curly noodles, stage 1 75% noodles, stage 2 50%, stage 3 25%. Cup silhouette and chopsticks do not change between stages. Original cute chubby cup with two small animal ears on red-orange band, tiny chili motif, open lid, small steam. Exact short label CHILI on cup. Palette #ff6b4a #ffb199 #c93b1d, golden noodles. Charming hand-drawn kawaii sticker illustration, thick rounded dark brown #5b3d3b outlines about 7px at 256 scale, subtle natural pen wobble, flat pastel fills, one soft cel shadow and tiny white highlight. No realism, no 3D, no drop shadows, no borders or grid lines or stage labels, no brand imitation. Objects fully separated within cells, genuine alpha."
+  },
+  {
+    "id": "cat_chips",
+    "path": "C:\\Users\\NhimTo-Dung\\Documents\\ChatGPT\\Mukbang Streaming 2\\project\\mukbang bang\\art-src\\style-sample\\cat_chips-master.png",
+    "prompt": "Use case: stylized-concept. Original Mukbang Bang production sprite strip. Genuine transparent background. Each square cell has the object centered with 8% clear padding, exactly equal spacing. Front view slightly from above 15 degrees. Hand-drawn kawaii chibi sticker illustration, chunky rounded dark-brown #5b3d3b outlines, gentle pen wobble, clean flat pastel fills, one soft cel-shadow and small white highlight. Consistent with cute cream-and-orange cat noodle cup. No realistic rendering, no 3D, no cast shadows, no cell borders, no stage numbers, no branding. THREE horizontal square cells. Original puffy orange Cat Chips snack bag #ffb84d #fff0c2 #d6841a, transparent window showing cat-shaped potato chips, tiny smiling cat mascot. CHIPS label. Stage0 sealed full bag, stage1 torn-open top and half-full window, stage2 same torn bag nearly empty. Identical registered bag shape."
+  },
+  {
+    "id": "bubble_tea",
+    "path": "C:\\Users\\NhimTo-Dung\\Documents\\ChatGPT\\Mukbang Streaming 2\\project\\mukbang bang\\art-src\\style-sample\\bubble_tea-master.png",
+    "prompt": "Use case: stylized-concept. Original Mukbang Bang production sprite strip. Genuine transparent background. Each square cell has the object centered with 8% clear padding, exactly equal spacing. Front view slightly from above 15 degrees. Hand-drawn kawaii chibi sticker illustration, chunky rounded dark-brown #5b3d3b outlines, gentle pen wobble, clean flat pastel fills, one soft cel-shadow and small white highlight. Consistent with cute cream-and-orange cat noodle cup. No realistic rendering, no 3D, no cast shadows, no cell borders, no stage numbers, no branding. THREE horizontal square cells. Original chubby clear bubble tea cup, milk tea #c9a27c #efe1d2, brown boba #8a6440, thick pastel pink straw and rounded lid. BOBA label. Stage0 full, stage1 liquid half-full, stage2 liquid quarter-full. Cup straw and lid identical registered shape."
+  },
+  {
+    "id": "straw_cake",
+    "path": "C:\\Users\\NhimTo-Dung\\Documents\\ChatGPT\\Mukbang Streaming 2\\project\\mukbang bang\\art-src\\style-sample\\straw_cake-master.png",
+    "prompt": "Use case: stylized-concept. Original Mukbang Bang production sprite strip. Genuine transparent background. Each square cell has the object centered with 8% clear padding, exactly equal spacing. Front view slightly from above 15 degrees. Hand-drawn kawaii chibi sticker illustration, chunky rounded dark-brown #5b3d3b outlines, gentle pen wobble, clean flat pastel fills, one soft cel-shadow and small white highlight. Consistent with cute cream-and-orange cat noodle cup. No realistic rendering, no 3D, no cast shadows, no cell borders, no stage numbers, no branding. FOUR horizontal square cells. Strawberry layer cake slice on white plate, cream #fff5f7 pink strawberry #ff6f91 sponge #f4b6c6. Stage0 full triangular slice topped with one strawberry, stage1 one bite and 75% remaining, stage2 50% remaining, stage3 25% remaining. Plate unchanged registered position, cake visibly narrows progressively, scalloped bite marks. No text."
+  },
+  {
+    "id": "mint_choc",
+    "path": "C:\\Users\\NhimTo-Dung\\Documents\\ChatGPT\\Mukbang Streaming 2\\project\\mukbang bang\\art-src\\style-sample\\mint_choc-master.png",
+    "prompt": "Use case: stylized-concept. Original Mukbang Bang production sprite strip. Genuine transparent background. Each square cell has the object centered with 8% clear padding, exactly equal spacing. Front view slightly from above 15 degrees. Hand-drawn kawaii chibi sticker illustration, chunky rounded dark-brown #5b3d3b outlines, gentle pen wobble, clean flat pastel fills, one soft cel-shadow and small white highlight. Consistent with cute cream-and-orange cat noodle cup. No realistic rendering, no 3D, no cast shadows, no cell borders, no stage numbers, no branding. THREE horizontal square cells. Mint chocolate chip ice cream in a tiny waffle cone, mint #a8ecd5 #5ac79f dark chocolate #6b4a37, small cold crystal motif. Stage0 full large scoop, stage1 half scoop with bite marks, stage2 tiny remaining scoop. Cone identical registered position. No text."
+  },
+  {
+    "id": "melon_bowl",
+    "path": "C:\\Users\\NhimTo-Dung\\Documents\\ChatGPT\\Mukbang Streaming 2\\project\\mukbang bang\\art-src\\style-sample\\melon_bowl-master.png",
+    "prompt": "Use case: stylized-concept. Original Mukbang Bang production sprite strip. Genuine transparent background. Each square cell has the object centered with 8% clear padding, exactly equal spacing. Front view slightly from above 15 degrees. Hand-drawn kawaii chibi sticker illustration, chunky rounded dark-brown #5b3d3b outlines, gentle pen wobble, clean flat pastel fills, one soft cel-shadow and small white highlight. Consistent with cute cream-and-orange cat noodle cup. No realistic rendering, no 3D, no cast shadows, no cell borders, no stage numbers, no branding. THREE horizontal square cells. Melon jelly fruit bowl, watermelon wedges pink #ff6f7d with rind #7ed37a and tiny dark seeds, pale cream rounded bowl. Stage0 six visible watermelon jelly wedges, stage1 three wedges, stage2 one wedge. Same bowl identical registered position. No text."
+  },
+  {
+    "id": "banana_milk",
+    "n": 3,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 3 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: yellow banana milk carton with tiny banana drawing and clear vertical liquid-level window. Its exact primary palette #ffe066, #fff9d6, #d4ac1c. Same container, label and straw/cap each stage; liquid visible in clear body/window falls 100%,55%,20%. Cartons remain upright, use clear liquid window to show amount. Only permitted label text exactly \"NANA\". Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/banana_milk-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-90868da7-581d-4eab-94f0-63f88228a9ac.png"
+  },
+  {
+    "id": "bean_noodle",
+    "n": 4,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 4 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: black bean noodles with dark glossy sauce. Its exact primary palette #6b5a66, #b8a8b3, #3d2f3a. Cup, lid, chopsticks fixed identical, noodle heap decreases across stages 100%,75%,50%,25%. Cup has two small animal ears on its band, an original smiling animal mascot, open lid and little steam. Only permitted label text exactly \"BEAN\". Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/bean_noodle-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-2d71086a-aa13-4bc9-a263-29a647ac333c.png"
+  },
+  {
+    "id": "berry_mix",
+    "n": 3,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 3 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: six mixed blueberries and raspberries in a cream bowl. Its exact primary palette #5b6fe0, #ffffff, #ff5a74. Same plate or bowl fixed in all cells, exactly SIX fruit pieces then THREE then ONE, no changing container shape. No text. Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/berry_mix-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-19c03e32-dcc5-4d8b-885c-6a6cebe4b344.png"
+  },
+  {
+    "id": "berry_smoothie",
+    "n": 3,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 3 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: clear smoothie cup with domed lid, purple berry smoothie and short chunky straw, tiny berry motif. Its exact primary palette #b878e8, #ecdcfa, #7a3fb3. Same container, label and straw/cap each stage; liquid visible in clear body/window falls 100%,55%,20%. Cartons remain upright, use clear liquid window to show amount. Only permitted label text exactly \"BERRY\". Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/berry_smoothie-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-59daeb61-e515-4560-b858-aa1df89c9cca.png"
+  },
+  {
+    "id": "berry_tart",
+    "n": 4,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 4 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: small berry tart with golden crust, purple cream and berries on white plate; bitten away from LEFT. Its exact primary palette #f3c58b, #7a4fb8, #c48a4a. Same white plate fixed in all cells; cake is eaten from LEFT and becomes successively 100%,75%,50%,25% remaining with scalloped bite marks; do not merely scale cake. No text. Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/berry_tart-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-2f28252b-8006-4d13-92a9-17728b7a9a50.png"
+  },
+  {
+    "id": "blue_moon",
+    "n": 3,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 3 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: pale blue ice cream scoop in waffle cone with tiny crescent moon wafer. Its exact primary palette #8fd1ff, #ffffff, #4a9fd8. Same cone/cup fixed in all cells; scoop or soft serve is progressively eaten 100%,55%,20%, visible bite marks, small blue cold crystal accent. Only permitted label text exactly \"MOON\". Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/blue_moon-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-9ffe4940-9a7e-4ad5-92a7-bcac5111e43c.png"
+  },
+  {
+    "id": "cheese_noodle",
+    "n": 4,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 4 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: cheesy golden curly noodles with melted cheese ribbon. Its exact primary palette #ffc94d, #ffe9a8, #d99a12. Cup, lid, chopsticks fixed identical, noodle heap decreases across stages 100%,75%,50%,25%. Cup has two small animal ears on its band, an original smiling animal mascot, open lid and little steam. Only permitted label text exactly \"CHEESE\". Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/cheese_noodle-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-48531bbb-774b-4ba7-83ea-38b612d99e8b.png"
+  },
+  {
+    "id": "choco_mousse",
+    "n": 4,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 4 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: layered chocolate mousse triangular cake slice with chocolate curl on white plate. Its exact primary palette #8a5a3c, #d9a877, #5a3622. Same white plate fixed in all cells; cake is eaten from LEFT and becomes successively 100%,75%,50%,25% remaining with scalloped bite marks; do not merely scale cake. No text. Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/choco_mousse-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-89e52023-4e35-4aff-82a4-c22787478e5c.png"
+  },
+  {
+    "id": "choco_pretzel",
+    "n": 3,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 3 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: puffy cocoa-brown bag, window showing chocolate-covered loop pretzels, tiny bear mascot. Its exact primary palette #b57c5a, #f0d9c8, #7a4b2f. Same fixed bag silhouette and mascot each stage. Stage0 sealed and full window; stage1 torn-open top and half full; stage2 same torn-open bag almost empty. Only permitted label text exactly \"PRETZ\". Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/choco_pretzel-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-bd724166-7821-4f0a-9d0e-edd8dfe7d278.png"
+  },
+  {
+    "id": "choco_sundae",
+    "n": 3,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 3 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: chocolate ice cream sundae in a short cream-and-cocoa cup with whipped cream and chocolate drizzle. Its exact primary palette #8a5a3c, #fff, #5a3622. Same cone/cup fixed in all cells; scoop or soft serve is progressively eaten 100%,55%,20%, visible bite marks, small blue cold crystal accent. Only permitted label text exactly \"CHOCO\". Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/choco_sundae-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-8994415c-2ed0-4a89-ad3c-85c31f18c8a1.png"
+  },
+  {
+    "id": "cookie_cream",
+    "n": 3,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 3 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: cookies and cream white ice cream with chocolate cookie chunks in a small cream cup. Its exact primary palette #f3f3f3, #3b2f2f, #c9c9c9. Same cone/cup fixed in all cells; scoop or soft serve is progressively eaten 100%,55%,20%, visible bite marks, small blue cold crystal accent. Only permitted label text exactly \"COOKIE\". Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/cookie_cream-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-2b08a932-1ed9-4f05-9f25-0dfeda98a372.png"
+  },
+  {
+    "id": "grape_bunch",
+    "n": 3,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 3 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: six plump purple grapes loosely bunched with one green leaf on white dish. Its exact primary palette #a66ee6, #ffffff, #6a3fa8. Same plate or bowl fixed in all cells, exactly SIX fruit pieces then THREE then ONE, no changing container shape. No text. Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/grape_bunch-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-be265357-49ac-4c12-84e0-e9b64c3e647f.png"
+  },
+  {
+    "id": "gummy_bears",
+    "n": 3,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 3 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: puffy pink bag, window with colorful translucent gummy bears, tiny bear mascot. Its exact primary palette #ff7fa8, #ffe0eb, #d84a7b. Same fixed bag silhouette and mascot each stage. Stage0 sealed and full window; stage1 torn-open top and half full; stage2 same torn-open bag almost empty. Only permitted label text exactly \"GUMMY\". Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/gummy_bears-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-a4cad2fd-fbf1-4b6e-ade5-10ec109a43ff.png"
+  },
+  {
+    "id": "honey_puffs",
+    "n": 3,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 3 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: puffy honey-yellow bag, window full of round golden honey cereal puffs, little bee mascot. Its exact primary palette #ffd36b, #fff4cf, #d39a1f. Same fixed bag silhouette and mascot each stage. Stage0 sealed and full window; stage1 torn-open top and half full; stage2 same torn-open bag almost empty. Only permitted label text exactly \"PUFFS\". Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/honey_puffs-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-71a7a2ce-76ba-443e-b447-0532038fc36c.png"
+  },
+  {
+    "id": "mango_cheese",
+    "n": 4,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 4 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: golden mango cheesecake triangular slice with mango glaze and mango cube topping on white plate. Its exact primary palette #ffd16b, #fff4d0, #e2a21a. Same white plate fixed in all cells; cake is eaten from LEFT and becomes successively 100%,75%,50%,25% remaining with scalloped bite marks; do not merely scale cake. No text. Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/mango_cheese-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-d61962dd-d922-48db-8ab4-7284cae8c041.png"
+  },
+  {
+    "id": "mango_cubes",
+    "n": 3,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 3 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: six juicy golden mango cubes in a cream bowl. Its exact primary palette #ffc83d, #fff6d8, #e39a10. Same plate or bowl fixed in all cells, exactly SIX fruit pieces then THREE then ONE, no changing container shape. No text. Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/mango_cubes-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-9e509165-64aa-4cf2-a4e7-edec4cc1e2de.png"
+  },
+  {
+    "id": "mango_sorbet",
+    "n": 3,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 3 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: mango yellow sorbet scoop in a short yellow cream cup with tiny mango topping. Its exact primary palette #ffcf5c, #fff4cf, #e0a21a. Same cone/cup fixed in all cells; scoop or soft serve is progressively eaten 100%,55%,20%, visible bite marks, small blue cold crystal accent. Only permitted label text exactly \"MANGO\". Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/mango_sorbet-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-1f071e5c-d42a-4fab-9ab5-c39298d17a6e.png"
+  },
+  {
+    "id": "matcha_latte",
+    "n": 3,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 3 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: clear rounded latte cup with pale green matcha milk and cream foam, simple small green leaf badge. Its exact primary palette #9ed47a, #e9f7dc, #5fa23d. Same container, label and straw/cap each stage; liquid visible in clear body/window falls 100%,55%,20%. Cartons remain upright, use clear liquid window to show amount. Only permitted label text exactly \"MATCHA\". Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/matcha_latte-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-c7eef9d8-b964-4c12-91a2-3237faa73b26.png"
+  },
+  {
+    "id": "matcha_roll",
+    "n": 4,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 4 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: matcha swiss roll cake slice with clear cream spiral and tiny leaf topping on white plate. Its exact primary palette #b7e3a1, #fff8e1, #78b85e. Same white plate fixed in all cells; cake is eaten from LEFT and becomes successively 100%,75%,50%,25% remaining with scalloped bite marks; do not merely scale cake. No text. Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/matcha_roll-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-2a5be8eb-0533-4a14-9589-32ce0d5f0508.png"
+  },
+  {
+    "id": "peach_milk",
+    "n": 3,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 3 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: peach-pink milk carton with little peach drawing and clear vertical liquid-level window. Its exact primary palette #ffb3c7, #fff0f4, #e8759a. Same container, label and straw/cap each stage; liquid visible in clear body/window falls 100%,55%,20%. Cartons remain upright, use clear liquid window to show amount. Only permitted label text exactly \"PEACH\". Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/peach_milk-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-9f19b92b-81dc-43e4-9c5b-2c272eb0d8c9.png"
+  },
+  {
+    "id": "pine_sticks",
+    "n": 3,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 3 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: six pineapple wedge sticks on a cream plate, tiny pineapple leaf motif on rim. Its exact primary palette #ffd84a, #fff7cf, #d6ad10. Same plate or bowl fixed in all cells, exactly SIX fruit pieces then THREE then ONE, no changing container shape. No text. Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/pine_sticks-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-a363ecdc-eeea-4a4c-8021-91a482634918.png"
+  },
+  {
+    "id": "rainbow_candy",
+    "n": 3,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 3 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: puffy sky-blue candy bag with transparent window full of rainbow jelly stars. Its exact primary palette #8fd4ff, #ffffff, #4a9fd8. Same fixed bag silhouette and mascot each stage. Stage0 sealed and full window; stage1 torn-open top and half full; stage2 same torn-open bag almost empty. Only permitted label text exactly \"CANDY\". Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/rainbow_candy-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-ed03ad59-b00d-4a59-8664-64aaefbf117d.png"
+  },
+  {
+    "id": "rainbow_crepe",
+    "n": 4,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 4 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: rainbow layered crepe cake wedge with six pastel horizontal layers and cream topping on white plate. Its exact primary palette #fff, #ff9ecf, #ffc36b. Same white plate fixed in all cells; cake is eaten from LEFT and becomes successively 100%,75%,50%,25% remaining with scalloped bite marks; do not merely scale cake. No text. Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/rainbow_crepe-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-b71ae266-0909-454e-8d7d-a59f71feb274.png"
+  },
+  {
+    "id": "sakura_noodle",
+    "n": 4,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 4 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: pink sakura sweet noodles with blossom-shaped toppings. Its exact primary palette #ff9fc4, #ffd6e6, #d85e8e. Cup, lid, chopsticks fixed identical, noodle heap decreases across stages 100%,75%,50%,25%. Cup has two small animal ears on its band, an original smiling animal mascot, open lid and little steam. Only permitted label text exactly \"SAKURA\". Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/sakura_noodle-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-0368c76f-d4de-492b-99d3-e0bcbb4f6ad8.png"
+  },
+  {
+    "id": "seaweed_crisps",
+    "n": 3,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 3 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: puffy mint-green bag, window with rectangular dark-green seaweed crisps, little seal mascot. Its exact primary palette #6fcf8e, #d4f5de, #2f9c55. Same fixed bag silhouette and mascot each stage. Stage0 sealed and full window; stage1 torn-open top and half full; stage2 same torn-open bag almost empty. Only permitted label text exactly \"CRISPS\". Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/seaweed_crisps-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-7047ec75-1308-4ce0-a9ed-01d8aa15a0e0.png"
+  },
+  {
+    "id": "sea_noodle",
+    "n": 4,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 4 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: seafood noodles with shrimp and seaweed pieces. Its exact primary palette #6fc9e8, #c4ecf7, #2f8cb0. Cup, lid, chopsticks fixed identical, noodle heap decreases across stages 100%,75%,50%,25%. Cup has two small animal ears on its band, an original smiling animal mascot, open lid and little steam. Only permitted label text exactly \"OCEAN\". Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/sea_noodle-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-ba755edb-cdc3-4e0e-aaf8-837d280fad21.png"
+  },
+  {
+    "id": "shroom_noodle",
+    "n": 4,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 4 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: mushroom noodles with tiny mushroom caps. Its exact primary palette #d9b48a, #f3dfc4, #a67a4a. Cup, lid, chopsticks fixed identical, noodle heap decreases across stages 100%,75%,50%,25%. Cup has two small animal ears on its band, an original smiling animal mascot, open lid and little steam. Only permitted label text exactly \"SHROOM\". Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/shroom_noodle-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-1dbef211-3a0f-48fa-a1da-8ec554f77cc6.png"
+  },
+  {
+    "id": "soda_pop",
+    "n": 3,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 3 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: clear rounded fizzy pink soda bottle with cap, pink band, tiny bubble motifs; visibly falling liquid level. Its exact primary palette #ff6f91, #ffd9e2, #d13d63. Same container, label and straw/cap each stage; liquid visible in clear body/window falls 100%,55%,20%. Cartons remain upright, use clear liquid window to show amount. Only permitted label text exactly \"SODA\". Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/soda_pop-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-39b04f12-5b0b-44ea-ab5d-bcb0f913c8ba.png"
+  },
+  {
+    "id": "straw_plate",
+    "n": 3,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 3 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: six fresh red strawberries with green leaves on a white shallow plate. Its exact primary palette #ff5a74, #ffffff, #5fbf5a. Same plate or bowl fixed in all cells, exactly SIX fruit pieces then THREE then ONE, no changing container shape. No text. Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/straw_plate-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-132c881e-8581-454b-ada9-f5ca0f5b04cc.png"
+  },
+  {
+    "id": "straw_swirl",
+    "n": 3,
+    "prompt": "Use case: stylized-concept. Create ONE original Mukbang Bang food sprite strip: 3 equally sized square cells arranged in a SINGLE HORIZONTAL ROW, left to right eating stages. Reference image is STYLE ONLY; do NOT reproduce reference sheet, create only this ONE food: strawberry pink swirled soft serve ice cream in waffle cone. Its exact primary palette #ffb3c7, #fff0f4, #e8759a. Same cone/cup fixed in all cells; scoop or soft serve is progressively eaten 100%,55%,20%, visible bite marks, small blue cold crystal accent. Only permitted label text exactly \"BERRY\". Charming cute hand-drawn kawaii sticker illustration matching approved reference, rounded dark-brown #5b3d3b pen outlines with subtle wobble, flat pastel cel colors, a single soft shadow and white highlight. Front view slightly from above 15 degrees. All cells equally spaced, same fixed object registration and scale, 8% transparent margin, complete objects inside cells. Genuine transparent alpha background. No grid, numbers, stage labels, backdrop, heavy texture, photorealism, 3D or brand imitation. Clear simple silhouette readable at 60px.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/food/straw_swirl-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-8afcfbe8-7a63-4e13-9eef-9a72adf4e531.png"
+  },
+  {
+    "id": "luna_head",
+    "path": "C:\\Users\\NhimTo-Dung\\Documents\\ChatGPT\\Mukbang Streaming 2\\project\\mukbang bang\\art-src\\style-sample\\luna_head-master.png",
+    "prompt": "Use case: stylized-concept. Redesign Luna for original Mukbang Bang as a VERY YOUTHFUL adorable chibi anime girl, hand-drawn mobile game sticker art. Deliver HEAD ONLY, square transparent PNG intended 512x512. Lavender #cdb0ff hair with darker #a98ae6 accents, TWO fluffy loose little space buns, wispy playful fringe and soft side locks, ONE small pink #ff7fa8 bow off center on left bun. Young fresh playful design, large round mochi cheeks, compact softly rounded chin, tiny ears, peach #ffe6d6 skin, rosy blush circles. Face must be WIDER THAN TALL, round dumpling shape, NOT a long oval egg. No neck visible: head ends in rounded chin at y92% and connection point [50%,92%]. Face center [50%,50%]; clear peach skin at eye centers y45% and mouth y65.6%. Hair in upper 30% only with a short rounded fringe (no precise center part, no swept mature hairstyle). BLANK face: no eyes, no eyebrows, no nose, no mouth; only soft round blush at x25%,75%, y62%. Wide cheek silhouette x12%-88%, chin ~y89%. Buns and hair wholly inside canvas with 4% margins. Thick rounded warm dark brown #5b3d3b outlines with slight natural pen wobble, simple clean pastel cel fills, one subtle shadow, tiny restrained white highlights. Cute hand-painted flat cartoon, no 3D, no realism, no texture, no heavy shine, no wrinkles, no spectacles, no mature hairstyle, no body, no clothes, no text. Genuine fully transparent background outside head.",
+    "kind": "head",
+    "w": 512,
+    "h": 512
+  },
+  {
+    "id": "luna_body",
+    "path": "C:\\Users\\NhimTo-Dung\\Documents\\ChatGPT\\Mukbang Streaming 2\\project\\mukbang bang\\art-src\\style-sample\\luna_body-master.png",
+    "prompt": "Edit this original Luna modular BODY sprite. Replace the hoodie with a simple cute MINT CREWNECK SWEATER. Remove the entire bulky hood, all drawstrings, eyelets, kangaroo pocket, and hood folds. A low thin ROUND ribbed neckline sits naturally at the base of a short visible peach #ffe6d6 neck, no scarf and no high collar. Neck top center at canvas x50% y0, neck exposed height about 32px in final512x420 sprite. Soft narrow rounded shoulders, compact youthful chibi torso, comfy sweater long sleeves with ribbed cuffs and hem, small cream heart at chest. Keep the exact tiny hands, arm pose, narrow torso width, color #9fe3c9 with #5fbf9f shade, original thick rounded brown #5b3d3b hand-drawn outline and clean flat pastel illustration. Sweater torso must have a simple smooth front with only two subtle folds near hem, and a small heart. Preserve the transparent padding left and right, overall 512x420 aspect and full body framing. BODY ONLY no head no face no hair no legs no objects. Genuine transparent alpha outside skin and sweater. No hoodie, no hood, no strings, no pocket, no bulky neckline. Keep everything else unchanged.",
+    "kind": "body",
+    "w": 512,
+    "h": 420
+  },
+  {
+    "id": "face_parts",
+    "path": "C:\\Users\\NhimTo-Dung\\Documents\\ChatGPT\\Mukbang Streaming 2\\project\\mukbang bang\\art-src\\style-sample\\face_parts-master.png",
+    "prompt": "Edit ONLY four cells of this 4-column x 5-row facial-parts sprite atlas, preserving all other 16 cells exactly, existing transparent background, 960x600 layout, brown #4a3340 rounded hand-drawn ink. Each cell240x120. REPLACE row3 col3 (mouth_chew_a): a small closed gently curved horizontal mouth pushed slightly toward RIGHT, with one plump round cheek-bulge curve on LEFT like food held inside left cheek; cute calmly munching, no w mouth, no tiny radial marks, no teeth. REPLACE row3 col4 (mouth_chew_b): mirrored closed gently curved mouth pushed slightly LEFT, one round cheek bulge on RIGHT; coherent alternating chewing animation. Mouths ~100px wide with subtle pink cheek accent, no skin patch. REPLACE row2 col4 (eyes_squint, sour): asymmetric puckery sour squint, LEFT eye a softly drooping closed curved arch and RIGHT eye a thin narrowed oval with a tiny pupil, slight raised eyebrows; do NOT use > < chevrons, completely different from row1col4 spicy eyes. REPLACE row5 col2 (mouth_sour): small off-center puckered kiss mouth, two pink tiny rounded lip lobes on right with a dark brown curved lip line, small short pulled-cheek curve on left to suggest sour lemon taste, no zigzag, no E or w shape, no decorative rays. Match adorable youthful chibi anime flat hand-drawn quality. No labels, no extra cells, preserve cell centers and all unedited shapes and true transparency.",
+    "kind": "face",
+    "w": 512,
+    "h": 512
+  },
+  {
+    "id": "park",
+    "path": "C:\\Users\\NhimTo-Dung\\Documents\\ChatGPT\\Mukbang Streaming 2\\project\\mukbang bang\\art-src\\style-sample\\park-master.png",
+    "prompt": "Use case: stylized-concept. Original Mukbang Bang Sunny Park GAME BACKGROUND, vertical 1080x2400 composition, no characters no food no table no UI no text. Hand-drawn kawaii picture-book scenery, gently wobbly rounded dark-brown #5b3d3b line art, flat clean pastel color with minimal soft cel shading. Top 12% simple pale blue sky reserved for HUD. Upper half contains round fluffy cream clouds, rolling mint-green hills, round lollipop-like trees at left and right edges, a few tiny daisies. Keep central upper area x35-65% y20-42% calm simple clear sky because a large streamer head overlays it. Horizon at 46% image height. Bottom 52% very simple pale mint meadow largely empty, will be covered by coded table. Sweet welcoming sunny atmosphere, pastel blue #8fd1ff mint #9fe3c9 yellow #ffd95e cream #fff8ef accents, original landscape. No heavy texture, no realistic lighting, no 3D, no dense detail.",
+    "kind": "bg",
+    "w": 1080,
+    "h": 2400
+  },
+  {
+    "id": "avatars",
+    "kind": "atlas",
+    "cell": 72,
+    "names": [
+      "cat",
+      "dog",
+      "bunny",
+      "duck",
+      "bear",
+      "frog",
+      "pig"
+    ],
+    "prompt": "Original Mukbang Bang, adorable flat hand-drawn kawaii sticker art, rounded warm dark-brown #5b3d3b outlines with gentle natural pen wobble, clean pastel fills with one soft cel shadow and tiny white highlight, readable at small mobile size. No real brands, no realism, no 3D, no heavy texture, no words unless explicitly specified. Production chat avatar ATLAS exact4 columns2 rows equal cells, blank transparent eighth cell. Seven circular animal face badges with THICK WHITE circular outer border, pastel circle backdrops, tiny dot eyes and pink cheek blush. Row1: cream CAT; brown floppy-eared DOG; white BUNNY; yellow DUCK. Row2: brown BEAR; mint green FROG; pink PIG; EMPTY cell. All different readable silhouettes, centered with15% padding, no body, no text. Background outside circular badges truly transparent.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/other/avatars-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-05cb816f-2abb-4f4b-ad48-c699dbc90526.png"
+  },
+  {
+    "id": "basket",
+    "kind": "store",
+    "w": 360,
+    "h": 200,
+    "prompt": "Original Mukbang Bang, adorable flat hand-drawn kawaii sticker art, rounded warm dark-brown #5b3d3b outlines with gentle natural pen wobble, clean pastel fills with one soft cel shadow and tiny white highlight, readable at small mobile size. No real brands, no realism, no 3D, no heavy texture, no words unless explicitly specified. A single cute pink #ff9fc4 plastic shopping basket with rounded lattice rectangular body, sturdy oval rim, two little curved handles rising slightly beside rim, front view slightly from above. Interior opening visible and EMPTY transparent; foods will be added later by code. Basket rim about y32% of image, basey90%. Transparent background, no food, no text, no character.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/other/basket-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-f3f983ef-9d83-4c07-b54c-d0a90755f575.png"
+  },
+  {
+    "id": "beach",
+    "kind": "bg",
+    "w": 1080,
+    "h": 2400,
+    "ref": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/style-sample/park-master.png",
+    "prompt": "Original Mukbang Bang, adorable flat hand-drawn kawaii sticker art, rounded warm dark-brown #5b3d3b outlines with gentle natural pen wobble, clean pastel fills with one soft cel shadow and tiny white highlight, readable at small mobile size. No real brands, no realism, no 3D, no heavy texture, no words unless explicitly specified. Create a NEW vertical game background matching reference style only. Sunset Beach: pale peach-pink sky, warm golden setting sun off to side, distant pink mountains, turquoise sea, white waves, rounded palm trees at far edges and a tiny beach stall at one edge. Horizon at46%; scenery mainly upper half; plain pale sand bottom52%. Canvas1080x2400 portrait. Top12% simple clear sky/wall reserved for HUD. Character overlays center x35%-65%,y20%-42% so keep that area uncluttered. No people, characters, food, table, UI, text or logos. Opaque full background.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/other/beach-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-8720ab1b-9eb6-462a-a8d5-5549761eee31.png"
+  },
+  {
+    "id": "cashier_bear",
+    "kind": "store",
+    "w": 256,
+    "h": 280,
+    "prompt": "Original Mukbang Bang, adorable flat hand-drawn kawaii sticker art, rounded warm dark-brown #5b3d3b outlines with gentle natural pen wobble, clean pastel fills with one soft cel shadow and tiny white highlight, readable at small mobile size. No real brands, no realism, no 3D, no heavy texture, no words unless explicitly specified. Single original cute chibi brown cashier bear #c99b6a, rounded ears and muzzle, tiny brown dot eyes, smiling mouth, pink cheek blush, blue baseball cap, mint shirt. Friendly upper body frontal portrait waving one tiny paw. Large head, tiny torso. Intended256x280 with padding. No text, no objects, genuine transparent background.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/other/cashier_bear-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-cd76a4a6-a574-4cee-a569-9314560966f8.png"
+  },
+  {
+    "id": "checkout_machine",
+    "kind": "store",
+    "w": 864,
+    "h": 920,
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/other/checkout_machine-final-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-58bd734f-0bac-42f0-9976-16a3e55688b1.png",
+    "prompt": "Edit ONLY the blue display inside this lavender checkout machine. Make its ENTIRE interior perfectly FLAT UNIFORM PALE SKY BLUE, one single solid color #8fd1ff, like blank colored paper. Remove every dark blue ring, water effect, cloudy edge, halo and gradient in display. Preserve machine exterior, silhouette, ears, pink inners, brown outline, lavender surface, scanner slot and laser EXACTLY pixel aligned with input. No letters, no symbols, no UI, no face. Output an OPAQUE image on solid cream background; do NOT perform background removal, do not erase any screen pixels. We will preserve the source's silhouette separately. Keep identical canvas proportions and framing. This is a simple flat-fill cleanup of display, nothing else changes.",
+    "placement": {
+      "screen": [
+        136,
+        248,
+        592,
+        352
+      ],
+      "slot": [
+        256,
+        715,
+        352,
+        80
+      ]
+    },
+    "finalCorrection": true,
+    "priority": 500,
+    "alphaFrom": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/machine-silhouette.png"
+  },
+  {
+    "id": "checkout_screen_fill",
+    "kind": "support",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/other/checkout_screen_fill-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-b99f48be-f6a7-4e05-aed5-34a4b2aebbe4.png",
+    "prompt": "Production background layer for a game device SCREEN. The entire square image must be one perfectly UNIFORM SOLID FLAT pale sky blue #8fd1ff color edge to edge. Fully opaque image, no alpha, no gradients, no glow, no shadows, no border, no frame, no text, no shapes, no texture. Just the flat sky blue display fill that will be assembled behind a separately generated hand-drawn machine frame."
+  },
+  {
+    "id": "city",
+    "kind": "bg",
+    "w": 1080,
+    "h": 2400,
+    "ref": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/style-sample/park-master.png",
+    "prompt": "Original Mukbang Bang, adorable flat hand-drawn kawaii sticker art, rounded warm dark-brown #5b3d3b outlines with gentle natural pen wobble, clean pastel fills with one soft cel shadow and tiny white highlight, readable at small mobile size. No real brands, no realism, no 3D, no heavy texture, no words unless explicitly specified. Create a NEW vertical game background matching reference style only. Neon City: blue-purple night sky with a few tiny stars and a crescent moon, rounded distant high-rise buildings along side edges with glowing pastel windows, small blank neon panels with no lettering. Main skyline horizon46%; center upper half clear simple sky. Lower52% simple dark purple foreground. Cute and welcoming, not gritty. Canvas1080x2400 portrait. Top12% simple clear sky/wall reserved for HUD. Character overlays center x35%-65%,y20%-42% so keep that area uncluttered. No people, characters, food, table, UI, text or logos. Opaque full background.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/other/city-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-424d5652-939f-40f9-ae6a-1011e3d357e6.png"
+  },
+  {
+    "id": "conveyor",
+    "kind": "store",
+    "w": 1000,
+    "h": 240,
+    "prompt": "Original Mukbang Bang, adorable flat hand-drawn kawaii sticker art, rounded warm dark-brown #5b3d3b outlines with gentle natural pen wobble, clean pastel fills with one soft cel shadow and tiny white highlight, readable at small mobile size. No real brands, no realism, no 3D, no heavy texture, no words unless explicitly specified. Single wide lavender supermarket conveyor belt segment, front view slightly from above, horizontal rounded rectangular frame, dark lavender moving belt with simple parallel transverse seam lines, pale purple rounded side rails and endcaps. Intended1000x240. Center region should stretch cleanly in height and width, keep middle quiet. No products, legs or floor. True transparent background.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/other/conveyor-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-358cbc0e-e9b6-4713-bb90-5f0687c08d6e.png"
+  },
+  {
+    "id": "icons",
+    "kind": "atlas",
+    "cell": 96,
+    "names": [
+      "coin",
+      "star_on",
+      "star_off",
+      "heart",
+      "lock",
+      "eye",
+      "plus_coin"
+    ],
+    "prompt": "Original Mukbang Bang, adorable flat hand-drawn kawaii sticker art, rounded warm dark-brown #5b3d3b outlines with gentle natural pen wobble, clean pastel fills with one soft cel shadow and tiny white highlight, readable at small mobile size. No real brands, no realism, no 3D, no heavy texture, no words unless explicitly specified. Production UI ATLAS exact4 columns2 rows equal cells, blank transparent eighth cell. Row1 left-to-right: GOLD COIN with simple dollar $ stamp; GOLD filled fivepoint STAR; GREY inactive fivepoint STAR; PINK HEART. Row2: GOLD PADLOCK; WHITE EYE viewer symbol with brown pupil and outline; small GOLD COIN with green PLUS sign; EMPTY cell. 7 separate icons, clean thick rounded contours, no shadows outside objects. Each centered with20% padding. Transparent background. No labels or grid, only $ and + as specified.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/other/icons-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-324dab88-1155-4ed0-9fc6-3e0f9c4d94fb.png"
+  },
+  {
+    "id": "icon_512",
+    "kind": "appicon",
+    "w": 512,
+    "h": 512,
+    "ref": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/style-sample/scene-preview.png",
+    "prompt": "Original Mukbang Bang, adorable flat hand-drawn kawaii sticker art, rounded warm dark-brown #5b3d3b outlines with gentle natural pen wobble, clean pastel fills with one soft cel shadow and tiny white highlight, readable at small mobile size. No real brands, no realism, no 3D, no heavy texture, no words unless explicitly specified. Create square app icon512x512. Reference shows original LUNA character: preserve exact youthful mochi face, lavender fluffy twin buns, side pink bow, mint CREWNECK SWEATER and short neck. Portrait Luna happily eating curly noodles with chopsticks from a small original cream/red cat noodle cup, a few noodle strands reaching her smiling mouth, big sparkling eyes, rosy cheeks. Cute dynamic close-up face fills60% canvas, food lower foreground, solid pastel pink backdrop with two tiny cream sparkles. No text, letters, UI, no border. Opaque square image.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/other/icon_512-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-020f2b47-9d89-4287-b3ce-39b5221fc806.png"
+  },
+  {
+    "id": "kiko_body",
+    "kind": "body",
+    "w": 512,
+    "h": 420,
+    "ref": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/style-sample/luna_body-master.png",
+    "prompt": "Original Mukbang Bang, adorable flat hand-drawn kawaii sticker art, rounded warm dark-brown #5b3d3b outlines with gentle natural pen wobble, clean pastel fills with one soft cel shadow and tiny white highlight, readable at small mobile size. No real brands, no realism, no 3D, no heavy texture, no words unless explicitly specified. Recolor ONLY this exact crewneck SWEATER BODY sprite for kiko. Preserve identical sweater shape, short visible neck, pose, hands, small heart, collar, cuffs, hem and transparent margins, original framing. Change mint sweater to #ffd95e with shade #e0b52a; change peach skin to #ffe3cf. Keep cream heart. No hood, no strings, no pocket, no head. Transparent background, intended512x420. Everything else identical.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/other/kiko_body-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-71218df2-a7a9-490c-8225-a99439ca8ef3.png"
+  },
+  {
+    "id": "kiko_head",
+    "kind": "head",
+    "w": 512,
+    "h": 512,
+    "ref": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/style-sample/luna_head-master.png",
+    "prompt": "Original Mukbang Bang, adorable flat hand-drawn kawaii sticker art, rounded warm dark-brown #5b3d3b outlines with gentle natural pen wobble, clean pastel fills with one soft cel shadow and tiny white highlight, readable at small mobile size. No real brands, no realism, no 3D, no heavy texture, no words unless explicitly specified. Edit the reference blank Luna head into a DIFFERENT original streamer kiko. Preserve IDENTICAL youthful wide round mochi face shape, face size, peach skin area position, blush position, chin contour, exact canvas registration and transparent padding. Replace ONLY hairstyle/accessory with short fluffy orange BOB with soft short bangs, a tiny yellow #ffe066 STAR hair clip at one temple; no buns, no bow, colors #ffa552,#e07f2a, skin #ffe3cf. Keep original head overall silhouette scale inside 512x512 intended square canvas. Preserve blank face: no eyes, no mouth, no nose, no brows; blush only. Hair must leave same eye placement [256,320] and mouth [256,408] clear. Chin at y465; neck connection below chin at[256,465]. Cute youthful chibi, not adult. True transparent alpha outside head. Head ONLY, no body.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/other/kiko_head-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-4afb0433-d7ab-4080-96ac-41263d58abdb.png"
+  },
+  {
+    "id": "logo",
+    "kind": "ui",
+    "w": 900,
+    "h": 420,
+    "prompt": "Original Mukbang Bang, adorable flat hand-drawn kawaii sticker art, rounded warm dark-brown #5b3d3b outlines with gentle natural pen wobble, clean pastel fills with one soft cel shadow and tiny white highlight, readable at small mobile size. No real brands, no realism, no 3D, no heavy texture, no words unless explicitly specified. Original GAME TITLE LOGO. Exact words on TWO centered stacked lines: upper \"MUKBANG\", lower \"BANG\". Big chunky rounded handlettered playful bubble letters. Upper letters WHITE with thick dark PINK #e8759a outline; lower BANG larger GOLD YELLOW #ffd95e with same pink outline. Tiny original noodle bowl and chopsticks beside lower word, keep lettering readable at small size. Wide900x420 intended composition, all text inside8% padding. Genuine transparent background. No other words, no branded imitation.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/other/logo-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-11054e2c-9633-4843-aa57-50dbce4034a6.png"
+  },
+  {
+    "id": "momo_body",
+    "kind": "body",
+    "w": 512,
+    "h": 420,
+    "ref": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/style-sample/luna_body-master.png",
+    "prompt": "Original Mukbang Bang, adorable flat hand-drawn kawaii sticker art, rounded warm dark-brown #5b3d3b outlines with gentle natural pen wobble, clean pastel fills with one soft cel shadow and tiny white highlight, readable at small mobile size. No real brands, no realism, no 3D, no heavy texture, no words unless explicitly specified. Recolor ONLY this exact crewneck SWEATER BODY sprite for momo. Preserve identical sweater shape, short visible neck, pose, hands, small heart, collar, cuffs, hem and transparent margins, original framing. Change mint sweater to #ffb3c7 with shade #e8759a; change peach skin to #ffe9dc. Keep cream heart. No hood, no strings, no pocket, no head. Transparent background, intended512x420. Everything else identical.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/other/momo_body-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-694a4f60-2e01-47b8-a171-1fb40146e5de.png"
+  },
+  {
+    "id": "momo_head",
+    "kind": "head",
+    "w": 512,
+    "h": 512,
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/other/momo_head-long-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-b19617bb-4283-40e7-80e0-08f334467cbe.png",
+    "prompt": "Edit ONLY this original Momo blank head sprite. Her navy hairstyle must be LONG STRAIGHT HAIR, not a chin-length bob. Maintain original youthful wide round face, lavender beret, navy #4f5fae hair, peach #ffe9dc skin, blush and identical flat hand-drawn style. Technical layout change on intended512x512 square: translate face, bangs, ears and beret UP by about60px. Face eye placement now y260; mouth placement y348; bottom of chin now y405. The top of beret must stay fully inside canvas near y20. Extend the two straight side curtains of navy hair DOWN to y500, about95px below chin, so they visibly hang to shoulders when body is attached at y405. Straight smooth long locks with rounded tips, no wavy bob curls. Central bottom x190-322 below chin remains transparent so neck/body show through. Face remains completely BLANK except pink blush, no eyes mouth nose eyebrows. Hair inside x25-487 and y20-500, no cutoffs. Genuine transparent background, head and long hair ONLY, no body or text.",
+    "placement": {
+      "eyes": [
+        256,
+        260
+      ],
+      "mouth": [
+        256,
+        348
+      ],
+      "headAnchor": [
+        256,
+        281
+      ],
+      "neckOnHead": [
+        256,
+        386
+      ],
+      "faceRadius": 160
+    }
+  },
+  {
+    "id": "phone_stick",
+    "kind": "ui",
+    "w": 200,
+    "h": 360,
+    "prompt": "Original Mukbang Bang, adorable flat hand-drawn kawaii sticker art, rounded warm dark-brown #5b3d3b outlines with gentle natural pen wobble, clean pastel fills with one soft cel shadow and tiny white highlight, readable at small mobile size. No real brands, no realism, no 3D, no heavy texture, no words unless explicitly specified. Single cute BLUE smartphone mounted on grey selfie stick, front/back angled very slightly, show blue rear casing with two small camera lenses at upper corner, simple tiny cream heart on case. Long slim stick extends down to bottom center. Phone above, full stick visible. Intended200x360 with padding. No hand, no character, no text. Genuine transparent background.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/other/phone_stick-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-9fc3f33a-3719-4160-aca1-1e3732f258c1.png"
+  },
+  {
+    "id": "reactions",
+    "kind": "atlas",
+    "cell": 64,
+    "names": [
+      "heart",
+      "like",
+      "star",
+      "laugh",
+      "love",
+      "cool",
+      "smile"
+    ],
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/other/reactions-clean-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-12abdeae-5cd9-472a-9a60-d1f7bace4285.png",
+    "prompt": "BACKGROUND REMOVAL of this emoji sprite atlas. Preserve exactly all seven colorful emoji shapes and their original4-column2-row positions. Remove EVERY pixel of white paper, pale grey, drop shadows, fog or glow outside icons. Background must be 100% transparent alpha, including all gaps between icons and within unused eighth cell. Keep interior white highlights inside icons opaque. Absolutely NO white rectangular backdrop or translucent white haze. Retain brown outline, yellow faces, pink heart, blue thumbsup badge, star. Seven clean floating cutout stickers only, same layout and framing, no grid text.",
+    "finalCorrection": true
+  },
+  {
+    "id": "room",
+    "kind": "bg",
+    "w": 1080,
+    "h": 2400,
+    "ref": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/style-sample/park-master.png",
+    "prompt": "Original Mukbang Bang, adorable flat hand-drawn kawaii sticker art, rounded warm dark-brown #5b3d3b outlines with gentle natural pen wobble, clean pastel fills with one soft cel shadow and tiny white highlight, readable at small mobile size. No real brands, no realism, no 3D, no heavy texture, no words unless explicitly specified. Create a NEW vertical game background matching reference style only. Cozy Room: pastel lavender room, a window toward left edge showing a dark blue night sky with crescent moon; small shelf with original plush toys at right edge and a string of warm lights high along edges. Upper center a calm empty lavender wall for character. Floor/wall divide at46%; lower52% plain pale lavender floor. Canvas1080x2400 portrait. Top12% simple clear sky/wall reserved for HUD. Character overlays center x35%-65%,y20%-42% so keep that area uncluttered. No people, characters, food, table, UI, text or logos. Opaque full background.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/other/room-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-cb4e6af3-49ce-49f0-83cf-b08267f1afc2.png"
+  },
+  {
+    "id": "sakura",
+    "kind": "bg",
+    "w": 1080,
+    "h": 2400,
+    "ref": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/style-sample/park-master.png",
+    "prompt": "Original Mukbang Bang, adorable flat hand-drawn kawaii sticker art, rounded warm dark-brown #5b3d3b outlines with gentle natural pen wobble, clean pastel fills with one soft cel shadow and tiny white highlight, readable at small mobile size. No real brands, no realism, no 3D, no heavy texture, no words unless explicitly specified. Create a NEW vertical game background matching reference style only. Sakura River: pale pink sky, fluffy rounded cherry blossom trees at far left and right, mint grassy banks and a calm blue river. Horizon46%; upper center calm clear sky; lower52% simple pale pink-green ground. Canvas1080x2400 portrait. Top12% simple clear sky/wall reserved for HUD. Character overlays center x35%-65%,y20%-42% so keep that area uncluttered. No people, characters, food, table, UI, text or logos. Opaque full background.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/other/sakura-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-06516b4f-b1cf-4365-82e2-febbc8d675fb.png"
+  },
+  {
+    "id": "shelf_board",
+    "kind": "store",
+    "w": 1008,
+    "h": 60,
+    "prompt": "Original Mukbang Bang, adorable flat hand-drawn kawaii sticker art, rounded warm dark-brown #5b3d3b outlines with gentle natural pen wobble, clean pastel fills with one soft cel shadow and tiny white highlight, readable at small mobile size. No real brands, no realism, no 3D, no heavy texture, no words unless explicitly specified. A single VERY LONG THIN horizontal neutral cream/light taupe plastic supermarket shelf board, straight parallel edges, gently rounded endcaps, subtle warm grey underside cel shade. Front view. Overall board width-to-height about16:1, centered on transparent canvas. No supports, no legs, no brackets, no objects, no textures, no text. Tight framing around shelf. Shape should stretch horizontally cleanly.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/other/shelf_board-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-0c2f29b1-9c9b-403d-97b3-eaf1d2c2d9aa.png"
+  },
+  {
+    "id": "store_bg",
+    "kind": "storebg",
+    "w": 1080,
+    "h": 2400,
+    "ref": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/style-sample/park-master.png",
+    "prompt": "Original Mukbang Bang, adorable flat hand-drawn kawaii sticker art, rounded warm dark-brown #5b3d3b outlines with gentle natural pen wobble, clean pastel fills with one soft cel shadow and tiny white highlight, readable at small mobile size. No real brands, no realism, no 3D, no heavy texture, no words unless explicitly specified. New vertical1080x2400 pastel supermarket interior background, pale cream and blush walls, simple faint mint/lavender checkerboard floor, a few blurred simple wall details near extreme edges. No shelves in front, no products, no characters, no checkout, no text. Intentionally sparse because separate shelves and products overlay it. Wall/floor divide at46%, floor bottom54%; simple flat friendly light colors, opaque.",
+    "path": "C:/Users/NhimTo-Dung/Documents/ChatGPT/Mukbang Streaming 2/project/mukbang bang/art-src/full/other/store_bg-master.png",
+    "original": "C:\\Users\\NhimTo-Dung\\.codex\\generated_images\\01a1a13f-1f06-7c20-97e6-8980d050839e\\exec-e1f5b239-f3e8-40ef-9d6c-9cb53d8c5166.png"
+  }
+]

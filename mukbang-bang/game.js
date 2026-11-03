@@ -86,7 +86,15 @@ function makePlatform() {
     onTouch: function (h) { touchHandler = h; }, onResize: function (h) { resizeHandler = h; },
     vibrate: function (kind) { try { if (kind === 'long') tt.vibrateLong({}); else tt.vibrateShort({}); } catch (e) { /* optional */ } },
     createAudioContext: function () { return tt.createWebAudioContext(); },
-    createCanvas: function () { return tt.createCanvas(); }
+    createCanvas: function () { return tt.createCanvas(); },
+    // Bitmap art: a path inside the game package (assets/...). The single-file
+    // web build inlines the files as data URIs in __HS_ASSETS.
+    loadImage: function (path, done) {
+      var im = tt.createImage();
+      im.onload = function () { done(im); };
+      im.onerror = function () { done(null); };
+      im.src = (typeof __HS_ASSETS !== 'undefined' && __HS_ASSETS[path]) || path;
+    }
   };
 }
 

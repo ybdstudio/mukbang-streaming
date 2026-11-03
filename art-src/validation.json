@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "foodItems": 36,
+  "foodFrames": 120,
+  "images": 143,
+  "streamers": 3,
+  "backgrounds": 5,
+  "artBytes": 2668988,
+  "gameBytes": 2987468,
+  "appIconBytes": 137142,
+  "groups": {
+    "food": 1408793,
+    "streamer": 380819,
+    "bg": 339020,
+    "store": 307068,
+    "ui": 199734
+  },
+  "codeIntegration": false
+}

@@ -1,9 +1,12 @@
 'use strict';
-// Everything on screen is vector-drawn here: kawaii foods (with an "eaten"
-// fraction), the streamers with their faces, backgrounds (cached), store
-// props, reactions, chat avatars. No image files.
+// Everything on screen is drawn here: kawaii foods (with an "eaten"
+// fraction), the streamers with their faces, backgrounds, store props,
+// reactions, chat avatars. Each public drawer uses the bitmap art from
+// assets/ (sprites.js) once it has loaded, and its canvas-vector fallback
+// (the *Vec functions) until then or when images are unavailable.
 const U = require('./util.js');
 const D = require('./data.js');
+const S = require('./sprites.js');
 const C = D.COLORS;
 const OUT = C.outline;
 const TAU = Math.PI * 2;
@@ -33,7 +36,7 @@ function text(ctx, str, x, y, size, color, stroke, align) {
 }
 
 // ─── small icons ───
-function coin(ctx, x, y, r) { circle(ctx, x, y, r, C.gold, Math.max(2, r * 0.22)); circle(ctx, x, y, r * 0.62, C.goldDark, 0); text(ctx, '$', x, y + r * 0.05, r * 1.1, C.gold, 0); }
+function coinVec(ctx, x, y, r) { circle(ctx, x, y, r, C.gold, Math.max(2, r * 0.22)); circle(ctx, x, y, r * 0.62, C.goldDark, 0); text(ctx, '$', x, y + r * 0.05, r * 1.1, C.gold, 0); }
 function star(ctx, x, y, r, fill, lw) {
   ctx.beginPath();
   for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5; const rad = i % 2 ? r * 0.48 : r; ctx.lineTo(x + Math.cos(a) * rad, y + Math.sin(a) * rad); }
@@ -45,12 +48,12 @@ function heart(ctx, x, y, s, fill, lw) {
   ctx.bezierCurveTo(x + s * 0.7, y - s * 1.1, x + s * 1.4, y - s * 0.1, x, y + s * 0.9); ctx.closePath();
   fillStroke(ctx, fill, lw === undefined ? s * 0.22 : lw);
 }
-function eyeIcon(ctx, x, y, r, color) { ctx.beginPath(); ctx.moveTo(x - r, y); ctx.quadraticCurveTo(x, y - r * 1.1, x + r, y); ctx.quadraticCurveTo(x, y + r * 1.1, x - r, y); ctx.closePath(); ctx.fillStyle = color || '#fff'; ctx.fill(); circle(ctx, x, y, r * 0.42, OUT, 0); }
+function eyeIconVec(ctx, x, y, r, color) { ctx.beginPath(); ctx.moveTo(x - r, y); ctx.quadraticCurveTo(x, y - r * 1.1, x + r, y); ctx.quadraticCurveTo(x, y + r * 1.1, x - r, y); ctx.closePath(); ctx.fillStyle = color || '#fff'; ctx.fill(); circle(ctx, x, y, r * 0.42, OUT, 0); }
 function sparkle(ctx, x, y, s, color) { ctx.beginPath(); ctx.moveTo(x, y - s); ctx.quadraticCurveTo(x, y, x + s, y); ctx.quadraticCurveTo(x, y, x, y + s); ctx.quadraticCurveTo(x, y, x - s, y); ctx.quadraticCurveTo(x, y, x, y - s); ctx.closePath(); ctx.fillStyle = color || '#fff'; ctx.fill(); }
-function lock(ctx, x, y, s) { rr(ctx, x - s * 0.5, y - s * 0.1, s, s * 0.8, s * 0.18); fillStroke(ctx, C.goldDark, s * 0.12); ctx.beginPath(); ctx.arc(x, y - s * 0.2, s * 0.3, Math.PI, 0); ctx.lineWidth = s * 0.14; ctx.strokeStyle = OUT; ctx.stroke(); circle(ctx, x, y + 0.3 * s, s * 0.1, OUT, 0); }
+function lockVec(ctx, x, y, s) { rr(ctx, x - s * 0.5, y - s * 0.1, s, s * 0.8, s * 0.18); fillStroke(ctx, C.goldDark, s * 0.12); ctx.beginPath(); ctx.arc(x, y - s * 0.2, s * 0.3, Math.PI, 0); ctx.lineWidth = s * 0.14; ctx.strokeStyle = OUT; ctx.stroke(); circle(ctx, x, y + 0.3 * s, s * 0.1, OUT, 0); }
 
 // ─── reactions floating over the stream ───
-function reaction(ctx, kind, x, y, s) {
+function reactionVec(ctx, kind, x, y, s) {
   if (kind === 'heart') { heart(ctx, x, y, s, C.red); return; }
   if (kind === 'star') { star(ctx, x, y, s, C.gold); return; }
   if (kind === 'like') { circle(ctx, x, y, s, C.blue, s * 0.18); rr(ctx, x - s * 0.55, y - s * 0.05, s * 0.3, s * 0.55, s * 0.08); fillStroke(ctx, '#fff', 0); rr(ctx, x - s * 0.2, y - s * 0.1, s * 0.65, s * 0.6, s * 0.15); fillStroke(ctx, '#fff', 0); rr(ctx, x - s * 0.15, y - s * 0.55, s * 0.28, s * 0.55, s * 0.14); fillStroke(ctx, '#fff', 0); return; }
@@ -63,7 +66,7 @@ function reaction(ctx, kind, x, y, s) {
 }
 
 // ─── chat avatars (animal faces in a circle) ───
-function avatar(ctx, kind, x, y, r) {
+function avatarVec(ctx, kind, x, y, r) {
   const col = { cat: '#ffc98a', dog: '#d9b48a', bunny: '#fff', duck: '#ffe066', bear: '#c99b6a', frog: '#9fe37a', pig: '#ffb3c7' }[kind] || '#fff';
   const lw = Math.max(2, r * 0.14);
   circle(ctx, x, y, r, '#fff', lw);
@@ -85,7 +88,7 @@ function avatar(ctx, kind, x, y, r) {
 
 // ─── foods ───
 // Draws `food` centred at (x, y) in a box of `size`; `e` = eaten fraction 0..1.
-function food(ctx, f, x, y, size, e, t) {
+function foodVec(ctx, f, x, y, size, e, t) {
   e = U.clamp(e || 0, 0, 1); t = t || 0;
   ctx.save(); ctx.translate(x, y); const s = size / 100; ctx.scale(s, s);
   const lw = 4;
@@ -265,7 +268,7 @@ function drawFruit(ctx, f, e, lw) {
 
 // ─── streamers ───
 // (x, y) = head centre, s = scale (1 → head radius 95). state: { expr, t, blink, bob }
-function streamer(ctx, ch, x, y, s, st) {
+function streamerVec(ctx, ch, x, y, s, st) {
   st = st || {}; const expr = st.expr || 'idle'; const t = st.t || 0;
   ctx.save(); ctx.translate(x, y + (st.bob || 0)); ctx.scale(s, s);
   const R = 95, lw = 5;
@@ -343,7 +346,7 @@ function streamer(ctx, ch, x, y, s, st) {
   ctx.restore();
 }
 // where the mouth is, in world coordinates, for the same (x, y, s)
-function mouthPos(x, y, s, bob) { return { x: x, y: y + (bob || 0) + 95 * 0.42 * s }; }
+function mouthPosVec(x, y, s, bob) { return { x: x, y: y + (bob || 0) + 95 * 0.42 * s }; }
 
 // ─── backgrounds (drawn once into an offscreen canvas) ───
 const cache = {};
@@ -424,12 +427,12 @@ const BG_DRAW = [
     ctx.fillStyle = '#5b60b3'; for (let i = 0; i < 8; i++) ctx.fillRect(i * (W / 8), H * 0.46, W / 16, H);
   }
 ];
-function background(ctx, idx, createCanvas, W, H, scale) {
+function backgroundVec(ctx, idx, createCanvas, W, H, scale) {
   const c = cached('bg' + idx, createCanvas, W, H, scale, BG_DRAW[idx % BG_DRAW.length]);
   ctx.drawImage(c, 0, 0, W, H);
 }
 // Live bits on top of the cached background
-function backgroundLive(ctx, idx, W, H, t) {
+function backgroundLiveVec(ctx, idx, W, H, t) {
   if (idx === 2) { for (let i = 0; i < 8; i++) { const px = (W * 0.1 + i * W * 0.12 + t * 18) % W, py = ((t * 40 + i * 120) % (H * 0.5)); heart(ctx, px, py, 5, 'rgba(255,160,190,0.8)', 0); } }
   if (idx === 0 || idx === 1) { cloud(ctx, (t * 10 + W * 0.3) % (W + 120) - 60, H * 0.22, 16, 'rgba(255,255,255,0.8)'); }
   if (idx === 4) { for (let i = 0; i < 4; i++) { const a = 0.4 + 0.4 * Math.sin(t * 3 + i); star(ctx, W * (0.15 + i * 0.22), H * 0.08 + (i % 2) * 40, 5, 'rgba(255,255,255,' + a + ')', 0); } }
@@ -446,7 +449,7 @@ function table(ctx, bg, W, y0, H) {
   ctx.lineWidth = 5; ctx.strokeStyle = OUT; ctx.beginPath(); ctx.moveTo(0, y0 + 30); ctx.quadraticCurveTo(W / 2, y0 - 30, W, y0 + 30); ctx.stroke();
 }
 // selfie phone on a stick, left edge of the stream
-function phoneStick(ctx, x, y, s, t) {
+function phoneStickVec(ctx, x, y, s, t) {
   ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.rotate(-0.25 + Math.sin(t * 1.5) * 0.02);
   ctx.strokeStyle = '#8a8f9e'; ctx.lineWidth = 12; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(-40, 260); ctx.stroke();
   ctx.strokeStyle = OUT; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(-6, 2); ctx.lineTo(-46, 262); ctx.moveTo(6, -2); ctx.lineTo(-34, 258); ctx.stroke();
@@ -476,12 +479,12 @@ function profileBadge(ctx, ch, x, y, r, lvl) {
 // coins pill with optional "+" button
 function coinPill(ctx, x, y, w, h, value) {
   rr(ctx, x, y, w, h, h / 2); fillStroke(ctx, '#fff4d6', 4);
-  circle(ctx, x + h * 0.5, y + h / 2, h * 0.42, C.gold, 3); circle(ctx, x + h * 0.5, y + h / 2, h * 0.26, C.goldDark, 0);
+  coin(ctx, x + h * 0.5, y + h / 2, h * 0.42);
   text(ctx, value, x + h + 4, y + h / 2 + 1, h * 0.5, C.text, 0, 'left');
 }
 
 // ─── supermarket props ───
-function storeBackground(ctx, createCanvas, W, H, scale) {
+function storeBackgroundVec(ctx, createCanvas, W, H, scale) {
   const c = cached('store', createCanvas, W, H, scale, function (cx, W, H) {
     cx.fillStyle = '#ffe3ea'; cx.fillRect(0, 0, W, H);
     cx.fillStyle = '#ffd1dc'; for (let i = 0; i < 12; i++) for (let j = 0; j < 20; j++) if ((i + j) % 2) cx.fillRect(i * 50, j * 50, 50, 50);
@@ -495,9 +498,9 @@ function storeBackground(ctx, createCanvas, W, H, scale) {
   });
   ctx.drawImage(c, 0, 0, W, H);
 }
-function shelfBoard(ctx, x, y, w, h, color) { rr(ctx, x, y, w, h, 14); fillStroke(ctx, color, 4); ctx.fillStyle = 'rgba(0,0,0,0.08)'; rr(ctx, x + 6, y + h - 16, w - 12, 10, 5); ctx.fill(); }
+function shelfBoardVec(ctx, x, y, w, h, color) { rr(ctx, x, y, w, h, 14); fillStroke(ctx, color, 4); ctx.fillStyle = 'rgba(0,0,0,0.08)'; rr(ctx, x + 6, y + h - 16, w - 12, 10, 5); ctx.fill(); }
 function priceTag(ctx, x, y, price, dim) { rr(ctx, x - 36, y - 13, 72, 26, 13); fillStroke(ctx, dim ? '#eee' : '#fff', 3); coin(ctx, x - 20, y, 8); text(ctx, String(price), x + 6, y + 1, 15, dim ? '#aaa' : C.text, 0); }
-function basket(ctx, x, y, w, h) {
+function basketVec(ctx, x, y, w, h) {
   ctx.lineWidth = 6; ctx.strokeStyle = C.goldDark; ctx.lineCap = 'round';
   ctx.beginPath(); ctx.moveTo(x + w * 0.15, y + h * 0.2); ctx.quadraticCurveTo(x + w * 0.1, y - h * 0.3, x + w * 0.4, y - h * 0.1); ctx.stroke();
   ctx.beginPath(); ctx.moveTo(x + w * 0.85, y + h * 0.2); ctx.quadraticCurveTo(x + w * 0.9, y - h * 0.3, x + w * 0.6, y - h * 0.1); ctx.stroke();
@@ -508,7 +511,7 @@ function basket(ctx, x, y, w, h) {
   rr(ctx, x - 4, y - 8, w + 8, 16, 8); fillStroke(ctx, '#ffb3c7', 4);
 }
 // self-checkout machine body; returns the screen rect and scanner rect
-function machine(ctx, x, y, w, h) {
+function machineVec(ctx, x, y, w, h) {
   circle(ctx, x + w * 0.22, y + 6, 26, '#c9a8ff', 4); circle(ctx, x + w * 0.78, y + 6, 26, '#c9a8ff', 4);
   rr(ctx, x, y, w, h, 28); fillStroke(ctx, '#c9a8ff', 5);
   const sx = x + 24, sy = y + 24, sw = w - 48, sh = h * 0.68;
@@ -520,9 +523,9 @@ function machine(ctx, x, y, w, h) {
   circle(ctx, x + w * 0.84, py + ph / 2, 16, '#ff8fb3', 3); text(ctx, '◀', x + w * 0.84, py + ph / 2 + 1, 14, '#fff', 0);
   return { sx: sx, sy: sy, sw: sw, sh: sh, px: x + w * 0.3, py: py, pw: w * 0.4, ph: ph };
 }
-function conveyor(ctx, x, y, w, h) { rr(ctx, x, y, w, h, 16); fillStroke(ctx, '#d9d4ff', 4); ctx.fillStyle = '#c3bbf5'; for (let i = 0; i < Math.floor(h / 22); i++) ctx.fillRect(x + 8, y + 10 + i * 22, w - 16, 8); }
+function conveyorVec(ctx, x, y, w, h) { rr(ctx, x, y, w, h, 16); fillStroke(ctx, '#d9d4ff', 4); ctx.fillStyle = '#c3bbf5'; for (let i = 0; i < Math.floor(h / 22); i++) ctx.fillRect(x + 8, y + 10 + i * 22, w - 16, 8); }
 // bear cashier mascot for the "Thank you!" screen
-function cashier(ctx, x, y, s) {
+function cashierVec(ctx, x, y, s) {
   ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
   rr(ctx, -40, 30, 80, 60, 20); fillStroke(ctx, '#9fe3c9', 4);
   circle(ctx, -34, -28, 14, '#c99b6a', 4); circle(ctx, 34, -28, 14, '#c99b6a', 4);
@@ -534,4 +537,121 @@ function cashier(ctx, x, y, s) {
   ctx.restore();
 }
 
-module.exports = { rr, circle, ellipse, shade, text, coin, star, heart, eyeIcon, sparkle, lock, reaction, avatar, food, streamer, mouthPos, background, backgroundLive, table, phoneStick, livePill, profileBadge, coinPill, storeBackground, shelfBoard, priceTag, basket, machine, conveyor, cashier, cloud };
+// ─── bitmap art (assets/) with the vector drawers above as fallback ───
+function coin(ctx, x, y, r) { if (!S.atlas(ctx, S.ICONS, 'coin', x, y, r * 2.25)) coinVec(ctx, x, y, r); }
+function eyeIcon(ctx, x, y, r, color) { if (!S.atlas(ctx, S.ICONS, 'eye', x, y, r * 2.3)) eyeIconVec(ctx, x, y, r, color); }
+function lock(ctx, x, y, s) { if (!S.atlas(ctx, S.ICONS, 'lock', x, y + s * 0.1, s * 1.25)) lockVec(ctx, x, y, s); }
+// result / level-select stars: `on` = earned; `offColor` is the vector fallback's colour for an unearned star
+function uiStar(ctx, x, y, r, on, offColor, lw) { if (!S.atlas(ctx, S.ICONS, on ? 'star_on' : 'star_off', x, y, r * 2.35)) star(ctx, x, y, r, on ? C.gold : offColor, lw); }
+function reaction(ctx, kind, x, y, s) { if (!S.atlas(ctx, S.REACTIONS, kind, x, y, s * 2.4)) reactionVec(ctx, kind, x, y, s); }
+function avatar(ctx, kind, x, y, r) { if (!S.atlas(ctx, S.AVATARS, kind, x, y, r * 2.1)) avatarVec(ctx, kind, x, y, r); }
+// home-screen logo centred at (x, y), `w` wide; false while the image is not loaded
+function logo(ctx, x, y, w) {
+  const im = S.get(S.UI.logo.image); if (!im) return false;
+  const h = w * S.UI.logo.h / S.UI.logo.w; ctx.drawImage(im, x - w / 2, y - h / 2, w, h); return true;
+}
+
+// food: one frame per bite (stage = bites already taken)
+const FOOD_DRAW = 1.05; // sprite edge relative to the drawer's `size` box
+function food(ctx, f, x, y, size, e, t) {
+  if (S.enabled()) {
+    const bites = D.bitesOf(f); e = U.clamp(e || 0, 0, 1);
+    const stage = Math.min(bites - 1, Math.floor(e * bites + 1e-6));
+    const im = S.get(S.foodPath(f.id, stage));
+    for (let i = 0; i < bites; i++) if (i !== stage) S.get(S.foodPath(f.id, i)); // warm the next frames
+    if (im) { const d = size * FOOD_DRAW; ctx.drawImage(im, x - d / 2, y - d / 2, d, d); return; }
+  }
+  foodVec(ctx, f, x, y, size, e, t);
+}
+
+// streamer: body + head layers, eyes and mouth from the shared face atlas
+function streamerParts(ch) {
+  const sp = S.STREAMERS[ch.id]; if (!sp) return null;
+  const head = S.get(sp.head), body = S.get(sp.body), face = S.get(S.FACE_IMG);
+  return head && body && face ? { sp: sp, head: head, body: body, face: face } : null;
+}
+function streamer(ctx, ch, x, y, s, st) {
+  const P = streamerParts(ch); if (!P) { streamerVec(ctx, ch, x, y, s, st); return; }
+  st = st || {}; const expr = S.EXPR[st.expr] ? st.expr : 'idle'; const t = st.t || 0; const sp = P.sp;
+  const k = S.STREAMER_K * s;
+  ctx.save(); ctx.translate(x, y + (st.bob || 0)); ctx.scale(k, k); ctx.translate(-sp.headAnchor[0], -sp.headAnchor[1]);
+  // now in head-image pixels
+  ctx.drawImage(P.body, sp.neckOnHead[0] - sp.bodyAnchor[0], sp.neckOnHead[1] - sp.bodyAnchor[1]);
+  ctx.drawImage(P.head, 0, 0);
+  const ex = S.EXPR[expr]; let eyes = ex[0], mouth = ex[1];
+  if ((expr === 'idle' || expr === 'open') && st.blink) eyes = 'eyes_blink';
+  if (expr === 'chew' && Math.sin(t * 22) < 0) mouth = 'mouth_chew_b';
+  const ey = sp.eyes || S.FACE_EYES_AT, dx = ey[0] - S.FACE_EYES_AT[0], dy = ey[1] - S.FACE_EYES_AT[1];
+  const mx = sp.mouth[0] - S.FACE_MOUTH_AT[0], my = sp.mouth[1] - S.FACE_MOUTH_AT[1];
+  // flushed (spicy) / chilled (cold) cheeks
+  if (expr === 'spicy' || expr === 'cold') {
+    ctx.globalAlpha = 0.32 + 0.12 * Math.sin(t * 10);
+    const col = expr === 'spicy' ? '#ff3b3b' : '#7fb8ff';
+    ellipse(ctx, ey[0] - 96, ey[1] + 58, 48, 30, col, 0); ellipse(ctx, ey[0] + 96, ey[1] + 58, 48, 30, col, 0);
+    ctx.globalAlpha = 1;
+  }
+  S.cell(ctx, P.face, S.FACE[eyes], S.FACE_EYES_AT[0] + dx, S.FACE_EYES_AT[1] + dy, 240, 120);
+  S.cell(ctx, P.face, S.FACE[mouth], S.FACE_MOUTH_AT[0] + mx, S.FACE_MOUTH_AT[1] + my, 240, 120);
+  if (ex[2]) S.cell(ctx, P.face, S.FACE[ex[2]], S.FACE_FX_AT[0] + dx, S.FACE_FX_AT[1] + dy + Math.sin(t * 6) * 4, 240, 120);
+  if (expr === 'fizzy') for (let i = 0; i < 3; i++) sparkle(ctx, ey[0] + [-180, 185, 140][i], ey[1] + [-70, -40, 120][i], 18 + Math.sin(t * 12 + i) * 6, '#fff');
+  ctx.restore();
+}
+function mouthPos(x, y, s, bob, ch) {
+  const P = ch ? streamerParts(ch) : null;
+  if (!P) return mouthPosVec(x, y, s, bob);
+  return { x: x, y: y + (bob || 0) + (P.sp.mouth[1] - P.sp.headAnchor[1]) * S.STREAMER_K * s };
+}
+
+// backgrounds
+function bgPath(idx) { return 'bg/' + D.BACKGROUNDS[idx % D.BACKGROUNDS.length].id + '.jpg'; }
+function background(ctx, idx, createCanvas, W, H, scale) {
+  const im = S.enabled() ? S.getBg(bgPath(idx)) : null;
+  if (im) S.cover(ctx, im, W, H); else backgroundVec(ctx, idx, createCanvas, W, H, scale);
+}
+function backgroundLive(ctx, idx, W, H, t) {
+  if (!(S.enabled() && S.get(bgPath(idx)))) { backgroundLiveVec(ctx, idx, W, H, t); return; }
+  // the painted backgrounds already have clouds; keep only the drifting petals and the twinkles
+  if (idx === 2) { for (let i = 0; i < 8; i++) { const px = (W * 0.1 + i * W * 0.12 + t * 18) % W, py = ((t * 40 + i * 120) % (H * 0.5)); heart(ctx, px, py, 5, 'rgba(255,160,190,0.8)', 0); } }
+  if (idx === 4) { for (let i = 0; i < 4; i++) { const a = 0.4 + 0.4 * Math.sin(t * 3 + i); star(ctx, W * (0.15 + i * 0.22), H * 0.08 + (i % 2) * 40, 5, 'rgba(255,255,255,' + a + ')', 0); } }
+}
+function storeBackground(ctx, createCanvas, W, H, scale) {
+  const im = S.enabled() ? S.getBg(S.STORE.bg) : null;
+  if (im) S.cover(ctx, im, W, H); else storeBackgroundVec(ctx, createCanvas, W, H, scale);
+}
+
+// supermarket + checkout props
+function shelfBoard(ctx, x, y, w, h, color) {
+  const im = S.get(S.STORE.shelf); if (!im) { shelfBoardVec(ctx, x, y, w, h, color); return; }
+  ctx.drawImage(im, x, y, w, h);
+  ctx.globalAlpha = 0.3; rr(ctx, x + 2, y + 2, w - 4, h * 0.45, h * 0.2); ctx.fillStyle = color; ctx.fill(); ctx.globalAlpha = 1; // tint by shelf colour
+}
+// basket: (x, y) = left end of the rim, w = rim width
+function basket(ctx, x, y, w, h) {
+  const B = S.STORE.basket, im = S.get(B.image); if (!im) { basketVec(ctx, x, y, w, h); return; }
+  const k = (w + 8) / (B.rim[1] - B.rim[0]);
+  ctx.drawImage(im, x + w / 2 - B.anchor[0] * k, y - B.anchor[1] * k, B.w * k, B.h * k);
+}
+// self-checkout machine in the box (x, y, w, h); returns the screen and scanner rects
+function machine(ctx, x, y, w, h) {
+  const M = S.STORE.machine, im = S.get(M.image); if (!im) return machineVec(ctx, x, y, w, h);
+  const k = Math.min(w / M.w, h / M.h), ox = x + (w - M.w * k) / 2, oy = y;
+  ctx.drawImage(im, ox, oy, M.w * k, M.h * k);
+  const sc = M.screen, sl = M.slot;
+  return { sx: ox + sc[0] * k, sy: oy + sc[1] * k, sw: sc[2] * k, sh: sc[3] * k, px: ox + sl[0] * k, py: oy + sl[1] * k, pw: sl[2] * k, ph: sl[3] * k };
+}
+function conveyor(ctx, x, y, w, h) {
+  const V = S.STORE.conveyor, im = S.get(V.image); if (!im) { conveyorVec(ctx, x, y, w, h); return; }
+  S.nine(ctx, im, V.slice, V.w, V.h, x, y, w, h, Math.min(0.5, h / V.h));
+}
+function cashier(ctx, x, y, s) {
+  const im = S.get(S.STORE.cashier); if (!im) { cashierVec(ctx, x, y, s); return; }
+  const w = 128 * s, h = 140 * s; ctx.drawImage(im, x - w / 2, y - h / 2 + 18 * s, w, h);
+}
+function phoneStick(ctx, x, y, s, t) {
+  const U2 = S.UI.phone, im = S.get(U2.image); if (!im) { phoneStickVec(ctx, x, y, s, t); return; }
+  ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.rotate(-0.25 + Math.sin(t * 1.5) * 0.02);
+  const k = 1.1; ctx.drawImage(im, -U2.anchor[0] * k, 260 - U2.anchor[1] * k, U2.w * k, U2.h * k);
+  ctx.restore();
+}
+
+module.exports = { rr, circle, ellipse, shade, text, coin, star, uiStar, heart, eyeIcon, sparkle, lock, reaction, avatar, food, streamer, mouthPos, background, backgroundLive, table, phoneStick, livePill, profileBadge, coinPill, storeBackground, shelfBoard, priceTag, basket, machine, conveyor, cashier, cloud, logo };

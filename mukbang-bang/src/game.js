@@ -6,6 +6,7 @@
 const U = require('./util.js');
 const D = require('./data.js');
 const A = require('./art.js');
+const S = require('./sprites.js');
 const UIM = require('./ui.js');
 const AU = require('./audio.js');
 const C = D.COLORS;
@@ -19,6 +20,7 @@ const MOUTH_RADIUS = 92;
 class Game {
   constructor(platform, hs) {
     this.p = platform; this.hs = hs; this.profile = hs.profile;
+    S.init(platform); S.preload();
     this.ctx = platform.ctx; this.ui = new UIM.UI(this.ctx);
     this.audio = new AU.Audio(platform.createAudioContext);
     this.W = DESIGN_W; this.H = 960; this.scale = 1;
@@ -81,7 +83,7 @@ class Game {
     const y = this.machineRect().y + this.machineRect().h + 70;
     for (let i = 0; i < n; i++) { const it = c.items[i]; it.hx = W * (n === 1 ? 0.5 : 0.14 + 0.72 * i / (n - 1)); it.hy = y + (i % 2) * 26; if (!it.scanned && !it.fly) { it.x = it.hx; it.y = it.hy; } }
   }
-  machineRect() { const top = this.top(); return { x: this.W * 0.1, y: top + 118, w: this.W * 0.8, h: Math.min(460, this.H * 0.4) }; }
+  machineRect() { const top = this.top(); const w = Math.min(this.W * 0.9, this.H * 0.54 * 864 / 920); return { x: (this.W - w) / 2, y: top + 118, w: w, h: w * 920 / 864 }; }
   scanItem(it) {
     const c = this.checkout; if (it.scanned) return;
     it.scanned = true; const f = D.FOOD_BY_ID[it.id]; const price = D.priceOf(f);
@@ -117,7 +119,7 @@ class Game {
     }
   }
   headPos() { return { x: this.W / 2, y: this.H * 0.305, s: Math.min(1, this.H / 1000) }; }
-  mouth() { const h = this.headPos(); return A.mouthPos(h.x, h.y, h.s, this.face.bob || 0); }
+  mouth() { const h = this.headPos(); return A.mouthPos(h.x, h.y, h.s, this.face.bob || 0, this.streamerDef()); }
   bite(it) {
     const r = this.run, f = D.FOOD_BY_ID[it.id], cat = D.CAT_BY_ID[f.cat], taste = D.TASTES[f.taste];
     it.eaten++;
@@ -381,9 +383,9 @@ class Game {
     A.phoneStick(ctx, W * 0.1, H * 0.4, 0.9, this.time);
     this.drawReactions();
     const top = this.hud({});
-    ui.title('MUKBANG', W / 2, top + 130, 60, C.white, C.pinkDark);
-    ui.title('BANG', W / 2, top + 190, 72, C.yellow, C.pinkDark);
-    ui.label('shop · scan · eat live', W / 2, top + 236, 18, C.white, 'center', { stroke: 5 });
+    const hasLogo = A.logo(ctx, W / 2, top + 168, 340);
+    if (!hasLogo) { ui.title('MUKBANG', W / 2, top + 130, 60, C.white, C.pinkDark); ui.title('BANG', W / 2, top + 190, 72, C.yellow, C.pinkDark); }
+    ui.label('shop · scan · eat live', W / 2, top + (hasLogo ? 254 : 236), 18, C.white, 'center', { stroke: 5 });
     // TikTok review buttons (HSGame decides whether they exist on this platform)
     let bx = 16; const by = top + 100;
     if (hs.hasMissions()) {
@@ -418,7 +420,7 @@ class Game {
       const n = base + j + 1; const x = gx + (j % cols) * (cw + 8), y = gy + Math.floor(j / cols) * (ch + 10);
       const open = n <= unlocked; const bgi = D.level(n).bg; const col = [C.blue, C.pink, C.lavender, C.yellow, C.mint][bgi], dk = [C.blueDark, C.pinkDark, C.lavenderDark, C.yellowDark, C.mintDark][bgi];
       ui.button('lvl' + n, x, y, cw, ch, open ? String(n) : '', { color: open ? col : '#e0d6d6', dark: open ? dk : '#bfb0b0', disabled: !open, size: 28, radius: 18, icon: open ? null : function (c, w, h) { A.lock(c, w / 2, h / 2, 26); } });
-      if (open) { const s = st[n] || 0; for (let k = 0; k < 3; k++) A.star(ctx, x + cw / 2 + (k - 1) * 18, y + ch - 16, 7, k < s ? C.gold : 'rgba(255,255,255,0.6)', 2); }
+      if (open) { const s = st[n] || 0; for (let k = 0; k < 3; k++) A.uiStar(ctx, x + cw / 2 + (k - 1) * 18, y + ch - 16, 7, k < s, 'rgba(255,255,255,0.6)', 2); }
     }
     const by = gy + 3 * (ch + 10) + 10;
     ui.button('page0', W * 0.12, by, W * 0.36, 52, 'LEVELS 1–15', { color: this.levelPage === 0 ? C.pink : C.blue, dark: this.levelPage === 0 ? C.pinkDark : C.blueDark, size: 17 });
@@ -439,8 +441,8 @@ class Game {
       const s = D.STREAMERS[i]; const x = 30 + i * (cw + 12); const open = reach >= s.unlock;
       ui.panel(x, y, cw, chh, open ? '#fff' : '#eee', cur === i ? C.gold : C.outline, 22, cur === i ? 6 : 4);
       ctx.save(); A.rr(ctx, x + 4, y + 4, cw - 8, chh - 8, 18); ctx.clip();
-      if (open) A.streamer(ctx, s, x + cw / 2, y + chh * 0.36, cw / 95 * 0.42, { expr: cur === i ? 'yum' : 'idle', t: this.time, blink: this.face.blink });
-      else { ctx.globalAlpha = 0.35; A.streamer(ctx, s, x + cw / 2, y + chh * 0.36, cw / 95 * 0.42, { expr: 'idle' }); ctx.globalAlpha = 1; A.lock(ctx, x + cw / 2, y + chh * 0.4, 40); }
+      if (open) A.streamer(ctx, s, x + cw / 2, y + chh * 0.33, cw / 95 * 0.36, { expr: cur === i ? 'yum' : 'idle', t: this.time, blink: this.face.blink });
+      else { ctx.globalAlpha = 0.35; A.streamer(ctx, s, x + cw / 2, y + chh * 0.33, cw / 95 * 0.36, { expr: 'idle' }); ctx.globalAlpha = 1; A.lock(ctx, x + cw / 2, y + chh * 0.4, 40); }
       ctx.restore();
       ui.label(s.name, x + cw / 2, y + chh - 54, 22, C.text);
       ui.label(open ? (cur === i ? 'SELECTED' : 'TAP TO PICK') : 'LEVEL ' + s.unlock, x + cw / 2, y + chh - 26, 13, open ? C.pinkDark : C.textLight);
@@ -517,8 +519,8 @@ class Game {
       ui.label('See you on the stream!', m.sx + m.sw / 2, m.sy + m.sh - 20, 14, C.textLight);
     } else {
       ui.label('Total', m.sx + m.sw / 2, m.sy + 26, 22, C.pinkDark);
-      let y = m.sy + 60; const lh = 24;
-      for (let i = 0; i < c.receipt.length; i++) { const line = c.receipt[i]; if (y > m.sy + m.sh - 60) break; ui.label(line.name + ' x1', m.sx + 18, y, 14, C.text, 'left'); A.coin(ctx, m.sx + m.sw - 56, y, 7); ui.label(String(line.price), m.sx + m.sw - 16, y, 14, C.text, 'right'); y += lh; }
+      const lh = Math.max(16, Math.min(24, (m.sh - 100) / Math.max(1, c.items.length))); let y = m.sy + 52;
+      for (let i = 0; i < c.receipt.length; i++) { const line = c.receipt[i]; if (y > m.sy + m.sh - 50) break; ui.label(line.name + ' x1', m.sx + 18, y, 14, C.text, 'left'); A.coin(ctx, m.sx + m.sw - 56, y, 7); ui.label(String(line.price), m.sx + m.sw - 16, y, 14, C.text, 'right'); y += lh; }
       ctx.strokeStyle = '#c9c0e8'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(m.sx + 14, m.sy + m.sh - 44); ctx.lineTo(m.sx + m.sw - 14, m.sy + m.sh - 44); ctx.stroke();
       ui.label('Total', m.sx + 18, m.sy + m.sh - 22, 16, C.text, 'left'); A.coin(ctx, m.sx + m.sw - 62, m.sy + m.sh - 22, 8); ui.label(String(c.total), m.sx + m.sw - 16, m.sy + m.sh - 22, 18, C.text, 'right');
       if (c.flash > 0) { ctx.fillStyle = 'rgba(255,255,255,' + c.flash * 0.6 + ')'; A.rr(ctx, m.px, m.py, m.pw, m.ph, 10); ctx.fill(); }
@@ -580,7 +582,7 @@ class Game {
     const ph = 330 + res.unlocks.length * 26; const py = Math.max(this.top() + 110, H * 0.14);
     ui.panel(24, py, W - 48, ph, C.cream, C.outline, 26);
     ui.title('STREAM OVER!', W / 2, py + 46, 40, C.white, C.pinkDark);
-    for (let k = 0; k < 3; k++) { const on = k < res.stars; const sc = on ? U.easeOutBack(Math.min(1, Math.max(0, res.t * 2 - k * 0.5))) : 1; ctx.save(); ctx.translate(W / 2 + (k - 1) * 70, py + 112); ctx.scale(sc, sc); A.star(ctx, 0, 0, 28, on ? C.gold : '#e8e0e0', 4); ctx.restore(); }
+    for (let k = 0; k < 3; k++) { const on = k < res.stars; const sc = on ? U.easeOutBack(Math.min(1, Math.max(0, res.t * 2 - k * 0.5))) : 1; ctx.save(); ctx.translate(W / 2 + (k - 1) * 70, py + 112); ctx.scale(sc, sc); A.uiStar(ctx, 0, 0, 28, on, '#e8e0e0', 4); ctx.restore(); }
     ui.label('PEAK VIEWERS', W / 2, py + 160, 14, C.textLight);
     ui.label(U.fmtViewers(res.peak) + '   (goal ' + U.fmtViewers(res.lv.goal) + ')', W / 2, py + 184, 24, C.text);
     ui.label('COINS EARNED', W / 2, py + 222, 14, C.textLight);

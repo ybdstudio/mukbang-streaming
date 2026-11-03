@@ -22,6 +22,7 @@ Tài liệu cho người/AI tiếp quản. Đọc hết file này trước khi s
 | `tools/sim-test.mjs`: **108/108** kiểm tra đạt | ✅ |
 | Bản web 1 file + artifact claude.ai | ✅ https://claude.ai/artifact/RT6eXomFXizn2A6YfZbhtp (riêng tư, của chủ dự án) |
 | Repo GitHub `greenteeceo/mukbang-bang` (private), nhánh `main` | ✅ commit mới nhất `1f2b304` |
+| **Art bitmap từ Codex (143 ảnh, 2.6 MB) đã tích hợp**: món ăn, 3 streamer ghép lớp + 9 biểu cảm, 5 nền, siêu thị, quầy quét, icon, emoji, avatar, logo. Code vẽ canvas cũ giữ làm fallback | ✅ |
 | Playtest người thật trên điện thoại / TikTok DevTool | ❌ chưa |
 | Upload TikTok | ❌ chờ App ID |
 
@@ -34,14 +35,19 @@ mukbang bang/
     game.json, project.config.json (appid đang trống)
     hs-game.js, hs-sdk.min.js    2 file của kit — KHÔNG sửa
     src/data.js                  nội dung: TASTES, CATS, FOODS(36), level(n), STREAMERS, BACKGROUNDS, CHAT, MILESTONES, COLORS
-    src/art.js                   vẽ canvas: food(ctx,f,x,y,size,eaten), streamer(...expr), nền (cache offscreen), máy quét, giỏ, emoji, avatar
+    src/art.js                   hàm vẽ công khai: dùng sprite khi ảnh đã nạp, nếu chưa thì gọi bản vẽ canvas *Vec (fallback)
+    src/sprites.js               nạp ảnh lazy qua platform.loadImage (tt.createImage), toạ độ atlas/neo từ assets/manifest.json; nền giữ tối đa 3 ảnh trong RAM
+    assets/                      art bitmap (food/ streamer/ bg/ store/ ui/ + manifest.json) — nằm trong gói TikTok (gói ~3.0 MB < 4 MB)
     src/ui.js                    UI immediate-mode (button/panel/label/title/hotspot), toạ độ logic rộng 540
     src/audio.js                 âm thanh tổng hợp PCM (crunch, slurp, gulp, fizz, fire, beep, cash…)
     src/game.js                  class Game: máy trạng thái + vẽ từng màn + input kéo/thả
   mukbang-bang.hs-dashboard.json dữ liệu dashboard HS (đặt CẠNH game folder, không bên trong)
   tools/sim-test.mjs             test headless: fake platform/profile/HS, chơi trọn level qua tap/drag thật
   tools/shot.sh                  chụp màn hình bằng Chrome headless (cần preview đang chạy)
-  tools/build-web.mjs            build web/index.html + web/mukbang-bang-artifact.html
+  tools/build-web.mjs            build web/index.html + web/mukbang-bang-artifact.html (nhúng assets/ dạng data URI vào __HS_ASSETS)
+  art-src/                       ngoài gói: previews của Codex, prompts.json, validation.json, CODEX-HANDOFF.md
+  icon-512.png                   icon app (cho Android pack), ngoài gói TikTok
+  docs/ART-REQUEST.md            brief art đã gửi Codex
   web/                           bản web (sinh ra bởi build-web — đừng sửa tay)
   docs/PROGRESS.md               file này
   README.md                      tổng quan + economy
@@ -102,7 +108,7 @@ Lưu ý Windows: Chrome headless ép cửa sổ rộng tối thiểu 548 px → 
 
 **Để version sau (đã thống nhất)**
 - 2 màn phụ thấy trong ảnh tham khảo: quầy tiện lợi "nhớ đơn hàng" (bong bóng đơn 3 món, đếm 6/9, chọn từ 3 thẻ) và khay buffet gắp bằng kẹp.
-- Thay art canvas bằng bộ hình riêng nếu chủ dự án cung cấp.
+- Lớp FX trôi cho nền (mây, cánh hoa, sao) bằng ảnh — tuỳ chọn, chưa có.
 - Có thể thêm: nhiều streamer cùng bàn (như ảnh tham khảo), nhạc nền, rung/hiệu ứng mạnh hơn khi ăn cay/lạnh.
 
 **Rủi ro / chưa kiểm**

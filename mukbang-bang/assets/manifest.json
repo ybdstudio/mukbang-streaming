@@ -1,0 +1,1694 @@
+{
+  "version": 1,
+  "scale": 2,
+  "status": "complete-art-not-integrated",
+  "food": {
+    "size": 256,
+    "anchor": [
+      128,
+      128
+    ],
+    "items": {
+      "chili_noodle": {
+        "frames": [
+          "food/chili_noodle_0.png",
+          "food/chili_noodle_1.png",
+          "food/chili_noodle_2.png",
+          "food/chili_noodle_3.png"
+        ],
+        "bites": 4
+      },
+      "cat_chips": {
+        "frames": [
+          "food/cat_chips_0.png",
+          "food/cat_chips_1.png",
+          "food/cat_chips_2.png"
+        ],
+        "bites": 3
+      },
+      "bubble_tea": {
+        "frames": [
+          "food/bubble_tea_0.png",
+          "food/bubble_tea_1.png",
+          "food/bubble_tea_2.png"
+        ],
+        "bites": 3
+      },
+      "straw_cake": {
+        "frames": [
+          "food/straw_cake_0.png",
+          "food/straw_cake_1.png",
+          "food/straw_cake_2.png",
+          "food/straw_cake_3.png"
+        ],
+        "bites": 4
+      },
+      "mint_choc": {
+        "frames": [
+          "food/mint_choc_0.png",
+          "food/mint_choc_1.png",
+          "food/mint_choc_2.png"
+        ],
+        "bites": 3
+      },
+      "melon_bowl": {
+        "frames": [
+          "food/melon_bowl_0.png",
+          "food/melon_bowl_1.png",
+          "food/melon_bowl_2.png"
+        ],
+        "bites": 3
+      },
+      "bean_noodle": {
+        "frames": [
+          "food/bean_noodle_0.png",
+          "food/bean_noodle_1.png",
+          "food/bean_noodle_2.png",
+          "food/bean_noodle_3.png"
+        ],
+        "bites": 4
+      },
+      "cheese_noodle": {
+        "frames": [
+          "food/cheese_noodle_0.png",
+          "food/cheese_noodle_1.png",
+          "food/cheese_noodle_2.png",
+          "food/cheese_noodle_3.png"
+        ],
+        "bites": 4
+      },
+      "sakura_noodle": {
+        "frames": [
+          "food/sakura_noodle_0.png",
+          "food/sakura_noodle_1.png",
+          "food/sakura_noodle_2.png",
+          "food/sakura_noodle_3.png"
+        ],
+        "bites": 4
+      },
+      "sea_noodle": {
+        "frames": [
+          "food/sea_noodle_0.png",
+          "food/sea_noodle_1.png",
+          "food/sea_noodle_2.png",
+          "food/sea_noodle_3.png"
+        ],
+        "bites": 4
+      },
+      "shroom_noodle": {
+        "frames": [
+          "food/shroom_noodle_0.png",
+          "food/shroom_noodle_1.png",
+          "food/shroom_noodle_2.png",
+          "food/shroom_noodle_3.png"
+        ],
+        "bites": 4
+      },
+      "choco_pretzel": {
+        "frames": [
+          "food/choco_pretzel_0.png",
+          "food/choco_pretzel_1.png",
+          "food/choco_pretzel_2.png"
+        ],
+        "bites": 3
+      },
+      "rainbow_candy": {
+        "frames": [
+          "food/rainbow_candy_0.png",
+          "food/rainbow_candy_1.png",
+          "food/rainbow_candy_2.png"
+        ],
+        "bites": 3
+      },
+      "seaweed_crisps": {
+        "frames": [
+          "food/seaweed_crisps_0.png",
+          "food/seaweed_crisps_1.png",
+          "food/seaweed_crisps_2.png"
+        ],
+        "bites": 3
+      },
+      "banana_milk": {
+        "frames": [
+          "food/banana_milk_0.png",
+          "food/banana_milk_1.png",
+          "food/banana_milk_2.png"
+        ],
+        "bites": 3
+      },
+      "berry_smoothie": {
+        "frames": [
+          "food/berry_smoothie_0.png",
+          "food/berry_smoothie_1.png",
+          "food/berry_smoothie_2.png"
+        ],
+        "bites": 3
+      },
+      "gummy_bears": {
+        "frames": [
+          "food/gummy_bears_0.png",
+          "food/gummy_bears_1.png",
+          "food/gummy_bears_2.png"
+        ],
+        "bites": 3
+      },
+      "honey_puffs": {
+        "frames": [
+          "food/honey_puffs_0.png",
+          "food/honey_puffs_1.png",
+          "food/honey_puffs_2.png"
+        ],
+        "bites": 3
+      },
+      "matcha_latte": {
+        "frames": [
+          "food/matcha_latte_0.png",
+          "food/matcha_latte_1.png",
+          "food/matcha_latte_2.png"
+        ],
+        "bites": 3
+      },
+      "matcha_roll": {
+        "frames": [
+          "food/matcha_roll_0.png",
+          "food/matcha_roll_1.png",
+          "food/matcha_roll_2.png",
+          "food/matcha_roll_3.png"
+        ],
+        "bites": 4
+      },
+      "peach_milk": {
+        "frames": [
+          "food/peach_milk_0.png",
+          "food/peach_milk_1.png",
+          "food/peach_milk_2.png"
+        ],
+        "bites": 3
+      },
+      "soda_pop": {
+        "frames": [
+          "food/soda_pop_0.png",
+          "food/soda_pop_1.png",
+          "food/soda_pop_2.png"
+        ],
+        "bites": 3
+      },
+      "berry_tart": {
+        "frames": [
+          "food/berry_tart_0.png",
+          "food/berry_tart_1.png",
+          "food/berry_tart_2.png",
+          "food/berry_tart_3.png"
+        ],
+        "bites": 4
+      },
+      "choco_mousse": {
+        "frames": [
+          "food/choco_mousse_0.png",
+          "food/choco_mousse_1.png",
+          "food/choco_mousse_2.png",
+          "food/choco_mousse_3.png"
+        ],
+        "bites": 4
+      },
+      "mango_cheese": {
+        "frames": [
+          "food/mango_cheese_0.png",
+          "food/mango_cheese_1.png",
+          "food/mango_cheese_2.png",
+          "food/mango_cheese_3.png"
+        ],
+        "bites": 4
+      },
+      "rainbow_crepe": {
+        "frames": [
+          "food/rainbow_crepe_0.png",
+          "food/rainbow_crepe_1.png",
+          "food/rainbow_crepe_2.png",
+          "food/rainbow_crepe_3.png"
+        ],
+        "bites": 4
+      },
+      "blue_moon": {
+        "frames": [
+          "food/blue_moon_0.png",
+          "food/blue_moon_1.png",
+          "food/blue_moon_2.png"
+        ],
+        "bites": 3
+      },
+      "choco_sundae": {
+        "frames": [
+          "food/choco_sundae_0.png",
+          "food/choco_sundae_1.png",
+          "food/choco_sundae_2.png"
+        ],
+        "bites": 3
+      },
+      "cookie_cream": {
+        "frames": [
+          "food/cookie_cream_0.png",
+          "food/cookie_cream_1.png",
+          "food/cookie_cream_2.png"
+        ],
+        "bites": 3
+      },
+      "grape_bunch": {
+        "frames": [
+          "food/grape_bunch_0.png",
+          "food/grape_bunch_1.png",
+          "food/grape_bunch_2.png"
+        ],
+        "bites": 3
+      },
+      "mango_cubes": {
+        "frames": [
+          "food/mango_cubes_0.png",
+          "food/mango_cubes_1.png",
+          "food/mango_cubes_2.png"
+        ],
+        "bites": 3
+      },
+      "mango_sorbet": {
+        "frames": [
+          "food/mango_sorbet_0.png",
+          "food/mango_sorbet_1.png",
+          "food/mango_sorbet_2.png"
+        ],
+        "bites": 3
+      },
+      "pine_sticks": {
+        "frames": [
+          "food/pine_sticks_0.png",
+          "food/pine_sticks_1.png",
+          "food/pine_sticks_2.png"
+        ],
+        "bites": 3
+      },
+      "straw_plate": {
+        "frames": [
+          "food/straw_plate_0.png",
+          "food/straw_plate_1.png",
+          "food/straw_plate_2.png"
+        ],
+        "bites": 3
+      },
+      "straw_swirl": {
+        "frames": [
+          "food/straw_swirl_0.png",
+          "food/straw_swirl_1.png",
+          "food/straw_swirl_2.png"
+        ],
+        "bites": 3
+      },
+      "berry_mix": {
+        "frames": [
+          "food/berry_mix_0.png",
+          "food/berry_mix_1.png",
+          "food/berry_mix_2.png"
+        ],
+        "bites": 3
+      }
+    }
+  },
+  "streamer": {
+    "luna": {
+      "revision": 4,
+      "body": "streamer/luna_body.png",
+      "head": "streamer/luna_head.png",
+      "bodyAnchor": [
+        256,
+        44
+      ],
+      "headAnchor": [
+        256,
+        350
+      ],
+      "neckOnHead": [
+        256,
+        465
+      ],
+      "faceRadius": 160,
+      "mouth": [
+        256,
+        408
+      ]
+    },
+    "kiko": {
+      "body": "streamer/kiko_body.png",
+      "head": "streamer/kiko_head.png",
+      "headAnchor": [
+        256,
+        350
+      ],
+      "neckOnHead": [
+        256,
+        465
+      ],
+      "faceRadius": 160,
+      "mouth": [
+        256,
+        408
+      ],
+      "eyes": [
+        256,
+        320
+      ],
+      "bodyAnchor": [
+        256,
+        43
+      ]
+    },
+    "momo": {
+      "body": "streamer/momo_body.png",
+      "head": "streamer/momo_head.png",
+      "headAnchor": [
+        256,
+        281
+      ],
+      "neckOnHead": [
+        256,
+        386
+      ],
+      "faceRadius": 160,
+      "mouth": [
+        256,
+        348
+      ],
+      "eyes": [
+        256,
+        260
+      ],
+      "bodyAnchor": [
+        256,
+        43
+      ]
+    }
+  },
+  "faceParts": {
+    "image": "streamer/face_parts.png",
+    "frames": {
+      "eyes_open": {
+        "x": 0,
+        "y": 0,
+        "w": 240,
+        "h": 120,
+        "at": [
+          256,
+          320
+        ]
+      },
+      "eyes_blink": {
+        "x": 240,
+        "y": 0,
+        "w": 240,
+        "h": 120,
+        "at": [
+          256,
+          320
+        ]
+      },
+      "eyes_happy": {
+        "x": 480,
+        "y": 0,
+        "w": 240,
+        "h": 120,
+        "at": [
+          256,
+          320
+        ]
+      },
+      "eyes_x": {
+        "x": 720,
+        "y": 0,
+        "w": 240,
+        "h": 120,
+        "at": [
+          256,
+          320
+        ]
+      },
+      "eyes_squiggle": {
+        "x": 0,
+        "y": 120,
+        "w": 240,
+        "h": 120,
+        "at": [
+          256,
+          320
+        ]
+      },
+      "eyes_heart": {
+        "x": 240,
+        "y": 120,
+        "w": 240,
+        "h": 120,
+        "at": [
+          256,
+          320
+        ]
+      },
+      "eyes_wide": {
+        "x": 480,
+        "y": 120,
+        "w": 240,
+        "h": 120,
+        "at": [
+          256,
+          320
+        ]
+      },
+      "eyes_squint": {
+        "x": 720,
+        "y": 120,
+        "w": 240,
+        "h": 120,
+        "at": [
+          256,
+          320
+        ]
+      },
+      "mouth_idle": {
+        "x": 0,
+        "y": 240,
+        "w": 240,
+        "h": 120,
+        "at": [
+          256,
+          408
+        ]
+      },
+      "mouth_open": {
+        "x": 240,
+        "y": 240,
+        "w": 240,
+        "h": 120,
+        "at": [
+          256,
+          408
+        ]
+      },
+      "mouth_chew_a": {
+        "x": 480,
+        "y": 240,
+        "w": 240,
+        "h": 120,
+        "at": [
+          256,
+          408
+        ]
+      },
+      "mouth_chew_b": {
+        "x": 720,
+        "y": 240,
+        "w": 240,
+        "h": 120,
+        "at": [
+          256,
+          408
+        ]
+      },
+      "mouth_yum": {
+        "x": 0,
+        "y": 360,
+        "w": 240,
+        "h": 120,
+        "at": [
+          256,
+          408
+        ]
+      },
+      "mouth_spicy": {
+        "x": 240,
+        "y": 360,
+        "w": 240,
+        "h": 120,
+        "at": [
+          256,
+          408
+        ]
+      },
+      "mouth_cold": {
+        "x": 480,
+        "y": 360,
+        "w": 240,
+        "h": 120,
+        "at": [
+          256,
+          408
+        ]
+      },
+      "mouth_sweet": {
+        "x": 720,
+        "y": 360,
+        "w": 240,
+        "h": 120,
+        "at": [
+          256,
+          408
+        ]
+      },
+      "mouth_fizzy": {
+        "x": 0,
+        "y": 480,
+        "w": 240,
+        "h": 120,
+        "at": [
+          256,
+          408
+        ]
+      },
+      "mouth_sour": {
+        "x": 240,
+        "y": 480,
+        "w": 240,
+        "h": 120,
+        "at": [
+          256,
+          408
+        ]
+      },
+      "fx_sweat": {
+        "x": 480,
+        "y": 480,
+        "w": 240,
+        "h": 120,
+        "at": [
+          420,
+          300
+        ]
+      },
+      "fx_frost": {
+        "x": 720,
+        "y": 480,
+        "w": 240,
+        "h": 120,
+        "at": [
+          420,
+          300
+        ]
+      }
+    }
+  },
+  "backgrounds": {
+    "park": {
+      "image": "bg/park.jpg",
+      "width": 1080,
+      "height": 2400
+    },
+    "beach": {
+      "image": "bg/beach.jpg",
+      "width": 1080,
+      "height": 2400
+    },
+    "city": {
+      "image": "bg/city.jpg",
+      "width": 1080,
+      "height": 2400
+    },
+    "room": {
+      "image": "bg/room.jpg",
+      "width": 1080,
+      "height": 2400
+    },
+    "sakura": {
+      "image": "bg/sakura.jpg",
+      "width": 1080,
+      "height": 2400
+    }
+  },
+  "files": {
+    "food/chili_noodle_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 16706,
+      "alpha": true
+    },
+    "food/chili_noodle_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 17436,
+      "alpha": true
+    },
+    "food/chili_noodle_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 15828,
+      "alpha": true
+    },
+    "food/chili_noodle_3.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 14963,
+      "alpha": true
+    },
+    "food/cat_chips_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 18791,
+      "alpha": true
+    },
+    "food/cat_chips_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 18805,
+      "alpha": true
+    },
+    "food/cat_chips_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 17740,
+      "alpha": true
+    },
+    "food/bubble_tea_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 15018,
+      "alpha": true
+    },
+    "food/bubble_tea_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 15399,
+      "alpha": true
+    },
+    "food/bubble_tea_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 14112,
+      "alpha": true
+    },
+    "food/straw_cake_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 9462,
+      "alpha": true
+    },
+    "food/straw_cake_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 9960,
+      "alpha": true
+    },
+    "food/straw_cake_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 9768,
+      "alpha": true
+    },
+    "food/straw_cake_3.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 8338,
+      "alpha": true
+    },
+    "food/mint_choc_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 9338,
+      "alpha": true
+    },
+    "food/mint_choc_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 7270,
+      "alpha": true
+    },
+    "food/mint_choc_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 6174,
+      "alpha": true
+    },
+    "food/melon_bowl_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 14639,
+      "alpha": true
+    },
+    "food/melon_bowl_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 12632,
+      "alpha": true
+    },
+    "food/melon_bowl_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 10533,
+      "alpha": true
+    },
+    "streamer/luna_head.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 67919,
+      "alpha": true
+    },
+    "streamer/luna_body.png": {
+      "width": 512,
+      "height": 420,
+      "bytes": 44557,
+      "alpha": true
+    },
+    "streamer/face_parts.png": {
+      "width": 960,
+      "height": 600,
+      "bytes": 75106,
+      "alpha": true
+    },
+    "bg/park.jpg": {
+      "width": 1080,
+      "height": 2400,
+      "bytes": 59563,
+      "alpha": false
+    },
+    "food/bean_noodle_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 14354,
+      "alpha": true
+    },
+    "food/bean_noodle_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 12208,
+      "alpha": true
+    },
+    "food/bean_noodle_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 12292,
+      "alpha": true
+    },
+    "food/bean_noodle_3.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 10860,
+      "alpha": true
+    },
+    "food/cheese_noodle_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 15790,
+      "alpha": true
+    },
+    "food/cheese_noodle_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 15694,
+      "alpha": true
+    },
+    "food/cheese_noodle_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 14851,
+      "alpha": true
+    },
+    "food/cheese_noodle_3.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 13575,
+      "alpha": true
+    },
+    "food/sakura_noodle_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 11725,
+      "alpha": true
+    },
+    "food/sakura_noodle_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 11472,
+      "alpha": true
+    },
+    "food/sakura_noodle_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 11066,
+      "alpha": true
+    },
+    "food/sakura_noodle_3.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 10150,
+      "alpha": true
+    },
+    "food/sea_noodle_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 14935,
+      "alpha": true
+    },
+    "food/sea_noodle_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 14953,
+      "alpha": true
+    },
+    "food/sea_noodle_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 14542,
+      "alpha": true
+    },
+    "food/sea_noodle_3.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 14397,
+      "alpha": true
+    },
+    "food/shroom_noodle_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 11370,
+      "alpha": true
+    },
+    "food/shroom_noodle_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 12236,
+      "alpha": true
+    },
+    "food/shroom_noodle_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 11201,
+      "alpha": true
+    },
+    "food/shroom_noodle_3.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 10306,
+      "alpha": true
+    },
+    "streamer/kiko_body.png": {
+      "width": 512,
+      "height": 420,
+      "bytes": 43956,
+      "alpha": true
+    },
+    "streamer/kiko_head.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 51476,
+      "alpha": true
+    },
+    "food/choco_pretzel_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 13396,
+      "alpha": true
+    },
+    "food/choco_pretzel_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 13866,
+      "alpha": true
+    },
+    "food/choco_pretzel_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 12486,
+      "alpha": true
+    },
+    "food/rainbow_candy_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 19062,
+      "alpha": true
+    },
+    "food/rainbow_candy_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 18436,
+      "alpha": true
+    },
+    "food/rainbow_candy_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 15619,
+      "alpha": true
+    },
+    "food/seaweed_crisps_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 18074,
+      "alpha": true
+    },
+    "food/seaweed_crisps_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 16566,
+      "alpha": true
+    },
+    "food/seaweed_crisps_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 17196,
+      "alpha": true
+    },
+    "streamer/momo_body.png": {
+      "width": 512,
+      "height": 420,
+      "bytes": 35926,
+      "alpha": true
+    },
+    "streamer/momo_head.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 61879,
+      "alpha": true
+    },
+    "food/banana_milk_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 10926,
+      "alpha": true
+    },
+    "food/banana_milk_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 11456,
+      "alpha": true
+    },
+    "food/banana_milk_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 11358,
+      "alpha": true
+    },
+    "food/berry_smoothie_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 11621,
+      "alpha": true
+    },
+    "food/berry_smoothie_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 11813,
+      "alpha": true
+    },
+    "food/berry_smoothie_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 11714,
+      "alpha": true
+    },
+    "food/gummy_bears_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 21300,
+      "alpha": true
+    },
+    "food/gummy_bears_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 20264,
+      "alpha": true
+    },
+    "food/gummy_bears_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 15847,
+      "alpha": true
+    },
+    "food/honey_puffs_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 16797,
+      "alpha": true
+    },
+    "food/honey_puffs_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 16035,
+      "alpha": true
+    },
+    "food/honey_puffs_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 16721,
+      "alpha": true
+    },
+    "food/matcha_latte_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 11101,
+      "alpha": true
+    },
+    "food/matcha_latte_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 10949,
+      "alpha": true
+    },
+    "food/matcha_latte_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 11984,
+      "alpha": true
+    },
+    "food/matcha_roll_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 6521,
+      "alpha": true
+    },
+    "food/matcha_roll_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 6476,
+      "alpha": true
+    },
+    "food/matcha_roll_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 6362,
+      "alpha": true
+    },
+    "food/matcha_roll_3.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 5407,
+      "alpha": true
+    },
+    "food/peach_milk_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 10431,
+      "alpha": true
+    },
+    "food/peach_milk_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 10775,
+      "alpha": true
+    },
+    "food/peach_milk_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 10213,
+      "alpha": true
+    },
+    "food/soda_pop_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 10457,
+      "alpha": true
+    },
+    "food/soda_pop_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 10191,
+      "alpha": true
+    },
+    "food/soda_pop_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 9408,
+      "alpha": true
+    },
+    "bg/beach.jpg": {
+      "width": 1080,
+      "height": 2400,
+      "bytes": 76147,
+      "alpha": false
+    },
+    "bg/city.jpg": {
+      "width": 1080,
+      "height": 2400,
+      "bytes": 60554,
+      "alpha": false
+    },
+    "bg/room.jpg": {
+      "width": 1080,
+      "height": 2400,
+      "bytes": 63219,
+      "alpha": false
+    },
+    "bg/sakura.jpg": {
+      "width": 1080,
+      "height": 2400,
+      "bytes": 79537,
+      "alpha": false
+    },
+    "store/shelf_board.png": {
+      "width": 1008,
+      "height": 60,
+      "bytes": 10734,
+      "alpha": true
+    },
+    "food/berry_tart_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 8455,
+      "alpha": true
+    },
+    "food/berry_tart_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 8544,
+      "alpha": true
+    },
+    "food/berry_tart_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 7525,
+      "alpha": true
+    },
+    "food/berry_tart_3.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 6873,
+      "alpha": true
+    },
+    "food/choco_mousse_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 5321,
+      "alpha": true
+    },
+    "food/choco_mousse_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 5371,
+      "alpha": true
+    },
+    "food/choco_mousse_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 5326,
+      "alpha": true
+    },
+    "food/choco_mousse_3.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 5186,
+      "alpha": true
+    },
+    "food/mango_cheese_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 6860,
+      "alpha": true
+    },
+    "food/mango_cheese_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 7034,
+      "alpha": true
+    },
+    "food/mango_cheese_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 6856,
+      "alpha": true
+    },
+    "food/mango_cheese_3.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 5721,
+      "alpha": true
+    },
+    "food/rainbow_crepe_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 7551,
+      "alpha": true
+    },
+    "food/rainbow_crepe_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 7296,
+      "alpha": true
+    },
+    "food/rainbow_crepe_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 6771,
+      "alpha": true
+    },
+    "food/rainbow_crepe_3.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 6729,
+      "alpha": true
+    },
+    "store/basket.png": {
+      "width": 360,
+      "height": 200,
+      "bytes": 12181,
+      "alpha": true
+    },
+    "store/checkout_machine.png": {
+      "width": 864,
+      "height": 920,
+      "bytes": 158320,
+      "alpha": true
+    },
+    "store/conveyor.png": {
+      "width": 1000,
+      "height": 240,
+      "bytes": 55451,
+      "alpha": true
+    },
+    "store/store_bg.jpg": {
+      "width": 1080,
+      "height": 2400,
+      "bytes": 46953,
+      "alpha": false
+    },
+    "food/blue_moon_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 17182,
+      "alpha": true
+    },
+    "food/blue_moon_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 17721,
+      "alpha": true
+    },
+    "food/blue_moon_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 15410,
+      "alpha": true
+    },
+    "food/choco_sundae_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 12526,
+      "alpha": true
+    },
+    "food/choco_sundae_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 11196,
+      "alpha": true
+    },
+    "food/choco_sundae_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 10601,
+      "alpha": true
+    },
+    "food/cookie_cream_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 11008,
+      "alpha": true
+    },
+    "food/cookie_cream_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 9280,
+      "alpha": true
+    },
+    "food/cookie_cream_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 8251,
+      "alpha": true
+    },
+    "food/grape_bunch_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 11781,
+      "alpha": true
+    },
+    "food/grape_bunch_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 9761,
+      "alpha": true
+    },
+    "food/grape_bunch_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 8339,
+      "alpha": true
+    },
+    "food/mango_cubes_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 11515,
+      "alpha": true
+    },
+    "food/mango_cubes_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 10817,
+      "alpha": true
+    },
+    "food/mango_cubes_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 8796,
+      "alpha": true
+    },
+    "food/mango_sorbet_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 13410,
+      "alpha": true
+    },
+    "food/mango_sorbet_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 12062,
+      "alpha": true
+    },
+    "food/mango_sorbet_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 11418,
+      "alpha": true
+    },
+    "food/pine_sticks_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 14517,
+      "alpha": true
+    },
+    "food/pine_sticks_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 11948,
+      "alpha": true
+    },
+    "food/pine_sticks_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 10182,
+      "alpha": true
+    },
+    "food/straw_plate_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 11271,
+      "alpha": true
+    },
+    "food/straw_plate_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 9497,
+      "alpha": true
+    },
+    "food/straw_plate_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 6679,
+      "alpha": true
+    },
+    "food/straw_swirl_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 12035,
+      "alpha": true
+    },
+    "food/straw_swirl_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 11158,
+      "alpha": true
+    },
+    "food/straw_swirl_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 9244,
+      "alpha": true
+    },
+    "ui/avatars.png": {
+      "width": 288,
+      "height": 144,
+      "bytes": 17001,
+      "alpha": true
+    },
+    "store/cashier_bear.png": {
+      "width": 256,
+      "height": 280,
+      "bytes": 23429,
+      "alpha": true
+    },
+    "ui/icons.png": {
+      "width": 384,
+      "height": 192,
+      "bytes": 22532,
+      "alpha": true
+    },
+    "ui/logo.png": {
+      "width": 900,
+      "height": 420,
+      "bytes": 140013,
+      "alpha": true
+    },
+    "ui/phone_stick.png": {
+      "width": 200,
+      "height": 360,
+      "bytes": 6815,
+      "alpha": true
+    },
+    "ui/reactions.png": {
+      "width": 256,
+      "height": 128,
+      "bytes": 13373,
+      "alpha": true
+    },
+    "food/berry_mix_0.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 13512,
+      "alpha": true
+    },
+    "food/berry_mix_1.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 11057,
+      "alpha": true
+    },
+    "food/berry_mix_2.png": {
+      "width": 256,
+      "height": 256,
+      "bytes": 7483,
+      "alpha": true
+    }
+  },
+  "atlases": {
+    "avatars": {
+      "image": "ui/avatars.png",
+      "cell": 72,
+      "frames": {
+        "cat": {
+          "x": 0,
+          "y": 0,
+          "w": 72,
+          "h": 72
+        },
+        "dog": {
+          "x": 72,
+          "y": 0,
+          "w": 72,
+          "h": 72
+        },
+        "bunny": {
+          "x": 144,
+          "y": 0,
+          "w": 72,
+          "h": 72
+        },
+        "duck": {
+          "x": 216,
+          "y": 0,
+          "w": 72,
+          "h": 72
+        },
+        "bear": {
+          "x": 0,
+          "y": 72,
+          "w": 72,
+          "h": 72
+        },
+        "frog": {
+          "x": 72,
+          "y": 72,
+          "w": 72,
+          "h": 72
+        },
+        "pig": {
+          "x": 144,
+          "y": 72,
+          "w": 72,
+          "h": 72
+        }
+      }
+    },
+    "icons": {
+      "image": "ui/icons.png",
+      "cell": 96,
+      "frames": {
+        "coin": {
+          "x": 0,
+          "y": 0,
+          "w": 96,
+          "h": 96
+        },
+        "star_on": {
+          "x": 96,
+          "y": 0,
+          "w": 96,
+          "h": 96
+        },
+        "star_off": {
+          "x": 192,
+          "y": 0,
+          "w": 96,
+          "h": 96
+        },
+        "heart": {
+          "x": 288,
+          "y": 0,
+          "w": 96,
+          "h": 96
+        },
+        "lock": {
+          "x": 0,
+          "y": 96,
+          "w": 96,
+          "h": 96
+        },
+        "eye": {
+          "x": 96,
+          "y": 96,
+          "w": 96,
+          "h": 96
+        },
+        "plus_coin": {
+          "x": 192,
+          "y": 96,
+          "w": 96,
+          "h": 96
+        }
+      }
+    },
+    "reactions": {
+      "image": "ui/reactions.png",
+      "cell": 64,
+      "frames": {
+        "heart": {
+          "x": 0,
+          "y": 0,
+          "w": 64,
+          "h": 64
+        },
+        "like": {
+          "x": 64,
+          "y": 0,
+          "w": 64,
+          "h": 64
+        },
+        "star": {
+          "x": 128,
+          "y": 0,
+          "w": 64,
+          "h": 64
+        },
+        "laugh": {
+          "x": 192,
+          "y": 0,
+          "w": 64,
+          "h": 64
+        },
+        "love": {
+          "x": 0,
+          "y": 64,
+          "w": 64,
+          "h": 64
+        },
+        "cool": {
+          "x": 64,
+          "y": 64,
+          "w": 64,
+          "h": 64
+        },
+        "smile": {
+          "x": 128,
+          "y": 64,
+          "w": 64,
+          "h": 64
+        }
+      }
+    }
+  },
+  "store": {
+    "shelf_board": {
+      "image": "store/shelf_board.png",
+      "opaqueScreenFinished": false
+    },
+    "basket": {
+      "image": "store/basket.png",
+      "opaqueScreenFinished": false,
+      "anchor": [
+        180,
+        64
+      ]
+    },
+    "checkout_machine": {
+      "image": "store/checkout_machine.png",
+      "screen": [
+        136,
+        248,
+        592,
+        352
+      ],
+      "slot": [
+        256,
+        715,
+        352,
+        80
+      ],
+      "opaqueScreenFinished": true
+    },
+    "conveyor": {
+      "image": "store/conveyor.png",
+      "opaqueScreenFinished": false,
+      "slice": [
+        40,
+        40,
+        920,
+        160
+      ]
+    },
+    "store_bg": {
+      "image": "store/store_bg.jpg"
+    },
+    "cashier_bear": {
+      "image": "store/cashier_bear.png",
+      "opaqueScreenFinished": false
+    }
+  },
+  "notes": [
+    "Approved Luna sweater revision 4; shared chew/sour expressions revision 3.",
+    "All anchors and atlas rectangles in 2x image pixels.",
+    "Bitmap art only; gameplay and loaders have not been changed."
+  ],
+  "ui": {
+    "logo": {
+      "image": "ui/logo.png",
+      "anchor": [
+        450,
+        210
+      ]
+    },
+    "phone_stick": {
+      "image": "ui/phone_stick.png",
+      "anchor": [
+        100,
+        350
+      ]
+    }
+  }
+}
