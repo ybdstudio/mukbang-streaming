@@ -1,0 +1,27 @@
+{
+  "iaa_config": {
+    "placements": [
+      { "label": "stream_end",  "ads": [ { "id": "<AD UNIT ID>", "config": { "cooldown": 90 } } ] },
+      { "label": "bonus_coins", "ads": [ { "id": "<AD UNIT ID>", "config": { "cooldown": 30 } } ] },
+      { "label": "free_coins",  "ads": [ { "id": "<AD UNIT ID>", "config": { "cooldown": 30 } } ] }
+    ],
+    "rewards": {
+      "level_bonus":     { "coins": 150 },
+      "first_stream":    { "coins": 200, "$limit": "once" },
+      "bonus_coins":     { "coins": 300 },
+      "free_coins":      { "coins": 200 },
+      "share":           { "coins": 100, "$limit": "daily" },
+      "tiktok_shortcut": { "coins": 300 },
+      "tiktok_profile":  { "coins": 300 }
+    },
+    "items": {
+      "coins":  { "category": "currency", "name": "Coins" },
+      "no_ads": { "category": "unlock",   "name": "No Ads" }
+    }
+  },
+  "products": [
+    { "id": 1, "name": "Coin pouch", "description": "1,000 coins for the supermarket", "beans_cost": 10, "rewards": { "coins": 1000 }, "badge": "POPULAR" },
+    { "id": 2, "name": "Coin chest", "description": "5,000 coins — a whole week of streams", "beans_cost": 40, "rewards": { "coins": 5000 }, "badge": "BEST VALUE" },
+    { "id": 3, "name": "No Ads", "description": "Remove the ads between streams forever", "beans_cost": 30, "rewards": { "no_ads": 1 }, "consumable": false }
+  ]
+}

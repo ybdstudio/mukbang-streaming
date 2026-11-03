@@ -1,0 +1,6 @@
+{
+  "appid": "",
+  "projectname": "mukbang-bang",
+  "description": "Mukbang Bang - shop, scan, and eat on a live stream",
+  "setting": { "es6": true, "minified": true }
+}
