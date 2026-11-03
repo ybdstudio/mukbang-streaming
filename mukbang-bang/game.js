@@ -15,6 +15,9 @@ var DEFAULTS = {
     bonus_coins:     { coins: 300 },                      // rewarded ad place on the result screen
     free_coins:      { coins: 200 },                      // rewarded ad place behind the "+" next to the coins
     fan_gift:        { coins: 300 },                      // rewarded ad place: a fan's gift between bites on the stream
+    // no entries for "serve_bonus" (hot start: +viewers), "extra_hype" (+viewers before the finale),
+    // "unlock_level" (opens the next level early), "unlock_look" (a level-gift look early): those ads only change play
+    // no "cook_step" entry: an interstitial between cooking steps gives nothing
     // no entry for "rare_choice": that ad only unlocks a rare ingredient for this dish (counts as the requested one)
     // no entries for "surprise_food", "fashion_reward", "viral_boost": those ads only let the game go on
     // (a rare-food bonus stream / a wardrobe item / a hype boost for this stream) — watched = {} → continue
@@ -138,6 +141,16 @@ var hs = {
   canShowFanGift: function () { return HSGame.canShowAd('fan_gift'); },
   showFanGift: function () { return HSGame.showAd('fan_gift'); },
   rewardsFanGift: function () { return HSGame.rewards('fan_gift'); },
+  canShowCookStep: function () { return HSGame.canShowAd('cook_step'); },
+  showCookStep: function () { return HSGame.showAd('cook_step'); },
+  canShowServe: function () { return HSGame.canShowAd('serve_bonus'); },
+  showServe: function () { return HSGame.showAd('serve_bonus'); },
+  canShowHype: function () { return HSGame.canShowAd('extra_hype'); },
+  showHype: function () { return HSGame.showAd('extra_hype'); },
+  canShowUnlockLevel: function () { return HSGame.canShowAd('unlock_level'); },
+  showUnlockLevel: function () { return HSGame.showAd('unlock_level'); },
+  canShowUnlockLook: function () { return HSGame.canShowAd('unlock_look'); },
+  showUnlockLook: function () { return HSGame.showAd('unlock_look'); },
   canShowRare: function () { return HSGame.canShowAd('rare_choice'); },
   showRare: function () { return HSGame.showAd('rare_choice'); },
   canShowSurprise: function () { return HSGame.canShowAd('surprise_food'); },

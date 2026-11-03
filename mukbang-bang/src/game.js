@@ -214,6 +214,8 @@ class Game {
       case 'bonus_ad': this.watchBonus(); break;
       case 'cook_go': if (this.state === 'stream' && this.run && this.run.phase === 'request') this.enterCook(); break;
       case 'fangift_ad': this.watchFanGift(); break;
+      case 'hype_ad': this.watchHype(); break;
+      case 'unlock_level_ad': this.watchUnlockLevel(); break;
       case 'surprise_ad': this.watchSurprise(); break;
       case 'boost_ad': this.watchBoost(); break;
       case 'fashion_ad': this.watchFashion(); break;
@@ -310,6 +312,34 @@ class Game {
     const r = this.run; if (this.adBusy || !r || r.giftAd || r.phase !== 'open' || !this.canFanGift()) return;
     const self = this; r.giftAd = true;
     this.adRun('fan_gift', this.hs.showFanGift(), function (res) { if (res === null) { if (self.run) self.run.giftAd = false; self.showToast('No ad right now'); return; } self.spawnConfetti(self.W / 2, self.H * 0.3, 30); self.audio.play('cash'); for (let i = 0; i < 8; i++) self.spawnHeart(true); self.saveRun(); });
+  }
+  watchHype() {
+    const r = this.run; if (this.adBusy || !r || r.hyped || r.phase !== 'open' || !this.canHype()) return;
+    const self = this; r.hyped = true;
+    this.adRun('extra_hype', this.hs.showHype(), function (res) {
+      const run = self.run; if (!run) return; if (res === null) { run.hyped = false; self.showToast('No ad right now'); return; }
+      const v = Math.round(run.goal * 0.5); self.addViewers(v); for (let i = 0; i < 12; i++) self.spawnHeart(true); self.floatText('EXTRA HYPE!  +' + U.fmtViewers(v), self.W / 2, self.H * 0.47, C.gold, 28, true); self.audio.play('levelup'); self.saveRun();
+    });
+  }
+  // unlock the next locked level early (levels screen); the level bonus still pays once, when it is cleared
+  nextLockedLevel() { const n = this.curLevel() + 1; return n <= L.LEVEL_COUNT ? n : 0; }
+  canUnlockLevel() { return this.hs.hasAds() && this.nextLockedLevel() > 0 && (this.profile.get('streams') || 0) >= 2 && this.hs.canShowUnlockLevel && this.hs.canShowUnlockLevel(); }
+  watchUnlockLevel() {
+    if (this.adBusy || !this.canUnlockLevel()) return; const n = this.nextLockedLevel();
+    const self = this; this.adRun('unlock_level', this.hs.showUnlockLevel(), function (r) {
+      if (r === null) { self.showToast('No ad right now'); return; }
+      if (self.profile.get('level') < n) self.profile.set('level', n); self.run = null; self.saveRun(); self.audio.play('levelup'); self.spawnConfetti(self.W / 2, self.H * 0.4, 40); self.showToast('LEVEL ' + n + ' UNLOCKED!', L.level(n).title);
+    });
+  }
+  // unlock a level-gift look early (wardrobe)
+  canUnlockLook() { return this.hs.hasAds() && this.hs.canShowUnlockLook && this.hs.canShowUnlockLook(); }
+  watchUnlockLook(id) {
+    if (this.adBusy || !this.canUnlockLook()) return false;
+    const self = this; this.adRun('unlock_look', this.hs.showUnlockLook(), function (r) {
+      if (r === null) { self.showToast('No ad right now'); return; }
+      WR.grant(self.profile, id); WR.equip(self.profile, self.streamerDef().id, id); self.audio.play('levelup'); self.spawnConfetti(self.W / 2, self.H * 0.3, 40); self.showToast('NEW LOOK: ' + WR.BY_ID[id].name.toUpperCase(), 'Unlocked early!');
+    });
+    return true;
   }
   // fashion reward: an ad that gives one wardrobe item you do not own yet (shop items only; level gifts stay level gifts)
   fashionPool() { const s = WR.state(this.profile), out = []; for (let i = 0; i < WR.ITEMS.length; i++) { const it = WR.ITEMS[i]; if (it.price > 0 && s.own.indexOf(it.id) < 0) out.push(it.id); } return out; }
@@ -427,6 +457,7 @@ class Game {
       const open = n <= unlocked; const lvn = L.level(n); const bgi = lvn.view; const col = [C.blue, C.pink, C.lavender, C.yellow, C.mint][bgi], dk = [C.blueDark, C.pinkDark, C.lavenderDark, C.yellowDark, C.mintDark][bgi];
       ui.button('lvl' + n, x, y, cw, ch, open ? String(n) : '', { color: open ? col : '#e0d6d6', dark: open ? dk : '#bfb0b0', disabled: !open, size: 28, radius: 18, icon: open ? null : function (c, w, h) { A.lock(c, w / 2, h / 2, 26); } });
       if (open) { const s = st[n] || 0; for (let k = 0; k < 3; k++) A.uiStar(ctx, x + cw / 2 + (k - 1) * 18, y + ch - 16, 7, k < s, 'rgba(255,255,255,0.6)', 2); }
+      else if (n === this.nextLockedLevel() && this.canUnlockLevel()) { A.rr(ctx, x + 6, y + ch - 30, cw - 12, 24, 12); ctx.fillStyle = C.blue; ctx.fill(); ui.label('▶ UNLOCK', x + cw / 2, y + ch - 18, 11, C.white); ui.hotspot('unlock_level_ad', x, y, cw, ch); }
     }
     const by = gy + 3 * (ch + 10) + 10;
     const pages = Math.ceil(L.LEVEL_COUNT / 15), pw = (W - 60 - (pages - 1) * 10) / pages;

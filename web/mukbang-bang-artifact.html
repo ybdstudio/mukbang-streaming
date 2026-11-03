@@ -593,6 +593,9 @@ var DEFAULTS = {
     bonus_coins:     { coins: 300 },                      // rewarded ad place on the result screen
     free_coins:      { coins: 200 },                      // rewarded ad place behind the "+" next to the coins
     fan_gift:        { coins: 300 },                      // rewarded ad place: a fan's gift between bites on the stream
+    // no entries for "serve_bonus" (hot start: +viewers), "extra_hype" (+viewers before the finale),
+    // "unlock_level" (opens the next level early), "unlock_look" (a level-gift look early): those ads only change play
+    // no "cook_step" entry: an interstitial between cooking steps gives nothing
     // no entry for "rare_choice": that ad only unlocks a rare ingredient for this dish (counts as the requested one)
     // no entries for "surprise_food", "fashion_reward", "viral_boost": those ads only let the game go on
     // (a rare-food bonus stream / a wardrobe item / a hype boost for this stream) — watched = {} → continue
@@ -716,6 +719,16 @@ var hs = {
   canShowFanGift: function () { return HSGame.canShowAd('fan_gift'); },
   showFanGift: function () { return HSGame.showAd('fan_gift'); },
   rewardsFanGift: function () { return HSGame.rewards('fan_gift'); },
+  canShowCookStep: function () { return HSGame.canShowAd('cook_step'); },
+  showCookStep: function () { return HSGame.showAd('cook_step'); },
+  canShowServe: function () { return HSGame.canShowAd('serve_bonus'); },
+  showServe: function () { return HSGame.showAd('serve_bonus'); },
+  canShowHype: function () { return HSGame.canShowAd('extra_hype'); },
+  showHype: function () { return HSGame.showAd('extra_hype'); },
+  canShowUnlockLevel: function () { return HSGame.canShowAd('unlock_level'); },
+  showUnlockLevel: function () { return HSGame.showAd('unlock_level'); },
+  canShowUnlockLook: function () { return HSGame.canShowAd('unlock_look'); },
+  showUnlockLook: function () { return HSGame.showAd('unlock_look'); },
   canShowRare: function () { return HSGame.canShowAd('rare_choice'); },
   showRare: function () { return HSGame.showAd('rare_choice'); },
   canShowSurprise: function () { return HSGame.canShowAd('surprise_food'); },
@@ -4108,7 +4121,7 @@ function install(Game) {
   const P = Game.prototype;
   P.enterCook = function () {
     const r = this.run, lv = L.level(r.level), rc = R.RECIPES[lv.recipe];
-    this.ck = { lv: lv, rc: rc, req: lv.request, dish: { recipe: lv.recipe }, step: 0, sel: null, prog: 0, st: { fill: 0, set: false, flipped: false, tops: 0, deco: 0 }, holdId: null, rub: null, flipT: -1, doneT: -1, t: 0, perfect: false, opts: null, rare: null, rareKey: null, rareUsed: false };
+    this.ck = { lv: lv, rc: rc, req: lv.request, dish: { recipe: lv.recipe }, step: 0, sel: null, prog: 0, st: { fill: 0, set: false, flipped: false, tops: 0, deco: 0 }, holdId: null, rub: null, flipT: -1, doneT: -1, t: 0, perfect: false, opts: null, rare: null, rareKey: null, rareUsed: false, stepAd: false, serveAsk: false };
     this.trans = 0.4; this.audio.play('whoosh'); this.prepStep(); this.setState('cook');
   };
   P.curCookStep = function () { const k = this.ck; return k.rc.steps[k.step]; };
@@ -4136,11 +4149,29 @@ function install(Game) {
   P.cookTap = function (id) {
     const k = this.ck; if (!k || this.state !== 'cook') return false;
     if (id.indexOf('cko_') === 0) { const st = this.curCookStep(); if (!st || st.t !== 'pick') return true; const oid = id.slice(4); k.sel = oid; k.dish[SLOT_KEY[st.slot]] = oid; this.audio.play('pop'); this.vibrate('short'); return true; }
-    if (id === 'ck_ok') { if (k.sel) this.cookNext(); return true; }
+    if (id === 'ck_ok') { if (!k.sel) return true; const mid = k.step >= 2 && !k.stepAd; this.cookNext(); if (mid) this.cookStepAd(); return true; }
+    if (id === 'ck_serve') { if (k.serveAsk) this.cookServed(); return true; }
+    if (id === 'ck_hot') { this.watchServe(); return true; }
     if (id === 'ck_rare') { this.watchRare(); return true; }
     return false;
   };
   // rare choice: the viewers love a rare ingredient — it counts as what they asked for
+  // interstitial between cooking steps: once per dish, at a ✓ in the middle of the recipe (a tap, a natural pause)
+  P.cookStepAd = function () {
+    const k = this.ck; k.stepAd = true;
+    if (this.noAds() || this.adBusy || (this.profile.get('streams') || 0) < 4 || !this.hs.hasAds() || !this.hs.canShowCookStep || !this.hs.canShowCookStep()) return;
+    this.adRun('cook_step', this.hs.showCookStep(), function () {});
+  };
+  // serve: after PERFECT the player taps SERVE, or watches an ad for a HOT START (+40% viewers when the stream resumes)
+  P.canServe = function () { return this.hs.hasAds() && this.hs.canShowServe && (this.profile.get('streams') || 0) >= 2 && this.hs.canShowServe(); };
+  P.watchServe = function () {
+    const k = this.ck; if (!k || !k.serveAsk || this.adBusy || !this.canServe()) return;
+    const self = this; this.adRun('serve_bonus', this.hs.showServe(), function (r) {
+      if (self.ck !== k) return;
+      if (r === null) { self.showToast('No ad right now'); return; }
+      self.cookServed(true);
+    });
+  };
   P.canRare = function () { return this.hs.hasAds() && this.hs.canShowRare && (this.profile.get('streams') || 0) >= 3 && this.hs.canShowRare(); };
   P.watchRare = function () {
     const k = this.ck; if (!k || !k.rare || k.rareUsed || this.adBusy || !this.canRare()) return;
@@ -4171,16 +4202,17 @@ function install(Game) {
   };
   P.updateCook = function (dt) {
     const k = this.ck; if (!k) return; k.t += dt;
-    if (k.doneT >= 0) { k.doneT += dt; if (k.doneT >= DONE_T) this.cookServed(); return; }
+    if (k.doneT >= 0) { k.doneT += dt; if (k.doneT >= DONE_T && !k.serveAsk) { if (this.canServe()) k.serveAsk = true; else this.cookServed(); } return; }
     const st = this.curCookStep(); if (!st) return;
     if (st.t === 'pour' && k.holdId !== null) { k.st.fill = Math.min(1, k.st.fill + dt / POUR_T); if (Math.random() < dt * 6) this.audio.play('gulp', { gain: 0.25, minGap: 0.2 }); if (k.st.fill >= 1) { k.holdId = null; this.cookNext(); } }
     if (st.t === 'hold' && k.holdId !== null) { k.prog = Math.min(1, k.prog + dt / HOLD_T); if (Math.random() < dt * 5) this.audio.play(st.tool === 'fire' || st.tool === 'oven' ? 'fire' : st.tool === 'fan' ? 'shiver' : 'fizz', { gain: 0.25, minGap: 0.25 }); if (k.prog >= 1) { k.holdId = null; k.st.set = true; this.cookNext(); } }
     if (st.t === 'flip' && k.flipT >= 0) { k.flipT += dt; if (k.flipT >= FLIP_T) { k.flipT = -1; k.st.flipped = true; this.audio.play('drop'); this.vibrate('short'); this.cookNext(); } }
   };
   // the dish is ready → back to the stream, served as 3 portions
-  P.cookServed = function () {
-    const k = this.ck; const r = this.run; this.ck = null;
+  P.cookServed = function (hot) {
+    const k = this.ck; const r = this.run; if (!k) return; this.ck = null;
     r.dish = Object.assign({}, k.dish); r.perfect = k.perfect; r.phase = 'open'; r.pt = 0;
+    if (hot) { r.hotStart = true; this.addViewers(Math.round(r.goal * 0.4)); for (let i = 0; i < 10; i++) this.spawnHeart(true); this.floatText('HOT START!  +' + U.fmtViewers(Math.round(r.goal * 0.4)), this.W / 2, this.H * 0.4, C.gold, 28, true); this.audio.play('levelup'); }
     this.trans = 0.4; this.saveRun(); this.setState('stream');
     this.floatText(k.perfect ? 'JUST LIKE THEY ASKED!' : 'SERVED!', this.W / 2, this.H * 0.47, C.gold, 26, true);
     this.setFace('open', 1.2); for (let i = 0; i < 3; i++) this.pushChat('bite');
@@ -4226,6 +4258,7 @@ function install(Game) {
       const t = k.doneT; ui.dim(Math.min(0.35, t)); const s = U.easeOutBack(Math.min(1, t * 2.5));
       ctx.save(); ctx.translate(W / 2, H * 0.24); ctx.scale(s, s); A.rr(ctx, -170, -44, 340, 88, 40); ctx.fillStyle = C.pink; ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = C.pinkDark; ctx.stroke(); ui.title(k.perfect ? 'PERFECT!' : 'YUMMY!', 0, 2, 46, C.white, C.pinkDark); ctx.restore();
       ui.label(k.perfect ? 'exactly what the viewer asked for!' : 'not what they asked, but it looks so good!', W / 2, H * 0.24 + 66, 15, C.white, 'center', { stroke: 4 });
+      if (k.serveAsk) { const by = H * 0.24 + 100; ui.button('ck_serve', W * 0.12, by, W * 0.36, 64, 'SERVE', { color: C.yellow, dark: C.yellowDark, size: 22 }); ui.button('ck_hot', W * 0.52, by, W * 0.36, 64, '▶ HOT START', { color: C.pink, dark: C.pinkDark, size: 18 }); ui.label('+40% viewers when you go live', W * 0.7, by + 82, 13, C.white, 'center', { stroke: 4 }); }
       R.draw(ctx, A, k.dish, W / 2, H * 0.48, a.r * 1.7, k.st);
     }
   };
@@ -4603,6 +4636,8 @@ class Game {
       case 'bonus_ad': this.watchBonus(); break;
       case 'cook_go': if (this.state === 'stream' && this.run && this.run.phase === 'request') this.enterCook(); break;
       case 'fangift_ad': this.watchFanGift(); break;
+      case 'hype_ad': this.watchHype(); break;
+      case 'unlock_level_ad': this.watchUnlockLevel(); break;
       case 'surprise_ad': this.watchSurprise(); break;
       case 'boost_ad': this.watchBoost(); break;
       case 'fashion_ad': this.watchFashion(); break;
@@ -4699,6 +4734,34 @@ class Game {
     const r = this.run; if (this.adBusy || !r || r.giftAd || r.phase !== 'open' || !this.canFanGift()) return;
     const self = this; r.giftAd = true;
     this.adRun('fan_gift', this.hs.showFanGift(), function (res) { if (res === null) { if (self.run) self.run.giftAd = false; self.showToast('No ad right now'); return; } self.spawnConfetti(self.W / 2, self.H * 0.3, 30); self.audio.play('cash'); for (let i = 0; i < 8; i++) self.spawnHeart(true); self.saveRun(); });
+  }
+  watchHype() {
+    const r = this.run; if (this.adBusy || !r || r.hyped || r.phase !== 'open' || !this.canHype()) return;
+    const self = this; r.hyped = true;
+    this.adRun('extra_hype', this.hs.showHype(), function (res) {
+      const run = self.run; if (!run) return; if (res === null) { run.hyped = false; self.showToast('No ad right now'); return; }
+      const v = Math.round(run.goal * 0.5); self.addViewers(v); for (let i = 0; i < 12; i++) self.spawnHeart(true); self.floatText('EXTRA HYPE!  +' + U.fmtViewers(v), self.W / 2, self.H * 0.47, C.gold, 28, true); self.audio.play('levelup'); self.saveRun();
+    });
+  }
+  // unlock the next locked level early (levels screen); the level bonus still pays once, when it is cleared
+  nextLockedLevel() { const n = this.curLevel() + 1; return n <= L.LEVEL_COUNT ? n : 0; }
+  canUnlockLevel() { return this.hs.hasAds() && this.nextLockedLevel() > 0 && (this.profile.get('streams') || 0) >= 2 && this.hs.canShowUnlockLevel && this.hs.canShowUnlockLevel(); }
+  watchUnlockLevel() {
+    if (this.adBusy || !this.canUnlockLevel()) return; const n = this.nextLockedLevel();
+    const self = this; this.adRun('unlock_level', this.hs.showUnlockLevel(), function (r) {
+      if (r === null) { self.showToast('No ad right now'); return; }
+      if (self.profile.get('level') < n) self.profile.set('level', n); self.run = null; self.saveRun(); self.audio.play('levelup'); self.spawnConfetti(self.W / 2, self.H * 0.4, 40); self.showToast('LEVEL ' + n + ' UNLOCKED!', L.level(n).title);
+    });
+  }
+  // unlock a level-gift look early (wardrobe)
+  canUnlockLook() { return this.hs.hasAds() && this.hs.canShowUnlockLook && this.hs.canShowUnlockLook(); }
+  watchUnlockLook(id) {
+    if (this.adBusy || !this.canUnlockLook()) return false;
+    const self = this; this.adRun('unlock_look', this.hs.showUnlockLook(), function (r) {
+      if (r === null) { self.showToast('No ad right now'); return; }
+      WR.grant(self.profile, id); WR.equip(self.profile, self.streamerDef().id, id); self.audio.play('levelup'); self.spawnConfetti(self.W / 2, self.H * 0.3, 40); self.showToast('NEW LOOK: ' + WR.BY_ID[id].name.toUpperCase(), 'Unlocked early!');
+    });
+    return true;
   }
   // fashion reward: an ad that gives one wardrobe item you do not own yet (shop items only; level gifts stay level gifts)
   fashionPool() { const s = WR.state(this.profile), out = []; for (let i = 0; i < WR.ITEMS.length; i++) { const it = WR.ITEMS[i]; if (it.price > 0 && s.own.indexOf(it.id) < 0) out.push(it.id); } return out; }
@@ -4816,6 +4879,7 @@ class Game {
       const open = n <= unlocked; const lvn = L.level(n); const bgi = lvn.view; const col = [C.blue, C.pink, C.lavender, C.yellow, C.mint][bgi], dk = [C.blueDark, C.pinkDark, C.lavenderDark, C.yellowDark, C.mintDark][bgi];
       ui.button('lvl' + n, x, y, cw, ch, open ? String(n) : '', { color: open ? col : '#e0d6d6', dark: open ? dk : '#bfb0b0', disabled: !open, size: 28, radius: 18, icon: open ? null : function (c, w, h) { A.lock(c, w / 2, h / 2, 26); } });
       if (open) { const s = st[n] || 0; for (let k = 0; k < 3; k++) A.uiStar(ctx, x + cw / 2 + (k - 1) * 18, y + ch - 16, 7, k < s, 'rgba(255,255,255,0.6)', 2); }
+      else if (n === this.nextLockedLevel() && this.canUnlockLevel()) { A.rr(ctx, x + 6, y + ch - 30, cw - 12, 24, 12); ctx.fillStyle = C.blue; ctx.fill(); ui.label('▶ UNLOCK', x + cw / 2, y + ch - 18, 11, C.white); ui.hotspot('unlock_level_ad', x, y, cw, ch); }
     }
     const by = gy + 3 * (ch + 10) + 10;
     const pages = Math.ceil(L.LEVEL_COUNT / 15), pw = (W - 60 - (pages - 1) * 10) / pages;
@@ -5862,7 +5926,7 @@ function install(Game) {
   // ── save / resume (run_json v3; older runs are dropped — the level itself is kept) ──
   P.saveRun = function () {
     const r = this.run; if (!r) { this.profile.set('run_json', ''); return; }
-    const o = {}; const keys = ['v', 'level', 'side', 'food', 'recipe', 'request', 'dish', 'perfect', 'giftAd', 'pack', 'loc', 'view', 'event', 'toppings', 'cost', 'cpb', 'goal', 'goal3', 'start', 'hu', 'viewers', 'peak', 'coins', 'pickups', 'bites', 'phase', 'hearts', 'giftTaken', 'eventDone', 'goalLevel'];
+    const o = {}; const keys = ['v', 'level', 'side', 'food', 'recipe', 'request', 'dish', 'perfect', 'giftAd', 'hyped', 'hotStart', 'pack', 'loc', 'view', 'event', 'toppings', 'cost', 'cpb', 'goal', 'goal3', 'start', 'hu', 'viewers', 'peak', 'coins', 'pickups', 'bites', 'phase', 'hearts', 'giftTaken', 'eventDone', 'goalLevel'];
     for (let i = 0; i < keys.length; i++) o[keys[i]] = r[keys[i]];
     o.viewers = Math.round(o.viewers); o.peak = Math.round(o.peak);
     this.profile.set('run_json', JSON.stringify(o));
@@ -6078,7 +6142,8 @@ function install(Game) {
       if (!still) {
         if (ph === 'sealed') ui.label('TAP · ' + L.PACK_INFO[r.pack].open + '!', W / 2, pk.y - pk.size * 0.62, 20, C.white, 'center', { stroke: 6 });
         else if (ph === 'open') ui.label(r.pickups === 0 ? 'TAP OR DRAG A PLATE TO HER MOUTH' : 'NEXT ONE!  (' + (r.pickups + 1) + '/' + PICKUPS + ')', W / 2, pk.y - pk.size * 0.62 - (r.recipe ? 10 : 0), r.pickups === 0 ? 17 : 20, C.white, 'center', { stroke: 6 });
-        if (ph === 'open' && r.pickups >= 1 && !r.giftAd && this.canFanGift()) this.drawFanGiftBtn();
+        const hypeOk = ph === 'open' && r.pickups === PICKUPS - 1 && !r.hyped && this.canHype();
+        if (hypeOk) this.drawHypeBtn(); else if (ph === 'open' && r.pickups >= 1 && !r.giftAd && this.canFanGift()) this.drawFanGiftBtn();
       }
       // fan gift
       if (r.gift && !r.giftTaken) { const g = r.gift; const drop = Math.min(1, g.t * 2.5); A.mysteryBox(ctx, g.x, U.lerp(-60, g.y, U.easeOutCubic(drop)), 90, this.time, 0, true); if (drop >= 1) ui.label('TAP!', g.x, g.y + 56, 15, C.white, 'center', { stroke: 4 }); }
@@ -6123,6 +6188,13 @@ function install(Game) {
     if (r.level === 1 && (this.profile.get('streams') || 0) === 0) { const fx = W * 0.7 + Math.sin(this.time * 4) * 6, fy = by + 60 + Math.cos(this.time * 4) * 6; A.circle(ctx, fx, fy, 16, 'rgba(255,255,255,0.85)', 3); ui.label('TAP!', fx, fy + 30, 14, C.white, 'center', { stroke: 4 }); }
   };
   P.canFanGift = function () { return this.hs.hasAds() && this.hs.canShowFanGift && this.hs.canShowFanGift() && (this.profile.get('streams') || 0) >= 2; };
+  // extra hype: before the stream ends (last plate) an opt-in ad pushes the viewers up for the finale
+  P.canHype = function () { const r = this.run; return this.hs.hasAds() && r && !!r.recipe && !r.side && this.hs.canShowHype && (this.profile.get('streams') || 0) >= 2 && this.hs.canShowHype(); };
+  P.drawHypeBtn = function () {
+    const ui = this.ui, ctx = this.ctx, W = this.W, top = this.top(), y = top + 120;
+    ui.panel(24, y, W - 150, 54, '#fff3c4', C.goldDark, 20, 3); A.star(ctx, 52, y + 27, 15, C.gold, 3); ui.label('LAST PLATE! Go viral?', 80, y + 20, 13, C.text, 'left'); ui.label('+50% viewers for the finale', 80, y + 39, 12, C.pinkDark, 'left');
+    ui.button('hype_ad', W - 170, y + 6, 120, 42, '▶ HYPE', { color: C.pink, dark: C.pinkDark, size: 17 });
+  };
   P.drawFanGiftBtn = function () {
     const ui = this.ui, ctx = this.ctx, W = this.W, top = this.top(), y = top + 120;
     ui.panel(24, y, W - 150, 54, '#ffe6f0', C.pinkDark, 20, 3); A.avatar(ctx, 'bear', 52, y + 27, 17); ui.label('I have a gift for you!', 80, y + 20, 13, C.text, 'left'); const g = this.hs.rewardsFanGift ? this.hs.rewardsFanGift() : null; ui.label(g ? this.itemsText(g) : '', 80, y + 39, 12, C.goldDark, 'left');
@@ -6334,7 +6406,7 @@ function install(Game) {
   P.wardItem = function (id) {
     const it = WR.BY_ID[id]; if (!it) return; const p = this.profile, s = WR.state(p), sid = this.streamerDef().id;
     if (WR.owns(s, id)) { WR.equip(p, sid, id); this.audio.play('pop'); this.spawnSparkles(this.W / 2, this.H * 0.28, 10); return; }
-    if (it.gift) { this.audio.play('error'); this.showToast('A gift at stream ' + it.gift, 'Keep streaming to unlock it'); return; }
+    if (it.gift) { if (this.watchUnlockLook(id)) return; this.audio.play('error'); this.showToast('A gift at stream ' + it.gift, 'Keep streaming to unlock it'); return; }
     const r = WR.buy(p, id);
     if (r === 'coins') { this.audio.play('error'); this.showToast('Need ' + U.fmtCoins(it.price) + ' coins'); return; }
     if (r === 'ok') { WR.equip(p, sid, id); this.audio.play('cash'); this.spawnConfetti(this.W / 2, this.H * 0.3, 30); this.showToast('NEW LOOK: ' + it.name.toUpperCase()); }
@@ -6368,7 +6440,7 @@ function install(Game) {
       ui.panel(x, yy, cw, chh, on ? '#eafff0' : owned ? '#fff' : '#f4eef0', on ? C.greenDark : C.outline, 16, on ? 5 : 2);
       this.wardIcon(it, x + cw / 2, yy + 40, sd);
       ui.label(it.name, x + cw / 2, yy + 76, 11, C.text);
-      ui.label(on ? 'WEARING' : owned ? 'TAP TO WEAR' : it.gift ? 'GIFT · LV ' + it.gift : '', x + cw / 2, yy + 93, 10, on ? C.greenDark : owned ? C.textLight : C.pinkDark);
+      ui.label(on ? 'WEARING' : owned ? 'TAP TO WEAR' : it.gift ? (this.canUnlockLook() ? '▶ UNLOCK · LV ' + it.gift : 'GIFT · LV ' + it.gift) : '', x + cw / 2, yy + 93, 10, on ? C.greenDark : owned ? C.textLight : C.pinkDark);
       if (!owned && it.price) { A.coin(ctx, x + cw / 2 - 18, yy + 93, 7); ui.label(U.fmtCoins(it.price), x + cw / 2 + 4, yy + 94, 12, C.text, 'left'); }
       ui.hotspot('witem_' + it.id, x, yy, cw, chh);
     }

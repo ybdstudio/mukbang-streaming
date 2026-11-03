@@ -88,6 +88,61 @@
             }
           }
         ]
+      },
+      {
+        "label": "cook_step",
+        "ads": [
+          {
+            "id": "<AD UNIT ID>",
+            "config": {
+              "cooldown": 30
+            }
+          }
+        ]
+      },
+      {
+        "label": "serve_bonus",
+        "ads": [
+          {
+            "id": "<AD UNIT ID>",
+            "config": {
+              "cooldown": 30
+            }
+          }
+        ]
+      },
+      {
+        "label": "extra_hype",
+        "ads": [
+          {
+            "id": "<AD UNIT ID>",
+            "config": {
+              "cooldown": 30
+            }
+          }
+        ]
+      },
+      {
+        "label": "unlock_level",
+        "ads": [
+          {
+            "id": "<AD UNIT ID>",
+            "config": {
+              "cooldown": 30
+            }
+          }
+        ]
+      },
+      {
+        "label": "unlock_look",
+        "ads": [
+          {
+            "id": "<AD UNIT ID>",
+            "config": {
+              "cooldown": 30
+            }
+          }
+        ]
       }
     ],
     "rewards": {

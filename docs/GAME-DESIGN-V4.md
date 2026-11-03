@@ -42,40 +42,44 @@ Ví dụ Jelly: chọn khuôn → chọn vị → rót → làm lạnh (quạt) 
 - Tủ đồ mở ở màn 6; quà trang phục ở các màn 13/16/19/22/24/27/29/31/34/36/38/40. Streamer Kiko mở ở màn 10, Momo ở màn 20.
 - Mục tiêu viewer tăng dần từ 500 lên khoảng 1 triệu. Xu mỗi miếng = 6 + 2n. Thưởng mission = 100 + 20n.
 
-## 5. Quảng cáo (8 vị trí, cooldown 30 s trên dashboard)
+## 5. Quảng cáo (13 vị trí, cooldown 30 s trên dashboard)
 
-| Vị trí | Loại | Khi nào | Phần thưởng |
-|---|---|---|---|
-| stream_end | interstitial | chạm NEXT, từ stream thứ 4 | không |
-| bonus_coins | rewarded | màn kết quả | dashboard (300 xu) |
-| free_coins | rewarded | nút "+" cạnh số xu | dashboard (200) |
-| fan_gift | rewarded | giữa các đĩa (không hiện khi đang nhai), 1 lần mỗi stream | dashboard (300) |
-| **rare_choice** (mới) | rewarded | ô ▶ RARE trong khay chọn, 1 lần mỗi món, từ stream thứ 4 | không có giá trị: dùng nguyên liệu hiếm (của level sau), được tính như đúng yêu cầu → PERFECT |
-| viral_boost | rewarded | gói đồ ăn còn niêm phong (hoạt động phụ) | không (+25% viewer) |
-| surprise_food | rewarded | màn nhà | không (stream thưởng món hiếm) |
-| fashion_reward | rewarded | tủ đồ | không (1 món đồ) |
+| # | Vị trí | Loại | Ở đâu / khi nào | Người chơi nhận |
+|---|---|---|---|---|
+| 1 | stream_end | interstitial | chạm NEXT / HOME / REPLAY ở màn kết quả, từ stream thứ 4 | — |
+| 2 | **cook_step** | interstitial | chạm ✓ ở giữa công thức (từ bước 3), 1 lần mỗi món, từ stream thứ 5; tắt với No Ads | — |
+| 3 | bonus_coins | rewarded | màn kết quả | xu (dashboard, 300) |
+| 4 | free_coins | rewarded | nút "+" cạnh số xu | xu (dashboard, 200) |
+| 5 | fan_gift | rewarded | stream: sau đĩa 1, 1 lần mỗi stream | xu (dashboard, 300) |
+| 6 | rare_choice | rewarded | ô ▶ RARE trong khay chọn, 1 lần mỗi món | nguyên liệu hiếm, tính là đúng yêu cầu |
+| 7 | **serve_bonus** | rewarded | sau PERFECT/YUMMY: SERVE hoặc ▶ HOT START | stream bắt đầu với +40% goal viewer |
+| 8 | **extra_hype** | rewarded | stream: đĩa cuối, trước finale, 1 lần mỗi stream | +50% goal viewer → dễ đạt 2–3★ |
+| 9 | **unlock_level** | rewarded | màn LEVELS: ô ▶ UNLOCK trên level khóa kế tiếp | mở level sớm (thưởng level vẫn trả 1 lần khi qua) |
+| 10 | **unlock_look** | rewarded | tủ đồ: đồ quà-level (▶ UNLOCK · LV n) | nhận món đồ sớm, tự mặc |
+| 11 | fashion_reward | rewarded | tủ đồ: WATCH AD: FREE NEW LOOK | 1 món đồ shop ngẫu nhiên |
+| 12 | viral_boost | rewarded | gói đồ ăn còn niêm phong (hoạt động phụ) | +25% viewer |
+| 13 | surprise_food | rewarded | màn nhà | stream thưởng món hiếm |
 
-Game không bao giờ tự quyết giá trị phần thưởng. Mọi showAd đều chạy trong lúc chạm. Mỗi lần quảng cáo được đếm req / imp / done / grant / fail. Kết quả null không tính là impression.
+Game không bao giờ tự quyết giá trị phần thưởng: xu đến từ kết quả SDK/dashboard. Các vị trí khác chỉ thay đổi lối chơi. Mọi showAd đều chạy trong lúc chạm. Mỗi lần được đếm req / imp / done / grant / fail. Kết quả null không tính là impression.
 
-## 6. Kết quả mô phỏng (tools/sim-test.mjs, 40 màn, các thao tác chạm thật)
+## 6. Kết quả mô phỏng (tools/sim-test.mjs, 110 kiểm tra, 40 màn, các thao tác chạm thật)
 
-Giả định: tỉ lệ có quảng cáo 90%, mỗi quảng cáo 20 giây, mỗi persona có thời gian suy nghĩ và tỉ lệ tự chọn xem quảng cáo riêng (ghi trong source).
-"playtime" là thời gian chơi không tính quảng cáo.
+Giả định: tỉ lệ có quảng cáo 90%, mỗi quảng cáo 20 giây, mỗi persona có tỉ lệ tự chọn xem riêng (ghi trong source). "playtime" là thời gian chơi không tính quảng cáo.
 
 | persona | tổng (cả ads) | playtime | imps | imps / 5 phút (trung bình, min–max) |
 |---|---|---|---|---|
-| beginner | 75′ | 48′ | 71 | 4.9 (3–7) |
-| average | 74′ | 41′ | 85 | 5.9 (4–8) |
-| skilled | 63′ | 34′ | 74 | 6.0 (4–8) |
-| adUser | 109′ | 49′ | 161 | 7.4 (4–9) |
-| noAds | 64′ | 46′ | 39 | 3.1 (1–5) |
+| beginner | 90′ | 54′ | 110 | 6.3 (1–8) |
+| average | 92′ | 48′ | 125 | 6.9 (4–10) |
+| skilled | 83′ | 40′ | 125 | 7.6 (4–11) |
+| adUser | 138′ | 54′ | 248 | 9.1 (5–12) |
+| noAds | 70′ | 48′ | 50 | 3.7 (1–6) |
 
-- **Playtime ~40 phút: đạt** (average 41′, beginner 48′).
-- **KPI 8 imps / 5 phút: chưa đạt** với người chơi trung bình (5.9). Nút rare_choice đã nâng con số từ 5.5 lên 5.9. Interstitial ở NEXT gần như đã ra mỗi màn: average 48 lần request trong khoảng 51 stream.
-- Muốn đạt 8 với người chơi trung bình, cần thêm khoảng 2 quảng cáo mỗi màn. Lựa chọn thực tế nhất là thêm **interstitial thứ hai ở bước chuyển PERFECT → stream**. Cách này tốn retention, nên cần chủ dự án quyết.
+- Playtime ~40 phút: đạt (average 48′).
+- KPI 8 imps / 5 phút: average tăng từ 5.9 lên **6.9**, skilled 7.6, adUser 9.1. Người chơi trung bình vẫn **chưa đạt 8**.
+- Hai interstitial (stream_end + cook_step) chiếm khoảng 2/3 số impression. Số còn lại phụ thuộc tỉ lệ người chơi tự bấm rewarded ad.
 
 ## 7. File
 
 - Mới: `src/recipes.js` (dữ liệu và vẽ vector), `src/cook.js` (màn bếp).
-- Sửa: `src/levels.js` (40 màn V4), `src/stream.js` (yêu cầu / 3 đĩa / mission / quà fan), `src/game.js`, `game.js` gốc (wrapper fan_gift và rare_choice), `mukbang-bang.hs-dashboard.json` (8 vị trí).
+- Sửa: `src/levels.js` (40 màn V4), `src/stream.js` (yêu cầu / 3 đĩa / mission / quà fan), `src/game.js`, `game.js` gốc (wrapper cho mọi vị trí), `mukbang-bang.hs-dashboard.json` (13 vị trí).
 - Art còn thiếu: sprite cho lựa chọn (khuôn, chai vị, topping, đồ trang trí) và dụng cụ (quạt, lửa, lò…). Hiện đang vẽ bằng vector fallback trong recipes.js / cook.js.

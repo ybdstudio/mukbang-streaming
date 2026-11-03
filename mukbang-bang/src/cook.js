@@ -20,7 +20,7 @@ function install(Game) {
   const P = Game.prototype;
   P.enterCook = function () {
     const r = this.run, lv = L.level(r.level), rc = R.RECIPES[lv.recipe];
-    this.ck = { lv: lv, rc: rc, req: lv.request, dish: { recipe: lv.recipe }, step: 0, sel: null, prog: 0, st: { fill: 0, set: false, flipped: false, tops: 0, deco: 0 }, holdId: null, rub: null, flipT: -1, doneT: -1, t: 0, perfect: false, opts: null, rare: null, rareKey: null, rareUsed: false };
+    this.ck = { lv: lv, rc: rc, req: lv.request, dish: { recipe: lv.recipe }, step: 0, sel: null, prog: 0, st: { fill: 0, set: false, flipped: false, tops: 0, deco: 0 }, holdId: null, rub: null, flipT: -1, doneT: -1, t: 0, perfect: false, opts: null, rare: null, rareKey: null, rareUsed: false, stepAd: false, serveAsk: false };
     this.trans = 0.4; this.audio.play('whoosh'); this.prepStep(); this.setState('cook');
   };
   P.curCookStep = function () { const k = this.ck; return k.rc.steps[k.step]; };
@@ -48,11 +48,29 @@ function install(Game) {
   P.cookTap = function (id) {
     const k = this.ck; if (!k || this.state !== 'cook') return false;
     if (id.indexOf('cko_') === 0) { const st = this.curCookStep(); if (!st || st.t !== 'pick') return true; const oid = id.slice(4); k.sel = oid; k.dish[SLOT_KEY[st.slot]] = oid; this.audio.play('pop'); this.vibrate('short'); return true; }
-    if (id === 'ck_ok') { if (k.sel) this.cookNext(); return true; }
+    if (id === 'ck_ok') { if (!k.sel) return true; const mid = k.step >= 2 && !k.stepAd; this.cookNext(); if (mid) this.cookStepAd(); return true; }
+    if (id === 'ck_serve') { if (k.serveAsk) this.cookServed(); return true; }
+    if (id === 'ck_hot') { this.watchServe(); return true; }
     if (id === 'ck_rare') { this.watchRare(); return true; }
     return false;
   };
   // rare choice: the viewers love a rare ingredient — it counts as what they asked for
+  // interstitial between cooking steps: once per dish, at a ✓ in the middle of the recipe (a tap, a natural pause)
+  P.cookStepAd = function () {
+    const k = this.ck; k.stepAd = true;
+    if (this.noAds() || this.adBusy || (this.profile.get('streams') || 0) < 4 || !this.hs.hasAds() || !this.hs.canShowCookStep || !this.hs.canShowCookStep()) return;
+    this.adRun('cook_step', this.hs.showCookStep(), function () {});
+  };
+  // serve: after PERFECT the player taps SERVE, or watches an ad for a HOT START (+40% viewers when the stream resumes)
+  P.canServe = function () { return this.hs.hasAds() && this.hs.canShowServe && (this.profile.get('streams') || 0) >= 2 && this.hs.canShowServe(); };
+  P.watchServe = function () {
+    const k = this.ck; if (!k || !k.serveAsk || this.adBusy || !this.canServe()) return;
+    const self = this; this.adRun('serve_bonus', this.hs.showServe(), function (r) {
+      if (self.ck !== k) return;
+      if (r === null) { self.showToast('No ad right now'); return; }
+      self.cookServed(true);
+    });
+  };
   P.canRare = function () { return this.hs.hasAds() && this.hs.canShowRare && (this.profile.get('streams') || 0) >= 3 && this.hs.canShowRare(); };
   P.watchRare = function () {
     const k = this.ck; if (!k || !k.rare || k.rareUsed || this.adBusy || !this.canRare()) return;
@@ -83,16 +101,17 @@ function install(Game) {
   };
   P.updateCook = function (dt) {
     const k = this.ck; if (!k) return; k.t += dt;
-    if (k.doneT >= 0) { k.doneT += dt; if (k.doneT >= DONE_T) this.cookServed(); return; }
+    if (k.doneT >= 0) { k.doneT += dt; if (k.doneT >= DONE_T && !k.serveAsk) { if (this.canServe()) k.serveAsk = true; else this.cookServed(); } return; }
     const st = this.curCookStep(); if (!st) return;
     if (st.t === 'pour' && k.holdId !== null) { k.st.fill = Math.min(1, k.st.fill + dt / POUR_T); if (Math.random() < dt * 6) this.audio.play('gulp', { gain: 0.25, minGap: 0.2 }); if (k.st.fill >= 1) { k.holdId = null; this.cookNext(); } }
     if (st.t === 'hold' && k.holdId !== null) { k.prog = Math.min(1, k.prog + dt / HOLD_T); if (Math.random() < dt * 5) this.audio.play(st.tool === 'fire' || st.tool === 'oven' ? 'fire' : st.tool === 'fan' ? 'shiver' : 'fizz', { gain: 0.25, minGap: 0.25 }); if (k.prog >= 1) { k.holdId = null; k.st.set = true; this.cookNext(); } }
     if (st.t === 'flip' && k.flipT >= 0) { k.flipT += dt; if (k.flipT >= FLIP_T) { k.flipT = -1; k.st.flipped = true; this.audio.play('drop'); this.vibrate('short'); this.cookNext(); } }
   };
   // the dish is ready → back to the stream, served as 3 portions
-  P.cookServed = function () {
-    const k = this.ck; const r = this.run; this.ck = null;
+  P.cookServed = function (hot) {
+    const k = this.ck; const r = this.run; if (!k) return; this.ck = null;
     r.dish = Object.assign({}, k.dish); r.perfect = k.perfect; r.phase = 'open'; r.pt = 0;
+    if (hot) { r.hotStart = true; this.addViewers(Math.round(r.goal * 0.4)); for (let i = 0; i < 10; i++) this.spawnHeart(true); this.floatText('HOT START!  +' + U.fmtViewers(Math.round(r.goal * 0.4)), this.W / 2, this.H * 0.4, C.gold, 28, true); this.audio.play('levelup'); }
     this.trans = 0.4; this.saveRun(); this.setState('stream');
     this.floatText(k.perfect ? 'JUST LIKE THEY ASKED!' : 'SERVED!', this.W / 2, this.H * 0.47, C.gold, 26, true);
     this.setFace('open', 1.2); for (let i = 0; i < 3; i++) this.pushChat('bite');
@@ -138,6 +157,7 @@ function install(Game) {
       const t = k.doneT; ui.dim(Math.min(0.35, t)); const s = U.easeOutBack(Math.min(1, t * 2.5));
       ctx.save(); ctx.translate(W / 2, H * 0.24); ctx.scale(s, s); A.rr(ctx, -170, -44, 340, 88, 40); ctx.fillStyle = C.pink; ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = C.pinkDark; ctx.stroke(); ui.title(k.perfect ? 'PERFECT!' : 'YUMMY!', 0, 2, 46, C.white, C.pinkDark); ctx.restore();
       ui.label(k.perfect ? 'exactly what the viewer asked for!' : 'not what they asked, but it looks so good!', W / 2, H * 0.24 + 66, 15, C.white, 'center', { stroke: 4 });
+      if (k.serveAsk) { const by = H * 0.24 + 100; ui.button('ck_serve', W * 0.12, by, W * 0.36, 64, 'SERVE', { color: C.yellow, dark: C.yellowDark, size: 22 }); ui.button('ck_hot', W * 0.52, by, W * 0.36, 64, '▶ HOT START', { color: C.pink, dark: C.pinkDark, size: 18 }); ui.label('+40% viewers when you go live', W * 0.7, by + 82, 13, C.white, 'center', { stroke: 4 }); }
       R.draw(ctx, A, k.dish, W / 2, H * 0.48, a.r * 1.7, k.st);
     }
   };

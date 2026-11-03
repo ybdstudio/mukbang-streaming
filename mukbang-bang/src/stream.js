@@ -70,7 +70,7 @@ function install(Game) {
   // ── save / resume (run_json v3; older runs are dropped — the level itself is kept) ──
   P.saveRun = function () {
     const r = this.run; if (!r) { this.profile.set('run_json', ''); return; }
-    const o = {}; const keys = ['v', 'level', 'side', 'food', 'recipe', 'request', 'dish', 'perfect', 'giftAd', 'pack', 'loc', 'view', 'event', 'toppings', 'cost', 'cpb', 'goal', 'goal3', 'start', 'hu', 'viewers', 'peak', 'coins', 'pickups', 'bites', 'phase', 'hearts', 'giftTaken', 'eventDone', 'goalLevel'];
+    const o = {}; const keys = ['v', 'level', 'side', 'food', 'recipe', 'request', 'dish', 'perfect', 'giftAd', 'hyped', 'hotStart', 'pack', 'loc', 'view', 'event', 'toppings', 'cost', 'cpb', 'goal', 'goal3', 'start', 'hu', 'viewers', 'peak', 'coins', 'pickups', 'bites', 'phase', 'hearts', 'giftTaken', 'eventDone', 'goalLevel'];
     for (let i = 0; i < keys.length; i++) o[keys[i]] = r[keys[i]];
     o.viewers = Math.round(o.viewers); o.peak = Math.round(o.peak);
     this.profile.set('run_json', JSON.stringify(o));
@@ -286,7 +286,8 @@ function install(Game) {
       if (!still) {
         if (ph === 'sealed') ui.label('TAP · ' + L.PACK_INFO[r.pack].open + '!', W / 2, pk.y - pk.size * 0.62, 20, C.white, 'center', { stroke: 6 });
         else if (ph === 'open') ui.label(r.pickups === 0 ? 'TAP OR DRAG A PLATE TO HER MOUTH' : 'NEXT ONE!  (' + (r.pickups + 1) + '/' + PICKUPS + ')', W / 2, pk.y - pk.size * 0.62 - (r.recipe ? 10 : 0), r.pickups === 0 ? 17 : 20, C.white, 'center', { stroke: 6 });
-        if (ph === 'open' && r.pickups >= 1 && !r.giftAd && this.canFanGift()) this.drawFanGiftBtn();
+        const hypeOk = ph === 'open' && r.pickups === PICKUPS - 1 && !r.hyped && this.canHype();
+        if (hypeOk) this.drawHypeBtn(); else if (ph === 'open' && r.pickups >= 1 && !r.giftAd && this.canFanGift()) this.drawFanGiftBtn();
       }
       // fan gift
       if (r.gift && !r.giftTaken) { const g = r.gift; const drop = Math.min(1, g.t * 2.5); A.mysteryBox(ctx, g.x, U.lerp(-60, g.y, U.easeOutCubic(drop)), 90, this.time, 0, true); if (drop >= 1) ui.label('TAP!', g.x, g.y + 56, 15, C.white, 'center', { stroke: 4 }); }
@@ -331,6 +332,13 @@ function install(Game) {
     if (r.level === 1 && (this.profile.get('streams') || 0) === 0) { const fx = W * 0.7 + Math.sin(this.time * 4) * 6, fy = by + 60 + Math.cos(this.time * 4) * 6; A.circle(ctx, fx, fy, 16, 'rgba(255,255,255,0.85)', 3); ui.label('TAP!', fx, fy + 30, 14, C.white, 'center', { stroke: 4 }); }
   };
   P.canFanGift = function () { return this.hs.hasAds() && this.hs.canShowFanGift && this.hs.canShowFanGift() && (this.profile.get('streams') || 0) >= 2; };
+  // extra hype: before the stream ends (last plate) an opt-in ad pushes the viewers up for the finale
+  P.canHype = function () { const r = this.run; return this.hs.hasAds() && r && !!r.recipe && !r.side && this.hs.canShowHype && (this.profile.get('streams') || 0) >= 2 && this.hs.canShowHype(); };
+  P.drawHypeBtn = function () {
+    const ui = this.ui, ctx = this.ctx, W = this.W, top = this.top(), y = top + 120;
+    ui.panel(24, y, W - 150, 54, '#fff3c4', C.goldDark, 20, 3); A.star(ctx, 52, y + 27, 15, C.gold, 3); ui.label('LAST PLATE! Go viral?', 80, y + 20, 13, C.text, 'left'); ui.label('+50% viewers for the finale', 80, y + 39, 12, C.pinkDark, 'left');
+    ui.button('hype_ad', W - 170, y + 6, 120, 42, '▶ HYPE', { color: C.pink, dark: C.pinkDark, size: 17 });
+  };
   P.drawFanGiftBtn = function () {
     const ui = this.ui, ctx = this.ctx, W = this.W, top = this.top(), y = top + 120;
     ui.panel(24, y, W - 150, 54, '#ffe6f0', C.pinkDark, 20, 3); A.avatar(ctx, 'bear', 52, y + 27, 17); ui.label('I have a gift for you!', 80, y + 20, 13, C.text, 'left'); const g = this.hs.rewardsFanGift ? this.hs.rewardsFanGift() : null; ui.label(g ? this.itemsText(g) : '', 80, y + 39, 12, C.goldDark, 'left');

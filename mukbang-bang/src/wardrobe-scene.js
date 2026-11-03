@@ -21,7 +21,7 @@ function install(Game) {
   P.wardItem = function (id) {
     const it = WR.BY_ID[id]; if (!it) return; const p = this.profile, s = WR.state(p), sid = this.streamerDef().id;
     if (WR.owns(s, id)) { WR.equip(p, sid, id); this.audio.play('pop'); this.spawnSparkles(this.W / 2, this.H * 0.28, 10); return; }
-    if (it.gift) { this.audio.play('error'); this.showToast('A gift at stream ' + it.gift, 'Keep streaming to unlock it'); return; }
+    if (it.gift) { if (this.watchUnlockLook(id)) return; this.audio.play('error'); this.showToast('A gift at stream ' + it.gift, 'Keep streaming to unlock it'); return; }
     const r = WR.buy(p, id);
     if (r === 'coins') { this.audio.play('error'); this.showToast('Need ' + U.fmtCoins(it.price) + ' coins'); return; }
     if (r === 'ok') { WR.equip(p, sid, id); this.audio.play('cash'); this.spawnConfetti(this.W / 2, this.H * 0.3, 30); this.showToast('NEW LOOK: ' + it.name.toUpperCase()); }
@@ -55,7 +55,7 @@ function install(Game) {
       ui.panel(x, yy, cw, chh, on ? '#eafff0' : owned ? '#fff' : '#f4eef0', on ? C.greenDark : C.outline, 16, on ? 5 : 2);
       this.wardIcon(it, x + cw / 2, yy + 40, sd);
       ui.label(it.name, x + cw / 2, yy + 76, 11, C.text);
-      ui.label(on ? 'WEARING' : owned ? 'TAP TO WEAR' : it.gift ? 'GIFT · LV ' + it.gift : '', x + cw / 2, yy + 93, 10, on ? C.greenDark : owned ? C.textLight : C.pinkDark);
+      ui.label(on ? 'WEARING' : owned ? 'TAP TO WEAR' : it.gift ? (this.canUnlockLook() ? '▶ UNLOCK · LV ' + it.gift : 'GIFT · LV ' + it.gift) : '', x + cw / 2, yy + 93, 10, on ? C.greenDark : owned ? C.textLight : C.pinkDark);
       if (!owned && it.price) { A.coin(ctx, x + cw / 2 - 18, yy + 93, 7); ui.label(U.fmtCoins(it.price), x + cw / 2 + 4, yy + 94, 12, C.text, 'left'); }
       ui.hotspot('witem_' + it.id, x, yy, cw, chh);
     }

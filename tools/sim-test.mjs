@@ -70,6 +70,11 @@ function fakeHs(profile, mode, opts) {
     canShowBoost: () => cool('viral_boost'), showBoost() { return ad('viral_boost', null); },
     canShowFanGift: () => cool('fan_gift'), showFanGift() { return ad('fan_gift', { coins: 300 }); }, rewardsFanGift: () => ({ coins: 300 }),
     canShowRare: () => cool('rare_choice'), showRare() { return ad('rare_choice', null); },
+    canShowCookStep: () => cool('cook_step'), showCookStep() { return ad('cook_step', null); },
+    canShowServe: () => cool('serve_bonus'), showServe() { return ad('serve_bonus', null); },
+    canShowHype: () => cool('extra_hype'), showHype() { return ad('extra_hype', null); },
+    canShowUnlockLevel: () => cool('unlock_level'), showUnlockLevel() { return ad('unlock_level', null); },
+    canShowUnlockLook: () => cool('unlock_look'), showUnlockLook() { return ad('unlock_look', null); },
     profileMissionDone: () => false, shortcutMissionDone: () => false, startProfileMission() {}, startShortcutMission() {},
     canShare: () => true, share: () => Promise.resolve({}), shop: () => Promise.resolve([]), buy: () => Promise.resolve({ ok: true, delivered: true }), on() {}
   };
@@ -98,7 +103,8 @@ async function cookAll(g, p, opts) {
     else if (st.t === 'place') { for (let i = 0; i < st.n && g.ck && g.curCookStep() === st; i++) { touchAt(g, p, a.x + (i - 1) * 30, a.y - 20); cost(0, 'tap'); } }
     else if (st.t === 'shake') { p.touch('start', 6, a.x * kk, a.y * kk); let x = a.x, dir = 1, i = 0; while (g.ck && g.curCookStep() === st && i++ < 400) { x += dir * 40; if (Math.abs(x - a.x) > 90) dir = -dir; p.touch('move', 6, x * kk, a.y * kk); run(g, 0.016); } p.touch('end', 6, x * kk, a.y * kk); cost(g.time - t0, 'rub'); }
   }
-  const t1 = g.time; runUntil(g, () => g.state === 'stream', 4); cost(g.time - t1, 'wait');
+  const t1 = g.time; runUntil(g, () => g.state === 'stream' || (g.ck && g.ck.serveAsk), 4); cost(g.time - t1, 'wait');
+  if (g.state === 'cook' && g.ck && g.ck.serveAsk) { const hot = opts.hot && Math.random() < opts.hot; await tap(g, p, hot ? 'ck_hot' : 'ck_serve'); await flush(); if (hot && opts.onAd) opts.onAd(); if (g.state === 'cook') await tap(g, p, 'ck_serve'); cost(0, 'pick'); }
 }
 function foodPos(g) { const r = g.run; return r && r.recipe ? g.platePos(Math.min(2, r.pickups)) : g.packPos(); }
 // from request / sealed to the result. feed: 'tap' | 'drag' | 'mix'
@@ -208,8 +214,9 @@ seed(4);
   await tap(g, p, 'witem_outfit_mint'); check('buy an outfit with coins', WR.owns(WR.state(prof), 'outfit_mint') && prof.get('coins') === 500 && WR.look(prof, 'luna').outfit === 'outfit_mint');
   await tap(g, p, 'witem_outfit_bib'); check('cannot buy without enough coins', !WR.owns(WR.state(prof), 'outfit_bib') && prof.get('coins') === 500);
   await tap(g, p, 'wtab1'); await tap(g, p, 'witem_hair_bow'); check('equip an owned hair accessory', WR.look(prof, 'luna').hair === 'hair_bow');
-  await tap(g, p, 'witem_hair_crown'); check('a level gift cannot be bought early', !WR.owns(WR.state(prof), 'hair_crown'));
+  const c9 = prof.get('coins'); await tap(g, p, 'witem_hair_crown'); await flush(); check('unlock_look: a level gift unlocks early with an ad (no coins spent)', WR.owns(WR.state(prof), 'hair_crown') && prof.get('coins') === c9 && JSON.parse(prof.get('ad_stats')).unlock_look.imp === 1);
   await tap(g, p, 'home'); await tap(g, p, 'play'); await eatAll(g, p, 'tap'); check('the look stays on through cooking and eating', g.state === 'result');
+  { const pn = fakePlatform(), profn = fakeProfile(Object.assign({}, INIT, { level: 8, levels_done: 7, streams: 7, coins: 1000 })), gn = new Game(pn, fakeHs(profn, 'null')); gn.hsReady = true; run(gn, 0.1); await tap(gn, pn, 'wardrobe'); await tap(gn, pn, 'wtab1'); await tap(gn, pn, 'witem_hair_crown'); await flush(); check('no ad → the level gift stays locked', !WR.owns(WR.state(profn), 'hair_crown')); }
   const p2 = fakePlatform(), prof2 = fakeProfile(Object.assign({}, INIT, { level: 3, streams: 2 })), g2 = new Game(p2, fakeHs(prof2, 'ok')); g2.hsReady = true; run(g2, 0.1); await tap(g2, p2, 'wardrobe'); check('wardrobe locked before level ' + WR.OPEN_AT, g2.state === 'home');
 }
 // ═════════ ads ═════════
@@ -241,6 +248,26 @@ seed(5);
   await tap(g, p, 'home'); clk = 400; if (g.run) { g.run = null; g.saveRun(); } await tap(g, p, 'surprise_ad'); await flush(); run(g, 0.1); check('surprise food ad → a rare bonus stream (package)', g.state === 'stream' && g.run.side === 'surprise');
   check('viral boost only while a package is sealed', hasBtn(g, 'boost_ad'));
 }
+seed(6);
+{ // new places: cook_step interstitial · serve_bonus hot start · extra_hype · unlock_level
+  const prof = fakeProfile(Object.assign({}, INIT, { level: 6, levels_done: 5, streams: 5, coins: 1000 })); let clk = 0; const hs = fakeHs(prof, 'ok', { clock: () => clk, cooldown: 30 });
+  const p = fakePlatform(), g = new Game(p, hs); g.hsReady = true; run(g, 0.1);
+  await tap(g, p, 'play'); await tap(g, p, 'cook_go'); await cookAll(g, p, { match: true, hot: 0 });
+  const st0 = JSON.parse(prof.get('ad_stats'));
+  check('cook_step: one interstitial in the middle of cooking (at a ✓ tap)', st0.cook_step && st0.cook_step.imp === 1, st0);
+  check('serve_bonus: after PERFECT the player chooses SERVE / ▶ HOT START (SERVE = no ad)', g.state === 'stream' && !st0.serve_bonus && !g.run.hotStart);
+  for (let i = 0; i < 6 && g.run.pickups < 2; i++) { runUntil(g, () => g.run.phase === 'open', 8); const q = foodPos(g); touchAt(g, p, q.x, q.y); runUntil(g, () => g.run.phase !== 'carry' && g.run.phase !== 'chew', 6); }
+  runUntil(g, () => g.run.phase === 'open', 8); check('extra_hype offered on the last plate (not the fan gift)', hasBtn(g, 'hype_ad') && !hasBtn(g, 'fangift_ad'));
+  clk = 40; const v0 = g.run.viewers; await tap(g, p, 'hype_ad'); await flush(); run(g, 0.05); check('extra_hype → +50% of the goal in viewers, once', g.run.viewers >= v0 + Math.round(g.run.goal * 0.5) - 2 && !hasBtn(g, 'hype_ad'));
+  const q = foodPos(g); touchAt(g, p, q.x, q.y); runUntil(g, () => g.state === 'result', 12);
+  clk = 80; await tap(g, p, 'next'); await flush(); clk = 120; await tap(g, p, 'cook_go'); const cs = JSON.parse(prof.get('ad_stats')).cook_step.req; await cookAll(g, p, { match: true, hot: 1 });
+  check('the cook_step interstitial respects the 30 s cooldown', JSON.parse(prof.get('ad_stats')).cook_step.req >= cs);
+  check('▶ HOT START → stream starts with +40% viewers', g.state === 'stream' && g.run.hotStart === true && JSON.parse(prof.get('ad_stats')).serve_bonus.grant === 0 && JSON.parse(prof.get('ad_stats')).serve_bonus.imp === 1);
+  g.run = null; g.saveRun(); g.setState('home'); clk = 200; await tap(g, p, 'levels'); const lv0 = prof.get('level'); check('levels: the next locked level shows ▶ UNLOCK', hasBtn(g, 'unlock_level_ad'));
+  await tap(g, p, 'unlock_level_ad'); await flush(); check('unlock_level → the next level opens early, level bonus not paid', prof.get('level') === lv0 + 1 && prof.get('levels_done') === 6 && hs.claims.filter(c => c === 'level_bonus').length === 1, { lv: prof.get('level'), done: prof.get('levels_done'), claims: hs.claims });
+}
+{ const prof = fakeProfile(Object.assign({}, INIT, { level: 6, levels_done: 5, streams: 5, no_ads: 1 })); const hs = fakeHs(prof, 'ok'); const p = fakePlatform(), g = new Game(p, hs); g.hsReady = true; run(g, 0.1);
+  await tap(g, p, 'play'); await tap(g, p, 'cook_go'); await cookAll(g, p); check('No Ads: no cook_step interstitial', hs.ads.indexOf('cook_step') < 0); }
 for (const mode of ['null', 'reject']) {
   const prof = fakeProfile(Object.assign({}, INIT, { level: 6, levels_done: 5, streams: 5, coins: 1000 })); const hs = fakeHs(prof, mode); const p = fakePlatform(), g = new Game(p, hs); g.hsReady = true; run(g, 0.1);
   await tap(g, p, 'play'); await eatAll(g, p, 'tap');
@@ -257,7 +284,7 @@ for (const mode of ['null', 'reject']) {
 { let bytes = 0; (function walk(d) { for (const e of readdirSync(d, { withFileTypes: true })) { const q = join(d, e.name); if (e.isDirectory()) walk(q); else bytes += statSync(q).size; } })(join(here, '..', 'mukbang-bang'));
   check('TikTok main package ≤ 4 MB (' + (bytes / 1048576).toFixed(2) + ' MB)', bytes <= 4 * 1024 * 1024);
   const dash = JSON.parse(readFileSync(join(here, '..', 'mukbang-bang.hs-dashboard.json'), 'utf8')); const pl = dash.iaa_config.placements;
-  check('dashboard: 8 ad places, every cooldown 30 s, fan_gift has a reward', pl.length === 8 && pl.some(x => x.label === 'rare_choice') && pl.every(x => x.ads[0].config.cooldown === 30) && !!dash.iaa_config.rewards.fan_gift, pl.map(x => x.label + ':' + x.ads[0].config.cooldown));
+  check('dashboard: 13 ad places, every cooldown 30 s, fan_gift has a reward', pl.length === 13 && ['rare_choice', 'cook_step', 'serve_bonus', 'extra_hype', 'unlock_level', 'unlock_look'].every(l => pl.some(x => x.label === l)) && pl.every(x => x.ads[0].config.cooldown === 30) && !!dash.iaa_config.rewards.fan_gift, pl.map(x => x.label + ':' + x.ads[0].config.cooldown));
   const gameDir = join(here, '..', 'mukbang-bang'); const p = fakePlatform(); const miss = []; let asked = 0;
   p.loadImage = (path, done) => { asked++; if (!existsSync(join(gameDir, path))) { miss.push(path); done(null); } else done({ width: 256, height: 256 }); };
   const prof = fakeProfile(INIT), g = new Game(p, fakeHs(prof, 'ok')); g.hsReady = true; run(g, 0.2);
@@ -290,12 +317,13 @@ for (const name of Object.keys(PERSONAS)) {
   const cookCost = (sec, kind) => { if (kind === 'pick') act(pz.think + pz.tap * 2); else if (kind === 'tap') act(pz.tap); else spend(sec + (kind === 'wait' ? 0 : pz.tap)); };
   const eatStream = async () => {
     spend(pz.think);
-    if (g.run.phase === 'request') { spend(pz.read * 0.6); await tapB('cook_go'); await cookAll(g, p, { match: Math.random() < 0.85, cost: cookCost, rare: pz.rare, onAd: afterAd }); }
+    if (g.run.phase === 'request') { spend(pz.read * 0.6); await tapB('cook_go'); await cookAll(g, p, { match: Math.random() < 0.85, cost: cookCost, rare: pz.rare, hot: pz.bonusAd * 0.8, onAd: afterAd }); afterAd(); }
     if (hasBtn(g, 'boost_ad') && Math.random() < pz.boostAd) await tapB('boost_ad');
     if (g.run.phase === 'sealed') { const pk = g.packPos(); touchAt(g, p, pk.x, pk.y); act(pz.tap); const t0 = g.time; run(g, ST.T.opening + 0.05); spend(g.time - t0); }
     for (let k = 0, guard = 0; g.run && g.run.pickups < 3 && guard++ < 8; k++) {
       runUntil(g, () => !g.run || g.run.phase === 'open' || g.run.phase === 'empty', 6); if (!g.run || g.run.pickups >= 3) break;
       if (k >= 1 && hasBtn(g, 'fangift_ad') && Math.random() < pz.bonusAd * 0.6) await tapB('fangift_ad');
+      if (hasBtn(g, 'hype_ad') && Math.random() < pz.bonusAd * 0.8) await tapB('hype_ad');
       const fp = foodPos(g);
       if (Math.random() < 0.5) { const m = g.mouth(); drag(g, p, fp.x, fp.y, m.x, m.y, 10); act(pz.drag); } else { touchAt(g, p, fp.x, fp.y); act(pz.tap); }
       const t1 = g.time;
@@ -320,7 +348,7 @@ for (const name of Object.keys(PERSONAS)) {
         if (g.state !== 'home') { spend(pz.think * 3 + 6); g.sceneAutoFill(); const t = g.time; runUntil(g, () => g.state === 'stream', 6); spend(g.time - t); if (g.state === 'stream') { b.sides++; await eatStream(); } }
         if (g.state === 'result') await tapB('res_home');
       }
-      if (n >= WR.OPEN_AT && Math.random() < pz.ward) { if (g.state === 'result') await tapB('res_home'); await tapB('wardrobe'); spend(12); const items = WR.ITEMS.filter(i => i.price && !WR.owns(WR.state(prof), i.id) && i.price <= prof.get('coins')); if (items.length) { const si = WR.SLOTS.findIndex(x => x.id === items[0].slot); await tapB('wtab' + si); await tapB('witem_' + items[0].id); } if (Math.random() < pz.fashion && hasBtn(g, 'fashion_ad')) await tapB('fashion_ad'); b.wards++; await tapB('home'); }
+      if (n >= WR.OPEN_AT && Math.random() < pz.ward) { if (g.state === 'result') await tapB('res_home'); await tapB('wardrobe'); spend(12); const items = WR.ITEMS.filter(i => i.price && !WR.owns(WR.state(prof), i.id) && i.price <= prof.get('coins')); if (items.length) { const si = WR.SLOTS.findIndex(x => x.id === items[0].slot); await tapB('wtab' + si); await tapB('witem_' + items[0].id); } if (Math.random() < pz.fashion && hasBtn(g, 'fashion_ad')) await tapB('fashion_ad'); { const gl = WR.ITEMS.find(i => i.gift && i.gift > n && !WR.owns(WR.state(prof), i.id)); if (gl && Math.random() < pz.fashion * 0.5) { const si = WR.SLOTS.findIndex(x => x.id === gl.slot); await tapB('wtab' + si); await tapB('witem_' + gl.id); } } b.wards++; await tapB('home'); }
       if (g.state === 'home' && Math.random() < pz.surprise && hasBtn(g, 'surprise_ad')) { await tapB('surprise_ad'); if (g.state === 'stream' && g.run.side === 'surprise') await eatStream(); if (g.state === 'result') await tapB('res_home'); }
     } catch (e) { blocked = 'L' + n + ': ' + e.message; break; }
   }
