@@ -1,0 +1,17 @@
+[
+  {
+    "path": "rooms/sakura_tea_house/food_matcha_latte.png",
+    "source": "mukbang-bang/assets/food/matcha_latte_0.png",
+    "method": "unchanged original PNG reused; generated draft had unwanted haze"
+  },
+  {
+    "path": "rooms/sakura_tea_house/view.jpg",
+    "source": "mukbang-bang/assets/bg/sakura.jpg",
+    "method": "original garden crop [0,650,1080,800], JPEG quality 80"
+  },
+  {
+    "path": "cook/pip_off.png",
+    "source": "../mukbang concept/stage1/V3-stage1-partial/assets/ui/pip_off.png",
+    "method": "same existing UI pip resized to36 inside 40x40 canvas with 2px padding; technical palette export"
+  }
+]

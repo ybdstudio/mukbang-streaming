@@ -1690,5 +1690,111 @@
         350
       ]
     }
+  },
+  "v4": {
+    "source": "art-v4-partial-20261104 (Codex)",
+    "features": {
+      "buffet": {
+        "image": "features/buffet.png",
+        "width": 256,
+        "height": 256,
+        "anchor": [
+          128,
+          128
+        ]
+      },
+      "delivery": {
+        "image": "features/delivery.png",
+        "width": 256,
+        "height": 256,
+        "anchor": [
+          128,
+          128
+        ]
+      },
+      "lock": {
+        "image": "features/lock.png",
+        "width": 96,
+        "height": 96,
+        "anchor": [
+          48,
+          48
+        ]
+      },
+      "market": {
+        "image": "features/market.png",
+        "width": 256,
+        "height": 256,
+        "anchor": [
+          128,
+          128
+        ]
+      },
+      "wardrobe": {
+        "image": "features/wardrobe.png",
+        "width": 256,
+        "height": 256,
+        "anchor": [
+          128,
+          128
+        ]
+      }
+    },
+    "cook": {
+      "opt_mold_bunny": {
+        "image": "cook/opt_mold_bunny.png",
+        "width": 160,
+        "height": 160,
+        "anchor": [
+          80,
+          80
+        ]
+      },
+      "opt_mold_crown": {
+        "image": "cook/opt_mold_crown.png",
+        "width": 160,
+        "height": 160,
+        "anchor": [
+          80,
+          80
+        ]
+      },
+      "opt_mold_dome": {
+        "image": "cook/opt_mold_dome.png",
+        "width": 160,
+        "height": 160,
+        "anchor": [
+          80,
+          80
+        ]
+      },
+      "opt_mold_flower": {
+        "image": "cook/opt_mold_flower.png",
+        "width": 160,
+        "height": 160,
+        "anchor": [
+          80,
+          80
+        ]
+      },
+      "opt_mold_heart": {
+        "image": "cook/opt_mold_heart.png",
+        "width": 160,
+        "height": 160,
+        "anchor": [
+          80,
+          80
+        ]
+      },
+      "opt_mold_star": {
+        "image": "cook/opt_mold_star.png",
+        "width": 160,
+        "height": 160,
+        "anchor": [
+          80,
+          80
+        ]
+      }
+    }
   }
 }

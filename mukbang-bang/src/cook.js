@@ -9,7 +9,10 @@ const D = require('./data.js');
 const A = require('./art.js');
 const R = require('./recipes.js');
 const L = require('./levels.js');
+const S = require('./sprites.js');
 const C = D.COLORS;
+// tray icon: the V4 sprite when delivered (cook/opt_<slot>_<id>.png), else the vector option
+function optIcon(ctx, slot, o, x, y, r) { if (!S.v4draw(ctx, 'cook/opt_' + slot + '_' + o.id + '.png', x, y, r * 2.5)) R.drawOption(ctx, A, slot, o, x, y, r); }
 
 const POUR_T = 2.0, HOLD_T = 2.0, FLIP_T = 0.6, SHAKE_NEED = 1100, DONE_T = 1.7;
 const SLOT_KEY = { mold: 'mold', flavor: 'flavor', broth: 'broth', topping: 'topping', ramen_top: 'topping', boba_top: 'topping', deco: 'deco', cup: 'cup', shape: 'shape' };
@@ -148,8 +151,8 @@ function install(Game) {
       const n = k.opts.length, cw = Math.min(110, (W - 40 - (n - 1) * 10) / n), x0 = (W - (n * cw + (n - 1) * 10)) / 2, ty = bottom - 150;
       A.rr(ctx, 10, ty - 14, W - 20, 150, 26); ctx.fillStyle = 'rgba(255,255,255,0.75)'; ctx.fill();
       const rare = k.rare; const n2 = n + (rare ? 1 : 0); const cw2 = Math.min(110, (W - 40 - (n2 - 1) * 10) / n2), x02 = (W - (n2 * cw2 + (n2 - 1) * 10)) / 2;
-      for (let i = 0; i < n; i++) { const o = k.opts[i], cw = cw2, x = x02 + i * (cw + 10), on = k.sel === o.id; ui.panel(x, ty, cw, 112, on ? '#eafff0' : '#fff', on ? C.greenDark : C.pink, 18, on ? 5 : 3); R.drawOption(ctx, A, st.slot, o, x + cw / 2, ty + 46, 30); ui.label(o.name, x + cw / 2, ty + 96, 12, C.text); ui.hotspot('cko_' + o.id, x, ty, cw, 112); }
-      if (rare) { const x = x02 + n * (cw2 + 10), gl = 0.5 + 0.5 * Math.sin(this.time * 5); ui.panel(x, ty, cw2, 112, '#fff6d6', C.goldDark, 18, 4); R.drawOption(ctx, A, st.slot, rare, x + cw2 / 2, ty + 46, 30); A.star(ctx, x + cw2 - 14, ty + 14, 9 + gl * 2, C.gold, 2); A.rr(ctx, x + 8, ty + 80, cw2 - 16, 26, 13); ctx.fillStyle = C.blue; ctx.fill(); ui.label('▶ RARE', x + cw2 / 2, ty + 94, 12, C.white); ui.hotspot('ck_rare', x, ty, cw2, 112); }
+      for (let i = 0; i < n; i++) { const o = k.opts[i], cw = cw2, x = x02 + i * (cw + 10), on = k.sel === o.id; ui.panel(x, ty, cw, 112, on ? '#eafff0' : '#fff', on ? C.greenDark : C.pink, 18, on ? 5 : 3); optIcon(ctx, st.slot, o, x + cw / 2, ty + 46, 30); ui.label(o.name, x + cw / 2, ty + 96, 12, C.text); ui.hotspot('cko_' + o.id, x, ty, cw, 112); }
+      if (rare) { const x = x02 + n * (cw2 + 10), gl = 0.5 + 0.5 * Math.sin(this.time * 5); ui.panel(x, ty, cw2, 112, '#fff6d6', C.goldDark, 18, 4); optIcon(ctx, st.slot, rare, x + cw2 / 2, ty + 46, 30); A.star(ctx, x + cw2 - 14, ty + 14, 9 + gl * 2, C.gold, 2); A.rr(ctx, x + 8, ty + 80, cw2 - 16, 26, 13); ctx.fillStyle = C.blue; ctx.fill(); ui.label('▶ RARE', x + cw2 / 2, ty + 94, 12, C.white); ui.hotspot('ck_rare', x, ty, cw2, 112); }
       if (k.sel) { const pulse = 1 + Math.sin(this.time * 6) * 0.06; ctx.save(); ctx.translate(a.x + a.r + 20, a.y + a.r * 0.4); ctx.scale(pulse, pulse); A.circle(ctx, 0, 0, 34, C.green, 4); ctx.strokeStyle = '#fff'; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(-14, 0); ctx.lineTo(-4, 11); ctx.lineTo(15, -12); ctx.stroke(); ctx.restore(); ui.hotspot('ck_ok', a.x + a.r - 16, a.y + a.r * 0.4 - 36, 72, 72); }
     }
     // done: PERFECT! / YUMMY!

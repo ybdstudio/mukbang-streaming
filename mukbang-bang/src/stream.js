@@ -11,6 +11,7 @@ const K = require('./catalog.js');
 const L = require('./levels.js');
 const WR = require('./wardrobe.js');
 const R = require('./recipes.js');
+const S = require('./sprites.js');
 const C = D.COLORS;
 
 const PICKUPS = 3, BITES = 3;
@@ -368,7 +369,11 @@ function install(Game) {
     // icon
     const ix = W / 2, iy = py + 118;
     if (f.streamer) A.streamer(ctx, f.streamer, ix, iy + 6, 0.32, { expr: 'yum', t: this.time, blink: 0 });
-    else { A.circle(ctx, ix, iy, 48, f.color, 5); A.star(ctx, ix, iy, 26, '#fff', 3); if (!open) A.lock(ctx, ix + 34, iy + 30, 22); }
+    else {
+      const key = f.id.indexOf('mode:') === 0 ? f.id.slice(5) : f.id;
+      if (!S.v4draw(ctx, 'features/' + key + '.png', ix, iy, 128)) { A.circle(ctx, ix, iy, 48, f.color, 5); A.star(ctx, ix, iy, 26, '#fff', 3); }
+      if (!open && !S.v4draw(ctx, 'features/lock.png', ix + 40, iy + 34, 40)) A.lock(ctx, ix + 34, iy + 30, 22);
+    }
     for (let i = 0; i < 6; i++) { const a = this.time * 1.5 + i * 1.05; A.star(ctx, ix + Math.cos(a) * 72, iy + Math.sin(a) * 50, 6, C.gold, 1); }
     ui.title(f.name, W / 2, py + 196, 30, C.white, f.dark);
     ui.label(f.desc, W / 2, py + 228, 14, C.text);

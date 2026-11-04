@@ -1,0 +1,10 @@
+[
+  {
+    "path": "rooms/night_market/room.png",
+    "todo": "Add string lights and YUMYUM STALL sign from concept description; preserve measured alpha and safe zones."
+  },
+  {
+    "path": "rooms/fire_challenge/room.png",
+    "todo": "Add or pair SPICE LEVEL display/header with dynamic display layer; current foreground alone does not complete concept."
+  }
+]

@@ -1,0 +1,1441 @@
+{
+  "scope": "V4 art excluding characters and character overlays; includes wardrobe UI",
+  "style": "Approved boards 2026-11-04",
+  "assets": [
+    {
+      "path": "cook/opt_mold_dome.png",
+      "status": "exported-reviewed",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_mold_star.png",
+      "status": "exported-reviewed",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_mold_heart.png",
+      "status": "exported-reviewed",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_mold_flower.png",
+      "status": "exported-reviewed",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_mold_bunny.png",
+      "status": "exported-reviewed",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_mold_crown.png",
+      "status": "exported-reviewed",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_flavor_strawberry.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_flavor_mango.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_flavor_matcha.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_flavor_grape.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_flavor_blueberry.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_flavor_peach.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_flavor_chocolate.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_flavor_milk.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_flavor_sakura.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_flavor_lemon.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_flavor_soda.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_broth_shoyu.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_broth_miso.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_broth_spicy.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_broth_creamy.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_broth_curry.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_topping_cherry.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_topping_strawberry_t.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_topping_blueberry_t.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_topping_mint.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_topping_cream.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_topping_kiwi.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_topping_peach_t.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_topping_mochi.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_topping_choco_stick.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_topping_sakura_t.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_topping_gold_star.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_ramen_top_egg.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_ramen_top_chashu.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_ramen_top_scallion.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_ramen_top_naruto.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_ramen_top_corn.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_ramen_top_nori.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_boba_top_pearls.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_boba_top_jelly_cubes.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_boba_top_pudding_t.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_boba_top_red_bean.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_boba_top_popping.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_deco_sprinkles.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_deco_hearts.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_deco_stars.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_deco_pearls_d.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_deco_snow.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_deco_gold.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_deco_cocoa.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_cup_pink.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_cup_mint_c.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_cup_lavender.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_cup_lemon_c.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_cup_sky.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_shape_ring.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_shape_heart_d.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_shape_star_d.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/opt_shape_bear.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "features/market.png",
+      "status": "exported-reviewed",
+      "group": "features"
+    },
+    {
+      "path": "features/delivery.png",
+      "status": "exported-reviewed",
+      "group": "features"
+    },
+    {
+      "path": "features/buffet.png",
+      "status": "exported-reviewed",
+      "group": "features"
+    },
+    {
+      "path": "features/wardrobe.png",
+      "status": "exported-reviewed",
+      "group": "features"
+    },
+    {
+      "path": "features/lock.png",
+      "status": "exported-reviewed",
+      "group": "features"
+    },
+    {
+      "path": "cook/tray.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/card.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/card_selected.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/card_rare.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/badge_rare.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/ok.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/pip_on.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/pip_off.png",
+      "status": "reused-reviewed",
+      "group": "cook"
+    },
+    {
+      "path": "cook/banner_perfect.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/banner_yummy.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/request_card.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/plate_dessert.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/cupcake_base.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/cupcake_cream_fill.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/boba_fill.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/ramen_broth_fill.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/ramen_noodles.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/glass_parfait.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/parfait_layer_fill.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/bingsu_snow.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/bingsu_syrup_fill.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/bg_kitchen.jpg",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/mold_dome.png",
+      "status": "exported-reviewed",
+      "group": "cook"
+    },
+    {
+      "path": "cook/jelly_dome_fill.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/jelly_dome_out_fill.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/mold_star.png",
+      "status": "exported-reviewed",
+      "group": "cook"
+    },
+    {
+      "path": "cook/jelly_star_fill.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/jelly_star_out_fill.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/mold_heart.png",
+      "status": "exported-reviewed",
+      "group": "cook"
+    },
+    {
+      "path": "cook/jelly_heart_fill.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/jelly_heart_out_fill.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/mold_flower.png",
+      "status": "exported-reviewed",
+      "group": "cook"
+    },
+    {
+      "path": "cook/jelly_flower_fill.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/jelly_flower_out_fill.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/mold_bunny.png",
+      "status": "exported-reviewed",
+      "group": "cook"
+    },
+    {
+      "path": "cook/jelly_bunny_fill.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/jelly_bunny_out_fill.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/mold_crown.png",
+      "status": "exported-reviewed",
+      "group": "cook"
+    },
+    {
+      "path": "cook/jelly_crown_fill.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/jelly_crown_out_fill.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/cup_cupcake_pink.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/cup_boba_pink.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/bowl_ramen_pink.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/bowl_bingsu_pink.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/cup_cupcake_mint_c.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/cup_boba_mint_c.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/bowl_ramen_mint_c.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/bowl_bingsu_mint_c.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/cup_cupcake_lavender.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/cup_boba_lavender.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/bowl_ramen_lavender.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/bowl_bingsu_lavender.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/cup_cupcake_lemon_c.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/cup_boba_lemon_c.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/bowl_ramen_lemon_c.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/bowl_bingsu_lemon_c.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/cup_cupcake_sky.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/cup_boba_sky.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/bowl_ramen_sky.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/bowl_bingsu_sky.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/donut_ring.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/donut_glaze_ring_fill.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/donut_heart_d.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/donut_glaze_heart_d_fill.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/donut_star_d.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/donut_glaze_star_d_fill.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/donut_bear.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/donut_glaze_bear_fill.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/top_cherry.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/top_strawberry_t.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/top_blueberry_t.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/top_mint.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/top_cream.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/top_kiwi.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/top_peach_t.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/top_mochi.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/top_choco_stick.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/top_sakura_t.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/top_gold_star.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/top_egg.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/top_chashu.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/top_scallion.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/top_naruto.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/top_corn.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/top_nori.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/top_pearls.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/top_jelly_cubes.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/top_pudding_t.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/top_red_bean.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/top_popping.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/deco_sprinkles.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/deco_hearts.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/deco_stars.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/deco_pearls_d.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/deco_snow.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/deco_gold.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/deco_cocoa.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/tool_fan_0.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/tool_fan_1.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/tool_fire_0.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/tool_fire_1.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/tool_oven_0.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/tool_oven_1.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/tool_mixer_0.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/tool_mixer_1.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/tool_shaker_0.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/tool_shaker_1.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/tool_shaver_0.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/tool_shaver_1.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/tool_bottle_pour_0.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/tool_bottle_pour_1.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/fx_steam.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/fx_cold.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/fx_pour.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/fx_sparkle.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/plate_jelly.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/plate_jelly_1.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/plate_jelly_2.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/plate_pudding.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/plate_pudding_1.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/plate_pudding_2.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/plate_cupcake.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/plate_cupcake_1.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/plate_cupcake_2.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/plate_boba.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/plate_boba_1.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/plate_boba_2.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/plate_ramen.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/plate_ramen_1.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/plate_ramen_2.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/plate_parfait.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/plate_parfait_1.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/plate_parfait_2.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/plate_donut.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/plate_donut_1.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/plate_donut_2.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/plate_bingsu.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/plate_bingsu_1.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "cook/plate_bingsu_2.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "rooms/night_market/room.png",
+      "status": "generated_needs_concept_details",
+      "group": "rooms"
+    },
+    {
+      "path": "rooms/night_market/view.jpg",
+      "status": "pending",
+      "group": "rooms"
+    },
+    {
+      "path": "rooms/night_market/food_takoyaki.png",
+      "status": "exported-reviewed",
+      "group": "concept-food"
+    },
+    {
+      "path": "rooms/night_market/food_tteokbokki.png",
+      "status": "exported-reviewed",
+      "group": "concept-food"
+    },
+    {
+      "path": "rooms/night_market/food_egg_waffle.png",
+      "status": "exported-reviewed",
+      "group": "concept-food"
+    },
+    {
+      "path": "rooms/night_market/food_grilled_skewers.png",
+      "status": "exported-reviewed",
+      "group": "concept-food"
+    },
+    {
+      "path": "rooms/sakura_tea_house/room.png",
+      "status": "exported-reviewed",
+      "group": "rooms"
+    },
+    {
+      "path": "rooms/sakura_tea_house/view.jpg",
+      "status": "reused-reviewed",
+      "group": "rooms"
+    },
+    {
+      "path": "rooms/sakura_tea_house/food_dango.png",
+      "status": "exported-reviewed",
+      "group": "concept-food"
+    },
+    {
+      "path": "rooms/sakura_tea_house/food_matcha_latte.png",
+      "status": "reused-reviewed",
+      "group": "concept-food"
+    },
+    {
+      "path": "rooms/sakura_tea_house/food_taiyaki.png",
+      "status": "pending",
+      "group": "concept-food"
+    },
+    {
+      "path": "rooms/sakura_tea_house/food_flower_wagashi.png",
+      "status": "pending",
+      "group": "concept-food"
+    },
+    {
+      "path": "rooms/aquarium_cafe/room.png",
+      "status": "exported-reviewed",
+      "group": "rooms"
+    },
+    {
+      "path": "rooms/aquarium_cafe/view.jpg",
+      "status": "pending",
+      "group": "rooms"
+    },
+    {
+      "path": "rooms/aquarium_cafe/food_ocean_jelly.png",
+      "status": "pending",
+      "group": "concept-food"
+    },
+    {
+      "path": "rooms/aquarium_cafe/food_seashell_madeleine.png",
+      "status": "pending",
+      "group": "concept-food"
+    },
+    {
+      "path": "rooms/aquarium_cafe/food_mini_sushi.png",
+      "status": "pending",
+      "group": "concept-food"
+    },
+    {
+      "path": "rooms/aquarium_cafe/food_blue_ocean_boba.png",
+      "status": "pending",
+      "group": "concept-food"
+    },
+    {
+      "path": "rooms/space_diner/room.png",
+      "status": "exported-reviewed",
+      "group": "rooms"
+    },
+    {
+      "path": "rooms/space_diner/view.jpg",
+      "status": "pending",
+      "group": "rooms"
+    },
+    {
+      "path": "rooms/space_diner/food_galaxy_donut.png",
+      "status": "pending",
+      "group": "concept-food"
+    },
+    {
+      "path": "rooms/space_diner/food_planet_macaron.png",
+      "status": "pending",
+      "group": "concept-food"
+    },
+    {
+      "path": "rooms/space_diner/food_nebula_soda.png",
+      "status": "pending",
+      "group": "concept-food"
+    },
+    {
+      "path": "rooms/space_diner/food_astronaut_icecream.png",
+      "status": "pending",
+      "group": "concept-food"
+    },
+    {
+      "path": "rooms/candy_lab/room.png",
+      "status": "exported-reviewed",
+      "group": "rooms"
+    },
+    {
+      "path": "rooms/candy_lab/view.jpg",
+      "status": "pending",
+      "group": "rooms"
+    },
+    {
+      "path": "rooms/candy_lab/food_spiral_lollipop.png",
+      "status": "pending",
+      "group": "concept-food"
+    },
+    {
+      "path": "rooms/candy_lab/food_chocolate_bonbon.png",
+      "status": "pending",
+      "group": "concept-food"
+    },
+    {
+      "path": "rooms/candy_lab/food_cotton_candy.png",
+      "status": "pending",
+      "group": "concept-food"
+    },
+    {
+      "path": "rooms/candy_lab/food_gummy_bears.png",
+      "status": "pending",
+      "group": "concept-food"
+    },
+    {
+      "path": "rooms/fire_challenge/room.png",
+      "status": "generated_needs_concept_details",
+      "group": "rooms"
+    },
+    {
+      "path": "rooms/fire_challenge/view.jpg",
+      "status": "pending",
+      "group": "rooms"
+    },
+    {
+      "path": "rooms/fire_challenge/food_fire_noodles.png",
+      "status": "pending",
+      "group": "concept-food"
+    },
+    {
+      "path": "rooms/fire_challenge/food_spicy_wings.png",
+      "status": "pending",
+      "group": "concept-food"
+    },
+    {
+      "path": "rooms/fire_challenge/food_mini_hotpot.png",
+      "status": "pending",
+      "group": "concept-food"
+    },
+    {
+      "path": "rooms/fire_challenge/food_milk_cooler.png",
+      "status": "pending",
+      "group": "concept-food"
+    },
+    {
+      "path": "wardrobe/icon_outfit_mint.png",
+      "status": "pending",
+      "group": "ui"
+    },
+    {
+      "path": "wardrobe/icon_outfit_bib.png",
+      "status": "pending",
+      "group": "ui"
+    },
+    {
+      "path": "wardrobe/icon_outfit_sunny.png",
+      "status": "pending",
+      "group": "ui"
+    },
+    {
+      "path": "wardrobe/icon_outfit_sakura.png",
+      "status": "pending",
+      "group": "ui"
+    },
+    {
+      "path": "wardrobe/icon_outfit_chef.png",
+      "status": "pending",
+      "group": "ui"
+    },
+    {
+      "path": "wardrobe/icon_outfit_star.png",
+      "status": "pending",
+      "group": "ui"
+    },
+    {
+      "path": "wardrobe/icon_hair_bow.png",
+      "status": "pending",
+      "group": "ui"
+    },
+    {
+      "path": "wardrobe/icon_hair_star.png",
+      "status": "pending",
+      "group": "ui"
+    },
+    {
+      "path": "wardrobe/icon_hair_cat_ears.png",
+      "status": "pending",
+      "group": "ui"
+    },
+    {
+      "path": "wardrobe/icon_hair_beret.png",
+      "status": "pending",
+      "group": "ui"
+    },
+    {
+      "path": "wardrobe/icon_hair_flowers.png",
+      "status": "pending",
+      "group": "ui"
+    },
+    {
+      "path": "wardrobe/icon_hair_bunny_ears.png",
+      "status": "pending",
+      "group": "ui"
+    },
+    {
+      "path": "wardrobe/icon_hair_crown.png",
+      "status": "pending",
+      "group": "ui"
+    },
+    {
+      "path": "wardrobe/icon_acc_blush.png",
+      "status": "pending",
+      "group": "ui"
+    },
+    {
+      "path": "wardrobe/icon_acc_glasses_round.png",
+      "status": "pending",
+      "group": "ui"
+    },
+    {
+      "path": "wardrobe/icon_acc_headphones.png",
+      "status": "pending",
+      "group": "ui"
+    },
+    {
+      "path": "wardrobe/icon_acc_heart_glasses.png",
+      "status": "pending",
+      "group": "ui"
+    },
+    {
+      "path": "wardrobe/icon_acc_scarf.png",
+      "status": "pending",
+      "group": "ui"
+    },
+    {
+      "path": "wardrobe/icon_outfit_default.png",
+      "status": "pending",
+      "group": "ui"
+    },
+    {
+      "path": "wardrobe/tab_outfit.png",
+      "status": "pending",
+      "group": "ui"
+    },
+    {
+      "path": "wardrobe/tab_hair.png",
+      "status": "pending",
+      "group": "ui"
+    },
+    {
+      "path": "wardrobe/tab_extras.png",
+      "status": "pending",
+      "group": "ui"
+    },
+    {
+      "path": "wardrobe/badge_ad.png",
+      "status": "pending",
+      "group": "ui"
+    },
+    {
+      "path": "wardrobe/badge_gift.png",
+      "status": "pending",
+      "group": "ui"
+    },
+    {
+      "path": "rooms/night_market/tool_takoyaki_pan.png",
+      "status": "pending",
+      "group": "concept-tool",
+      "spec": "proposed; concept did not define size/anchor"
+    },
+    {
+      "path": "rooms/night_market/tool_grill.png",
+      "status": "pending",
+      "group": "concept-tool",
+      "spec": "proposed; concept did not define size/anchor"
+    },
+    {
+      "path": "rooms/sakura_tea_house/tool_bamboo_whisk.png",
+      "status": "pending",
+      "group": "concept-tool",
+      "spec": "proposed; concept did not define size/anchor"
+    },
+    {
+      "path": "rooms/sakura_tea_house/tool_taiyaki_pan.png",
+      "status": "pending",
+      "group": "concept-tool",
+      "spec": "proposed; concept did not define size/anchor"
+    },
+    {
+      "path": "rooms/aquarium_cafe/tool_sushi_mat.png",
+      "status": "pending",
+      "group": "concept-tool",
+      "spec": "proposed; concept did not define size/anchor"
+    },
+    {
+      "path": "rooms/aquarium_cafe/tool_mold_fish.png",
+      "status": "pending",
+      "group": "concept-tool",
+      "spec": "proposed; concept did not define size/anchor"
+    },
+    {
+      "path": "rooms/aquarium_cafe/tool_mold_shell.png",
+      "status": "pending",
+      "group": "concept-tool",
+      "spec": "proposed; concept did not define size/anchor"
+    },
+    {
+      "path": "rooms/candy_lab/tool_cotton_candy_machine.png",
+      "status": "pending",
+      "group": "concept-tool",
+      "spec": "proposed; concept did not define size/anchor"
+    },
+    {
+      "path": "rooms/fire_challenge/tool_spice_meter.png",
+      "status": "pending",
+      "group": "concept-tool",
+      "spec": "proposed; concept did not define size/anchor"
+    },
+    {
+      "path": "rooms/night_market/fx.png",
+      "status": "pending",
+      "group": "concept-fx",
+      "spec": "proposed atlas; match scene concept"
+    },
+    {
+      "path": "rooms/sakura_tea_house/fx.png",
+      "status": "pending",
+      "group": "concept-fx",
+      "spec": "proposed atlas; match scene concept"
+    },
+    {
+      "path": "rooms/aquarium_cafe/fx.png",
+      "status": "pending",
+      "group": "concept-fx",
+      "spec": "proposed atlas; match scene concept"
+    },
+    {
+      "path": "rooms/space_diner/fx.png",
+      "status": "pending",
+      "group": "concept-fx",
+      "spec": "proposed atlas; match scene concept"
+    },
+    {
+      "path": "rooms/candy_lab/fx.png",
+      "status": "pending",
+      "group": "concept-fx",
+      "spec": "proposed atlas; match scene concept"
+    },
+    {
+      "path": "rooms/fire_challenge/fx.png",
+      "status": "pending",
+      "group": "concept-fx",
+      "spec": "proposed atlas; match scene concept"
+    },
+    {
+      "path": "cook/tool_bottle_pour_fill.png",
+      "status": "pending",
+      "group": "cook"
+    },
+    {
+      "path": "rooms/aquarium_cafe/actor_fish.png",
+      "status": "pending",
+      "group": "rooms"
+    },
+    {
+      "path": "rooms/aquarium_cafe/actor_jellyfish.png",
+      "status": "pending",
+      "group": "rooms"
+    },
+    {
+      "path": "rooms/aquarium_cafe/actor_turtle.png",
+      "status": "pending",
+      "group": "rooms"
+    },
+    {
+      "path": "rooms/aquarium_cafe/actor_whale.png",
+      "status": "pending",
+      "group": "rooms"
+    }
+  ]
+}

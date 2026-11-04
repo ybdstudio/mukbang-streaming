@@ -90,6 +90,15 @@ const STORE = {
 const UI = { logo: { image: 'ui/logo.png', w: 900, h: 420 }, phone: { image: 'ui/phone_stick.png', w: 200, h: 360, anchor: [100, 350] } };
 const BG_W = 1080, BG_H = 2400;
 
+// ─── art V4 (docs/ART-REQUEST-V4.md; delivered files only — anything else keeps the vector fallback) ───
+const V4 = {};
+['features/market.png', 'features/delivery.png', 'features/buffet.png', 'features/wardrobe.png', 'features/lock.png',
+  'cook/opt_mold_dome.png', 'cook/opt_mold_star.png', 'cook/opt_mold_heart.png', 'cook/opt_mold_flower.png', 'cook/opt_mold_bunny.png', 'cook/opt_mold_crown.png'
+].forEach(function (p) { V4[p] = true; });
+function v4(path) { return V4[path] ? get(path) : null; }
+// draw a V4 sprite centred at (x, y), `size` logical units wide; false if not (yet) available
+function v4draw(ctx, path, x, y, size) { const im = v4(path); if (!im) return false; const h = size * im.height / im.width; ctx.drawImage(im, x - size / 2, y - h / 2, size, h); return true; }
+
 // ─── drawing helpers ───
 // draw one atlas cell centred at (x, y) with size w x h
 function cell(ctx, im, fr, x, y, w, h) { ctx.drawImage(im, fr.x, fr.y, fr.w, fr.h, x - w / 2, y - h / 2, w, h); }
@@ -113,6 +122,6 @@ function nine(ctx, im, sl, iw, ih, x, y, w, h, k) {
 }
 
 module.exports = {
-  init, enabled, get, getBg, preload, preloadFoods, foodPath, FOOD_SIZE, STREAMERS, STREAMER_K, FACE_IMG, FACE, FACE_EYES_AT, FACE_MOUTH_AT, FACE_FX_AT, EXPR,
+  init, enabled, get, v4, v4draw, V4, getBg, preload, preloadFoods, foodPath, FOOD_SIZE, STREAMERS, STREAMER_K, FACE_IMG, FACE, FACE_EYES_AT, FACE_MOUTH_AT, FACE_FX_AT, EXPR,
   ICONS, REACTIONS, AVATARS, STORE, UI, BG_W, BG_H, cell, atlas, cover, nine
 };

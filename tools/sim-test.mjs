@@ -308,6 +308,7 @@ for (const mode of ['null', 'reject']) {
   const gameDir = join(here, '..', 'mukbang-bang'); const p = fakePlatform(); const miss = []; let asked = 0;
   p.loadImage = (path, done) => { asked++; if (!existsSync(join(gameDir, path))) { miss.push(path); done(null); } else done({ width: 256, height: 256 }); };
   const prof = fakeProfile(INIT), g = new Game(p, fakeHs(prof, 'ok')); g.hsReady = true; run(g, 0.2);
+  { const miss4 = Object.keys(S.V4).filter(q => !existsSync(join(gameDir, 'assets', q))); check('art V4: every registered V4 sprite is in the package', miss4.length === 0, miss4); }
   await eatAll(g, p, 'mix'); check('sprite path: level 1 plays with bitmap art, nothing missing requested', g.state === 'result' && asked > 10 && !miss.length, miss); }
 
 // ═════════ 5 personas × 40 streams: play time + measured ad impressions ═════════
