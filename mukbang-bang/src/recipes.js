@@ -122,7 +122,7 @@ function draw(ctx, A, dish, x, y, size, st) {
     else { // ramen
       A.ellipse(ctx, 0, -4, 46, 12, shade(cc, -0.1), 4);
       if (st.fill > 0) { A.ellipse(ctx, 0, -4, 40 * Math.min(1, st.fill + 0.2), 9, col, 0); }
-      if (st.set) { ctx.strokeStyle = '#ffe2a0'; ctx.lineWidth = 3; for (let i = 0; i < 6; i++) { ctx.beginPath(); ctx.moveTo(-30 + i * 10, -6); ctx.quadraticCurveTo(-26 + i * 10, -14, -22 + i * 10, -4); ctx.stroke(); } }
+      if (st.set) noodles(ctx, 0, -6, 34, 7);
       for (let i = 0; i < Math.min(tops, 3); i++) drawTop([-18, 6, 22][i], [-8, -10, -4][i], 1.1);
       drawDeco(0, -6, 60, 10);
       ctx.lineWidth = 5; ctx.strokeStyle = '#c49a6c'; ctx.beginPath(); ctx.moveTo(10, -16); ctx.lineTo(44, -52); ctx.moveTo(18, -14); ctx.lineTo(50, -46); ctx.stroke();
@@ -142,6 +142,29 @@ function draw(ctx, A, dish, x, y, size, st) {
     if (sh === 'ring') { A.circle(ctx, 0, 0, 12, '#e9f3ff', 4); }
     drawDeco(0, 0, 60, 50); for (let i = 0; i < Math.min(tops, 2); i++) drawTop(i ? 18 : -16, i ? -14 : -18, 1);
   }
+  ctx.restore();
+}
+// golden instant noodles: wavy strands with a darker edge so they read as noodles at any size
+function noodles(ctx, x, y, w, n, len) {
+  len = len === undefined ? 1 : len;
+  for (let pass = 0; pass < 2; pass++) {
+    ctx.strokeStyle = pass ? '#ffd23f' : '#d99a1a'; ctx.lineWidth = pass ? 3.4 : 5.6; ctx.lineCap = 'round';
+    for (let i = 0; i < n; i++) { const sx = x - w + (i + 0.5) * (2 * w / n); ctx.beginPath(); ctx.moveTo(sx - 6, y + 2);
+      for (let k = 1; k <= 4; k++) ctx.quadraticCurveTo(sx - 6 + k * 3 - 1.5, y + (k % 2 ? -7 : 5) * len, sx - 6 + k * 3, y + 1); ctx.stroke(); }
+  }
+  ctx.fillStyle = 'rgba(255,255,255,0.55)'; for (let i = 0; i < n; i += 2) { ctx.beginPath(); ctx.arc(x - w + (i + 0.5) * (2 * w / n) - 3, y - 3, 1.4, 0, Math.PI * 2); ctx.fill(); }
+}
+// a bite on chopsticks: golden noodles hanging from the tips; `left` 0..1 = how much is still there
+function noodleBite(ctx, x, y, s, left, broth) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s / 100, s / 100); ctx.lineCap = 'round';
+  ctx.strokeStyle = '#5b3d3b'; ctx.lineWidth = 9; ctx.beginPath(); ctx.moveTo(-6, -30); ctx.lineTo(60, -78); ctx.moveTo(6, -24); ctx.lineTo(68, -68); ctx.stroke();
+  ctx.strokeStyle = '#d9a86c'; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(-6, -30); ctx.lineTo(60, -78); ctx.moveTo(6, -24); ctx.lineTo(68, -68); ctx.stroke();
+  const L = 70 * Math.max(0, left);
+  if (L > 2) for (let pass = 0; pass < 2; pass++) {
+    ctx.strokeStyle = pass ? '#ffd23f' : '#d99a1a'; ctx.lineWidth = pass ? 4.2 : 7;
+    for (let i = 0; i < 6; i++) { const ox = -16 + i * 6.5; ctx.beginPath(); ctx.moveTo(ox * 0.4, -26); ctx.bezierCurveTo(ox - 8, -26 + L * 0.3, ox + 8, -26 + L * 0.65, ox + (i % 2 ? 4 : -4), -26 + L); ctx.stroke(); }
+  }
+  if (L > 2 && broth) { ctx.fillStyle = broth; ctx.globalAlpha = 0.8; ctx.beginPath(); ctx.arc(-2, -24 + L + 6, 4, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1; }
   ctx.restore();
 }
 function shade(hex, amt) { let h = hex.replace('#', ''); if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2]; const n = parseInt(h, 16); let r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255; const f = function (c) { return Math.round(Math.max(0, Math.min(255, amt > 0 ? c + (255 - c) * amt : c * (1 + amt)))); }; return '#' + ((1 << 24) + (f(r) << 16) + (f(g) << 8) + f(b)).toString(16).slice(1); }
@@ -169,4 +192,4 @@ function drawTopOnly(ctx, A, slot, o) {
   else A.circle(ctx, 0, 0, 6.5, c, 1.5);
 }
 
-module.exports = { setArt, OPT, OPT_BY, opt, options, RECIPES, tasteOf, colorOf, toppingSlot, dishName, draw, drawOption };
+module.exports = { setArt, noodleBite, OPT, OPT_BY, opt, options, RECIPES, tasteOf, colorOf, toppingSlot, dishName, draw, drawOption };

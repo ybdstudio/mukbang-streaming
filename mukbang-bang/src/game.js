@@ -519,7 +519,7 @@ class Game {
     const locked = this.nextLockedCat();
     if (locked) { // preview of the next shelf to unlock
       const sp = this.shelfPos(6); A.shelfBoard(ctx, 18, sp.y + 52, W - 36, 30, '#d9cfcf');
-      const lf = D.foodsOf(locked.id); ctx.globalAlpha = 0.35; for (let i = 0; i < 3; i++) A.food(ctx, lf[i], this.shelfPos(6 + i).x, sp.y, 100, 0, 0); ctx.globalAlpha = 1;
+      const lf = D.foodsOf(locked.id); ctx.globalAlpha = 0.35; for (let i = 0; i < 3; i++) A.food(ctx, lf[i], this.shelfPos(6 + i).x, sp.y - 14, 136, 0, 0); ctx.globalAlpha = 1;
       A.lock(ctx, W / 2, sp.y - 10, 44);
       ui.panel(W / 2 - 120, sp.y + 70, 240, 30, '#fff', C.outline, 15, 3); ui.label(locked.name + '  ·  UNLOCKS AT LEVEL ' + locked.unlock, W / 2, sp.y + 85, 13, C.text);
     }
@@ -528,10 +528,10 @@ class Game {
       const f = foods[i]; const sp = this.shelfPos(i); const price = D.priceOf(f);
       const afford = coins >= total + price && m.basket.length < m.pick;
       ctx.globalAlpha = afford ? 1 : 0.55;
-      A.food(ctx, f, sp.x + (afford ? 0 : shake), sp.y, 112, 0, this.time);
+      A.food(ctx, f, sp.x + (afford ? 0 : shake), sp.y - 18, 150, 0, this.time);
       ctx.globalAlpha = 1;
       A.priceTag(ctx, sp.x, sp.y + 92, price, !afford);
-      ui.hotspot('item' + i, sp.x - 56, sp.y - 60, 112, 150);
+      ui.hotspot('item' + i, sp.x - 75, sp.y - 95, 150, 185);
     }
     // bottom: portrait, basket, count + total
     const b = this.basketRect(); const bottom = this.bottom();
@@ -539,8 +539,8 @@ class Game {
     ctx.save(); A.rr(ctx, 26, bottom - 164, 76, 138, 12); ctx.clip(); ctx.fillStyle = '#ffe3ea'; ctx.fillRect(26, bottom - 164, 76, 138); A.streamer(ctx, this.streamerDef(), 64, bottom - 96, 0.3, { expr: 'yum' }); ctx.restore();
     A.rr(ctx, 36, bottom - 48, 56, 22, 11); ctx.fillStyle = '#ff4a5f'; ctx.fill(); ctx.strokeStyle = C.outline; ctx.lineWidth = 3; ctx.stroke(); ui.label('live', 64, bottom - 37, 13, C.white);
     A.basket(ctx, b.x, b.y, b.w, b.h);
-    for (let i = 0; i < m.basket.length; i++) { const f = K.dish(m.basket[i]); const n = m.basket.length; const bx = b.x + b.w * (n === 1 ? 0.5 : 0.18 + 0.64 * i / (n - 1)); A.food(ctx, f, bx, b.y + 8 - (i % 2) * 10, 60, 0, this.time); ui.hotspot('bk' + i, bx - 30, b.y - 30, 60, 60); }
-    for (let i = 0; i < this.flies.length; i++) { const fl = this.flies[i]; const k = U.easeInOut(fl.t); A.food(ctx, fl.food, U.lerp(fl.x0, fl.x1, k), U.lerp(fl.y0, fl.y1, k) - Math.sin(k * Math.PI) * 120, U.lerp(112, 60, k), 0, this.time); }
+    for (let i = 0; i < m.basket.length; i++) { const f = K.dish(m.basket[i]); const n = m.basket.length; const bx = b.x + b.w * (n === 1 ? 0.5 : 0.18 + 0.64 * i / (n - 1)); A.food(ctx, f, bx, b.y - 2 - (i % 2) * 10, 84, 0, this.time); ui.hotspot('bk' + i, bx - 42, b.y - 44, 84, 84); }
+    for (let i = 0; i < this.flies.length; i++) { const fl = this.flies[i]; const k = U.easeInOut(fl.t); A.food(ctx, fl.food, U.lerp(fl.x0, fl.x1, k), U.lerp(fl.y0, fl.y1, k) - Math.sin(k * Math.PI) * 120, U.lerp(150, 84, k), 0, this.time); }
     ui.panel(W - 150, bottom - 150, 130, 44, '#fff', C.outline, 14); ui.label('🛒', W - 130, bottom - 128, 18, C.text); ui.label(m.basket.length + ' / ' + m.pick, W - 78, bottom - 128, 20, C.text);
     ui.panel(W - 150, bottom - 98, 130, 44, '#fff', C.outline, 14); ui.label('Total', W - 126, bottom - 76, 15, C.text, 'left'); A.coin(ctx, W - 66, bottom - 76, 9); ui.label(String(total), W - 52, bottom - 76, 18, C.text, 'left');
     if (m.basket.length >= m.pick) { const pulse = 1 + Math.sin(this.time * 6) * 0.05; ctx.save(); ctx.translate(W - 85, bottom - 24); ctx.scale(pulse, pulse); ctx.translate(-(W - 85), -(bottom - 24)); ui.button('confirm', W - 150, bottom - 48, 130, 48, 'GO  ›', { color: C.green, dark: C.greenDark, size: 24 }); ctx.restore(); }

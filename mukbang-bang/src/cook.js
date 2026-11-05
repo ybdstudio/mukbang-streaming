@@ -86,7 +86,7 @@ function install(Game) {
       self.audio.play('levelup'); self.spawnConfetti(self.W / 2, self.H * 0.4, 30); self.showToast('RARE ' + o.name.toUpperCase() + '!', 'The viewers will love it');
     });
   };
-  P.cookArea = function () { return { x: this.W / 2, y: this.H * 0.53, r: Math.min(150, this.W * 0.3) }; };
+  P.cookArea = function () { return { x: this.W / 2, y: this.H * 0.6, r: Math.min(150, this.W * 0.3) }; };
   P.toolPos = function () { const a = this.cookArea(); return { x: a.x + a.r * 1.05, y: a.y - a.r * 0.55 }; };
   P.cookTouch = function (kind, id, x, y) {
     const k = this.ck; if (!k || this.state !== 'cook' || k.doneT >= 0) return false;
@@ -143,7 +143,7 @@ function install(Game) {
     if (flipping) { const t = k.flipT / FLIP_T; ctx.save(); ctx.translate(a.x, a.y); ctx.rotate(Math.PI * t); ctx.translate(-a.x, -a.y); R.draw(ctx, A, k.dish, a.x, a.y, a.r * 1.9, k.st); ctx.restore(); }
     else R.draw(ctx, A, k.dish, a.x, a.y, a.r * 1.9, k.st);
     // pour stream / tool
-    if (st && st.t === 'pour') { const fo = R.opt(st.from, k.dish[SLOT_KEY[st.from]]); const bx = a.x + a.r * 0.6, by = a.y - a.r * 1.05; const pouring = k.holdId !== null; let sp = CA.bottle(ctx, fo ? fo.color : '#ff9fc4', bx + 20, by - 10, 220, pouring); if (!sp) { ctx.save(); ctx.translate(bx, by); ctx.rotate(pouring ? -0.9 : -0.3); R.drawOption(ctx, A, st.from === 'broth' ? 'broth' : 'flavor', fo || { color: '#ff9fc4' }, 0, 0, 34); ctx.restore(); sp = { x: bx - 26, y: by + 10 }; } if (pouring && fo) { ctx.strokeStyle = fo.color; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(sp.x, sp.y); ctx.quadraticCurveTo(sp.x - 14, sp.y + 50, a.x + 6, a.y - a.r * 0.2); ctx.stroke(); } ui.bar(a.x - 80, a.y + a.r + 26, 160, 12, k.st.fill, C.pink, 'rgba(255,255,255,0.7)'); }
+    if (st && st.t === 'pour') { const fo = R.opt(st.from, k.dish[SLOT_KEY[st.from]]); const bx = a.x + a.r * 0.6, by = a.y - a.r * 1.05; const pouring = k.holdId !== null; let sp = CA.bottle(ctx, fo ? fo.color : '#ff9fc4', bx + 34, by - 30, 300, pouring); if (!sp) { ctx.save(); ctx.translate(bx, by); ctx.rotate(pouring ? -0.9 : -0.3); R.drawOption(ctx, A, st.from === 'broth' ? 'broth' : 'flavor', fo || { color: '#ff9fc4' }, 0, 0, 34); ctx.restore(); sp = { x: bx - 26, y: by + 10 }; } if (pouring && fo) { ctx.strokeStyle = fo.color; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(sp.x, sp.y); ctx.quadraticCurveTo(sp.x - 14, sp.y + 50, a.x + 6, a.y - a.r * 0.2); ctx.stroke(); } ui.bar(a.x - 80, a.y + a.r + 26, 160, 12, k.st.fill, C.pink, 'rgba(255,255,255,0.7)'); }
     if (st && st.t === 'hold') { const tp = this.toolPos(); this.drawTool(st.tool, tp.x, tp.y, k.holdId !== null); ui.bar(a.x - 80, a.y + a.r + 26, 160, 12, k.prog, st.tool === 'fire' || st.tool === 'oven' ? '#ff7a3a' : C.blue, 'rgba(255,255,255,0.7)'); }
     if (st && st.t === 'shake') { ui.bar(a.x - 80, a.y + a.r + 26, 160, 12, k.st.deco, C.yellow, 'rgba(255,255,255,0.7)'); const dop = R.opt('deco', k.dish.deco); if (dop) { const sx = a.x + Math.sin(this.time * 8) * 20, sy = a.y - a.r * 0.95; ctx.save(); ctx.translate(sx, sy); ctx.rotate(Math.sin(this.time * 8) * 0.3); optIcon(ctx, 'deco', dop, 0, 0, 30); ctx.restore(); } }
     if (st && (st.t === 'place' || st.t === 'flip' || st.t === 'shake') && !k.holdId) { const p = 0.4 + 0.3 * Math.sin(this.time * 6); ctx.strokeStyle = 'rgba(255,255,255,' + p + ')'; ctx.lineWidth = 5; ctx.setLineDash([10, 10]); ctx.beginPath(); ctx.arc(a.x, a.y, a.r * 0.9, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]); }

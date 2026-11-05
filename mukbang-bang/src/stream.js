@@ -279,13 +279,17 @@ function install(Game) {
         for (let i = 0; i < PICKUPS; i++) {
           const pp = this.platePos(i); A.ellipse(ctx, pp.x, pp.y + pp.size * 0.32, pp.size * 0.48, pp.size * 0.13, '#e9f3ff', 4); A.ellipse(ctx, pp.x, pp.y + pp.size * 0.31, pp.size * 0.36, pp.size * 0.08, '#f8fbff', 0);
           if (!served || i < r.pickups) continue;
-          if (this.carry && i === r.pickups) continue;
+          const ramen = r.dish.recipe === 'ramen', cur = i === r.pickups && (this.carry || ph === 'chew');
+          if (cur && !ramen) continue;   // that portion is in her hands / at her mouth
+          if (cur && ramen) { R.draw(ctx, A, r.dish, pp.x, pp.y, pp.size, { flipped: true, set: ph !== 'chew' || r.bites < 2, fill: 1, tops: ph === 'chew' ? Math.max(0, 2 - r.bites) : 2, deco: 1 }); continue; }
           const bob = glow && i === r.pickups ? Math.sin(this.time * 4) * 3 : 0;
           if (glow && i === r.pickups) { ctx.globalAlpha = 0.25 + 0.15 * Math.sin(this.time * 5); A.circle(ctx, pp.x, pp.y, pp.size * 0.5, '#fff8d0', 0); ctx.globalAlpha = 1; }
           R.draw(ctx, A, r.dish, pp.x, pp.y + bob, pp.size, { flipped: true, set: true, fill: 1, tops: 3, deco: 1 });
         }
         pk = this.platePos(1);
-        if (this.carry && r.dish) R.draw(ctx, A, r.dish, this.carry.x, this.carry.y, 100, { flipped: true, set: true, fill: 1, tops: 3, deco: 1 });
+        if (this.carry && r.dish) this.drawBite(r.dish, this.carry.x, this.carry.y, 100, 0);
+        // eaten bite by bite at her mouth
+        if (ph === 'chew' && r.dish) { const m = this.mouth(), b = Math.min(3, r.bites); this.drawBite(r.dish, m.x + 4, m.y + 112 + Math.sin(r.pt * 14) * 2, 150, b); }
         if (ph === 'request' && !still) this.drawRequest();
       } else {
         const state = ph === 'sealed' ? 'sealed' : ph === 'opening' ? 'opening' : (ph === 'empty' || ph === 'finale') ? 'empty' : 'open';
@@ -353,6 +357,26 @@ function install(Game) {
     const ui = this.ui, ctx = this.ctx, W = this.W, top = this.top(), y = top + 120;
     ui.panel(24, y, W - 150, 54, '#fff3c4', C.goldDark, 20, 3); A.star(ctx, 52, y + 27, 15, C.gold, 3); ui.label('LAST PLATE! Go viral?', 80, y + 20, 13, C.text, 'left'); ui.label('+50% viewers for the finale', 80, y + 39, 12, C.pinkDark, 'left');
     ui.button('hype_ad', W - 170, y + 6, 120, 42, '▶ HYPE', { color: C.pink, dark: C.pinkDark, size: 17 });
+  };
+  // one portion with `bites` (0..3) taken: noodles on chopsticks get shorter, drinks go down, everything else loses a bite
+  P.drawBite = function (dish, x, y, size, bites) {
+    const ctx = this.ctx, left = 1 - bites / BITES;
+    if (bites >= BITES) return;
+    if (dish.recipe === 'ramen') { const b = R.opt('broth', dish.broth); R.noodleBite(ctx, x, y + size * 0.2, size * 1.15, left, b ? b.color : null); return; }
+    const st = { flipped: true, set: true, fill: 1, tops: 3, deco: 1 };
+    if (dish.recipe === 'boba') { st.fill = Math.max(0.12, left); st.deco = bites ? 0 : 1; R.draw(ctx, A, dish, x, y, size, st); return; }
+    const N = 360; if (!this.biteCv) this.biteCv = S.canvas(N, N);
+    const cv = this.biteCv, bx = cv && cv.getContext ? cv.getContext('2d') : null;
+    if (!bx) { R.draw(ctx, A, dish, x, y, size * (0.4 + 0.6 * left), st); return; }
+    bx.setTransform(1, 0, 0, 1, 0, 0); bx.globalCompositeOperation = 'source-over'; bx.clearRect(0, 0, N, N);
+    R.draw(bx, A, dish, N / 2, N * 0.53, N * 0.7, st);
+    // bite marks: each one a scalloped half-moon out of the top (right first, then left)
+    bx.globalCompositeOperation = 'destination-out';
+    const BITE = [[0.7, 0.3], [0.28, 0.32]];
+    for (let k = 0; k < bites && k < BITE.length; k++) { const cx = BITE[k][0] * N, cy = BITE[k][1] * N, rr = N * 0.17;
+      bx.beginPath(); bx.arc(cx, cy, rr, 0, Math.PI * 2); for (let j = -2; j <= 2; j++) { const a = Math.PI / 2 + j * 0.42; bx.moveTo(cx + Math.cos(a) * rr * 1.05 + rr * 0.2, cy + Math.sin(a) * rr * 1.05); bx.arc(cx + Math.cos(a) * rr * 1.05, cy + Math.sin(a) * rr * 1.05, rr * 0.2, 0, Math.PI * 2); } bx.fill(); }
+    bx.globalCompositeOperation = 'source-over';
+    const k = size / (N * 0.7); ctx.drawImage(cv, x - N / 2 * k, y - N * 0.53 * k, N * k, N * k);
   };
   P.drawFanGiftBtn = function () {
     const ui = this.ui, ctx = this.ctx, W = this.W, top = this.top(), y = top + 120;

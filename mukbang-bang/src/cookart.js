@@ -25,6 +25,12 @@ function tinted(path, color, cap) {
   cache[key] = c; order.push(key); if (order.length > 18) delete cache[order.shift()];
   return c;
 }
+// dessert plate seen from the front (vector until Codex's serve plate arrives)
+function servePlate(ctx, x, y, w) {
+  ctx.lineWidth = 4; ctx.strokeStyle = '#5b3d3b';
+  ctx.fillStyle = '#e4eefc'; ctx.beginPath(); ctx.ellipse(x, y + 3, w, w * 0.26, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#f8fbff'; ctx.beginPath(); ctx.ellipse(x, y, w * 0.78, w * 0.17, 0, 0, Math.PI * 2); ctx.fill();
+}
 function layer(ctx, im, alpha, oy) { if (!im) return; ctx.globalAlpha = alpha; ctx.drawImage(im, -U / 2, -U / 2 + (oy || 0), U, U); ctx.globalAlpha = 1; }
 
 // jelly / pudding in its mould (before the flip) or unmoulded on the plate (after)
@@ -39,8 +45,11 @@ function jelly(ctx, dish, st, col, darker, plate) {
   }
   const det = S.v4(p + '_out_detail.png'), b = OUT_BOUNDS[m] || OUT_BOUNDS.dome;
   const body = tinted(p + '_out_fill.png', col, dish.recipe === 'pudding' ? b : null); if (!det || !body) return false;
-  const oy = 34 - (b[1] + b[3] - 300) * U / 600;  // stand on the plate
-  plate(); layer(ctx, body, 1, oy); layer(ctx, det, 1, oy);
+  // a plate wider than the jelly, a soft contact shadow, the jelly's front edge resting on the plate's surface
+  const K = 0.86, oy = 39 - (b[1] + b[3] - 300) * U * K / 600;
+  servePlate(ctx, 0, 40, 64);
+  ctx.globalAlpha = 0.18; ctx.fillStyle = '#5b3d3b'; ctx.beginPath(); ctx.ellipse(0, 39, (b[2] / 2) * U * K / 600, 6, 0, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1;
+  ctx.save(); ctx.scale(K, K); layer(ctx, body, 1, oy / K); layer(ctx, det, 1, oy / K); ctx.restore();
   return true;
 }
 // one topping piece, `size` dish units wide

@@ -4200,7 +4200,7 @@ function install(Game) {
       self.audio.play('levelup'); self.spawnConfetti(self.W / 2, self.H * 0.4, 30); self.showToast('RARE ' + o.name.toUpperCase() + '!', 'The viewers will love it');
     });
   };
-  P.cookArea = function () { return { x: this.W / 2, y: this.H * 0.53, r: Math.min(150, this.W * 0.3) }; };
+  P.cookArea = function () { return { x: this.W / 2, y: this.H * 0.6, r: Math.min(150, this.W * 0.3) }; };
   P.toolPos = function () { const a = this.cookArea(); return { x: a.x + a.r * 1.05, y: a.y - a.r * 0.55 }; };
   P.cookTouch = function (kind, id, x, y) {
     const k = this.ck; if (!k || this.state !== 'cook' || k.doneT >= 0) return false;
@@ -4257,7 +4257,7 @@ function install(Game) {
     if (flipping) { const t = k.flipT / FLIP_T; ctx.save(); ctx.translate(a.x, a.y); ctx.rotate(Math.PI * t); ctx.translate(-a.x, -a.y); R.draw(ctx, A, k.dish, a.x, a.y, a.r * 1.9, k.st); ctx.restore(); }
     else R.draw(ctx, A, k.dish, a.x, a.y, a.r * 1.9, k.st);
     // pour stream / tool
-    if (st && st.t === 'pour') { const fo = R.opt(st.from, k.dish[SLOT_KEY[st.from]]); const bx = a.x + a.r * 0.6, by = a.y - a.r * 1.05; const pouring = k.holdId !== null; let sp = CA.bottle(ctx, fo ? fo.color : '#ff9fc4', bx + 20, by - 10, 220, pouring); if (!sp) { ctx.save(); ctx.translate(bx, by); ctx.rotate(pouring ? -0.9 : -0.3); R.drawOption(ctx, A, st.from === 'broth' ? 'broth' : 'flavor', fo || { color: '#ff9fc4' }, 0, 0, 34); ctx.restore(); sp = { x: bx - 26, y: by + 10 }; } if (pouring && fo) { ctx.strokeStyle = fo.color; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(sp.x, sp.y); ctx.quadraticCurveTo(sp.x - 14, sp.y + 50, a.x + 6, a.y - a.r * 0.2); ctx.stroke(); } ui.bar(a.x - 80, a.y + a.r + 26, 160, 12, k.st.fill, C.pink, 'rgba(255,255,255,0.7)'); }
+    if (st && st.t === 'pour') { const fo = R.opt(st.from, k.dish[SLOT_KEY[st.from]]); const bx = a.x + a.r * 0.6, by = a.y - a.r * 1.05; const pouring = k.holdId !== null; let sp = CA.bottle(ctx, fo ? fo.color : '#ff9fc4', bx + 34, by - 30, 300, pouring); if (!sp) { ctx.save(); ctx.translate(bx, by); ctx.rotate(pouring ? -0.9 : -0.3); R.drawOption(ctx, A, st.from === 'broth' ? 'broth' : 'flavor', fo || { color: '#ff9fc4' }, 0, 0, 34); ctx.restore(); sp = { x: bx - 26, y: by + 10 }; } if (pouring && fo) { ctx.strokeStyle = fo.color; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(sp.x, sp.y); ctx.quadraticCurveTo(sp.x - 14, sp.y + 50, a.x + 6, a.y - a.r * 0.2); ctx.stroke(); } ui.bar(a.x - 80, a.y + a.r + 26, 160, 12, k.st.fill, C.pink, 'rgba(255,255,255,0.7)'); }
     if (st && st.t === 'hold') { const tp = this.toolPos(); this.drawTool(st.tool, tp.x, tp.y, k.holdId !== null); ui.bar(a.x - 80, a.y + a.r + 26, 160, 12, k.prog, st.tool === 'fire' || st.tool === 'oven' ? '#ff7a3a' : C.blue, 'rgba(255,255,255,0.7)'); }
     if (st && st.t === 'shake') { ui.bar(a.x - 80, a.y + a.r + 26, 160, 12, k.st.deco, C.yellow, 'rgba(255,255,255,0.7)'); const dop = R.opt('deco', k.dish.deco); if (dop) { const sx = a.x + Math.sin(this.time * 8) * 20, sy = a.y - a.r * 0.95; ctx.save(); ctx.translate(sx, sy); ctx.rotate(Math.sin(this.time * 8) * 0.3); optIcon(ctx, 'deco', dop, 0, 0, 30); ctx.restore(); } }
     if (st && (st.t === 'place' || st.t === 'flip' || st.t === 'shake') && !k.holdId) { const p = 0.4 + 0.3 * Math.sin(this.time * 6); ctx.strokeStyle = 'rgba(255,255,255,' + p + ')'; ctx.lineWidth = 5; ctx.setLineDash([10, 10]); ctx.beginPath(); ctx.arc(a.x, a.y, a.r * 0.9, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]); }
@@ -4327,6 +4327,12 @@ function tinted(path, color, cap) {
   cache[key] = c; order.push(key); if (order.length > 18) delete cache[order.shift()];
   return c;
 }
+// dessert plate seen from the front (vector until Codex's serve plate arrives)
+function servePlate(ctx, x, y, w) {
+  ctx.lineWidth = 4; ctx.strokeStyle = '#5b3d3b';
+  ctx.fillStyle = '#e4eefc'; ctx.beginPath(); ctx.ellipse(x, y + 3, w, w * 0.26, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#f8fbff'; ctx.beginPath(); ctx.ellipse(x, y, w * 0.78, w * 0.17, 0, 0, Math.PI * 2); ctx.fill();
+}
 function layer(ctx, im, alpha, oy) { if (!im) return; ctx.globalAlpha = alpha; ctx.drawImage(im, -U / 2, -U / 2 + (oy || 0), U, U); ctx.globalAlpha = 1; }
 
 // jelly / pudding in its mould (before the flip) or unmoulded on the plate (after)
@@ -4341,8 +4347,11 @@ function jelly(ctx, dish, st, col, darker, plate) {
   }
   const det = S.v4(p + '_out_detail.png'), b = OUT_BOUNDS[m] || OUT_BOUNDS.dome;
   const body = tinted(p + '_out_fill.png', col, dish.recipe === 'pudding' ? b : null); if (!det || !body) return false;
-  const oy = 34 - (b[1] + b[3] - 300) * U / 600;  // stand on the plate
-  plate(); layer(ctx, body, 1, oy); layer(ctx, det, 1, oy);
+  // a plate wider than the jelly, a soft contact shadow, the jelly's front edge resting on the plate's surface
+  const K = 0.86, oy = 39 - (b[1] + b[3] - 300) * U * K / 600;
+  servePlate(ctx, 0, 40, 64);
+  ctx.globalAlpha = 0.18; ctx.fillStyle = '#5b3d3b'; ctx.beginPath(); ctx.ellipse(0, 39, (b[2] / 2) * U * K / 600, 6, 0, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1;
+  ctx.save(); ctx.scale(K, K); layer(ctx, body, 1, oy / K); layer(ctx, det, 1, oy / K); ctx.restore();
   return true;
 }
 // one topping piece, `size` dish units wide
@@ -5037,7 +5046,7 @@ class Game {
     const locked = this.nextLockedCat();
     if (locked) { // preview of the next shelf to unlock
       const sp = this.shelfPos(6); A.shelfBoard(ctx, 18, sp.y + 52, W - 36, 30, '#d9cfcf');
-      const lf = D.foodsOf(locked.id); ctx.globalAlpha = 0.35; for (let i = 0; i < 3; i++) A.food(ctx, lf[i], this.shelfPos(6 + i).x, sp.y, 100, 0, 0); ctx.globalAlpha = 1;
+      const lf = D.foodsOf(locked.id); ctx.globalAlpha = 0.35; for (let i = 0; i < 3; i++) A.food(ctx, lf[i], this.shelfPos(6 + i).x, sp.y - 14, 136, 0, 0); ctx.globalAlpha = 1;
       A.lock(ctx, W / 2, sp.y - 10, 44);
       ui.panel(W / 2 - 120, sp.y + 70, 240, 30, '#fff', C.outline, 15, 3); ui.label(locked.name + '  ·  UNLOCKS AT LEVEL ' + locked.unlock, W / 2, sp.y + 85, 13, C.text);
     }
@@ -5046,10 +5055,10 @@ class Game {
       const f = foods[i]; const sp = this.shelfPos(i); const price = D.priceOf(f);
       const afford = coins >= total + price && m.basket.length < m.pick;
       ctx.globalAlpha = afford ? 1 : 0.55;
-      A.food(ctx, f, sp.x + (afford ? 0 : shake), sp.y, 112, 0, this.time);
+      A.food(ctx, f, sp.x + (afford ? 0 : shake), sp.y - 18, 150, 0, this.time);
       ctx.globalAlpha = 1;
       A.priceTag(ctx, sp.x, sp.y + 92, price, !afford);
-      ui.hotspot('item' + i, sp.x - 56, sp.y - 60, 112, 150);
+      ui.hotspot('item' + i, sp.x - 75, sp.y - 95, 150, 185);
     }
     // bottom: portrait, basket, count + total
     const b = this.basketRect(); const bottom = this.bottom();
@@ -5057,8 +5066,8 @@ class Game {
     ctx.save(); A.rr(ctx, 26, bottom - 164, 76, 138, 12); ctx.clip(); ctx.fillStyle = '#ffe3ea'; ctx.fillRect(26, bottom - 164, 76, 138); A.streamer(ctx, this.streamerDef(), 64, bottom - 96, 0.3, { expr: 'yum' }); ctx.restore();
     A.rr(ctx, 36, bottom - 48, 56, 22, 11); ctx.fillStyle = '#ff4a5f'; ctx.fill(); ctx.strokeStyle = C.outline; ctx.lineWidth = 3; ctx.stroke(); ui.label('live', 64, bottom - 37, 13, C.white);
     A.basket(ctx, b.x, b.y, b.w, b.h);
-    for (let i = 0; i < m.basket.length; i++) { const f = K.dish(m.basket[i]); const n = m.basket.length; const bx = b.x + b.w * (n === 1 ? 0.5 : 0.18 + 0.64 * i / (n - 1)); A.food(ctx, f, bx, b.y + 8 - (i % 2) * 10, 60, 0, this.time); ui.hotspot('bk' + i, bx - 30, b.y - 30, 60, 60); }
-    for (let i = 0; i < this.flies.length; i++) { const fl = this.flies[i]; const k = U.easeInOut(fl.t); A.food(ctx, fl.food, U.lerp(fl.x0, fl.x1, k), U.lerp(fl.y0, fl.y1, k) - Math.sin(k * Math.PI) * 120, U.lerp(112, 60, k), 0, this.time); }
+    for (let i = 0; i < m.basket.length; i++) { const f = K.dish(m.basket[i]); const n = m.basket.length; const bx = b.x + b.w * (n === 1 ? 0.5 : 0.18 + 0.64 * i / (n - 1)); A.food(ctx, f, bx, b.y - 2 - (i % 2) * 10, 84, 0, this.time); ui.hotspot('bk' + i, bx - 42, b.y - 44, 84, 84); }
+    for (let i = 0; i < this.flies.length; i++) { const fl = this.flies[i]; const k = U.easeInOut(fl.t); A.food(ctx, fl.food, U.lerp(fl.x0, fl.x1, k), U.lerp(fl.y0, fl.y1, k) - Math.sin(k * Math.PI) * 120, U.lerp(150, 84, k), 0, this.time); }
     ui.panel(W - 150, bottom - 150, 130, 44, '#fff', C.outline, 14); ui.label('🛒', W - 130, bottom - 128, 18, C.text); ui.label(m.basket.length + ' / ' + m.pick, W - 78, bottom - 128, 20, C.text);
     ui.panel(W - 150, bottom - 98, 130, 44, '#fff', C.outline, 14); ui.label('Total', W - 126, bottom - 76, 15, C.text, 'left'); A.coin(ctx, W - 66, bottom - 76, 9); ui.label(String(total), W - 52, bottom - 76, 18, C.text, 'left');
     if (m.basket.length >= m.pick) { const pulse = 1 + Math.sin(this.time * 6) * 0.05; ctx.save(); ctx.translate(W - 85, bottom - 24); ctx.scale(pulse, pulse); ctx.translate(-(W - 85), -(bottom - 24)); ui.button('confirm', W - 150, bottom - 48, 130, 48, 'GO  ›', { color: C.green, dark: C.greenDark, size: 24 }); ctx.restore(); }
@@ -5453,7 +5462,7 @@ function draw(ctx, A, dish, x, y, size, st) {
     else { // ramen
       A.ellipse(ctx, 0, -4, 46, 12, shade(cc, -0.1), 4);
       if (st.fill > 0) { A.ellipse(ctx, 0, -4, 40 * Math.min(1, st.fill + 0.2), 9, col, 0); }
-      if (st.set) { ctx.strokeStyle = '#ffe2a0'; ctx.lineWidth = 3; for (let i = 0; i < 6; i++) { ctx.beginPath(); ctx.moveTo(-30 + i * 10, -6); ctx.quadraticCurveTo(-26 + i * 10, -14, -22 + i * 10, -4); ctx.stroke(); } }
+      if (st.set) noodles(ctx, 0, -6, 34, 7);
       for (let i = 0; i < Math.min(tops, 3); i++) drawTop([-18, 6, 22][i], [-8, -10, -4][i], 1.1);
       drawDeco(0, -6, 60, 10);
       ctx.lineWidth = 5; ctx.strokeStyle = '#c49a6c'; ctx.beginPath(); ctx.moveTo(10, -16); ctx.lineTo(44, -52); ctx.moveTo(18, -14); ctx.lineTo(50, -46); ctx.stroke();
@@ -5473,6 +5482,29 @@ function draw(ctx, A, dish, x, y, size, st) {
     if (sh === 'ring') { A.circle(ctx, 0, 0, 12, '#e9f3ff', 4); }
     drawDeco(0, 0, 60, 50); for (let i = 0; i < Math.min(tops, 2); i++) drawTop(i ? 18 : -16, i ? -14 : -18, 1);
   }
+  ctx.restore();
+}
+// golden instant noodles: wavy strands with a darker edge so they read as noodles at any size
+function noodles(ctx, x, y, w, n, len) {
+  len = len === undefined ? 1 : len;
+  for (let pass = 0; pass < 2; pass++) {
+    ctx.strokeStyle = pass ? '#ffd23f' : '#d99a1a'; ctx.lineWidth = pass ? 3.4 : 5.6; ctx.lineCap = 'round';
+    for (let i = 0; i < n; i++) { const sx = x - w + (i + 0.5) * (2 * w / n); ctx.beginPath(); ctx.moveTo(sx - 6, y + 2);
+      for (let k = 1; k <= 4; k++) ctx.quadraticCurveTo(sx - 6 + k * 3 - 1.5, y + (k % 2 ? -7 : 5) * len, sx - 6 + k * 3, y + 1); ctx.stroke(); }
+  }
+  ctx.fillStyle = 'rgba(255,255,255,0.55)'; for (let i = 0; i < n; i += 2) { ctx.beginPath(); ctx.arc(x - w + (i + 0.5) * (2 * w / n) - 3, y - 3, 1.4, 0, Math.PI * 2); ctx.fill(); }
+}
+// a bite on chopsticks: golden noodles hanging from the tips; `left` 0..1 = how much is still there
+function noodleBite(ctx, x, y, s, left, broth) {
+  ctx.save(); ctx.translate(x, y); ctx.scale(s / 100, s / 100); ctx.lineCap = 'round';
+  ctx.strokeStyle = '#5b3d3b'; ctx.lineWidth = 9; ctx.beginPath(); ctx.moveTo(-6, -30); ctx.lineTo(60, -78); ctx.moveTo(6, -24); ctx.lineTo(68, -68); ctx.stroke();
+  ctx.strokeStyle = '#d9a86c'; ctx.lineWidth = 5; ctx.beginPath(); ctx.moveTo(-6, -30); ctx.lineTo(60, -78); ctx.moveTo(6, -24); ctx.lineTo(68, -68); ctx.stroke();
+  const L = 70 * Math.max(0, left);
+  if (L > 2) for (let pass = 0; pass < 2; pass++) {
+    ctx.strokeStyle = pass ? '#ffd23f' : '#d99a1a'; ctx.lineWidth = pass ? 4.2 : 7;
+    for (let i = 0; i < 6; i++) { const ox = -16 + i * 6.5; ctx.beginPath(); ctx.moveTo(ox * 0.4, -26); ctx.bezierCurveTo(ox - 8, -26 + L * 0.3, ox + 8, -26 + L * 0.65, ox + (i % 2 ? 4 : -4), -26 + L); ctx.stroke(); }
+  }
+  if (L > 2 && broth) { ctx.fillStyle = broth; ctx.globalAlpha = 0.8; ctx.beginPath(); ctx.arc(-2, -24 + L + 6, 4, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1; }
   ctx.restore();
 }
 function shade(hex, amt) { let h = hex.replace('#', ''); if (h.length === 3) h = h[0] + h[0] + h[1] + h[1] + h[2] + h[2]; const n = parseInt(h, 16); let r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255; const f = function (c) { return Math.round(Math.max(0, Math.min(255, amt > 0 ? c + (255 - c) * amt : c * (1 + amt)))); }; return '#' + ((1 << 24) + (f(r) << 16) + (f(g) << 8) + f(b)).toString(16).slice(1); }
@@ -5500,7 +5532,7 @@ function drawTopOnly(ctx, A, slot, o) {
   else A.circle(ctx, 0, 0, 6.5, c, 1.5);
 }
 
-module.exports = { setArt, OPT, OPT_BY, opt, options, RECIPES, tasteOf, colorOf, toppingSlot, dishName, draw, drawOption };
+module.exports = { setArt, noodleBite, OPT, OPT_BY, opt, options, RECIPES, tasteOf, colorOf, toppingSlot, dishName, draw, drawOption };
 
 };
 __mods["src/scenes.js"] = function (require, module, exports, __filename, __dirname) {
@@ -6398,13 +6430,17 @@ function install(Game) {
         for (let i = 0; i < PICKUPS; i++) {
           const pp = this.platePos(i); A.ellipse(ctx, pp.x, pp.y + pp.size * 0.32, pp.size * 0.48, pp.size * 0.13, '#e9f3ff', 4); A.ellipse(ctx, pp.x, pp.y + pp.size * 0.31, pp.size * 0.36, pp.size * 0.08, '#f8fbff', 0);
           if (!served || i < r.pickups) continue;
-          if (this.carry && i === r.pickups) continue;
+          const ramen = r.dish.recipe === 'ramen', cur = i === r.pickups && (this.carry || ph === 'chew');
+          if (cur && !ramen) continue;   // that portion is in her hands / at her mouth
+          if (cur && ramen) { R.draw(ctx, A, r.dish, pp.x, pp.y, pp.size, { flipped: true, set: ph !== 'chew' || r.bites < 2, fill: 1, tops: ph === 'chew' ? Math.max(0, 2 - r.bites) : 2, deco: 1 }); continue; }
           const bob = glow && i === r.pickups ? Math.sin(this.time * 4) * 3 : 0;
           if (glow && i === r.pickups) { ctx.globalAlpha = 0.25 + 0.15 * Math.sin(this.time * 5); A.circle(ctx, pp.x, pp.y, pp.size * 0.5, '#fff8d0', 0); ctx.globalAlpha = 1; }
           R.draw(ctx, A, r.dish, pp.x, pp.y + bob, pp.size, { flipped: true, set: true, fill: 1, tops: 3, deco: 1 });
         }
         pk = this.platePos(1);
-        if (this.carry && r.dish) R.draw(ctx, A, r.dish, this.carry.x, this.carry.y, 100, { flipped: true, set: true, fill: 1, tops: 3, deco: 1 });
+        if (this.carry && r.dish) this.drawBite(r.dish, this.carry.x, this.carry.y, 100, 0);
+        // eaten bite by bite at her mouth
+        if (ph === 'chew' && r.dish) { const m = this.mouth(), b = Math.min(3, r.bites); this.drawBite(r.dish, m.x + 4, m.y + 112 + Math.sin(r.pt * 14) * 2, 150, b); }
         if (ph === 'request' && !still) this.drawRequest();
       } else {
         const state = ph === 'sealed' ? 'sealed' : ph === 'opening' ? 'opening' : (ph === 'empty' || ph === 'finale') ? 'empty' : 'open';
@@ -6472,6 +6508,26 @@ function install(Game) {
     const ui = this.ui, ctx = this.ctx, W = this.W, top = this.top(), y = top + 120;
     ui.panel(24, y, W - 150, 54, '#fff3c4', C.goldDark, 20, 3); A.star(ctx, 52, y + 27, 15, C.gold, 3); ui.label('LAST PLATE! Go viral?', 80, y + 20, 13, C.text, 'left'); ui.label('+50% viewers for the finale', 80, y + 39, 12, C.pinkDark, 'left');
     ui.button('hype_ad', W - 170, y + 6, 120, 42, '▶ HYPE', { color: C.pink, dark: C.pinkDark, size: 17 });
+  };
+  // one portion with `bites` (0..3) taken: noodles on chopsticks get shorter, drinks go down, everything else loses a bite
+  P.drawBite = function (dish, x, y, size, bites) {
+    const ctx = this.ctx, left = 1 - bites / BITES;
+    if (bites >= BITES) return;
+    if (dish.recipe === 'ramen') { const b = R.opt('broth', dish.broth); R.noodleBite(ctx, x, y + size * 0.2, size * 1.15, left, b ? b.color : null); return; }
+    const st = { flipped: true, set: true, fill: 1, tops: 3, deco: 1 };
+    if (dish.recipe === 'boba') { st.fill = Math.max(0.12, left); st.deco = bites ? 0 : 1; R.draw(ctx, A, dish, x, y, size, st); return; }
+    const N = 360; if (!this.biteCv) this.biteCv = S.canvas(N, N);
+    const cv = this.biteCv, bx = cv && cv.getContext ? cv.getContext('2d') : null;
+    if (!bx) { R.draw(ctx, A, dish, x, y, size * (0.4 + 0.6 * left), st); return; }
+    bx.setTransform(1, 0, 0, 1, 0, 0); bx.globalCompositeOperation = 'source-over'; bx.clearRect(0, 0, N, N);
+    R.draw(bx, A, dish, N / 2, N * 0.53, N * 0.7, st);
+    // bite marks: each one a scalloped half-moon out of the top (right first, then left)
+    bx.globalCompositeOperation = 'destination-out';
+    const BITE = [[0.7, 0.3], [0.28, 0.32]];
+    for (let k = 0; k < bites && k < BITE.length; k++) { const cx = BITE[k][0] * N, cy = BITE[k][1] * N, rr = N * 0.17;
+      bx.beginPath(); bx.arc(cx, cy, rr, 0, Math.PI * 2); for (let j = -2; j <= 2; j++) { const a = Math.PI / 2 + j * 0.42; bx.moveTo(cx + Math.cos(a) * rr * 1.05 + rr * 0.2, cy + Math.sin(a) * rr * 1.05); bx.arc(cx + Math.cos(a) * rr * 1.05, cy + Math.sin(a) * rr * 1.05, rr * 0.2, 0, Math.PI * 2); } bx.fill(); }
+    bx.globalCompositeOperation = 'source-over';
+    const k = size / (N * 0.7); ctx.drawImage(cv, x - N / 2 * k, y - N * 0.53 * k, N * k, N * k);
   };
   P.drawFanGiftBtn = function () {
     const ui = this.ui, ctx = this.ctx, W = this.W, top = this.top(), y = top + 120;
