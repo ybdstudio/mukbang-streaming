@@ -198,8 +198,8 @@ class Game {
       case 'streamers': this.setState('streamers'); break;
       case 'home': this.setState('home'); break;
       case 'sound': p.set('sound', !p.get('sound')); this.audio.setMuted(!p.get('sound')); break;
-      case 'settings': this.setState('settings'); break;
-      case 'settings_close': this.setState('home'); break;
+      case 'settings': this.settingsFrom = this.state === 'pause' ? 'pause' : 'home'; this.setState('settings'); break;
+      case 'settings_close': this.setState(this.settingsFrom === 'pause' && this.run ? 'pause' : 'home'); this.settingsFrom = null; break;
       case 'unlock_all': this.unlockAll(); break;
       case 'coins': this.popupFrom = this.state; this.setState('coins'); break;
       case 'coins_close': this.setState(this.popupFrom || 'home'); break;
@@ -384,7 +384,7 @@ class Game {
       case 'popup': this.drawHome(); this.drawPopup(); break;
       case 'wardrobe': this.drawWardrobe(); break;
       case 'cook': this.drawCook(); break;
-      case 'settings': this.drawHome(); this.drawSettings(); break;
+      case 'settings': if (this.settingsFrom === 'pause' && this.run) this.drawStream(true); else this.drawHome(); this.drawSettings(); break;
       default: this.sceneDraw();
     }
     if (this.trans > 0) { ctx.globalAlpha = this.trans / 0.35; ctx.fillStyle = C.cream; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = 1; }
@@ -576,11 +576,12 @@ class Game {
   drawPause() {
     const ui = this.ui, W = this.W, H = this.H;
     ui.dim(0.5);
-    ui.panel(W * 0.12, H * 0.3, W * 0.76, 300, C.cream, C.outline, 26);
+    ui.panel(W * 0.12, H * 0.3, W * 0.76, 366, C.cream, C.outline, 26);
     ui.title('PAUSED', W / 2, H * 0.3 + 50, 40);
     ui.button('resume', W * 0.2, H * 0.3 + 96, W * 0.6, 62, 'RESUME', { color: C.green, dark: C.greenDark, size: 24 });
     ui.button('leave', W * 0.2, H * 0.3 + 170, W * 0.6, 54, 'HOME (KEEP STREAM)', { color: C.blue, dark: C.blueDark, size: 16 });
     ui.button('sound', W * 0.2, H * 0.3 + 236, W * 0.6, 48, this.profile.get('sound') ? 'SOUND ON' : 'SOUND OFF', { color: C.lavender, dark: C.lavenderDark, size: 16 });
+    ui.button('settings', W * 0.2, H * 0.3 + 296, W * 0.6, 48, 'SETTINGS', { color: C.yellow, dark: C.yellowDark, size: 16 });
   }
   // ── COINS popup ──
   drawCoinsPopup() {
@@ -640,7 +641,9 @@ class Game {
   unlockAll() {
     if (!this.p.devTools) return;
     if ((this.profile.get('level') || 1) < L.LEVEL_COUNT) this.profile.set('level', L.LEVEL_COUNT);
-    this.audio.play('levelup'); this.spawnConfetti(this.W / 2, this.H * 0.4, 40); this.showToast('All ' + L.LEVEL_COUNT + ' levels unlocked', 'Kiko & Momo too — open LEVELS to pick one');
+    // the level opens Shop / Delivery / Buffet / Wardrobe / Kiko / Momo; the level-gift looks are granted too
+    for (let i = 0; i < WR.ITEMS.length; i++) if (WR.ITEMS[i].gift) WR.grant(this.profile, WR.ITEMS[i].id);
+    this.audio.play('levelup'); this.spawnConfetti(this.W / 2, this.H * 0.4, 40); this.showToast('All ' + L.LEVEL_COUNT + ' levels unlocked', 'Every activity, streamer and gift look too');
   }
   drawSettings() {
     const ui = this.ui, W = this.W, H = this.H, p = this.profile, dev = !!this.p.devTools;
@@ -652,7 +655,7 @@ class Game {
     ui.button('sound', 64, y, W - 128, 58, p.get('sound') ? 'SOUND ON' : 'SOUND OFF', { color: C.blue, dark: C.blueDark, size: 20 }); y += 72;
     if (dev) {
       const all = this.curLevel() >= L.LEVEL_COUNT;
-      ui.button('unlock_all', 64, y, W - 128, 58, all ? 'ALL LEVELS UNLOCKED' : 'UNLOCK ALL LEVELS', { color: all ? '#e0d6d6' : C.yellow, dark: all ? '#bfb0b0' : C.yellowDark, size: 19, disabled: all });
+      ui.button('unlock_all', 64, y, W - 128, 58, all ? 'ALL LEVELS UNLOCKED ✓' : 'UNLOCK ALL LEVELS', { color: all ? '#e0d6d6' : C.yellow, dark: all ? '#bfb0b0' : C.yellowDark, size: 19, disabled: all });
       ui.label('test build only — not in the TikTok version', W / 2, y + 72, 13, C.textLight); y += 90;
     }
     ui.button('settings_close', 64, y, W - 128, 52, 'CLOSE', { color: C.lavender, dark: C.lavenderDark, size: 18 });

@@ -47,6 +47,16 @@ Quy cách:
 
 Boba không cần art: game cho ly cạn dần.
 
+## 1b. Gia vị rắc cho ramen — `assets/cook/` (ưu tiên 1, main)
+
+Chủ dự án nhận xét ramen không thể rắc đồ ngọt (cốm màu, tim, sao). Game đã tách ramen sang một nhóm gia vị mặn riêng, hiện đang vẽ tạm bằng vector.
+
+Mỗi loại gia vị cần 2 file:
+- `opt_ramen_deco_<id>.png` 160×160: chén nhỏ hoặc lọ gia vị, dùng trong khay chọn;
+- `deco_<id>.png` 256×256: lớp rắc rải đều, giống bộ `deco_*` đã có.
+
+Danh sách id: `sesame` (vừng), `chili_flakes` (ớt bột / ớt vảy), `nori_flakes` (rong biển vụn), `pepper` (tiêu đen), `fried_garlic` (tỏi phi).
+
 ## 2. Hiệu ứng nấu — `assets/cook/` (ưu tiên 2, main)
 
 Mỗi file là atlas 4 frame 128×128 xếp ngang (512×128):

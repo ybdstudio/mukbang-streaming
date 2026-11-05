@@ -57,7 +57,7 @@ const LEVEL_COUNT = RAW.length;
 // viewer goal: 500 → ~1M (log curve), start = 30 %
 function goalOf(n) { const g = 500 * Math.pow(2000, (n - 1) / (LEVEL_COUNT - 1)); const m = Math.pow(10, Math.max(1, Math.floor(Math.log10(g)) - 1)); return Math.round(g / m) * m; }
 function roundTo(v) { const m = Math.pow(10, Math.max(1, Math.floor(Math.log10(v)) - 1)); return Math.round(v / m) * m; }
-const SLOT_NAME = { mold: 'MOULD', flavor: 'FLAVOUR', broth: 'BROTH', topping: 'TOPPING', ramen_top: 'RAMEN TOPPING', boba_top: 'BOBA TOPPING', deco: 'DECORATION', cup: 'CUP', shape: 'DONUT SHAPE' };
+const SLOT_NAME = { mold: 'MOULD', flavor: 'FLAVOUR', broth: 'BROTH', topping: 'TOPPING', ramen_top: 'RAMEN TOPPING', boba_top: 'BOBA TOPPING', deco: 'DECORATION', ramen_deco: 'SEASONING', cup: 'CUP', shape: 'DONUT SHAPE' };
 // the request: the newest flavour + topping the player can pick at this level (shows off what just unlocked)
 function requestFor(recipe, n, i) {
   const rc = R.RECIPES[recipe], fslot = rc.taste === 'broth' ? 'broth' : 'flavor', tslot = R.toppingSlot(recipe);

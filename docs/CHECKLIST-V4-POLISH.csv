@@ -60,3 +60,13 @@ art3/bg/view_beach.jpg,720x680 JPEG q80,art3,color,3,pending
 art3/bg/view_sakura.jpg,720x680 JPEG q80,art3,color,3,pending
 art3/bg/view_night.jpg,720x680 JPEG q80,art3,color,3,pending
 art3/bg/view_city.jpg,720x680 JPEG q80,art3,color,3,pending
+assets/cook/opt_ramen_deco_sesame.png,160x160,main,icon,1,pending
+assets/cook/deco_sesame.png,256x256,main,scatter,1,pending
+assets/cook/opt_ramen_deco_chili_flakes.png,160x160,main,icon,1,pending
+assets/cook/deco_chili_flakes.png,256x256,main,scatter,1,pending
+assets/cook/opt_ramen_deco_nori_flakes.png,160x160,main,icon,1,pending
+assets/cook/deco_nori_flakes.png,256x256,main,scatter,1,pending
+assets/cook/opt_ramen_deco_pepper.png,160x160,main,icon,1,pending
+assets/cook/deco_pepper.png,256x256,main,scatter,1,pending
+assets/cook/opt_ramen_deco_fried_garlic.png,160x160,main,icon,1,pending
+assets/cook/deco_fried_garlic.png,256x256,main,scatter,1,pending

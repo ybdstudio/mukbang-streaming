@@ -872,7 +872,7 @@ function flames(ctx, x, y, r, t) {
 const FOOD3 = { cat_chips: 1, honey_puffs: 1, cheese_noodle: 1, straw_cake: 1, peach_milk: 1, chili_noodle: 1, kfc_chicken: 1, mint_choc: 1 };
 function food3(ctx, id, state, x, y, size) { const im = S.get('food3/' + id + '_' + state + '.png'); if (!im) return false; ctx.drawImage(im, x - size / 2, y - size / 2, size, size); return true; }
 function pack3(ctx, f, kind, x, y, size, state, k, e) {
-  if (!FOOD3[f.id]) return false; const z = size * 1.25;
+  if (!FOOD3[f.id]) return false; const z = size * (kind === 'bag' ? 0.92 : 1.05); // the V3 packages are drawn edge to edge: bags read too big at 1:1
   if (state === 'opening' && k < 0.5) { const strip = S.get('food3/open_' + kind + '.png'); if (strip) { const fr = Math.min(3, Math.floor(k * 8)), cw = strip.width / 4; ctx.drawImage(strip, fr * cw, 0, cw, strip.height, x - z / 2, y - z / 2, z, z); return true; } return food3(ctx, f.id, 'sealed', x, y, z); }
   const st = state === 'sealed' ? 'sealed' : state === 'empty' || e >= 1 ? 'empty' : e >= 0.66 ? 'p2' : e >= 0.33 ? 'p1' : 'open';
   return food3(ctx, f.id, st, x, y, z);

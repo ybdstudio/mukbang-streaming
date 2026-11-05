@@ -16,9 +16,9 @@ const C = D.COLORS;
 function optIcon(ctx, slot, o, x, y, r) { if (!S.v4draw(ctx, 'cook/opt_' + slot + '_' + o.id + '.png', x, y, r * 2.5)) R.drawOption(ctx, A, slot, o, x, y, r); }
 
 const POUR_T = 2.0, HOLD_T = 2.0, FLIP_T = 0.6, SHAKE_NEED = 1100, DONE_T = 1.7;
-const SLOT_KEY = { mold: 'mold', flavor: 'flavor', broth: 'broth', topping: 'topping', ramen_top: 'topping', boba_top: 'topping', deco: 'deco', cup: 'cup', shape: 'shape' };
-const RARE_SLOTS = { flavor: 1, broth: 1, topping: 1, ramen_top: 1, boba_top: 1, deco: 1 };
-const PICK_TEXT = { mold: 'PICK A MOULD', flavor: 'PICK A FLAVOUR', broth: 'PICK THE BROTH', topping: 'PICK A TOPPING', ramen_top: 'PICK A TOPPING', boba_top: 'PICK A TOPPING', deco: 'PICK A DECORATION', cup: 'PICK A CUP', shape: 'PICK A SHAPE' };
+const SLOT_KEY = { mold: 'mold', flavor: 'flavor', broth: 'broth', topping: 'topping', ramen_top: 'topping', boba_top: 'topping', deco: 'deco', ramen_deco: 'deco', cup: 'cup', shape: 'shape' };
+const RARE_SLOTS = { flavor: 1, broth: 1, topping: 1, ramen_top: 1, boba_top: 1, deco: 1, ramen_deco: 1 };
+const PICK_TEXT = { mold: 'PICK A MOULD', flavor: 'PICK A FLAVOUR', broth: 'PICK THE BROTH', topping: 'PICK A TOPPING', ramen_top: 'PICK A TOPPING', boba_top: 'PICK A TOPPING', deco: 'PICK A DECORATION', ramen_deco: 'PICK A SEASONING', cup: 'PICK A CUP', shape: 'PICK A SHAPE' };
 
 function install(Game) {
   const P = Game.prototype;
@@ -146,7 +146,7 @@ function install(Game) {
     // pour stream / tool
     if (st && st.t === 'pour') { const fo = R.opt(st.from, k.dish[SLOT_KEY[st.from]]); const bx = a.x + a.r * 0.6, by = a.y - a.r * 1.05; const pouring = k.holdId !== null; let sp = CA.bottle(ctx, fo ? fo.color : '#ff9fc4', bx + 34, by - 30, 300, pouring); if (!sp) { ctx.save(); ctx.translate(bx, by); ctx.rotate(pouring ? -0.9 : -0.3); R.drawOption(ctx, A, st.from === 'broth' ? 'broth' : 'flavor', fo || { color: '#ff9fc4' }, 0, 0, 34); ctx.restore(); sp = { x: bx - 26, y: by + 10 }; } if (pouring && fo) this.drawPour(sp.x, sp.y, a.x + 6, a.y - a.r * 0.18, fo.color); ui.bar(a.x - 80, a.y + a.r + 26, 160, 12, k.st.fill, C.pink, 'rgba(255,255,255,0.7)'); }
     if (st && st.t === 'hold') { const tp = this.toolPos(); this.drawTool(st.tool, tp.x, tp.y, k.holdId !== null); ui.bar(a.x - 80, a.y + a.r + 26, 160, 12, k.prog, st.tool === 'fire' || st.tool === 'oven' ? '#ff7a3a' : C.blue, 'rgba(255,255,255,0.7)'); }
-    if (st && st.t === 'shake') { ui.bar(a.x - 80, a.y + a.r + 26, 160, 12, k.st.deco, C.yellow, 'rgba(255,255,255,0.7)'); const dop = R.opt('deco', k.dish.deco); if (dop) { const sx = a.x + Math.sin(this.time * 8) * 26, sy = a.y - a.r * 1.22; ctx.save(); ctx.translate(sx, sy); ctx.rotate(Math.PI * 0.85 + Math.sin(this.time * 8) * 0.3); optIcon(ctx, 'deco', dop, 0, 0, 92); ctx.restore(); } }
+    if (st && st.t === 'shake') { ui.bar(a.x - 80, a.y + a.r + 26, 160, 12, k.st.deco, C.yellow, 'rgba(255,255,255,0.7)'); const ds = R.decoSlot(k.dish.recipe), dop = R.opt(ds, k.dish.deco); if (dop) { const sx = a.x + Math.sin(this.time * 8) * 26, sy = a.y - a.r * 1.22; ctx.save(); ctx.translate(sx, sy); ctx.rotate((ds === 'deco' ? Math.PI * 0.85 : -0.35) + Math.sin(this.time * 8) * 0.3); optIcon(ctx, ds, dop, 0, 0, ds === 'deco' ? 92 : 54); ctx.restore(); } }
     if (st && (st.t === 'place' || st.t === 'flip' || st.t === 'shake') && !k.holdId) { const p = 0.4 + 0.3 * Math.sin(this.time * 6); ctx.strokeStyle = 'rgba(255,255,255,' + p + ')'; ctx.lineWidth = 5; ctx.setLineDash([10, 10]); ctx.beginPath(); ctx.arc(a.x, a.y, a.r * 0.9, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]); }
     // bottom tray for choices + ✓
     if (st && st.t === 'pick' && k.opts) {

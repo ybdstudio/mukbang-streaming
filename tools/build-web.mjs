@@ -105,7 +105,8 @@ ${body}</body>
 `;
 writeFileSync(join(outDir, 'index.html'), html);
 // Artifact variant: claude.ai wraps the file in its own document skeleton, so this is a fragment.
-const artifact = `<title>Mukbang Bang</title>
+const artifact = `<meta charset="utf-8">
+<title>Mukbang Bang</title>
 <meta name="description" content="${DESC}">
 <style>${style}</style>
 ${body}`;

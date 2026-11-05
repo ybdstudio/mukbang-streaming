@@ -430,7 +430,7 @@ function install(Game) {
     const ui = this.ui, W = this.W, y = this.bottom() - 178, items = [['req_home', 'HOME', C.lavender, C.lavenderDark]];
     if (this.modeOpen('market')) items.push(['side_market', 'SHOP', '#ffd7a3', '#f0a860']);
     if (this.curLevel() >= WR.OPEN_AT || (this.profile.get('levels_done') || 0) >= WR.OPEN_AT) items.push(['wardrobe', 'WARDROBE', '#cdb0ff', '#a98ae6']);
-    if (items.length < 2 && (this.profile.get('streams') || 0) === 0) return;
+    if (items.length < 2 && (this.profile.get('streams') || 0) === 0 && !this.p.devTools) return;
     const bw = Math.min(130, (W * 0.64 - (items.length - 1) * 8) / items.length), x0 = W / 2 - (items.length * bw + (items.length - 1) * 8) / 2;
     for (let i = 0; i < items.length; i++) ui.button(items[i][0], x0 + i * (bw + 8), y, bw, 42, items[i][1], { color: items[i][2], dark: items[i][3], size: 14, radius: 14 });
   };
