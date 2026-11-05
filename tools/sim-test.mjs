@@ -198,6 +198,12 @@ seed(7);
   await tap(g2, g2.p, 'play'); check('…and PLAY returns to the same request', g2.state === 'stream' && g2.run.level === 6);
   const pn = fakePlatform(), gn = new Game(pn, fakeHs(fakeProfile(INIT), 'ok')); gn.hsReady = true; run(gn, 0.2); check('a brand-new player sees no leave buttons (first stream stays focused)', !hasBtn(gn, 'req_home'));
 }
+{ // viewer milestones roll over inside one stream
+  const prof = fakeProfile(Object.assign({}, INIT, { level: 3, levels_done: 2, streams: 2 })); const g = new Game(fakePlatform(), fakeHs(prof, 'ok')); g.hsReady = true; run(g, 0.1);
+  await tap(g, g.p, 'play'); const r = g.run, c0 = prof.get('coins'); g.addViewers(r.goal - r.viewers + 1);
+  check('reaching the viewer goal rolls the bar to the next milestone (3★ goal) + a coin bonus', r.ms === 1 && prof.get('coins') > c0 && g.milestone(r.ms) === r.goal3);
+  g.addViewers(r.goal3 * 1.5); check('…and keeps rolling past the 3★ goal (+40 % each)', r.ms >= 3 && g.milestone(r.ms) > r.peak, { ms: r.ms, peak: r.peak, next: g.milestone(r.ms) });
+}
 // ═════════ data ═════════
 {
   check('40 levels, each a cookable request, 5 chapters', L.LEVEL_COUNT === 40 && L.CHAPTERS.length === 5 && L.LEVELS.every(l => R.RECIPES[l.recipe] && l.request && l.request.topping));
@@ -279,7 +285,7 @@ seed(6);
   for (let i = 0; i < 6 && g.run.pickups < 2; i++) { runUntil(g, () => g.run.phase === 'open', 8); const q = foodPos(g); touchAt(g, p, q.x, q.y); runUntil(g, () => g.run.phase !== 'carry' && g.run.phase !== 'chew', 6); }
   runUntil(g, () => g.run.phase === 'open', 8); check('extra_hype offered on the last plate (not the fan gift)', hasBtn(g, 'hype_ad') && !hasBtn(g, 'fangift_ad'));
   clk = 40; const v0 = g.run.viewers; await tap(g, p, 'hype_ad'); await flush(); run(g, 0.05); check('extra_hype → +50% of the goal in viewers, once', g.run.viewers >= v0 + Math.round(g.run.goal * 0.5) - 2 && !hasBtn(g, 'hype_ad'));
-  const q = foodPos(g); touchAt(g, p, q.x, q.y); runUntil(g, () => g.state === 'result', 12);
+  for (let i = 0; i < 6 && g.run && g.run.pickups < 3; i++) { runUntil(g, () => !g.run || g.run.phase === 'open' || g.run.phase === 'empty', 8); if (!g.run || g.run.pickups >= 3) break; const q = foodPos(g); touchAt(g, p, q.x, q.y); runUntil(g, () => !g.run || g.run.phase !== 'open', 1); } runUntil(g, () => g.state === 'result', 12);
   clk = 80; await tap(g, p, 'next'); await flush(); clk = 120; await tap(g, p, 'cook_go'); const cs = JSON.parse(prof.get('ad_stats')).cook_step.req; await cookAll(g, p, { match: true, hot: 1 });
   check('the cook_step interstitial respects the 30 s cooldown', JSON.parse(prof.get('ad_stats')).cook_step.req >= cs);
   check('▶ HOT START → stream starts with +40% viewers', g.state === 'stream' && g.run.hotStart === true && JSON.parse(prof.get('ad_stats')).serve_bonus.grant === 0 && JSON.parse(prof.get('ad_stats')).serve_bonus.imp === 1);

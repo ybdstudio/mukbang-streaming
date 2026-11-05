@@ -83,6 +83,8 @@ function draw(ctx, A, dish, x, y, size, st) {
     else if (m === 'crown') { ctx.moveTo(-w, oy + h * 0.5); ctx.lineTo(-w, oy - h * 0.3); ctx.lineTo(-w * 0.5, oy); ctx.lineTo(0, oy - h * 0.5); ctx.lineTo(w * 0.5, oy); ctx.lineTo(w, oy - h * 0.3); ctx.lineTo(w, oy + h * 0.5); ctx.closePath(); }
     else { ctx.moveTo(-w, oy + h * 0.5); ctx.quadraticCurveTo(-w, oy - h * 0.7, 0, oy - h * 0.7); ctx.quadraticCurveTo(w, oy - h * 0.7, w, oy + h * 0.5); ctx.closePath(); } };
   const c = R.container;
+  const cupCol = (opt('cup', dish.cup) || { color: dish.recipe === 'boba' ? '#c8e8ff' : '#ffc2d6' }).color;
+  if (c !== 'mold' && ART && ART.dish && ART.dish(ctx, dish, st, col, { cup: cupCol, tops: tops, deco: deco, drawTop: drawTop, drawDeco: drawDeco })) { ctx.restore(); return; }
   if (c === 'mold' && ART && ART.jelly(ctx, dish, st, col, shade(col, 0.25), plate)) {
     if (st.flipped) { drawDeco(0, -14, 56, 34); for (let i = 0; i < Math.min(tops, 3); i++) drawTop([0, -15, 15][i], -34 + [0, 8, 8][i], 1); }
   } else if (c === 'mold') {

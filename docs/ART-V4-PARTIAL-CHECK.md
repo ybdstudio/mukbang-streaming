@@ -56,3 +56,27 @@ Nguồn: `mukbang-art-v4-core-20261105.zip`, lưu nguyên trong `art-src/art-v4-
 - Đồ chứa của cupcake, boba, ramen, parfait, donut, bingsu.
 - Icon chọn ly (`cup`) và khuôn donut (`shape`).
 - Đĩa phục vụ, UI bếp (khay, thẻ, nút ✓, banner PERFECT).
+
+---
+
+# Art V4 next (Codex, 05/11/2026): tích hợp
+
+Nguồn: `mukbang-art-v4-next-20261105.zip`, lưu trong `art-src/art-v4-next-20261105/`. Codex giao đủ 67/67 file theo `CHECKLIST-V4-NEXT.csv`, không có lỗi kỹ thuật nào trong qa.json.
+
+## Đã vào game
+- **Đồ chứa của 6 công thức** (subpackage `art4`): cupcake, boba, ramen, parfait, donut (4 hình), bingsu. Cách ghép từng loại lớp:
+  - Lớp fill được nhân màu: vị, nước dùng hoặc màu ly.
+  - Trà boba và các tầng parfait hiện dần từ đáy lên theo lượng rót.
+  - Kem cupcake mọc dần lên.
+  - Glaze donut và siro bingsu hiện mờ dần vào.
+  - Bột sống chuyển sang bánh chín sau bước lò hoặc lửa.
+  - Mì xuất hiện sau bước nấu. Hơi nước nhấp nháy.
+  - Topping và hạt rắc được đặt theo bề mặt của từng sprite.
+- **Icon khay chọn:** 5 màu ly và 4 hình donut.
+- **UI bếp:** chấm tiến độ, thẻ yêu cầu, khay, ô chọn (thường / đang chọn / RARE), nhãn ▶ RARE, nút ✓, banner PERFECT/YUMMY, nút MAKE (9-slice, chữ do game viết).
+- **Stream:** đĩa phục vụ. Đĩa đã ăn hết thì chuyển sang đĩa còn vụn. Món trên stream không vẽ thêm đĩa riêng của nó nữa.
+- **Kích thước gói:** main 3,67 MB / 4 MB; art4 1,03 MB / 4 MB.
+
+## Ghi chú cho Codex
+- `pip_on.png` hơi mờ ở kích thước gốc 40 px. Nên xuất lại từ nguồn lớn hơn nếu cần sắc nét.
+- Gói main chỉ còn khoảng 0,33 MB. Các đợt sau nên đưa phần lớn vào subpackage.

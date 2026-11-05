@@ -1,0 +1,1431 @@
+{
+  "scope": "67 assets from ART-REQUEST-V4-NEXT",
+  "complete": true,
+  "recipeCanvas": [
+    600,
+    600
+  ],
+  "recipeAnchor": [
+    300,
+    300
+  ],
+  "dishFrame": [
+    110,
+    120,
+    380,
+    360
+  ],
+  "groundContactY": 470,
+  "budget": {
+    "mainBytes": 164299,
+    "art4Bytes": 496220
+  },
+  "assets": [
+    {
+      "path": "art4/cook/ramen_bowl_fill.png",
+      "key": "cook/ramen_bowl_fill.png",
+      "package": "art4",
+      "layer": "fill:cup",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 7536,
+      "sha256": "89438c049f793bda57cfc88df455f879d071974dcbe063ef94905650e253d0d7",
+      "contentBounds": [
+        120,
+        265,
+        360,
+        205
+      ]
+    },
+    {
+      "path": "art4/cook/ramen_bowl_detail.png",
+      "key": "cook/ramen_bowl_detail.png",
+      "package": "art4",
+      "layer": "detail",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 8074,
+      "sha256": "cb4f58633e3a949f497d5bd3d169db931cd6e8edf716a4d64ab3595ca6682e63",
+      "contentBounds": [
+        120,
+        265,
+        360,
+        205
+      ],
+      "meanBodyAlpha": 39,
+      "opaqueBodyRatio": 0.1128,
+      "centerAlpha": 0
+    },
+    {
+      "path": "art4/cook/ramen_broth_fill.png",
+      "key": "cook/ramen_broth_fill.png",
+      "package": "art4",
+      "layer": "fill:broth",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 3236,
+      "sha256": "f5ab4c092b7721df5cf98b8a086f75c3bd8d229ba515aeda7e9c6c062b21edbb",
+      "contentBounds": [
+        139,
+        276,
+        322,
+        74
+      ]
+    },
+    {
+      "path": "art4/cook/ramen_noodles.png",
+      "key": "cook/ramen_noodles.png",
+      "package": "art4",
+      "layer": "color",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 11055,
+      "sha256": "1225be32c1ceb32b4a652aad75efd398232d70815141b6b1497ab767ce54f896",
+      "contentBounds": [
+        153,
+        282,
+        294,
+        61
+      ]
+    },
+    {
+      "path": "art4/cook/ramen_chopsticks.png",
+      "key": "cook/ramen_chopsticks.png",
+      "package": "art4",
+      "layer": "color",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 7591,
+      "sha256": "acea836b784fe9d2f4e2cb0ab244d3bc7b7545172fcbc3294306a9b71729ed76",
+      "contentBounds": [
+        344,
+        210,
+        143,
+        160
+      ]
+    },
+    {
+      "path": "art4/cook/ramen_steam.png",
+      "key": "cook/ramen_steam.png",
+      "package": "art4",
+      "layer": "color translucent",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 8001,
+      "sha256": "079fae25307d8e246a262d77f9abf7e77105b45312bd0dcc9738ebd2e0050cbf",
+      "contentBounds": [
+        204,
+        137,
+        192,
+        123
+      ]
+    },
+    {
+      "path": "art4/cook/boba_cup_back.png",
+      "key": "cook/boba_cup_back.png",
+      "package": "art4",
+      "layer": "color",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 20103,
+      "sha256": "578cff64ba0e0f61ef97658c83ab42a260187c08ee01820b9fe37c999d4bfb71",
+      "contentBounds": [
+        191,
+        190,
+        219,
+        280
+      ]
+    },
+    {
+      "path": "art4/cook/boba_tea_fill.png",
+      "key": "cook/boba_tea_fill.png",
+      "package": "art4",
+      "layer": "fill:flavor reveal",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 6916,
+      "sha256": "fb3338e571bd0a53ba8accac81c363ac69e96b7ca1d2da6662b1df1cc58929d3",
+      "contentBounds": [
+        201,
+        232,
+        198,
+        225
+      ]
+    },
+    {
+      "path": "art4/cook/boba_cup_front.png",
+      "key": "cook/boba_cup_front.png",
+      "package": "art4",
+      "layer": "color translucent",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 15086,
+      "sha256": "f45a5b35aaf544c8f6697db353c8e179b493ada3ec364a72b9516015966c6fe1",
+      "contentBounds": [
+        190,
+        120,
+        220,
+        350
+      ]
+    },
+    {
+      "path": "art4/cook/boba_band_fill.png",
+      "key": "cook/boba_band_fill.png",
+      "package": "art4",
+      "layer": "fill:cup",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 1879,
+      "sha256": "3c0c060538b2963349bf96c76ea5989cdeaef49409244d97c34ef9194cc9639e",
+      "contentBounds": [
+        198,
+        330,
+        204,
+        49
+      ]
+    },
+    {
+      "path": "art4/cook/boba_band_detail.png",
+      "key": "cook/boba_band_detail.png",
+      "package": "art4",
+      "layer": "detail",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 4308,
+      "sha256": "2c1c4ebe6a9647edd4f786bc5794ef09fbc5cf7e4ac4ab8dbcbb934da1676a8b",
+      "contentBounds": [
+        198,
+        330,
+        204,
+        49
+      ],
+      "meanBodyAlpha": 55,
+      "opaqueBodyRatio": 0,
+      "centerAlpha": 0
+    },
+    {
+      "path": "art4/cook/boba_foam.png",
+      "key": "cook/boba_foam.png",
+      "package": "art4",
+      "layer": "color",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 3643,
+      "sha256": "c798ae4ff23a84574b3e5d89b6327a9fac32d2452b25577433671e16c7196299",
+      "contentBounds": [
+        202,
+        224,
+        196,
+        33
+      ]
+    },
+    {
+      "path": "assets/cook/opt_cup_pink.png",
+      "key": "cook/opt_cup_pink.png",
+      "package": "main",
+      "layer": "icon",
+      "width": 160,
+      "height": 160,
+      "anchor": [
+        80,
+        80
+      ],
+      "bytes": 4867,
+      "sha256": "6aca0165774ae1a39e49248e8c7d0d6345f17f80e3308d870244c67de64de1ab",
+      "contentBounds": [
+        27,
+        35,
+        106,
+        88
+      ]
+    },
+    {
+      "path": "assets/cook/opt_cup_mint_c.png",
+      "key": "cook/opt_cup_mint_c.png",
+      "package": "main",
+      "layer": "icon",
+      "width": 160,
+      "height": 160,
+      "anchor": [
+        80,
+        80
+      ],
+      "bytes": 4794,
+      "sha256": "d1b3581cf59277db2043f6dc0e2b6f08a40510facde773527dfc44e1793fa697",
+      "contentBounds": [
+        27,
+        35,
+        106,
+        88
+      ]
+    },
+    {
+      "path": "assets/cook/opt_cup_lavender.png",
+      "key": "cook/opt_cup_lavender.png",
+      "package": "main",
+      "layer": "icon",
+      "width": 160,
+      "height": 160,
+      "anchor": [
+        80,
+        80
+      ],
+      "bytes": 4429,
+      "sha256": "192bb990e7cceeefa6ae699cb3233e74a6e0c792fc70561de81a1db4942726eb",
+      "contentBounds": [
+        27,
+        35,
+        106,
+        88
+      ]
+    },
+    {
+      "path": "assets/cook/opt_cup_lemon_c.png",
+      "key": "cook/opt_cup_lemon_c.png",
+      "package": "main",
+      "layer": "icon",
+      "width": 160,
+      "height": 160,
+      "anchor": [
+        80,
+        80
+      ],
+      "bytes": 4827,
+      "sha256": "e449345733a6c33ae7e8eaba65b5c86856fffe6f2dab5257cb43697698182e80",
+      "contentBounds": [
+        27,
+        35,
+        106,
+        88
+      ]
+    },
+    {
+      "path": "assets/cook/opt_cup_sky.png",
+      "key": "cook/opt_cup_sky.png",
+      "package": "main",
+      "layer": "icon",
+      "width": 160,
+      "height": 160,
+      "anchor": [
+        80,
+        80
+      ],
+      "bytes": 4602,
+      "sha256": "3de769ea5ab1bf9e6c57daf6aa425e0f695f22cd38c44baa0cc9beef6921c82c",
+      "contentBounds": [
+        27,
+        35,
+        106,
+        88
+      ]
+    },
+    {
+      "path": "art4/cook/cupcake_liner_fill.png",
+      "key": "cook/cupcake_liner_fill.png",
+      "package": "art4",
+      "layer": "fill:cup",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 6065,
+      "sha256": "7169471be94f66318937a71ebb3fadcb7c90c54881cc283af0f3452e60961da8",
+      "contentBounds": [
+        179,
+        333,
+        242,
+        137
+      ]
+    },
+    {
+      "path": "art4/cook/cupcake_liner_detail.png",
+      "key": "cook/cupcake_liner_detail.png",
+      "package": "art4",
+      "layer": "detail",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 11502,
+      "sha256": "1f9a7ca753bccdfec663f6710bb7aeba9f902ebc9550c05bd243a456c3b4e9ab",
+      "contentBounds": [
+        179,
+        333,
+        242,
+        137
+      ],
+      "meanBodyAlpha": 55,
+      "opaqueBodyRatio": 0,
+      "centerAlpha": 0
+    },
+    {
+      "path": "art4/cook/cupcake_batter.png",
+      "key": "cook/cupcake_batter.png",
+      "package": "art4",
+      "layer": "color",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 4830,
+      "sha256": "7509c3bc09443cd152ee7c24e9bf0d5ca3b6e54bb4f5c7a51766493156f798d6",
+      "contentBounds": [
+        184,
+        320,
+        232,
+        44
+      ]
+    },
+    {
+      "path": "art4/cook/cupcake_base.png",
+      "key": "cook/cupcake_base.png",
+      "package": "art4",
+      "layer": "color",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 10581,
+      "sha256": "ddff0de95fe7f47a09efbf78b73514bf338632fb9b8b2165cf1a13908a5b2983",
+      "contentBounds": [
+        170,
+        274,
+        260,
+        93
+      ]
+    },
+    {
+      "path": "art4/cook/cupcake_cream_fill.png",
+      "key": "cook/cupcake_cream_fill.png",
+      "package": "art4",
+      "layer": "fill:flavor",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 5404,
+      "sha256": "9f159923802da3bcfdf3da635f0d3aa95e101b3c9ac097a56d3d9deca37efca4",
+      "contentBounds": [
+        185,
+        144,
+        230,
+        165
+      ]
+    },
+    {
+      "path": "art4/cook/cupcake_cream_detail.png",
+      "key": "cook/cupcake_cream_detail.png",
+      "package": "art4",
+      "layer": "detail",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 7127,
+      "sha256": "e0061341b12856dbbc84192b1d9820ea11e461613fb1107f21fc4b908c23fb5b",
+      "contentBounds": [
+        185,
+        144,
+        230,
+        165
+      ],
+      "meanBodyAlpha": 55,
+      "opaqueBodyRatio": 0,
+      "centerAlpha": 0
+    },
+    {
+      "path": "art4/cook/bingsu_bowl_fill.png",
+      "key": "cook/bingsu_bowl_fill.png",
+      "package": "art4",
+      "layer": "fill:cup",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 5363,
+      "sha256": "017c3b0c6ca35f64ae1fc52fb5580752bc173e584ce97182770acc07c53fc6bc",
+      "contentBounds": [
+        150,
+        324,
+        300,
+        146
+      ]
+    },
+    {
+      "path": "art4/cook/bingsu_bowl_detail.png",
+      "key": "cook/bingsu_bowl_detail.png",
+      "package": "art4",
+      "layer": "detail",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 10085,
+      "sha256": "63b6ed34c8f3659047ab9551b2e222fa697879b0b00cb864fcdcd8a502f44c90",
+      "contentBounds": [
+        150,
+        324,
+        300,
+        146
+      ],
+      "meanBodyAlpha": 55,
+      "opaqueBodyRatio": 0,
+      "centerAlpha": 0
+    },
+    {
+      "path": "art4/cook/bingsu_snow.png",
+      "key": "cook/bingsu_snow.png",
+      "package": "art4",
+      "layer": "color",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 11084,
+      "sha256": "37aad01ab8a1fc4376c0169f94ff115950a462594e5bc8da4cf0feecf23f5a97",
+      "contentBounds": [
+        160,
+        159,
+        280,
+        205
+      ]
+    },
+    {
+      "path": "art4/cook/bingsu_syrup_fill.png",
+      "key": "cook/bingsu_syrup_fill.png",
+      "package": "art4",
+      "layer": "fill:flavor",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 6326,
+      "sha256": "655dda4a7bb6c750cc2586976df5b1e9c8f596098911382e68aaadb4f36f2bbe",
+      "contentBounds": [
+        185,
+        166,
+        230,
+        163
+      ]
+    },
+    {
+      "path": "art4/cook/bingsu_syrup_detail.png",
+      "key": "cook/bingsu_syrup_detail.png",
+      "package": "art4",
+      "layer": "detail",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 5373,
+      "sha256": "0d793d62c53c1e8b999b06dba19a8676c9659ac07bb43d633561f074215a900c",
+      "contentBounds": [
+        186,
+        167,
+        229,
+        162
+      ],
+      "meanBodyAlpha": 34,
+      "opaqueBodyRatio": 0.1203,
+      "centerAlpha": 0
+    },
+    {
+      "path": "art4/cook/parfait_glass_back.png",
+      "key": "cook/parfait_glass_back.png",
+      "package": "art4",
+      "layer": "color",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 15603,
+      "sha256": "6a2c92b4eb8465bf64d4540a8ba66f395cc6151caf89a431f858da4eb9a0afb0",
+      "contentBounds": [
+        195,
+        220,
+        210,
+        250
+      ]
+    },
+    {
+      "path": "art4/cook/parfait_layers_fill.png",
+      "key": "cook/parfait_layers_fill.png",
+      "package": "art4",
+      "layer": "fill:flavor reveal",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 3536,
+      "sha256": "69b1568dfe91e5d5ba3cdc7ef553f8a3c64f0df15d9f4dc3da9f690837f115ed",
+      "contentBounds": [
+        207,
+        280,
+        186,
+        119
+      ]
+    },
+    {
+      "path": "art4/cook/parfait_layers_cream.png",
+      "key": "cook/parfait_layers_cream.png",
+      "package": "art4",
+      "layer": "color reveal",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 7475,
+      "sha256": "7942f7a20a5638c460b83351cfc791027088354c35d8a0f451d8e35a1f40bd03",
+      "contentBounds": [
+        205,
+        240,
+        190,
+        119
+      ]
+    },
+    {
+      "path": "art4/cook/parfait_cream_top.png",
+      "key": "cook/parfait_cream_top.png",
+      "package": "art4",
+      "layer": "color",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 6731,
+      "sha256": "84392aff7f3ff2f33ea2603b7e4938d7add3f4bdc11e08b5210d823519be846f",
+      "contentBounds": [
+        194,
+        164,
+        212,
+        88
+      ]
+    },
+    {
+      "path": "art4/cook/parfait_glass_front.png",
+      "key": "cook/parfait_glass_front.png",
+      "package": "art4",
+      "layer": "color translucent",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 11508,
+      "sha256": "c7a58388846a4e7ad90291b70d35de04aeefe9214fe00802d6179065455c63bc",
+      "contentBounds": [
+        195,
+        220,
+        210,
+        250
+      ]
+    },
+    {
+      "path": "art4/cook/donut_plate.png",
+      "key": "cook/donut_plate.png",
+      "package": "art4",
+      "layer": "color",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 11393,
+      "sha256": "48e0170ac94f2e19ec9a0f36fa4c1c5b2104d68d73e603323ef72e60e7757e5a",
+      "contentBounds": [
+        132,
+        367,
+        336,
+        103
+      ]
+    },
+    {
+      "path": "art4/cook/donut_ring.png",
+      "key": "cook/donut_ring.png",
+      "package": "art4",
+      "layer": "color",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 24488,
+      "sha256": "a2c01cc78252c65a3ad080e8d219be51956be4c969b03fbc5bc3b2c70c2a1dc2",
+      "contentBounds": [
+        155,
+        158,
+        290,
+        290
+      ]
+    },
+    {
+      "path": "art4/cook/donut_ring_glaze_fill.png",
+      "key": "cook/donut_ring_glaze_fill.png",
+      "package": "art4",
+      "layer": "fill:flavor",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 8730,
+      "sha256": "7a92ff83f4ec08ddd7a37d3e7f90325ccb4418bfe2dd17af73c32f4ab07b66e9",
+      "contentBounds": [
+        169,
+        169,
+        262,
+        265
+      ]
+    },
+    {
+      "path": "art4/cook/donut_ring_glaze_detail.png",
+      "key": "cook/donut_ring_glaze_detail.png",
+      "package": "art4",
+      "layer": "detail",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 11369,
+      "sha256": "06b555ab5b3b17b56c3be43b443aa08cd6555e463c5a758cfcf60f52fdcbd48d",
+      "contentBounds": [
+        169,
+        169,
+        262,
+        265
+      ],
+      "meanBodyAlpha": 55,
+      "opaqueBodyRatio": 0,
+      "centerAlpha": 0
+    },
+    {
+      "path": "art4/cook/donut_heart_d.png",
+      "key": "cook/donut_heart_d.png",
+      "package": "art4",
+      "layer": "color",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 24511,
+      "sha256": "9444b994cb58e885478887d8646dd87072e3c3bcf8d461a0c3865c8c429b7287",
+      "contentBounds": [
+        155,
+        158,
+        290,
+        290
+      ]
+    },
+    {
+      "path": "art4/cook/donut_heart_d_glaze_fill.png",
+      "key": "cook/donut_heart_d_glaze_fill.png",
+      "package": "art4",
+      "layer": "fill:flavor",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 9385,
+      "sha256": "7b6fa8044a31fca5665b395a7110ee263422010efc17b9a4af228e560ba563c9",
+      "contentBounds": [
+        169,
+        169,
+        262,
+        265
+      ]
+    },
+    {
+      "path": "art4/cook/donut_heart_d_glaze_detail.png",
+      "key": "cook/donut_heart_d_glaze_detail.png",
+      "package": "art4",
+      "layer": "detail",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 10962,
+      "sha256": "967fc91272c0a55edd1d799f829c62f750130f84d1b741932548fdae0034b2c1",
+      "contentBounds": [
+        169,
+        169,
+        262,
+        265
+      ],
+      "meanBodyAlpha": 55,
+      "opaqueBodyRatio": 0,
+      "centerAlpha": 0
+    },
+    {
+      "path": "art4/cook/donut_star_d.png",
+      "key": "cook/donut_star_d.png",
+      "package": "art4",
+      "layer": "color",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 25219,
+      "sha256": "d138d05c22713062d9d9c595f7597801158882c2e1cb7ec2f741d0303fdcd1f1",
+      "contentBounds": [
+        155,
+        158,
+        290,
+        290
+      ]
+    },
+    {
+      "path": "art4/cook/donut_star_d_glaze_fill.png",
+      "key": "cook/donut_star_d_glaze_fill.png",
+      "package": "art4",
+      "layer": "fill:flavor",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 8045,
+      "sha256": "3effc4810faab77967a645ffca9d47bebcd1e25070271355ec710bbeb069c9ba",
+      "contentBounds": [
+        169,
+        169,
+        262,
+        265
+      ]
+    },
+    {
+      "path": "art4/cook/donut_star_d_glaze_detail.png",
+      "key": "cook/donut_star_d_glaze_detail.png",
+      "package": "art4",
+      "layer": "detail",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 12791,
+      "sha256": "f8aef0b31cf1b9444ffb24651140010b71774561da24eaf7d278a9d43a29f8f5",
+      "contentBounds": [
+        169,
+        169,
+        262,
+        265
+      ],
+      "meanBodyAlpha": 55,
+      "opaqueBodyRatio": 0,
+      "centerAlpha": 0
+    },
+    {
+      "path": "art4/cook/donut_bear.png",
+      "key": "cook/donut_bear.png",
+      "package": "art4",
+      "layer": "color",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 21994,
+      "sha256": "15ff47387c1371dc8e3e07000b0f6ded8e0e95e85c48337590c7f12acb5ae388",
+      "contentBounds": [
+        155,
+        158,
+        290,
+        290
+      ]
+    },
+    {
+      "path": "art4/cook/donut_bear_glaze_fill.png",
+      "key": "cook/donut_bear_glaze_fill.png",
+      "package": "art4",
+      "layer": "fill:flavor",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 8670,
+      "sha256": "d6c554719a40fe004d5c57014aad84c3aeedaa8ecbd0d31704cbaed657227b44",
+      "contentBounds": [
+        169,
+        169,
+        262,
+        265
+      ]
+    },
+    {
+      "path": "art4/cook/donut_bear_glaze_detail.png",
+      "key": "cook/donut_bear_glaze_detail.png",
+      "package": "art4",
+      "layer": "detail",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 9906,
+      "sha256": "41affaf56e4ca380a885b1ad74d015c6a495601dc0a064804e764c271c1b6881",
+      "contentBounds": [
+        169,
+        169,
+        262,
+        265
+      ],
+      "meanBodyAlpha": 55,
+      "opaqueBodyRatio": 0,
+      "centerAlpha": 0
+    },
+    {
+      "path": "art4/cook/donut_ring_dough.png",
+      "key": "cook/donut_ring_dough.png",
+      "package": "art4",
+      "layer": "color",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 20573,
+      "sha256": "1d77567080d47c72a013e1ac6e0116c8873ce758a6eedf6338e23294169d5791",
+      "contentBounds": [
+        155,
+        158,
+        290,
+        290
+      ]
+    },
+    {
+      "path": "art4/cook/donut_heart_d_dough.png",
+      "key": "cook/donut_heart_d_dough.png",
+      "package": "art4",
+      "layer": "color",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 21212,
+      "sha256": "dc88ee9a962e2e171cf3df3a7791c5a85ae4d56812d159a03a778f779bfcdc7d",
+      "contentBounds": [
+        155,
+        158,
+        290,
+        290
+      ]
+    },
+    {
+      "path": "art4/cook/donut_star_d_dough.png",
+      "key": "cook/donut_star_d_dough.png",
+      "package": "art4",
+      "layer": "color",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 17973,
+      "sha256": "7060eb9004751316b4408337ca61bf9525ebdd57751a1645b49aa335c8e8d72f",
+      "contentBounds": [
+        155,
+        158,
+        290,
+        290
+      ]
+    },
+    {
+      "path": "art4/cook/donut_bear_dough.png",
+      "key": "cook/donut_bear_dough.png",
+      "package": "art4",
+      "layer": "color",
+      "width": 600,
+      "height": 600,
+      "anchor": [
+        300,
+        300
+      ],
+      "bytes": 22978,
+      "sha256": "09cfcff07e5320eb4380a8593073f9812f2ca7b9e7e33f806e47e8b23a8e7e84",
+      "contentBounds": [
+        155,
+        158,
+        290,
+        290
+      ]
+    },
+    {
+      "path": "assets/cook/opt_shape_ring.png",
+      "key": "cook/opt_shape_ring.png",
+      "package": "main",
+      "layer": "icon",
+      "width": 160,
+      "height": 160,
+      "anchor": [
+        80,
+        80
+      ],
+      "bytes": 6740,
+      "sha256": "dbd0e2e447ce1e08bb88aeb615bfe01d85059e7ac4456432d7338f50b068670a",
+      "contentBounds": [
+        24,
+        24,
+        112,
+        112
+      ]
+    },
+    {
+      "path": "assets/cook/opt_shape_heart_d.png",
+      "key": "cook/opt_shape_heart_d.png",
+      "package": "main",
+      "layer": "icon",
+      "width": 160,
+      "height": 160,
+      "anchor": [
+        80,
+        80
+      ],
+      "bytes": 6771,
+      "sha256": "bdaf28c531ddebb6f75e6df9a0f96528b911161bc9d6eab3e3de6b0213b9ccee",
+      "contentBounds": [
+        24,
+        24,
+        112,
+        112
+      ]
+    },
+    {
+      "path": "assets/cook/opt_shape_star_d.png",
+      "key": "cook/opt_shape_star_d.png",
+      "package": "main",
+      "layer": "icon",
+      "width": 160,
+      "height": 160,
+      "anchor": [
+        80,
+        80
+      ],
+      "bytes": 6519,
+      "sha256": "52af34f34733eea265ee7e3892d8bb775fa5c213589fad8d2c6fd6beb161daf1",
+      "contentBounds": [
+        24,
+        24,
+        112,
+        112
+      ]
+    },
+    {
+      "path": "assets/cook/opt_shape_bear.png",
+      "key": "cook/opt_shape_bear.png",
+      "package": "main",
+      "layer": "icon",
+      "width": 160,
+      "height": 160,
+      "anchor": [
+        80,
+        80
+      ],
+      "bytes": 7582,
+      "sha256": "562f1ea7cd1240a488a1d29b0af6a3c2e7de3c109aa2ff2d9a23c7dc414b87cb",
+      "contentBounds": [
+        24,
+        24,
+        112,
+        112
+      ]
+    },
+    {
+      "path": "assets/cook/tray.png",
+      "key": "cook/tray.png",
+      "package": "main",
+      "layer": "ui",
+      "width": 520,
+      "height": 160,
+      "anchor": [
+        260,
+        80
+      ],
+      "slices": [
+        40,
+        40,
+        440,
+        80
+      ],
+      "bytes": 8222,
+      "sha256": "9de869d0fe59f6dcb5fdff3c1b65c4868101f79aa33f4e4e8719b25b32a892b9",
+      "contentBounds": [
+        0,
+        11,
+        520,
+        139
+      ]
+    },
+    {
+      "path": "assets/cook/card.png",
+      "key": "cook/card.png",
+      "package": "main",
+      "layer": "ui",
+      "width": 220,
+      "height": 224,
+      "anchor": [
+        110,
+        112
+      ],
+      "slices": [
+        40,
+        40,
+        140,
+        144
+      ],
+      "bytes": 5895,
+      "sha256": "48ccb1d3d7fb3fce36754abe18e0e874efa8d519ccbc10bc89b90ab7d6a04d73",
+      "contentBounds": [
+        0,
+        0,
+        220,
+        224
+      ]
+    },
+    {
+      "path": "assets/cook/card_selected.png",
+      "key": "cook/card_selected.png",
+      "package": "main",
+      "layer": "ui",
+      "width": 220,
+      "height": 224,
+      "anchor": [
+        110,
+        112
+      ],
+      "slices": [
+        40,
+        40,
+        140,
+        144
+      ],
+      "bytes": 6967,
+      "sha256": "7c24b827d2b6ebdfdc786433b635f86b43fde588838dd24ba4ee636980e63851",
+      "contentBounds": [
+        0,
+        0,
+        220,
+        224
+      ]
+    },
+    {
+      "path": "assets/cook/card_rare.png",
+      "key": "cook/card_rare.png",
+      "package": "main",
+      "layer": "ui",
+      "width": 220,
+      "height": 224,
+      "anchor": [
+        110,
+        112
+      ],
+      "slices": [
+        40,
+        40,
+        140,
+        144
+      ],
+      "bytes": 7774,
+      "sha256": "c4f5c4faefe1303a48d60911de000115fc289196b7849add25dfc24c436e441e",
+      "contentBounds": [
+        0,
+        0,
+        220,
+        224
+      ]
+    },
+    {
+      "path": "assets/cook/badge_rare.png",
+      "key": "cook/badge_rare.png",
+      "package": "main",
+      "layer": "ui",
+      "width": 160,
+      "height": 52,
+      "anchor": [
+        80,
+        26
+      ],
+      "bytes": 2992,
+      "sha256": "f2eb12b27c48fea1ed7e1d4174fe2f750b783e979289f1eb4c00c010ff633293",
+      "contentBounds": [
+        32,
+        7,
+        96,
+        39
+      ]
+    },
+    {
+      "path": "assets/cook/ok.png",
+      "key": "cook/ok.png",
+      "package": "main",
+      "layer": "ui",
+      "width": 136,
+      "height": 136,
+      "anchor": [
+        68,
+        68
+      ],
+      "bytes": 4538,
+      "sha256": "d6b851c83f2e7419ac97a28915e9ec790c9b24cf26b3c8f5c8a964f5c2fe44ec",
+      "contentBounds": [
+        24,
+        25,
+        87,
+        88
+      ]
+    },
+    {
+      "path": "assets/cook/pip_on.png",
+      "key": "cook/pip_on.png",
+      "package": "main",
+      "layer": "ui",
+      "width": 40,
+      "height": 40,
+      "anchor": [
+        20,
+        20
+      ],
+      "bytes": 479,
+      "sha256": "b9880424f4986a0d0105a17abfd0195e537a73403b663b5ece88ecf1da6fd3be",
+      "contentBounds": [
+        13,
+        15,
+        15,
+        12
+      ]
+    },
+    {
+      "path": "assets/cook/banner_perfect.png",
+      "key": "cook/banner_perfect.png",
+      "package": "main",
+      "layer": "ui",
+      "width": 680,
+      "height": 176,
+      "anchor": [
+        340,
+        88
+      ],
+      "bytes": 18011,
+      "sha256": "849dff04adf704f6fbb9be2b0c5b5b277d27c909cb4f5c330bed0c005502b1a5",
+      "contentBounds": [
+        64,
+        24,
+        552,
+        130
+      ]
+    },
+    {
+      "path": "assets/cook/banner_yummy.png",
+      "key": "cook/banner_yummy.png",
+      "package": "main",
+      "layer": "ui",
+      "width": 680,
+      "height": 176,
+      "anchor": [
+        340,
+        88
+      ],
+      "bytes": 16596,
+      "sha256": "87279fc9b7b6232cac03bdcf9c9c469469422df36b8e4e09ecebd83f9f6a43e4",
+      "contentBounds": [
+        64,
+        37,
+        552,
+        104
+      ]
+    },
+    {
+      "path": "assets/cook/request_card.png",
+      "key": "cook/request_card.png",
+      "package": "main",
+      "layer": "ui",
+      "width": 660,
+      "height": 116,
+      "anchor": [
+        330,
+        58
+      ],
+      "slices": [
+        40,
+        40,
+        580,
+        36
+      ],
+      "bytes": 9893,
+      "sha256": "5569b20f3d3142101f8cd727d51e503d7630ccfdf8c88a0062c67bac89bdf51c",
+      "contentBounds": [
+        0,
+        0,
+        660,
+        116
+      ]
+    },
+    {
+      "path": "assets/cook/btn_make.png",
+      "key": "cook/btn_make.png",
+      "package": "main",
+      "layer": "ui",
+      "width": 480,
+      "height": 120,
+      "anchor": [
+        240,
+        60
+      ],
+      "slices": [
+        60,
+        48,
+        360,
+        24
+      ],
+      "bytes": 8574,
+      "sha256": "33632b1d7deeae5f6348dfc90377b7b2be36b1394232407b0956fd1a8949bdc9",
+      "contentBounds": [
+        0,
+        0,
+        480,
+        120
+      ]
+    },
+    {
+      "path": "assets/stream/serve_plate.png",
+      "key": "stream/serve_plate.png",
+      "package": "main",
+      "layer": "plate",
+      "width": 400,
+      "height": 160,
+      "anchor": [
+        200,
+        80
+      ],
+      "bytes": 10911,
+      "sha256": "417f8116046c10bd2b5c695f0fee931fdbc5b8ceb28edd75e488cc450f7e592d",
+      "contentBounds": [
+        24,
+        27,
+        352,
+        106
+      ]
+    },
+    {
+      "path": "assets/stream/serve_plate_empty_crumbs.png",
+      "key": "stream/serve_plate_empty_crumbs.png",
+      "package": "main",
+      "layer": "plate",
+      "width": 400,
+      "height": 160,
+      "anchor": [
+        200,
+        80
+      ],
+      "bytes": 12316,
+      "sha256": "49565385aec1c03feb15f73671d2d626f23298f01db2a0d0637d20ce29e59a1b",
+      "contentBounds": [
+        24,
+        27,
+        352,
+        106
+      ]
+    }
+  ]
+}

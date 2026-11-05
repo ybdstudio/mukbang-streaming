@@ -129,9 +129,9 @@ function install(Game) {
     const steps = k.rc.steps, st = this.curCookStep();
     // step pips (bunnies in the video)
     const pw = Math.min(30, (W - 160) / steps.length);
-    for (let i = 0; i < steps.length; i++) { const px = 24 + i * pw + pw / 2, py = top + 40; A.circle(ctx, px, py, pw * 0.4, i < k.step ? C.pink : i === k.step ? '#fff' : 'rgba(255,255,255,0.6)', 3); if (i < k.step) A.heart(ctx, px, py + 1, pw * 0.18, '#fff', 0); }
+    for (let i = 0; i < steps.length; i++) { const px = 24 + i * pw + pw / 2, py = top + 40; if (CA.sprite(ctx, i < k.step ? 'cook/pip_on.png' : 'cook/pip_off.png', px, py, pw * (i === k.step ? 1.05 : 0.9))) continue; A.circle(ctx, px, py, pw * 0.4, i < k.step ? C.pink : i === k.step ? '#fff' : 'rgba(255,255,255,0.6)', 3); if (i < k.step) A.heart(ctx, px, py + 1, pw * 0.18, '#fff', 0); }
     // request reminder
-    const req = k.req; ui.panel(W / 2 - 165, top + 72, 330, 58, '#fff7fb', C.pinkDark, 18, 3);
+    const req = k.req; if (!CA.panel(ctx, 'cook/request_card.png', W / 2 - 165, top + 72, 330, 58)) ui.panel(W / 2 - 165, top + 72, 330, 58, '#fff7fb', C.pinkDark, 18, 3);
     R.draw(ctx, A, req, W / 2 - 130, top + 101, 46, { flipped: true, set: true, fill: 1, tops: 1, deco: 0 });
     ui.label('VIEWER WANTS: ' + R.dishName(req).toUpperCase(), W / 2 + 22, top + 92, 12, C.text); const ts = R.opt(R.toppingSlot(req.recipe), req.topping); ui.label('with ' + (ts ? ts.name : ''), W / 2 + 22, top + 112, 12, C.textLight);
     // instruction
@@ -150,16 +150,16 @@ function install(Game) {
     // bottom tray for choices + ✓
     if (st && st.t === 'pick' && k.opts) {
       const n = k.opts.length, cw = Math.min(110, (W - 40 - (n - 1) * 10) / n), x0 = (W - (n * cw + (n - 1) * 10)) / 2, ty = bottom - 150;
-      A.rr(ctx, 10, ty - 14, W - 20, 150, 26); ctx.fillStyle = 'rgba(255,255,255,0.75)'; ctx.fill();
+      if (!CA.panel(ctx, 'cook/tray.png', 10, ty - 14, W - 20, 150)) { A.rr(ctx, 10, ty - 14, W - 20, 150, 26); ctx.fillStyle = 'rgba(255,255,255,0.75)'; ctx.fill(); }
       const rare = k.rare; const n2 = n + (rare ? 1 : 0); const cw2 = Math.min(110, (W - 40 - (n2 - 1) * 10) / n2), x02 = (W - (n2 * cw2 + (n2 - 1) * 10)) / 2;
-      for (let i = 0; i < n; i++) { const o = k.opts[i], cw = cw2, x = x02 + i * (cw + 10), on = k.sel === o.id; ui.panel(x, ty, cw, 112, on ? '#eafff0' : '#fff', on ? C.greenDark : C.pink, 18, on ? 5 : 3); optIcon(ctx, st.slot, o, x + cw / 2, ty + 46, 30); ui.label(o.name, x + cw / 2, ty + 96, 12, C.text); ui.hotspot('cko_' + o.id, x, ty, cw, 112); }
-      if (rare) { const x = x02 + n * (cw2 + 10), gl = 0.5 + 0.5 * Math.sin(this.time * 5); ui.panel(x, ty, cw2, 112, '#fff6d6', C.goldDark, 18, 4); optIcon(ctx, st.slot, rare, x + cw2 / 2, ty + 46, 30); A.star(ctx, x + cw2 - 14, ty + 14, 9 + gl * 2, C.gold, 2); A.rr(ctx, x + 8, ty + 80, cw2 - 16, 26, 13); ctx.fillStyle = C.blue; ctx.fill(); ui.label('▶ RARE', x + cw2 / 2, ty + 94, 12, C.white); ui.hotspot('ck_rare', x, ty, cw2, 112); }
-      if (k.sel) { const pulse = 1 + Math.sin(this.time * 6) * 0.06; ctx.save(); ctx.translate(a.x + a.r + 20, a.y + a.r * 0.4); ctx.scale(pulse, pulse); A.circle(ctx, 0, 0, 34, C.green, 4); ctx.strokeStyle = '#fff'; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(-14, 0); ctx.lineTo(-4, 11); ctx.lineTo(15, -12); ctx.stroke(); ctx.restore(); ui.hotspot('ck_ok', a.x + a.r - 16, a.y + a.r * 0.4 - 36, 72, 72); }
+      for (let i = 0; i < n; i++) { const o = k.opts[i], cw = cw2, x = x02 + i * (cw + 10), on = k.sel === o.id; if (!CA.panel(ctx, on ? 'cook/card_selected.png' : 'cook/card.png', x, ty, cw, 112)) ui.panel(x, ty, cw, 112, on ? '#eafff0' : '#fff', on ? C.greenDark : C.pink, 18, on ? 5 : 3); optIcon(ctx, st.slot, o, x + cw / 2, ty + 46, 30); ui.label(o.name, x + cw / 2, ty + 96, 12, C.text); ui.hotspot('cko_' + o.id, x, ty, cw, 112); }
+      if (rare) { const x = x02 + n * (cw2 + 10), gl = 0.5 + 0.5 * Math.sin(this.time * 5); const art = CA.panel(ctx, 'cook/card_rare.png', x, ty, cw2, 112); if (!art) ui.panel(x, ty, cw2, 112, '#fff6d6', C.goldDark, 18, 4); optIcon(ctx, st.slot, rare, x + cw2 / 2, ty + 46, 30); if (!art) A.star(ctx, x + cw2 - 14, ty + 14, 9 + gl * 2, C.gold, 2); if (!CA.sprite(ctx, 'cook/badge_rare.png', x + cw2 / 2, ty + 93, Math.min(cw2 - 8, 80))) { A.rr(ctx, x + 8, ty + 80, cw2 - 16, 26, 13); ctx.fillStyle = C.blue; ctx.fill(); ui.label('▶ RARE', x + cw2 / 2, ty + 94, 12, C.white); } ui.hotspot('ck_rare', x, ty, cw2, 112); }
+      if (k.sel) { const pulse = 1 + Math.sin(this.time * 6) * 0.06; ctx.save(); ctx.translate(a.x + a.r + 20, a.y + a.r * 0.4); ctx.scale(pulse, pulse); if (!CA.sprite(ctx, 'cook/ok.png', 0, 0, 74)) { A.circle(ctx, 0, 0, 34, C.green, 4); ctx.strokeStyle = '#fff'; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(-14, 0); ctx.lineTo(-4, 11); ctx.lineTo(15, -12); ctx.stroke(); } ctx.restore(); ui.hotspot('ck_ok', a.x + a.r - 16, a.y + a.r * 0.4 - 36, 72, 72); }
     }
     // done: PERFECT! / YUMMY!
     if (k.doneT >= 0) {
       const t = k.doneT; ui.dim(Math.min(0.35, t)); const s = U.easeOutBack(Math.min(1, t * 2.5));
-      ctx.save(); ctx.translate(W / 2, H * 0.24); ctx.scale(s, s); A.rr(ctx, -170, -44, 340, 88, 40); ctx.fillStyle = C.pink; ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = C.pinkDark; ctx.stroke(); ui.title(k.perfect ? 'PERFECT!' : 'YUMMY!', 0, 2, 46, C.white, C.pinkDark); ctx.restore();
+      ctx.save(); ctx.translate(W / 2, H * 0.24); ctx.scale(s, s); if (!CA.sprite(ctx, k.perfect ? 'cook/banner_perfect.png' : 'cook/banner_yummy.png', 0, 0, 360)) { A.rr(ctx, -170, -44, 340, 88, 40); ctx.fillStyle = C.pink; ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = C.pinkDark; ctx.stroke(); ui.title(k.perfect ? 'PERFECT!' : 'YUMMY!', 0, 2, 46, C.white, C.pinkDark); } ctx.restore();
       ui.label(k.perfect ? 'exactly what the viewer asked for!' : 'not what they asked, but it looks so good!', W / 2, H * 0.24 + 66, 15, C.white, 'center', { stroke: 4 });
       if (k.serveAsk) { const by = H * 0.24 + 100; ui.button('ck_serve', W * 0.12, by, W * 0.36, 64, 'SERVE', { color: C.yellow, dark: C.yellowDark, size: 22 }); ui.button('ck_hot', W * 0.52, by, W * 0.36, 64, '▶ HOT START', { color: C.pink, dark: C.pinkDark, size: 18 }); ui.label('+40% viewers when you go live', W * 0.7, by + 82, 13, C.white, 'center', { stroke: 4 }); }
       R.draw(ctx, A, k.dish, a.x, a.y, a.r * 1.9, k.st);  // the finished dish above the dim, exactly where it was made

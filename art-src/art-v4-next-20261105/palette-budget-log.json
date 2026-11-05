@@ -1,0 +1,30 @@
+[
+  {
+    "path": "art4/cook/donut_ring.png",
+    "paletteLimit": 128,
+    "bytes": 24488,
+    "operation": "Palette export budget reduction, no dithering"
+  },
+  {
+    "path": "art4/cook/donut_heart_d.png",
+    "paletteLimit": 160,
+    "bytes": 24511,
+    "operation": "Palette export budget reduction, no dithering"
+  },
+  {
+    "path": "art4/cook/donut_star_d.png",
+    "paletteLimit": 192,
+    "bytes": 25219,
+    "operation": "Palette export budget reduction, no dithering"
+  },
+  {
+    "path": "art4/cook/donut_bear.png",
+    "w": 600,
+    "h": 600,
+    "bytes": 21994,
+    "colors": 64,
+    "alphaScale": 1,
+    "filterStrategy": "none",
+    "alphaExport": "<=16:0; >=240:255; intermediate edges retained; alphaScale=1"
+  }
+]

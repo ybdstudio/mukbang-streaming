@@ -83,7 +83,7 @@ function install(Game) {
   // ── save / resume (run_json v3; older runs are dropped — the level itself is kept) ──
   P.saveRun = function () {
     const r = this.run; if (!r) { this.profile.set('run_json', ''); return; }
-    const o = {}; const keys = ['v', 'level', 'side', 'food', 'recipe', 'request', 'dish', 'perfect', 'giftAd', 'hyped', 'hotStart', 'pack', 'loc', 'view', 'event', 'toppings', 'cost', 'cpb', 'goal', 'goal3', 'start', 'hu', 'viewers', 'peak', 'coins', 'pickups', 'bites', 'phase', 'hearts', 'giftTaken', 'eventDone', 'goalLevel'];
+    const o = {}; const keys = ['v', 'level', 'side', 'food', 'recipe', 'request', 'dish', 'perfect', 'giftAd', 'hyped', 'hotStart', 'pack', 'loc', 'view', 'event', 'toppings', 'cost', 'cpb', 'goal', 'goal3', 'start', 'hu', 'viewers', 'peak', 'coins', 'pickups', 'bites', 'phase', 'hearts', 'giftTaken', 'eventDone', 'goalLevel', 'ms'];
     for (let i = 0; i < keys.length; i++) o[keys[i]] = r[keys[i]];
     o.viewers = Math.round(o.viewers); o.peak = Math.round(o.peak);
     this.profile.set('run_json', JSON.stringify(o));
@@ -123,7 +123,17 @@ function install(Game) {
   P.deliver = function () { const r = this.run; if (r.phase !== 'carry') return; this.carry = null; r.phase = 'chew'; r.pt = 0; r.bites = 0; this.setFace('open', 0.3); this.saveRun(); };
   P.tapHeart = function (h) { const r = this.run; h.taken = true; r.hearts++; const v = Math.round(r.goal * HEART_BOOST); this.addViewers(v); this.floatText('+' + U.fmtViewers(v), h.x, h.y - 20, C.pink, 18); this.spawnSparkles(h.x, h.y, 8); this.audio.play('like', { gain: 0.6 }); };
   P.tapGift = function () { const r = this.run; r.giftTaken = true; const coins = r.cpb * 4, v = Math.round(r.goal * GIFT_BOOST); r.coins += coins; this.profile.add('coins', coins); this.addViewers(v); this.floatText('FAN GIFT  +' + coins, r.gift.x, r.gift.y - 50, C.gold, 22, true); this.spawnConfetti(r.gift.x, r.gift.y, 24); this.audio.play('cash'); r.gift = null; this.saveRun(); };
-  P.addViewers = function (v) { const r = this.run; r.viewers += v; r.peak = Math.max(r.peak, r.viewers); };
+  // viewer milestones inside one stream: GOAL (2★) → GOAL 3★ → then +40 % each; the bar always aims at the next one
+  P.milestone = function (i) { const r = this.run; return i <= 0 ? r.goal : i === 1 ? r.goal3 : Math.round(r.goal3 * Math.pow(1.4, i - 1)); };
+  P.addViewers = function (v) {
+    const r = this.run; r.viewers += v; r.peak = Math.max(r.peak, r.viewers); r.ms = r.ms || 0;
+    while (r.peak >= this.milestone(r.ms)) {
+      const n = r.ms; r.ms++; const bonus = r.cpb * (n + 1); r.coins += bonus; this.profile.add('coins', bonus);
+      const label = n === 0 ? 'GOAL REACHED! ★★' : n === 1 ? 'SUPER GOAL! ★★★' : 'NEW RECORD GOAL!';
+      r.banner = { t: 0, text: label, sub: 'NEXT GOAL ' + U.fmtViewers(this.milestone(r.ms)) + '  ·  +' + bonus };
+      this.audio.play('levelup', { gain: 0.7 }); this.spawnConfetti(this.W / 2, this.top() + 78, 26);
+    }
+  };
 
   // ── one bite of the current pickup ──
   P.biteNow = function () {
@@ -277,14 +287,14 @@ function install(Game) {
         // V4: the cooked dish, served as 3 portions on plates (eaten left → right)
         const served = !!r.dish && ph !== 'request';
         for (let i = 0; i < PICKUPS; i++) {
-          const pp = this.platePos(i); A.ellipse(ctx, pp.x, pp.y + pp.size * 0.32, pp.size * 0.48, pp.size * 0.13, '#e9f3ff', 4); A.ellipse(ctx, pp.x, pp.y + pp.size * 0.31, pp.size * 0.36, pp.size * 0.08, '#f8fbff', 0);
+          const pp = this.platePos(i); const eaten = served && i < r.pickups; if (!CA.sprite(ctx, eaten ? 'stream/serve_plate_empty_crumbs.png' : 'stream/serve_plate.png', pp.x, pp.y + pp.size * 0.31, pp.size * 1.05)) { A.ellipse(ctx, pp.x, pp.y + pp.size * 0.32, pp.size * 0.48, pp.size * 0.13, '#e9f3ff', 4); A.ellipse(ctx, pp.x, pp.y + pp.size * 0.31, pp.size * 0.36, pp.size * 0.08, '#f8fbff', 0); }
           if (!served || i < r.pickups) continue;
           const ramen = r.dish.recipe === 'ramen', cur = i === r.pickups && (this.carry || ph === 'chew');
           if (cur && !ramen) continue;   // that portion is in her hands / at her mouth
           if (cur && ramen) { R.draw(ctx, A, r.dish, pp.x, pp.y, pp.size, { flipped: true, set: ph !== 'chew' || r.bites < 2, fill: 1, tops: ph === 'chew' ? Math.max(0, 2 - r.bites) : 2, deco: 1 }); continue; }
           const bob = glow && i === r.pickups ? Math.sin(this.time * 4) * 3 : 0;
           if (glow && i === r.pickups) { ctx.globalAlpha = 0.25 + 0.15 * Math.sin(this.time * 5); A.circle(ctx, pp.x, pp.y, pp.size * 0.5, '#fff8d0', 0); ctx.globalAlpha = 1; }
-          R.draw(ctx, A, r.dish, pp.x, pp.y + bob, pp.size, { flipped: true, set: true, fill: 1, tops: 3, deco: 1 });
+          R.draw(ctx, A, r.dish, pp.x, pp.y + bob, pp.size, { flipped: true, set: true, fill: 1, tops: 3, deco: 1, plate: !S.v4('stream/serve_plate.png') });
         }
         pk = this.platePos(1);
         if (this.carry && r.dish) this.drawBite(r.dish, this.carry.x, this.carry.y, 100, 0);
@@ -325,7 +335,10 @@ function install(Game) {
     if (r && !still) ui.button('pause', W - 56, top + 70, 40, 40, 'II', { color: C.lavender, dark: C.lavenderDark, size: 16, radius: 20 });
     if (!r) return;
     if (!still && this.canBoost()) ui.button('boost_ad', W - 150, H * 0.47, 136, 56, '▶ VIRAL BOOST', { color: C.yellow, dark: C.yellowDark, size: 15, sub: '+25% VIEWERS', badge: true });
-    const t = r.peak / r.goal3; ui.bar(W / 2 - 92, top + 70, 184, 16, Math.min(1, t), t >= 1 ? C.gold : t >= r.goal / r.goal3 ? C.green : C.pink); const gx = W / 2 - 92 + 184 * (r.goal / r.goal3); ctx.fillStyle = C.outline; ctx.fillRect(gx - 1, top + 66, 3, 24);
+    { const ms = r.ms || 0, lo = ms ? this.milestone(ms - 1) : r.start, hi = this.milestone(ms), t = Math.max(0, Math.min(1, (r.peak - lo) / Math.max(1, hi - lo)));
+      ui.bar(W / 2 - 92, top + 70, 184, 16, t, ms >= 2 ? C.gold : ms === 1 ? C.green : C.pink);
+      ui.label((ms === 0 ? 'GOAL ' : ms === 1 ? '3★ GOAL ' : 'GOAL ' + (ms + 1) + ' · ') + U.fmtViewers(hi), W / 2 + 108, top + 79, 11, C.white, 'left', { stroke: 3 });
+      for (let k = 0; k < Math.min(ms, 5); k++) A.star(ctx, W / 2 - 100 - k * 14, top + 78, 6, C.gold, 1.5); }
     ui.label(r.level ? 'STREAM ' + r.level + ' · ' + this.streamLevel().title.toUpperCase() : L.modeOf(r.side) ? L.modeOf(r.side).name + ' STREAM' : 'BONUS STREAM', W / 2, top + 100, 12, C.white, 'center', { stroke: 4 });
     // superchat banner / duet bubble
     if (r.superchat) { const a = Math.min(1, r.superchat.t * 4, (3 - r.superchat.t) * 3); ctx.globalAlpha = Math.max(0, a); ui.panel(40, top + 120, W - 80, 52, '#ffd95e', C.goldDark, 20, 4); ui.label('SUPER CHAT  +' + r.superchat.coins + '  ·  "you are the best!!"', W / 2, top + 146, 16, C.text); ctx.globalAlpha = 1; }
@@ -346,7 +359,7 @@ function install(Game) {
     ctx.globalAlpha = 1;
     const by = this.bottom() - 262, pulse = 1 + Math.sin(this.time * 5) * 0.04;
     ctx.save(); ctx.translate(W / 2, by + 36); ctx.scale(pulse, pulse); ctx.translate(-W / 2, -(by + 36));
-    ui.button('cook_go', W * 0.18, by, W * 0.64, 72, R.RECIPES[r.recipe].make, { color: C.yellow, dark: C.yellowDark, size: 26 }); ctx.restore();
+    if (CA.panel(ctx, 'cook/btn_make.png', W * 0.18, by, W * 0.64, 72)) { ui.label(R.RECIPES[r.recipe].make, W / 2, by + 38, 26, C.white, 'center', { stroke: 6 }); ui.hotspot('cook_go', W * 0.18, by, W * 0.64, 72); } else ui.button('cook_go', W * 0.18, by, W * 0.64, 72, R.RECIPES[r.recipe].make, { color: C.yellow, dark: C.yellowDark, size: 26 }); ctx.restore();
     this.drawLeaveRow();
     if (r.level === 1 && (this.profile.get('streams') || 0) === 0) { const fx = W * 0.7 + Math.sin(this.time * 4) * 6, fy = by + 60 + Math.cos(this.time * 4) * 6; A.circle(ctx, fx, fy, 16, 'rgba(255,255,255,0.85)', 3); ui.label('TAP!', fx, fy + 30, 14, C.white, 'center', { stroke: 4 }); }
   };

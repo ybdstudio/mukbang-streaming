@@ -1,0 +1,1141 @@
+[
+  {
+    "path": "art4/cook/boba_cup_back.png",
+    "reference": null,
+    "sourceBounds": [
+      378,
+      344,
+      494,
+      582
+    ],
+    "targetBounds": [
+      190,
+      190,
+      220,
+      280
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "assets/cook/opt_cup_pink.png",
+    "reference": null,
+    "sourceBounds": [
+      312,
+      383,
+      620,
+      512
+    ],
+    "targetBounds": [
+      27,
+      35,
+      106,
+      88
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/ramen_bowl_fill.png",
+    "reference": null,
+    "sourceBounds": [
+      218,
+      558,
+      799,
+      447
+    ],
+    "targetBounds": [
+      120,
+      265,
+      360,
+      205
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/boba_tea_fill.png",
+    "reference": "art4/cook/boba_cup_back.png",
+    "sourceBounds": [
+      395,
+      396,
+      463,
+      587
+    ],
+    "targetBounds": [
+      201,
+      232,
+      198,
+      225
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "assets/cook/opt_cup_mint_c.png",
+    "reference": "assets/cook/opt_cup_pink.png",
+    "sourceBounds": [
+      230,
+      290,
+      779,
+      673
+    ],
+    "targetBounds": [
+      27,
+      35,
+      106,
+      88
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/ramen_bowl_detail.png",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-next/sources/ramen_bowl_detail-opaque-draft-export.png",
+    "sourceBounds": [
+      254,
+      556,
+      745,
+      421
+    ],
+    "targetBounds": [
+      120,
+      265,
+      360,
+      205
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/boba_cup_front.png",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-next/sources/boba_cup_front-opaque-draft-export.png",
+    "sourceBounds": [
+      395,
+      244,
+      462,
+      738
+    ],
+    "targetBounds": [
+      190,
+      120,
+      220,
+      350
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/ramen_broth_fill.png",
+    "reference": "art4/cook/ramen_bowl_fill.png",
+    "sourceBounds": [
+      289,
+      599,
+      674,
+      164
+    ],
+    "targetBounds": [
+      139,
+      276,
+      322,
+      74
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "assets/cook/opt_cup_lavender.png",
+    "reference": "assets/cook/opt_cup_pink.png",
+    "sourceBounds": [
+      234,
+      317,
+      774,
+      662
+    ],
+    "targetBounds": [
+      27,
+      35,
+      106,
+      88
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "assets/cook/opt_cup_lemon_c.png",
+    "reference": "assets/cook/opt_cup_pink.png",
+    "sourceBounds": [
+      221,
+      274,
+      803,
+      701
+    ],
+    "targetBounds": [
+      27,
+      35,
+      106,
+      88
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/boba_band_fill.png",
+    "reference": "art4/cook/boba_cup_back.png",
+    "sourceBounds": [
+      339,
+      606,
+      577,
+      285
+    ],
+    "targetBounds": [
+      198,
+      330,
+      204,
+      49
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/ramen_noodles.png",
+    "reference": "art4/cook/ramen_broth_fill.png",
+    "sourceBounds": [
+      294,
+      566,
+      658,
+      164
+    ],
+    "targetBounds": [
+      153,
+      282,
+      294,
+      61
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "assets/cook/opt_cup_sky.png",
+    "reference": "assets/cook/opt_cup_pink.png",
+    "sourceBounds": [
+      248,
+      331,
+      750,
+      640
+    ],
+    "targetBounds": [
+      27,
+      35,
+      106,
+      88
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/boba_band_detail.png",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-next/sources/boba_band_detail-qa-draft-export.png",
+    "sourceBounds": [
+      412,
+      689,
+      429,
+      106
+    ],
+    "targetBounds": [
+      198,
+      330,
+      204,
+      49
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/ramen_chopsticks.png",
+    "reference": "art4/cook/ramen_bowl_fill.png",
+    "sourceBounds": [
+      730,
+      474,
+      272,
+      315
+    ],
+    "targetBounds": [
+      344,
+      210,
+      143,
+      160
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/boba_foam.png",
+    "reference": "art4/cook/boba_tea_fill.png",
+    "sourceBounds": [
+      422,
+      513,
+      410,
+      101
+    ],
+    "targetBounds": [
+      202,
+      224,
+      196,
+      33
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/ramen_steam.png",
+    "reference": null,
+    "sourceBounds": [
+      413,
+      312,
+      427,
+      264
+    ],
+    "targetBounds": [
+      204,
+      137,
+      192,
+      123
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/cupcake_liner_fill.png",
+    "reference": null,
+    "sourceBounds": [
+      345,
+      657,
+      564,
+      363
+    ],
+    "targetBounds": [
+      179,
+      333,
+      242,
+      137
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/parfait_glass_back.png",
+    "reference": null,
+    "sourceBounds": [
+      422,
+      449,
+      404,
+      598
+    ],
+    "targetBounds": [
+      195,
+      220,
+      210,
+      250
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/cupcake_liner_detail.png",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-next/sources/cupcake_liner_detail-qa-draft-export.png",
+    "sourceBounds": [
+      368,
+      696,
+      518,
+      286
+    ],
+    "targetBounds": [
+      179,
+      333,
+      242,
+      137
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/parfait_layers_fill.png",
+    "reference": "art4/cook/parfait_glass_back.png",
+    "sourceBounds": [
+      404,
+      616,
+      445,
+      266
+    ],
+    "targetBounds": [
+      207,
+      280,
+      186,
+      119
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/cupcake_batter.png",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-next/sources/cupcake_batter-composition-draft-export.png",
+    "sourceBounds": [
+      402,
+      676,
+      450,
+      87
+    ],
+    "targetBounds": [
+      184,
+      320,
+      232,
+      44
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/parfait_layers_cream.png",
+    "reference": "art4/cook/parfait_glass_back.png",
+    "sourceBounds": [
+      416,
+      485,
+      417,
+      291
+    ],
+    "targetBounds": [
+      205,
+      240,
+      190,
+      119
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/cupcake_base.png",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-next/sources/cupcake_base-composition-draft-export.png",
+    "sourceBounds": [
+      376,
+      575,
+      502,
+      182
+    ],
+    "targetBounds": [
+      170,
+      274,
+      260,
+      93
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/parfait_cream_top.png",
+    "reference": null,
+    "sourceBounds": [
+      333,
+      513,
+      587,
+      253
+    ],
+    "targetBounds": [
+      194,
+      164,
+      212,
+      88
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/parfait_glass_front.png",
+    "reference": "art4/cook/parfait_glass_back.png",
+    "sourceBounds": [
+      399,
+      456,
+      453,
+      543
+    ],
+    "targetBounds": [
+      195,
+      220,
+      210,
+      250
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/cupcake_cream_fill.png",
+    "reference": "art4/cook/cupcake_base.png",
+    "sourceBounds": [
+      316,
+      316,
+      618,
+      620
+    ],
+    "targetBounds": [
+      185,
+      144,
+      230,
+      165
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/donut_plate.png",
+    "reference": null,
+    "sourceBounds": [
+      255,
+      697,
+      732,
+      323
+    ],
+    "targetBounds": [
+      132,
+      367,
+      336,
+      103
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/cupcake_cream_detail.png",
+    "reference": "art4/cook/cupcake_cream_fill.png",
+    "sourceBounds": [
+      319,
+      350,
+      631,
+      471
+    ],
+    "targetBounds": [
+      185,
+      144,
+      230,
+      165
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/donut_ring.png",
+    "reference": null,
+    "sourceBounds": [
+      279,
+      361,
+      675,
+      591
+    ],
+    "targetBounds": [
+      155,
+      158,
+      290,
+      290
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/bingsu_bowl_fill.png",
+    "reference": null,
+    "sourceBounds": [
+      270,
+      638,
+      715,
+      364
+    ],
+    "targetBounds": [
+      150,
+      324,
+      300,
+      146
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/donut_ring_glaze_fill.png",
+    "reference": "art4/cook/donut_ring.png",
+    "sourceBounds": [
+      319,
+      329,
+      616,
+      601
+    ],
+    "targetBounds": [
+      169,
+      169,
+      262,
+      265
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/bingsu_bowl_detail.png",
+    "reference": "art4/cook/bingsu_bowl_fill.png",
+    "sourceBounds": [
+      317,
+      672,
+      619,
+      310
+    ],
+    "targetBounds": [
+      150,
+      324,
+      300,
+      146
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/donut_ring_glaze_detail.png",
+    "reference": "art4/cook/donut_ring_glaze_fill.png",
+    "sourceBounds": [
+      351,
+      352,
+      545,
+      552
+    ],
+    "targetBounds": [
+      169,
+      169,
+      262,
+      265
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "assets/cook/tray.png",
+    "reference": null,
+    "sourceBounds": [
+      0,
+      0,
+      2172,
+      724
+    ],
+    "targetBounds": [
+      0,
+      0,
+      520,
+      160
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/bingsu_snow.png",
+    "reference": "art4/cook/bingsu_bowl_fill.png",
+    "sourceBounds": [
+      305,
+      400,
+      638,
+      457
+    ],
+    "targetBounds": [
+      160,
+      159,
+      280,
+      205
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/donut_heart_d.png",
+    "reference": null,
+    "sourceBounds": [
+      276,
+      370,
+      697,
+      608
+    ],
+    "targetBounds": [
+      155,
+      158,
+      290,
+      290
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "assets/cook/card.png",
+    "reference": null,
+    "sourceBounds": [
+      0,
+      525,
+      848,
+      806
+    ],
+    "targetBounds": [
+      0,
+      0,
+      220,
+      224
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/donut_heart_d_glaze_fill.png",
+    "reference": "art4/cook/donut_heart_d.png",
+    "sourceBounds": [
+      315,
+      331,
+      623,
+      598
+    ],
+    "targetBounds": [
+      169,
+      169,
+      262,
+      265
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/bingsu_syrup_fill.png",
+    "reference": "art4/cook/bingsu_snow.png",
+    "sourceBounds": [
+      334,
+      332,
+      586,
+      433
+    ],
+    "targetBounds": [
+      185,
+      166,
+      230,
+      163
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "assets/cook/card_selected.png",
+    "reference": "assets/cook/card.png",
+    "sourceBounds": [
+      0,
+      492,
+      848,
+      859
+    ],
+    "targetBounds": [
+      0,
+      0,
+      220,
+      224
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/donut_heart_d_glaze_detail.png",
+    "reference": "art4/cook/donut_heart_d_glaze_fill.png",
+    "sourceBounds": [
+      350,
+      351,
+      552,
+      557
+    ],
+    "targetBounds": [
+      169,
+      169,
+      262,
+      265
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/bingsu_syrup_detail.png",
+    "reference": "art4/cook/bingsu_syrup_fill.png",
+    "sourceBounds": [
+      352,
+      433,
+      558,
+      335
+    ],
+    "targetBounds": [
+      185,
+      166,
+      230,
+      163
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "assets/cook/card_rare.png",
+    "reference": "assets/cook/card.png",
+    "sourceBounds": [
+      0,
+      477,
+      847,
+      862
+    ],
+    "targetBounds": [
+      0,
+      0,
+      220,
+      224
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/donut_star_d.png",
+    "reference": null,
+    "sourceBounds": [
+      294,
+      338,
+      661,
+      638
+    ],
+    "targetBounds": [
+      155,
+      158,
+      290,
+      290
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "assets/cook/badge_rare.png",
+    "reference": null,
+    "sourceBounds": [
+      0,
+      0,
+      2200,
+      715
+    ],
+    "targetBounds": [
+      0,
+      0,
+      160,
+      52
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/donut_star_d_glaze_fill.png",
+    "reference": "art4/cook/donut_star_d.png",
+    "sourceBounds": [
+      315,
+      329,
+      621,
+      613
+    ],
+    "targetBounds": [
+      169,
+      169,
+      262,
+      265
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "assets/cook/ok.png",
+    "reference": null,
+    "sourceBounds": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "targetBounds": [
+      0,
+      0,
+      136,
+      136
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/donut_star_d_glaze_detail.png",
+    "reference": "art4/cook/donut_star_d_glaze_fill.png",
+    "sourceBounds": [
+      349,
+      352,
+      551,
+      555
+    ],
+    "targetBounds": [
+      169,
+      169,
+      262,
+      265
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/donut_bear.png",
+    "reference": "art4/cook/donut_bear_dough.png",
+    "sourceBounds": [
+      320,
+      328,
+      614,
+      612
+    ],
+    "targetBounds": [
+      155,
+      158,
+      290,
+      290
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "assets/cook/pip_on.png",
+    "reference": null,
+    "sourceBounds": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "targetBounds": [
+      0,
+      0,
+      40,
+      40
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "assets/cook/banner_perfect.png",
+    "reference": null,
+    "sourceBounds": [
+      0,
+      0,
+      2172,
+      724
+    ],
+    "targetBounds": [
+      0,
+      0,
+      680,
+      176
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "assets/cook/banner_yummy.png",
+    "reference": "assets/cook/banner_perfect.png",
+    "sourceBounds": [
+      0,
+      0,
+      2172,
+      724
+    ],
+    "targetBounds": [
+      0,
+      0,
+      680,
+      176
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/donut_bear_glaze_fill.png",
+    "reference": "art4/cook/donut_bear.png",
+    "sourceBounds": [
+      348,
+      330,
+      551,
+      579
+    ],
+    "targetBounds": [
+      169,
+      169,
+      262,
+      265
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "assets/cook/request_card.png",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-next/sources/request_card-ui-draft-export.png",
+    "sourceBounds": [
+      8,
+      224,
+      2156,
+      286
+    ],
+    "targetBounds": [
+      0,
+      0,
+      660,
+      116
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/donut_bear_glaze_detail.png",
+    "reference": "art4/cook/donut_bear_glaze_fill.png",
+    "sourceBounds": [
+      349,
+      351,
+      553,
+      565
+    ],
+    "targetBounds": [
+      169,
+      169,
+      262,
+      265
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "assets/cook/btn_make.png",
+    "reference": null,
+    "sourceBounds": [
+      430,
+      91,
+      1313,
+      540
+    ],
+    "targetBounds": [
+      0,
+      0,
+      480,
+      120
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/donut_ring_dough.png",
+    "reference": "art4/cook/donut_ring.png",
+    "sourceBounds": [
+      320,
+      330,
+      611,
+      609
+    ],
+    "targetBounds": [
+      155,
+      158,
+      290,
+      290
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "assets/stream/serve_plate.png",
+    "reference": null,
+    "sourceBounds": [
+      455,
+      143,
+      1051,
+      524
+    ],
+    "targetBounds": [
+      24,
+      27,
+      352,
+      106
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/donut_heart_d_dough.png",
+    "reference": "art4/cook/donut_heart_d.png",
+    "sourceBounds": [
+      318,
+      330,
+      616,
+      611
+    ],
+    "targetBounds": [
+      155,
+      158,
+      290,
+      290
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "assets/stream/serve_plate_empty_crumbs.png",
+    "reference": "assets/stream/serve_plate.png",
+    "sourceBounds": [
+      117,
+      125,
+      1749,
+      543
+    ],
+    "targetBounds": [
+      24,
+      27,
+      352,
+      106
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/donut_star_d_dough.png",
+    "reference": "art4/cook/donut_star_d.png",
+    "sourceBounds": [
+      322,
+      330,
+      609,
+      611
+    ],
+    "targetBounds": [
+      155,
+      158,
+      290,
+      290
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "art4/cook/donut_bear_dough.png",
+    "reference": "art4/cook/donut_bear.png",
+    "sourceBounds": [
+      344,
+      332,
+      553,
+      580
+    ],
+    "targetBounds": [
+      155,
+      158,
+      290,
+      290
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "assets/cook/opt_shape_ring.png",
+    "reference": "art4/cook/donut_ring.png",
+    "sourceBounds": [
+      155,
+      158,
+      290,
+      290
+    ],
+    "targetBounds": [
+      24,
+      24,
+      112,
+      112
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "assets/cook/opt_shape_heart_d.png",
+    "reference": "art4/cook/donut_heart_d.png",
+    "sourceBounds": [
+      155,
+      158,
+      290,
+      290
+    ],
+    "targetBounds": [
+      24,
+      24,
+      112,
+      112
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "assets/cook/opt_shape_star_d.png",
+    "reference": "art4/cook/donut_star_d.png",
+    "sourceBounds": [
+      155,
+      158,
+      290,
+      290
+    ],
+    "targetBounds": [
+      24,
+      24,
+      112,
+      112
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  },
+  {
+    "path": "assets/cook/opt_shape_bear.png",
+    "reference": "art4/cook/donut_bear.png",
+    "sourceBounds": [
+      155,
+      158,
+      290,
+      290
+    ],
+    "targetBounds": [
+      24,
+      24,
+      112,
+      112
+    ],
+    "operation": "Technical content registration; generated pixels resampled, no new artwork drawn"
+  }
+]

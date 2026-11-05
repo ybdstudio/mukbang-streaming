@@ -1,0 +1,112 @@
+[
+  {
+    "path": "art4/cook/ramen_bowl_detail.png",
+    "operation": "PNG detail opacity export normalization; RGB/geometry unchanged",
+    "source": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-next/sources/art4__cook__ramen_bowl_detail.png.registered.png",
+    "reference": "art4/cook/ramen_bowl_fill.png",
+    "alphaCutoff": 16,
+    "alphaScale": 1,
+    "beforeMean": 39,
+    "afterMean": 39,
+    "centerAlpha": 0
+  },
+  {
+    "path": "art4/cook/boba_band_detail.png",
+    "operation": "PNG detail opacity export normalization; RGB/geometry unchanged",
+    "source": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-next/sources/art4__cook__boba_band_detail.png.registered.png",
+    "reference": "art4/cook/boba_band_fill.png",
+    "alphaCutoff": 16,
+    "alphaScale": 0.500144637200688,
+    "beforeMean": 109,
+    "afterMean": 55,
+    "centerAlpha": 0
+  },
+  {
+    "path": "art4/cook/cupcake_liner_detail.png",
+    "operation": "PNG detail opacity export normalization; RGB/geometry unchanged",
+    "source": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-next/sources/art4__cook__cupcake_liner_detail.png.registered.png",
+    "reference": "art4/cook/cupcake_liner_fill.png",
+    "alphaCutoff": 16,
+    "alphaScale": 0.48757322109808865,
+    "beforeMean": 112,
+    "afterMean": 55,
+    "centerAlpha": 0
+  },
+  {
+    "path": "art4/cook/cupcake_cream_detail.png",
+    "operation": "PNG detail opacity export normalization; RGB/geometry unchanged",
+    "source": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-next/sources/art4__cook__cupcake_cream_detail.png.registered.png",
+    "reference": "art4/cook/cupcake_cream_fill.png",
+    "alphaCutoff": 133,
+    "alphaScale": 0.6434638814105472,
+    "beforeMean": 93,
+    "afterMean": 55,
+    "centerAlpha": 0
+  },
+  {
+    "path": "art4/cook/bingsu_bowl_detail.png",
+    "operation": "PNG detail opacity export normalization; RGB/geometry unchanged",
+    "source": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-next/sources/art4__cook__bingsu_bowl_detail.png.registered.png",
+    "reference": "art4/cook/bingsu_bowl_fill.png",
+    "alphaCutoff": 16,
+    "alphaScale": 0.556901068828602,
+    "beforeMean": 98,
+    "afterMean": 55,
+    "centerAlpha": 0
+  },
+  {
+    "path": "art4/cook/bingsu_syrup_detail.png",
+    "operation": "PNG detail opacity export normalization; RGB/geometry unchanged",
+    "source": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-next/sources/art4__cook__bingsu_syrup_detail.png.registered.png",
+    "reference": "art4/cook/bingsu_syrup_fill.png",
+    "alphaCutoff": 235,
+    "alphaScale": 1,
+    "beforeMean": 78,
+    "afterMean": 34,
+    "centerAlpha": 0
+  },
+  {
+    "path": "art4/cook/donut_ring_glaze_detail.png",
+    "operation": "PNG detail opacity export normalization; RGB/geometry unchanged",
+    "source": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-next/sources/art4__cook__donut_ring_glaze_detail.png.registered.png",
+    "reference": "art4/cook/donut_ring_glaze_fill.png",
+    "alphaCutoff": 16,
+    "alphaScale": 0.5003664286111189,
+    "beforeMean": 110,
+    "afterMean": 55,
+    "centerAlpha": 0
+  },
+  {
+    "path": "art4/cook/donut_heart_d_glaze_detail.png",
+    "operation": "PNG detail opacity export normalization; RGB/geometry unchanged",
+    "source": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-next/sources/art4__cook__donut_heart_d_glaze_detail.png.registered.png",
+    "reference": "art4/cook/donut_heart_d_glaze_fill.png",
+    "alphaCutoff": 16,
+    "alphaScale": 0.5853416252675882,
+    "beforeMean": 96,
+    "afterMean": 55,
+    "centerAlpha": 0
+  },
+  {
+    "path": "art4/cook/donut_star_d_glaze_detail.png",
+    "operation": "PNG detail opacity export normalization; RGB/geometry unchanged",
+    "source": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-next/sources/art4__cook__donut_star_d_glaze_detail.png.registered.png",
+    "reference": "art4/cook/donut_star_d_glaze_fill.png",
+    "alphaCutoff": 16,
+    "alphaScale": 0.4602562225701604,
+    "beforeMean": 120,
+    "afterMean": 55,
+    "centerAlpha": 0
+  },
+  {
+    "path": "art4/cook/donut_bear_glaze_detail.png",
+    "operation": "PNG detail opacity export normalization; RGB/geometry unchanged",
+    "source": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-next/sources/art4__cook__donut_bear_glaze_detail.png.registered.png",
+    "reference": "art4/cook/donut_bear_glaze_fill.png",
+    "alphaCutoff": 16,
+    "alphaScale": 0.6712471420114808,
+    "beforeMean": 83,
+    "afterMean": 55,
+    "centerAlpha": 0
+  }
+]

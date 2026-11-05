@@ -1,0 +1,34 @@
+[
+  {
+    "path": "art4/cook/boba_cup_back.png",
+    "operation": "PNG alpha export scale; original generated RGB and geometry retained",
+    "reason": "Pearls remain visible behind tea and clear plastic",
+    "w": 600,
+    "h": 600,
+    "bytes": 20103,
+    "colors": 156,
+    "alphaScale": 0.24,
+    "alphaExport": "<=16:0; >=240:255; intermediate edges retained; alphaScale=0.24"
+  },
+  {
+    "path": "art4/cook/boba_tea_fill.png",
+    "operation": "PNG alpha export scale; original generated RGB and geometry retained",
+    "reason": "Pearls remain visible behind tea and clear plastic",
+    "w": 600,
+    "h": 600,
+    "bytes": 6916,
+    "colors": 31,
+    "alphaScale": 0.72,
+    "alphaExport": "<=16:0; >=240:255; intermediate edges retained; alphaScale=0.72"
+  },
+  {
+    "path": "art4/cook/ramen_steam.png",
+    "operation": "Steam translucency PNG alpha export",
+    "w": 600,
+    "h": 600,
+    "bytes": 8001,
+    "colors": 186,
+    "alphaScale": 0.4,
+    "alphaExport": "<=16:0; >=240:255; intermediate edges retained; alphaScale=0.4"
+  }
+]
