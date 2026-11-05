@@ -1,0 +1,62 @@
+path,size,package,layer,priority,status
+art4/bite/jelly_spoon_0_fill.png,400x400,art4,fill:flavor,1,pending
+art4/bite/jelly_spoon_0_detail.png,400x400,art4,detail,1,pending
+art4/bite/jelly_spoon_1_fill.png,400x400,art4,fill:flavor,1,pending
+art4/bite/jelly_spoon_1_detail.png,400x400,art4,detail,1,pending
+art4/bite/jelly_spoon_2_fill.png,400x400,art4,fill:flavor,1,pending
+art4/bite/jelly_spoon_2_detail.png,400x400,art4,detail,1,pending
+art4/bite/pudding_spoon_0_fill.png,400x400,art4,fill:flavor,1,pending
+art4/bite/pudding_spoon_0_detail.png,400x400,art4,detail,1,pending
+art4/bite/pudding_spoon_1_fill.png,400x400,art4,fill:flavor,1,pending
+art4/bite/pudding_spoon_1_detail.png,400x400,art4,detail,1,pending
+art4/bite/pudding_spoon_2_fill.png,400x400,art4,fill:flavor,1,pending
+art4/bite/pudding_spoon_2_detail.png,400x400,art4,detail,1,pending
+art4/bite/cupcake_bite_0_fill.png,400x400,art4,fill:flavor,1,pending
+art4/bite/cupcake_bite_0_detail.png,400x400,art4,detail,1,pending
+art4/bite/cupcake_bite_1_fill.png,400x400,art4,fill:flavor,1,pending
+art4/bite/cupcake_bite_1_detail.png,400x400,art4,detail,1,pending
+art4/bite/cupcake_bite_2_fill.png,400x400,art4,fill:flavor,1,pending
+art4/bite/cupcake_bite_2_detail.png,400x400,art4,detail,1,pending
+art4/bite/donut_bite_0_fill.png,400x400,art4,fill:flavor,1,pending
+art4/bite/donut_bite_0_detail.png,400x400,art4,detail,1,pending
+art4/bite/donut_bite_1_fill.png,400x400,art4,fill:flavor,1,pending
+art4/bite/donut_bite_1_detail.png,400x400,art4,detail,1,pending
+art4/bite/donut_bite_2_fill.png,400x400,art4,fill:flavor,1,pending
+art4/bite/donut_bite_2_detail.png,400x400,art4,detail,1,pending
+art4/bite/parfait_spoon_0_fill.png,400x400,art4,fill:flavor,1,pending
+art4/bite/parfait_spoon_0_detail.png,400x400,art4,detail,1,pending
+art4/bite/parfait_spoon_1_fill.png,400x400,art4,fill:flavor,1,pending
+art4/bite/parfait_spoon_1_detail.png,400x400,art4,detail,1,pending
+art4/bite/parfait_spoon_2_fill.png,400x400,art4,fill:flavor,1,pending
+art4/bite/parfait_spoon_2_detail.png,400x400,art4,detail,1,pending
+art4/bite/bingsu_spoon_0_fill.png,400x400,art4,fill:flavor,1,pending
+art4/bite/bingsu_spoon_0_detail.png,400x400,art4,detail,1,pending
+art4/bite/bingsu_spoon_1_fill.png,400x400,art4,fill:flavor,1,pending
+art4/bite/bingsu_spoon_1_detail.png,400x400,art4,detail,1,pending
+art4/bite/bingsu_spoon_2_fill.png,400x400,art4,fill:flavor,1,pending
+art4/bite/bingsu_spoon_2_detail.png,400x400,art4,detail,1,pending
+art4/bite/ramen_chopsticks_0.png,400x400,art4,color,1,pending
+art4/bite/ramen_chopsticks_1.png,400x400,art4,color,1,pending
+art4/bite/ramen_chopsticks_2.png,400x400,art4,color,1,pending
+assets/cook/fx_steam.png,512x128 (4×128),main,atlas,2,pending
+assets/cook/fx_cold.png,512x128 (4×128),main,atlas,2,pending
+assets/cook/fx_pour.png,512x128 (4×128),main,atlas fill,2,pending
+assets/cook/fx_sparkle.png,512x128 (4×128),main,atlas,2,pending
+assets/cook/pip_on.png,40x40,main,ui re-export,2,pending
+art3/food3/soda_pop_sealed.png,384x384,art3,color,3,pending
+art3/food3/soda_pop_open.png,384x384,art3,color,3,pending
+art3/food3/soda_pop_p1.png,384x384,art3,color,3,pending
+art3/food3/soda_pop_p2.png,384x384,art3,color,3,pending
+art3/food3/soda_pop_empty.png,384x384,art3,color,3,pending
+art3/food3/soda_pop_portion.png,384x384,art3,color,3,pending
+art3/food3/rainbow_candy_sealed.png,384x384,art3,color,3,pending
+art3/food3/rainbow_candy_open.png,384x384,art3,color,3,pending
+art3/food3/rainbow_candy_p1.png,384x384,art3,color,3,pending
+art3/food3/rainbow_candy_p2.png,384x384,art3,color,3,pending
+art3/food3/rainbow_candy_empty.png,384x384,art3,color,3,pending
+art3/food3/rainbow_candy_portion.png,384x384,art3,color,3,pending
+art3/bg/view_park.jpg,720x680 JPEG q80,art3,color,3,pending
+art3/bg/view_beach.jpg,720x680 JPEG q80,art3,color,3,pending
+art3/bg/view_sakura.jpg,720x680 JPEG q80,art3,color,3,pending
+art3/bg/view_night.jpg,720x680 JPEG q80,art3,color,3,pending
+art3/bg/view_city.jpg,720x680 JPEG q80,art3,color,3,pending

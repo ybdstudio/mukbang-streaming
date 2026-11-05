@@ -1,0 +1,1322 @@
+{
+  "version": 3,
+  "scale": 2,
+  "files": {
+    "streamer/luna_head.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 72649,
+      "package": "main"
+    },
+    "streamer/luna_body.png": {
+      "width": 512,
+      "height": 420,
+      "bytes": 39442,
+      "package": "main"
+    },
+    "streamer/kiko_head.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 62859,
+      "package": "main"
+    },
+    "streamer/kiko_body.png": {
+      "width": 512,
+      "height": 420,
+      "bytes": 40000,
+      "package": "main"
+    },
+    "streamer/momo_head.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 61751,
+      "package": "main"
+    },
+    "streamer/momo_body.png": {
+      "width": 512,
+      "height": 420,
+      "bytes": 44500,
+      "package": "main"
+    },
+    "food3/cat_chips_sealed.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 94268,
+      "package": "art3"
+    },
+    "food3/cat_chips_open.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 101630,
+      "package": "art3"
+    },
+    "food3/cat_chips_p1.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 89099,
+      "package": "art3"
+    },
+    "food3/cat_chips_p2.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 89625,
+      "package": "art3"
+    },
+    "food3/cat_chips_empty.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 86688,
+      "package": "art3"
+    },
+    "food3/cat_chips_portion.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 56674,
+      "package": "art3"
+    },
+    "food3/honey_puffs_sealed.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 73450,
+      "package": "art3"
+    },
+    "food3/honey_puffs_open.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 97636,
+      "package": "art3"
+    },
+    "food3/honey_puffs_p1.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 87074,
+      "package": "art3"
+    },
+    "food3/honey_puffs_p2.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 86014,
+      "package": "art3"
+    },
+    "food3/honey_puffs_empty.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 81554,
+      "package": "art3"
+    },
+    "food3/honey_puffs_portion.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 55190,
+      "package": "art3"
+    },
+    "food3/cheese_noodle_sealed.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 75784,
+      "package": "art3"
+    },
+    "food3/cheese_noodle_open.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 90750,
+      "package": "art3"
+    },
+    "food3/cheese_noodle_p1.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 85720,
+      "package": "art3"
+    },
+    "food3/cheese_noodle_p2.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 84419,
+      "package": "art3"
+    },
+    "food3/cheese_noodle_empty.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 85435,
+      "package": "art3"
+    },
+    "food3/cheese_noodle_portion.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 53797,
+      "package": "art3"
+    },
+    "food3/straw_cake_sealed.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 87838,
+      "package": "art3"
+    },
+    "food3/straw_cake_open.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 90906,
+      "package": "art3"
+    },
+    "food3/straw_cake_p1.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 86348,
+      "package": "art3"
+    },
+    "food3/straw_cake_p2.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 83142,
+      "package": "art3"
+    },
+    "food3/straw_cake_empty.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 84116,
+      "package": "art3"
+    },
+    "food3/straw_cake_portion.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 55952,
+      "package": "art3"
+    },
+    "food3/peach_milk_sealed.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 76767,
+      "package": "art3"
+    },
+    "food3/peach_milk_open.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 83010,
+      "package": "art3"
+    },
+    "food3/peach_milk_p1.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 77847,
+      "package": "art3"
+    },
+    "food3/peach_milk_p2.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 75109,
+      "package": "art3"
+    },
+    "food3/peach_milk_empty.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 68321,
+      "package": "art3"
+    },
+    "food3/peach_milk_portion.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 47908,
+      "package": "art3"
+    },
+    "food3/chili_noodle_sealed.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 58895,
+      "package": "art3"
+    },
+    "food3/chili_noodle_open.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 83019,
+      "package": "art3"
+    },
+    "food3/chili_noodle_p1.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 78300,
+      "package": "art3"
+    },
+    "food3/chili_noodle_p2.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 74814,
+      "package": "art3"
+    },
+    "food3/chili_noodle_empty.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 72531,
+      "package": "art3"
+    },
+    "food3/chili_noodle_portion.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 61502,
+      "package": "art3"
+    },
+    "food3/mint_choc_sealed.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 84823,
+      "package": "art3"
+    },
+    "food3/mint_choc_open.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 97243,
+      "package": "art3"
+    },
+    "food3/mint_choc_p1.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 81101,
+      "package": "art3"
+    },
+    "food3/mint_choc_p2.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 80349,
+      "package": "art3"
+    },
+    "food3/mint_choc_empty.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 77488,
+      "package": "art3"
+    },
+    "food3/mint_choc_portion.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 52156,
+      "package": "art3"
+    },
+    "food3/kfc_chicken_sealed.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 46490,
+      "package": "art3"
+    },
+    "food3/kfc_chicken_open.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 121156,
+      "package": "art3"
+    },
+    "food3/kfc_chicken_p1.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 115142,
+      "package": "art3"
+    },
+    "food3/kfc_chicken_p2.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 116621,
+      "package": "art3"
+    },
+    "food3/kfc_chicken_empty.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 116308,
+      "package": "art3"
+    },
+    "food3/kfc_chicken_portion.png": {
+      "width": 512,
+      "height": 512,
+      "bytes": 59688,
+      "package": "art3"
+    },
+    "streamer/face_parts.png": {
+      "width": 960,
+      "height": 720,
+      "bytes": 95444,
+      "package": "main"
+    },
+    "streamer/face_fx.png": {
+      "width": 720,
+      "height": 240,
+      "bytes": 34952,
+      "package": "main"
+    },
+    "ui/logo_v3.png": {
+      "width": 900,
+      "height": 420,
+      "bytes": 128258,
+      "package": "main"
+    },
+    "bg/home_room.png": {
+      "width": 1080,
+      "height": 2400,
+      "bytes": 736266,
+      "package": "main"
+    },
+    "food3/open_bag.png": {
+      "width": 2048,
+      "height": 512,
+      "bytes": 231357,
+      "package": "art3"
+    },
+    "food3/open_cup.png": {
+      "width": 2048,
+      "height": 512,
+      "bytes": 230803,
+      "package": "art3"
+    },
+    "food3/open_bottle.png": {
+      "width": 2048,
+      "height": 512,
+      "bytes": 259229,
+      "package": "art3"
+    },
+    "food3/open_box.png": {
+      "width": 2048,
+      "height": 512,
+      "bytes": 261299,
+      "package": "art3"
+    },
+    "food3/open_dome.png": {
+      "width": 2048,
+      "height": 512,
+      "bytes": 243926,
+      "package": "art3"
+    },
+    "ui/live_pill.png": {
+      "width": 320,
+      "height": 96,
+      "bytes": 5401,
+      "package": "main"
+    },
+    "ui/goal_bar.png": {
+      "width": 512,
+      "height": 100,
+      "bytes": 9533,
+      "package": "main"
+    },
+    "ui/pip_on.png": {
+      "width": 64,
+      "height": 64,
+      "bytes": 2272,
+      "package": "main"
+    },
+    "ui/pip_off.png": {
+      "width": 64,
+      "height": 64,
+      "bytes": 2002,
+      "package": "main"
+    },
+    "ui/heart_float.png": {
+      "width": 128,
+      "height": 128,
+      "bytes": 6677,
+      "package": "main"
+    },
+    "ui/gift_box.png": {
+      "width": 128,
+      "height": 128,
+      "bytes": 9709,
+      "package": "main"
+    },
+    "ui/result_panel.png": {
+      "width": 640,
+      "height": 480,
+      "bytes": 45695,
+      "package": "main"
+    },
+    "ui/star_on.png": {
+      "width": 128,
+      "height": 128,
+      "bytes": 6041,
+      "package": "main"
+    },
+    "ui/btn_start.png": {
+      "width": 480,
+      "height": 120,
+      "bytes": 8768,
+      "package": "main"
+    },
+    "ui/activity_basket.png": {
+      "width": 128,
+      "height": 128,
+      "bytes": 6229,
+      "package": "main"
+    },
+    "ui/activity_delivery.png": {
+      "width": 128,
+      "height": 128,
+      "bytes": 8264,
+      "package": "main"
+    },
+    "ui/activity_buffet.png": {
+      "width": 128,
+      "height": 128,
+      "bytes": 7966,
+      "package": "main"
+    },
+    "ui/activity_pan.png": {
+      "width": 128,
+      "height": 128,
+      "bytes": 5773,
+      "package": "main"
+    },
+    "ui/star_off.png": {
+      "width": 128,
+      "height": 128,
+      "bytes": 4581,
+      "package": "main"
+    },
+    "ui/coin.png": {
+      "width": 128,
+      "height": 128,
+      "bytes": 11393,
+      "package": "main"
+    },
+    "ui/food_book.png": {
+      "width": 128,
+      "height": 128,
+      "bytes": 11579,
+      "package": "main"
+    },
+    "ui/banner_first.png": {
+      "width": 900,
+      "height": 260,
+      "bytes": 35059,
+      "package": "main"
+    },
+    "ui/banner_wild.png": {
+      "width": 900,
+      "height": 260,
+      "bytes": 38506,
+      "package": "main"
+    },
+    "ui/banner_last.png": {
+      "width": 900,
+      "height": 260,
+      "bytes": 24210,
+      "package": "main"
+    },
+    "ui/banner_viral.png": {
+      "width": 900,
+      "height": 260,
+      "bytes": 26611,
+      "package": "main"
+    }
+  },
+  "food": {
+    "cat_chips": {
+      "anchor": [
+        256,
+        256
+      ],
+      "frames": {
+        "sealed": "food3/cat_chips_sealed.png",
+        "open": "food3/cat_chips_open.png",
+        "p1": "food3/cat_chips_p1.png",
+        "p2": "food3/cat_chips_p2.png",
+        "empty": "food3/cat_chips_empty.png",
+        "portion": "food3/cat_chips_portion.png"
+      }
+    },
+    "honey_puffs": {
+      "anchor": [
+        256,
+        256
+      ],
+      "frames": {
+        "sealed": "food3/honey_puffs_sealed.png",
+        "open": "food3/honey_puffs_open.png",
+        "p1": "food3/honey_puffs_p1.png",
+        "p2": "food3/honey_puffs_p2.png",
+        "empty": "food3/honey_puffs_empty.png",
+        "portion": "food3/honey_puffs_portion.png"
+      }
+    },
+    "cheese_noodle": {
+      "anchor": [
+        256,
+        256
+      ],
+      "frames": {
+        "sealed": "food3/cheese_noodle_sealed.png",
+        "open": "food3/cheese_noodle_open.png",
+        "p1": "food3/cheese_noodle_p1.png",
+        "p2": "food3/cheese_noodle_p2.png",
+        "empty": "food3/cheese_noodle_empty.png",
+        "portion": "food3/cheese_noodle_portion.png"
+      }
+    },
+    "straw_cake": {
+      "anchor": [
+        256,
+        256
+      ],
+      "frames": {
+        "sealed": "food3/straw_cake_sealed.png",
+        "open": "food3/straw_cake_open.png",
+        "p1": "food3/straw_cake_p1.png",
+        "p2": "food3/straw_cake_p2.png",
+        "empty": "food3/straw_cake_empty.png",
+        "portion": "food3/straw_cake_portion.png"
+      }
+    },
+    "peach_milk": {
+      "anchor": [
+        256,
+        256
+      ],
+      "frames": {
+        "sealed": "food3/peach_milk_sealed.png",
+        "open": "food3/peach_milk_open.png",
+        "p1": "food3/peach_milk_p1.png",
+        "p2": "food3/peach_milk_p2.png",
+        "empty": "food3/peach_milk_empty.png",
+        "portion": "food3/peach_milk_portion.png"
+      }
+    },
+    "chili_noodle": {
+      "anchor": [
+        256,
+        256
+      ],
+      "frames": {
+        "sealed": "food3/chili_noodle_sealed.png",
+        "open": "food3/chili_noodle_open.png",
+        "p1": "food3/chili_noodle_p1.png",
+        "p2": "food3/chili_noodle_p2.png",
+        "empty": "food3/chili_noodle_empty.png",
+        "portion": "food3/chili_noodle_portion.png"
+      }
+    },
+    "mint_choc": {
+      "anchor": [
+        256,
+        256
+      ],
+      "frames": {
+        "sealed": "food3/mint_choc_sealed.png",
+        "open": "food3/mint_choc_open.png",
+        "p1": "food3/mint_choc_p1.png",
+        "p2": "food3/mint_choc_p2.png",
+        "empty": "food3/mint_choc_empty.png",
+        "portion": "food3/mint_choc_portion.png"
+      }
+    },
+    "kfc_chicken": {
+      "anchor": [
+        256,
+        256
+      ],
+      "frames": {
+        "sealed": "food3/kfc_chicken_sealed.png",
+        "open": "food3/kfc_chicken_open.png",
+        "p1": "food3/kfc_chicken_p1.png",
+        "p2": "food3/kfc_chicken_p2.png",
+        "empty": "food3/kfc_chicken_empty.png",
+        "portion": "food3/kfc_chicken_portion.png"
+      }
+    }
+  },
+  "streamer": {
+    "luna": {
+      "head": "streamer/luna_head.png",
+      "body": "streamer/luna_body.png",
+      "bodyAnchor": [
+        256,
+        49
+      ],
+      "headAnchor": [
+        256,
+        352
+      ],
+      "faceRadius": 137,
+      "eyes": [
+        256,
+        320
+      ],
+      "mouth": [
+        256,
+        393
+      ],
+      "neckOnHead": [
+        256,
+        442
+      ],
+      "hairTop": [
+        256,
+        87
+      ],
+      "earL": [
+        76,
+        365
+      ],
+      "earR": [
+        430,
+        365
+      ]
+    },
+    "kiko": {
+      "head": "streamer/kiko_head.png",
+      "body": "streamer/kiko_body.png",
+      "bodyAnchor": [
+        256,
+        46
+      ],
+      "headAnchor": [
+        256,
+        365
+      ],
+      "faceRadius": 137,
+      "eyes": [
+        256,
+        338
+      ],
+      "mouth": [
+        256,
+        409
+      ],
+      "neckOnHead": [
+        256,
+        454
+      ],
+      "hairTop": [
+        266,
+        35
+      ],
+      "earL": [
+        78,
+        381
+      ],
+      "earR": [
+        420,
+        384
+      ]
+    },
+    "momo": {
+      "head": "streamer/momo_head.png",
+      "body": "streamer/momo_body.png",
+      "bodyAnchor": [
+        256,
+        36
+      ],
+      "headAnchor": [
+        256,
+        334
+      ],
+      "faceRadius": 128,
+      "eyes": [
+        256,
+        310
+      ],
+      "mouth": [
+        256,
+        373
+      ],
+      "neckOnHead": [
+        256,
+        406
+      ],
+      "hairTop": [
+        258,
+        42
+      ],
+      "earL": [
+        94,
+        319
+      ],
+      "earR": [
+        413,
+        320
+      ]
+    }
+  },
+  "atlases": {
+    "face_parts": {
+      "image": "streamer/face_parts.png",
+      "frames": {
+        "eyes_open": {
+          "x": 0,
+          "y": 0,
+          "w": 240,
+          "h": 120
+        },
+        "eyes_blink": {
+          "x": 240,
+          "y": 0,
+          "w": 240,
+          "h": 120
+        },
+        "eyes_sparkle": {
+          "x": 480,
+          "y": 0,
+          "w": 240,
+          "h": 120
+        },
+        "eyes_happy": {
+          "x": 720,
+          "y": 0,
+          "w": 240,
+          "h": 120
+        },
+        "eyes_heart": {
+          "x": 0,
+          "y": 120,
+          "w": 240,
+          "h": 120
+        },
+        "eyes_x": {
+          "x": 240,
+          "y": 120,
+          "w": 240,
+          "h": 120
+        },
+        "eyes_squeeze": {
+          "x": 480,
+          "y": 120,
+          "w": 240,
+          "h": 120
+        },
+        "eyes_wink_squeeze": {
+          "x": 720,
+          "y": 120,
+          "w": 240,
+          "h": 120
+        },
+        "eyes_wide": {
+          "x": 0,
+          "y": 240,
+          "w": 240,
+          "h": 120
+        },
+        "eyes_closed_bliss": {
+          "x": 240,
+          "y": 240,
+          "w": 240,
+          "h": 120
+        },
+        "eyes_star": {
+          "x": 480,
+          "y": 240,
+          "w": 240,
+          "h": 120
+        },
+        "mouth_smile": {
+          "x": 720,
+          "y": 240,
+          "w": 240,
+          "h": 120
+        },
+        "mouth_open_wide": {
+          "x": 0,
+          "y": 360,
+          "w": 240,
+          "h": 120
+        },
+        "mouth_chew_a": {
+          "x": 240,
+          "y": 360,
+          "w": 240,
+          "h": 120
+        },
+        "mouth_chew_b": {
+          "x": 480,
+          "y": 360,
+          "w": 240,
+          "h": 120
+        },
+        "mouth_cat": {
+          "x": 720,
+          "y": 360,
+          "w": 240,
+          "h": 120
+        },
+        "mouth_fire": {
+          "x": 0,
+          "y": 480,
+          "w": 240,
+          "h": 120
+        },
+        "mouth_shiver": {
+          "x": 240,
+          "y": 480,
+          "w": 240,
+          "h": 120
+        },
+        "mouth_pucker": {
+          "x": 480,
+          "y": 480,
+          "w": 240,
+          "h": 120
+        },
+        "mouth_o": {
+          "x": 720,
+          "y": 480,
+          "w": 240,
+          "h": 120
+        },
+        "mouth_yum": {
+          "x": 0,
+          "y": 600,
+          "w": 240,
+          "h": 120
+        },
+        "mouth_laugh": {
+          "x": 240,
+          "y": 600,
+          "w": 240,
+          "h": 120
+        }
+      }
+    },
+    "face_fx": {
+      "image": "streamer/face_fx.png",
+      "frames": {
+        "fx_sweat": {
+          "x": 0,
+          "y": 0,
+          "w": 240,
+          "h": 120
+        },
+        "fx_frost": {
+          "x": 240,
+          "y": 0,
+          "w": 240,
+          "h": 120
+        },
+        "fx_bubbles": {
+          "x": 480,
+          "y": 0,
+          "w": 240,
+          "h": 120
+        },
+        "fx_hearts": {
+          "x": 0,
+          "y": 120,
+          "w": 240,
+          "h": 120
+        },
+        "fx_stars": {
+          "x": 240,
+          "y": 120,
+          "w": 240,
+          "h": 120
+        },
+        "fx_steam_ears": {
+          "x": 480,
+          "y": 120,
+          "w": 240,
+          "h": 120
+        }
+      }
+    },
+    "open_bag": {
+      "image": "food3/open_bag.png",
+      "frames": {
+        "frame0": {
+          "x": 0,
+          "y": 0,
+          "w": 512,
+          "h": 512
+        },
+        "frame1": {
+          "x": 512,
+          "y": 0,
+          "w": 512,
+          "h": 512
+        },
+        "frame2": {
+          "x": 1024,
+          "y": 0,
+          "w": 512,
+          "h": 512
+        },
+        "frame3": {
+          "x": 1536,
+          "y": 0,
+          "w": 512,
+          "h": 512
+        }
+      }
+    },
+    "open_cup": {
+      "image": "food3/open_cup.png",
+      "frames": {
+        "frame0": {
+          "x": 0,
+          "y": 0,
+          "w": 512,
+          "h": 512
+        },
+        "frame1": {
+          "x": 512,
+          "y": 0,
+          "w": 512,
+          "h": 512
+        },
+        "frame2": {
+          "x": 1024,
+          "y": 0,
+          "w": 512,
+          "h": 512
+        },
+        "frame3": {
+          "x": 1536,
+          "y": 0,
+          "w": 512,
+          "h": 512
+        }
+      }
+    },
+    "open_bottle": {
+      "image": "food3/open_bottle.png",
+      "frames": {
+        "frame0": {
+          "x": 0,
+          "y": 0,
+          "w": 512,
+          "h": 512
+        },
+        "frame1": {
+          "x": 512,
+          "y": 0,
+          "w": 512,
+          "h": 512
+        },
+        "frame2": {
+          "x": 1024,
+          "y": 0,
+          "w": 512,
+          "h": 512
+        },
+        "frame3": {
+          "x": 1536,
+          "y": 0,
+          "w": 512,
+          "h": 512
+        }
+      }
+    },
+    "open_box": {
+      "image": "food3/open_box.png",
+      "frames": {
+        "frame0": {
+          "x": 0,
+          "y": 0,
+          "w": 512,
+          "h": 512
+        },
+        "frame1": {
+          "x": 512,
+          "y": 0,
+          "w": 512,
+          "h": 512
+        },
+        "frame2": {
+          "x": 1024,
+          "y": 0,
+          "w": 512,
+          "h": 512
+        },
+        "frame3": {
+          "x": 1536,
+          "y": 0,
+          "w": 512,
+          "h": 512
+        }
+      }
+    },
+    "open_dome": {
+      "image": "food3/open_dome.png",
+      "frames": {
+        "frame0": {
+          "x": 0,
+          "y": 0,
+          "w": 512,
+          "h": 512
+        },
+        "frame1": {
+          "x": 512,
+          "y": 0,
+          "w": 512,
+          "h": 512
+        },
+        "frame2": {
+          "x": 1024,
+          "y": 0,
+          "w": 512,
+          "h": 512
+        },
+        "frame3": {
+          "x": 1536,
+          "y": 0,
+          "w": 512,
+          "h": 512
+        }
+      }
+    }
+  },
+  "faceParts": {
+    "image": "streamer/face_parts.png",
+    "frames": {
+      "eyes_open": {
+        "x": 0,
+        "y": 0,
+        "w": 240,
+        "h": 120
+      },
+      "eyes_blink": {
+        "x": 240,
+        "y": 0,
+        "w": 240,
+        "h": 120
+      },
+      "eyes_sparkle": {
+        "x": 480,
+        "y": 0,
+        "w": 240,
+        "h": 120
+      },
+      "eyes_happy": {
+        "x": 720,
+        "y": 0,
+        "w": 240,
+        "h": 120
+      },
+      "eyes_heart": {
+        "x": 0,
+        "y": 120,
+        "w": 240,
+        "h": 120
+      },
+      "eyes_x": {
+        "x": 240,
+        "y": 120,
+        "w": 240,
+        "h": 120
+      },
+      "eyes_squeeze": {
+        "x": 480,
+        "y": 120,
+        "w": 240,
+        "h": 120
+      },
+      "eyes_wink_squeeze": {
+        "x": 720,
+        "y": 120,
+        "w": 240,
+        "h": 120
+      },
+      "eyes_wide": {
+        "x": 0,
+        "y": 240,
+        "w": 240,
+        "h": 120
+      },
+      "eyes_closed_bliss": {
+        "x": 240,
+        "y": 240,
+        "w": 240,
+        "h": 120
+      },
+      "eyes_star": {
+        "x": 480,
+        "y": 240,
+        "w": 240,
+        "h": 120
+      },
+      "mouth_smile": {
+        "x": 720,
+        "y": 240,
+        "w": 240,
+        "h": 120
+      },
+      "mouth_open_wide": {
+        "x": 0,
+        "y": 360,
+        "w": 240,
+        "h": 120
+      },
+      "mouth_chew_a": {
+        "x": 240,
+        "y": 360,
+        "w": 240,
+        "h": 120
+      },
+      "mouth_chew_b": {
+        "x": 480,
+        "y": 360,
+        "w": 240,
+        "h": 120
+      },
+      "mouth_cat": {
+        "x": 720,
+        "y": 360,
+        "w": 240,
+        "h": 120
+      },
+      "mouth_fire": {
+        "x": 0,
+        "y": 480,
+        "w": 240,
+        "h": 120
+      },
+      "mouth_shiver": {
+        "x": 240,
+        "y": 480,
+        "w": 240,
+        "h": 120
+      },
+      "mouth_pucker": {
+        "x": 480,
+        "y": 480,
+        "w": 240,
+        "h": 120
+      },
+      "mouth_o": {
+        "x": 720,
+        "y": 480,
+        "w": 240,
+        "h": 120
+      },
+      "mouth_yum": {
+        "x": 0,
+        "y": 600,
+        "w": 240,
+        "h": 120
+      },
+      "mouth_laugh": {
+        "x": 240,
+        "y": 600,
+        "w": 240,
+        "h": 120
+      }
+    }
+  },
+  "faceFx": {
+    "image": "streamer/face_fx.png",
+    "frames": {
+      "fx_sweat": {
+        "x": 0,
+        "y": 0,
+        "w": 240,
+        "h": 120
+      },
+      "fx_frost": {
+        "x": 240,
+        "y": 0,
+        "w": 240,
+        "h": 120
+      },
+      "fx_bubbles": {
+        "x": 480,
+        "y": 0,
+        "w": 240,
+        "h": 120
+      },
+      "fx_hearts": {
+        "x": 0,
+        "y": 120,
+        "w": 240,
+        "h": 120
+      },
+      "fx_stars": {
+        "x": 240,
+        "y": 120,
+        "w": 240,
+        "h": 120
+      },
+      "fx_steam_ears": {
+        "x": 480,
+        "y": 120,
+        "w": 240,
+        "h": 120
+      }
+    }
+  },
+  "expressions": {
+    "idle": [
+      "eyes_open",
+      "mouth_smile"
+    ],
+    "blink": [
+      "eyes_blink",
+      "mouth_smile"
+    ],
+    "open": [
+      "eyes_sparkle",
+      "mouth_open_wide"
+    ],
+    "chew_a": [
+      "eyes_happy",
+      "mouth_chew_a"
+    ],
+    "chew_b": [
+      "eyes_happy",
+      "mouth_chew_b"
+    ],
+    "sweet": [
+      "eyes_heart",
+      "mouth_cat"
+    ],
+    "spicy": [
+      "eyes_x",
+      "mouth_fire",
+      "fx_sweat"
+    ],
+    "cold": [
+      "eyes_squeeze",
+      "mouth_shiver",
+      "fx_frost"
+    ],
+    "sour": [
+      "eyes_wink_squeeze",
+      "mouth_pucker"
+    ],
+    "fizzy": [
+      "eyes_wide",
+      "mouth_o",
+      "fx_bubbles"
+    ],
+    "yum": [
+      "eyes_closed_bliss",
+      "mouth_yum"
+    ],
+    "viral": [
+      "eyes_star",
+      "mouth_laugh",
+      "fx_stars"
+    ]
+  },
+  "slices": {
+    "ui/btn_start.png": [
+      60,
+      48,
+      360,
+      24
+    ],
+    "ui/result_panel.png": [
+      80,
+      80,
+      480,
+      320
+    ]
+  },
+  "packageBytes": {
+    "main": 1592390,
+    "art3": 5096311
+  },
+  "status": "stage-1-partial",
+  "pending": [
+    "food3/soda_pop_*",
+    "food3/rainbow_candy_*"
+  ],
+  "backgrounds": {
+    "home_room": {
+      "image": "bg/home_room.png",
+      "windowAlphaBounds": [
+        216,
+        191,
+        624,
+        586
+      ]
+    }
+  }
+}

@@ -56,8 +56,8 @@ const assets = {}; let assetBytes = 0;
     assets[relative(gameDir, p).split(String.fromCharCode(92)).join('/')] = 'data:' + mime + ';base64,' + buf.toString('base64');
   }
 })(join(gameDir, 'assets'));
-// the TikTok subpackage art4/ too (the web page has no subpackages: everything is inlined)
-(function walk(dir) { if (!existsSync(dir)) return; for (const e of readdirSync(dir, { withFileTypes: true })) { const p = join(dir, e.name); if (e.isDirectory()) { walk(p); continue; } const mime = MIME[extname(e.name).toLowerCase()]; if (!mime) continue; const buf = readFileSync(p); assetBytes += buf.length; assets[relative(gameDir, p).split(String.fromCharCode(92)).join('/')] = 'data:' + mime + ';base64,' + buf.toString('base64'); } })(join(gameDir, 'art4'));
+// the TikTok subpackages too (the web page has no subpackages: everything is inlined)
+for (const sub of ['art1', 'art3', 'art4']) (function walk(dir) { if (!existsSync(dir)) return; for (const e of readdirSync(dir, { withFileTypes: true })) { const p = join(dir, e.name); if (e.isDirectory()) { walk(p); continue; } const mime = MIME[extname(e.name).toLowerCase()]; if (!mime) continue; const buf = readFileSync(p); assetBytes += buf.length; assets[relative(gameDir, p).split(String.fromCharCode(92)).join('/')] = 'data:' + mime + ';base64,' + buf.toString('base64'); } })(join(gameDir, sub));
 const assetScript = 'var __HS_ASSETS = ' + JSON.stringify(assets) + ';';
 const shim = readFileSync(join(kitDir, 'web', 'tt-web-shim.js'), 'utf8');
 const DESC = 'Mukbang Bang: shop at the supermarket, scan at the checkout, then eat it all on a live stream. Same code as the TikTok mini game.';

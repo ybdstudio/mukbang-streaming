@@ -539,11 +539,13 @@ function cashierVec(ctx, x, y, s) {
 }
 
 // ─── bitmap art (assets/) with the vector drawers above as fallback ───
-function coin(ctx, x, y, r) { if (!S.atlas(ctx, S.ICONS, 'coin', x, y, r * 2.25)) coinVec(ctx, x, y, r); }
+// art V3 single icons first (ui/coin.png, ui/star_on|off.png), then the V1 atlas, then vector
+function ui3(ctx, name, x, y, size) { const im = S.enabled() ? S.get('ui/' + name + '.png') : null; if (!im) return false; ctx.drawImage(im, x - size / 2, y - size / 2, size, size); return true; }
+function coin(ctx, x, y, r) { if (!ui3(ctx, 'coin', x, y, r * 2.4) && !S.atlas(ctx, S.ICONS, 'coin', x, y, r * 2.25)) coinVec(ctx, x, y, r); }
 function eyeIcon(ctx, x, y, r, color) { if (!S.atlas(ctx, S.ICONS, 'eye', x, y, r * 2.3)) eyeIconVec(ctx, x, y, r, color); }
 function lock(ctx, x, y, s) { if (!S.atlas(ctx, S.ICONS, 'lock', x, y + s * 0.1, s * 1.25)) lockVec(ctx, x, y, s); }
 // result / level-select stars: `on` = earned; `offColor` is the vector fallback's colour for an unearned star
-function uiStar(ctx, x, y, r, on, offColor, lw) { if (!S.atlas(ctx, S.ICONS, on ? 'star_on' : 'star_off', x, y, r * 2.35)) star(ctx, x, y, r, on ? C.gold : offColor, lw); }
+function uiStar(ctx, x, y, r, on, offColor, lw) { if (!ui3(ctx, on ? 'star_on' : 'star_off', x, y, r * 2.5) && !S.atlas(ctx, S.ICONS, on ? 'star_on' : 'star_off', x, y, r * 2.35)) star(ctx, x, y, r, on ? C.gold : offColor, lw); }
 function reaction(ctx, kind, x, y, s) { if (!S.atlas(ctx, S.REACTIONS, kind, x, y, s * 2.4)) reactionVec(ctx, kind, x, y, s); }
 function avatar(ctx, kind, x, y, r) { if (!S.atlas(ctx, S.AVATARS, kind, x, y, r * 2.1)) avatarVec(ctx, kind, x, y, r); }
 // home-screen logo centred at (x, y), `w` wide; false while the image is not loaded
@@ -569,8 +571,8 @@ function food(ctx, f, x, y, size, e, t) {
 // streamer: body + head layers, eyes and mouth from the shared face atlas
 function streamerParts(ch) {
   const sp = S.STREAMERS[ch.id]; if (!sp) return null;
-  const head = S.get(sp.head), body = S.get(sp.body), face = S.get(S.FACE_IMG);
-  return head && body && face ? { sp: sp, head: head, body: body, face: face } : null;
+  const head = S.get(sp.head), body = S.get(sp.body), face = S.get(S.FACE_IMG), fx = S.get(S.FX_IMG);
+  return head && body && face ? { sp: sp, head: head, body: body, face: face, fx: fx } : null;
 }
 function streamer(ctx, ch, x, y, s, st) {
   const lk = st && st.look; const outfit = lk ? WR.BY_ID[lk.outfit] : null;
@@ -583,7 +585,7 @@ function streamer(ctx, ch, x, y, s, st) {
     return;
   }
   st = st || {}; const expr = S.EXPR[st.expr] ? st.expr : 'idle'; const t = st.t || 0; const sp = P.sp;
-  const k = S.STREAMER_K * s;
+  const k = S.streamerK(sp) * s;
   ctx.save(); ctx.translate(x, y + (st.bob || 0)); ctx.scale(k, k); ctx.translate(-sp.headAnchor[0], -sp.headAnchor[1]);
   // now in head-image pixels
   // outfit: another streamer's sweater layer (same pose) or a vector overlay on top of our own
@@ -593,7 +595,7 @@ function streamer(ctx, ch, x, y, s, st) {
   if (lk) WR.drawBody(ctx, module.exports, lk, { nx: sp.neckOnHead[0], ny: sp.neckOnHead[1], bw: 343 });
   ctx.drawImage(P.head, 0, 0);
   const ex = S.EXPR[expr]; let eyes = ex[0], mouth = ex[1];
-  if ((expr === 'idle' || expr === 'open') && st.blink) eyes = 'eyes_blink';
+  if ((expr === 'idle' || expr === 'open' || expr === 'chew') && st.blink) eyes = 'eyes_blink';
   if (expr === 'chew' && Math.sin(t * 22) < 0) mouth = 'mouth_chew_b';
   const ey = sp.eyes || S.FACE_EYES_AT, dx = ey[0] - S.FACE_EYES_AT[0], dy = ey[1] - S.FACE_EYES_AT[1];
   const mx = sp.mouth[0] - S.FACE_MOUTH_AT[0], my = sp.mouth[1] - S.FACE_MOUTH_AT[1];
@@ -604,9 +606,9 @@ function streamer(ctx, ch, x, y, s, st) {
     ellipse(ctx, ey[0] - 96, ey[1] + 58, 48, 30, col, 0); ellipse(ctx, ey[0] + 96, ey[1] + 58, 48, 30, col, 0);
     ctx.globalAlpha = 1;
   }
-  S.cell(ctx, P.face, S.FACE[eyes], S.FACE_EYES_AT[0] + dx, S.FACE_EYES_AT[1] + dy, 240, 120);
-  S.cell(ctx, P.face, S.FACE[mouth], S.FACE_MOUTH_AT[0] + mx, S.FACE_MOUTH_AT[1] + my, 240, 120);
-  if (ex[2]) S.cell(ctx, P.face, S.FACE[ex[2]], S.FACE_FX_AT[0] + dx, S.FACE_FX_AT[1] + dy + Math.sin(t * 6) * 4, 240, 120);
+  if (S.FACE[eyes]) S.cell(ctx, P.face, S.FACE[eyes], ey[0], ey[1], 240, 120);
+  if (S.FACE[mouth]) S.cell(ctx, P.face, S.FACE[mouth], sp.mouth[0], sp.mouth[1], 240, 120);
+  if (ex[2] && P.fx && S.FX[ex[2]]) { const fa = S.fxAt(ex[2], sp); S.cell(ctx, P.fx, S.FX[ex[2]], fa[0], fa[1] + Math.sin(t * 6) * 4, 240, 120); }
   if (expr === 'fizzy') for (let i = 0; i < 3; i++) sparkle(ctx, ey[0] + [-180, 185, 140][i], ey[1] + [-70, -40, 120][i], 18 + Math.sin(t * 12 + i) * 6, '#fff');
   if (lk) WR.drawHead(ctx, module.exports, lk, { cx: sp.headAnchor[0], cy: sp.headAnchor[1] - (sp.headAnchor[1] - ey[1]) * 0.2, r: sp.faceRadius, ey: ey[1], ny: sp.neckOnHead[1] }, ch, t);
   ctx.restore();
@@ -614,7 +616,7 @@ function streamer(ctx, ch, x, y, s, st) {
 function mouthPos(x, y, s, bob, ch) {
   const P = ch ? streamerParts(ch) : null;
   if (!P) return mouthPosVec(x, y, s, bob);
-  return { x: x, y: y + (bob || 0) + (P.sp.mouth[1] - P.sp.headAnchor[1]) * S.STREAMER_K * s };
+  return { x: x, y: y + (bob || 0) + (P.sp.mouth[1] - P.sp.headAnchor[1]) * S.streamerK(P.sp) * s };
 }
 
 // backgrounds
@@ -663,6 +665,7 @@ function cashier(ctx, x, y, s) {
   const w = 128 * s, h = 140 * s; ctx.drawImage(im, x - w / 2, y - h / 2 + 18 * s, w, h);
 }
 function phoneStick(ctx, x, y, s, t) {
+  if (roomBitmap()) return; // the V3 room has its own ring light where the selfie stick stood
   const U2 = S.UI.phone, im = S.get(U2.image); if (!im) { phoneStickVec(ctx, x, y, s, t); return; }
   ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.rotate(-0.25 + Math.sin(t * 1.5) * 0.02);
   const k = 1.1; ctx.drawImage(im, -U2.anchor[0] * k, 260 - U2.anchor[1] * k, U2.w * k, U2.h * k);
@@ -774,7 +777,22 @@ function takeoutBox(ctx, x, y, size, color, label, t) {
   ctx.restore();
 }
 // home stream room: the chapter background seen through a big window, room wall around it
+// art V3: the room is a bitmap with a real see-through window (windowAlphaBounds [216, 191, 624, 586] on 1080×2400)
+const ROOM = { image: 'bg/home_room.png', win: [216, 191, 624, 586] };
+function roomBitmap() { return S.enabled() ? S.get(ROOM.image) : null; }
 function homeRoom(ctx, view, createCanvas, W, H, scale, t) {
+  const room = roomBitmap();
+  if (room) {
+    const s = Math.max(W / S.BG_W, H / S.BG_H), ox = (W - S.BG_W * s) / 2, w = ROOM.win;
+    const vx = ox + w[0] * s, vy = w[1] * s, vw = w[2] * s, vh = w[3] * s;
+    const v = S.getBg(bgPath(view));
+    ctx.save(); ctx.beginPath(); ctx.rect(vx, vy, vw, vh); ctx.clip();
+    if (v) { const k = Math.max(vw / v.width, vh / v.height); ctx.drawImage(v, vx + (vw - v.width * k) / 2, vy + (vh - v.height * k) * 0.35, v.width * k, v.height * k); }
+    else { ctx.fillStyle = '#bfe9ff'; ctx.fillRect(vx, vy, vw, vh); }
+    ctx.restore();
+    ctx.drawImage(room, ox, 0, S.BG_W * s, S.BG_H * s);
+    return;
+  }
   background(ctx, view, createCanvas, W, H, scale);
   const wx = W * 0.16, wy = H * 0.07, ww = W * 0.68, wh = H * 0.31;
   const wall = '#f6ecff', stripe = '#efe0ff';
@@ -848,7 +866,17 @@ function flames(ctx, x, y, r, t) {
 
 // ─── V3: one package on the table + the portion carried to the mouth ───
 // state: 'sealed' · 'opening' (k 0..1) · 'open' (e = pickups / 3) · 'empty'
+// art V3 packaged food (subpackage art3): 6 states per food + an opening strip per package type
+const FOOD3 = { cat_chips: 1, honey_puffs: 1, cheese_noodle: 1, straw_cake: 1, peach_milk: 1, chili_noodle: 1, kfc_chicken: 1, mint_choc: 1 };
+function food3(ctx, id, state, x, y, size) { const im = S.get('food3/' + id + '_' + state + '.png'); if (!im) return false; ctx.drawImage(im, x - size / 2, y - size / 2, size, size); return true; }
+function pack3(ctx, f, kind, x, y, size, state, k, e) {
+  if (!FOOD3[f.id]) return false; const z = size * 1.25;
+  if (state === 'opening' && k < 0.5) { const strip = S.get('food3/open_' + kind + '.png'); if (strip) { const fr = Math.min(3, Math.floor(k * 8)), cw = strip.width / 4; ctx.drawImage(strip, fr * cw, 0, cw, strip.height, x - z / 2, y - z / 2, z, z); return true; } return food3(ctx, f.id, 'sealed', x, y, z); }
+  const st = state === 'sealed' ? 'sealed' : state === 'empty' || e >= 1 ? 'empty' : e >= 0.66 ? 'p2' : e >= 0.33 ? 'p1' : 'open';
+  return food3(ctx, f.id, st, x, y, z);
+}
 function pack(ctx, f, kind, x, y, size, state, k, e, t, toppings) {
+  if (pack3(ctx, f, kind, x, y, size, state, k || 0, e || 0)) return;
   const s = size / 100;
   if (state === 'empty') { ctx.globalAlpha = 0.85; food(ctx, f, x, y, size, 1, t); ctx.globalAlpha = 1; for (let i = 0; i < 5; i++) circle(ctx, x - size * 0.25 + i * size * 0.12, y + size * 0.36 + (i % 2) * 4, size * 0.018, f.c3 || OUT, 0); return; }
   const showFood = state === 'open' || (state === 'opening' && (kind === 'bag' || kind === 'cup' || kind === 'bottle' || k > 0.4));
@@ -877,6 +905,7 @@ function toppingDots(ctx, toppings, x, y, size, e) {
 }
 // one bite-sized portion (on chopsticks, fork, spoon or a sip) at (x, y)
 function portion(ctx, f, x, y, size, t) {
+  if (FOOD3[f.id]) { ctx.save(); ctx.translate(x, y); ctx.rotate(Math.sin((t || 0) * 6) * 0.05); const ok = food3(ctx, f.id, 'portion', 0, 0, size * 1.3); ctx.restore(); if (ok) return; }
   const s = size / 100; ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.rotate(Math.sin((t || 0) * 6) * 0.05);
   const tags = f.tags || [], cat = f.cat;
   const kind = tags.indexOf('drink') >= 0 || cat === 'drinks' ? 'sip' : tags.indexOf('noodle') >= 0 || cat === 'noodles' ? 'noodle' : cat === 'icecream' || (tags.indexOf('cold') >= 0 && tags.indexOf('dessert') >= 0) ? 'scoop' : tags.indexOf('dessert') >= 0 || cat === 'cakes' ? 'cake' : cat === 'snacks' || tags.indexOf('crunchy') >= 0 ? 'chip' : cat === 'fruit' || tags.indexOf('fruit') >= 0 ? 'fruit' : 'chunk';

@@ -16,10 +16,14 @@ let bgOrder = [];     // background paths, most recent last
 function init(p) { platform = p && typeof p.loadImage === 'function' ? p : null; }
 function enabled() { return !!platform; }
 
+// paths that live in a TikTok subpackage (game.json → subpackages); loaded once the subpackage is in
+const SUB_OF = [['food/', 'art1'], ['food3/', 'art3']];
+function subOf(path) { for (let i = 0; i < SUB_OF.length; i++) if (path.indexOf(SUB_OF[i][0]) === 0) return SUB_OF[i][1]; return null; }
 function request(path) {
   if (!platform || asked[path]) return;
+  const pkg = subOf(path); if (pkg && !subReady(pkg)) return;
   asked[path] = true;
-  platform.loadImage(ROOT + path, function (im) { if (im && im.width) imgs[path] = im; else if (!im) asked[path] = 'failed'; });
+  platform.loadImage((pkg ? pkg + '/' : ROOT) + path, function (im) { if (im && im.width) imgs[path] = im; else if (!im) asked[path] = 'failed'; });
 }
 // image if loaded, else null (and start loading it)
 function get(path) {
@@ -41,7 +45,7 @@ function getBg(path) {
 // Start loading everything small so the first screens do not flicker.
 function preload() {
   if (!platform) return;
-  const list = ['streamer/face_parts.png', 'ui/icons.png', 'ui/reactions.png', 'ui/avatars.png', 'ui/logo.png', 'ui/phone_stick.png',
+  const list = ['streamer/face_parts.png', 'streamer/face_fx.png', 'bg/home_room.png', 'ui/coin.png', 'ui/star_on.png', 'ui/star_off.png', 'ui/heart_float.png', 'ui/live_pill.png', 'ui/result_panel.png', 'ui/btn_start.png', 'ui/logo_v3.png', 'ui/icons.png', 'ui/reactions.png', 'ui/avatars.png', 'ui/phone_stick.png',
     'store/shelf_board.png', 'store/basket.png', 'store/checkout_machine.png', 'store/conveyor.png', 'store/cashier_bear.png'];
   for (const id in STREAMERS) { list.push(STREAMERS[id].head, STREAMERS[id].body); }
   for (let i = 0; i < list.length; i++) request(list[i]);
@@ -52,29 +56,34 @@ function preloadFoods(foods) { for (let i = 0; i < foods.length; i++) { const f 
 const FOOD_SIZE = 256;
 function foodPath(id, stage) { return 'food/' + id + '_' + stage + '.png'; }
 
+// art V3 (art-v3-production, stage 1): heads 512, bodies 512×420, per-streamer face anchors
 const STREAMERS = {
-  luna: { head: 'streamer/luna_head.png', body: 'streamer/luna_body.png', headAnchor: [256, 350], neckOnHead: [256, 465], bodyAnchor: [256, 44], faceRadius: 160, mouth: [256, 408], eyes: [256, 320] },
-  kiko: { head: 'streamer/kiko_head.png', body: 'streamer/kiko_body.png', headAnchor: [256, 350], neckOnHead: [256, 465], bodyAnchor: [256, 43], faceRadius: 160, mouth: [256, 408], eyes: [256, 320] },
-  momo: { head: 'streamer/momo_head.png', body: 'streamer/momo_body.png', headAnchor: [256, 281], neckOnHead: [256, 386], bodyAnchor: [256, 43], faceRadius: 160, mouth: [256, 348], eyes: [256, 260] }
+  luna: {head: 'streamer/luna_head.png', body: 'streamer/luna_body.png', headAnchor: [256, 352], neckOnHead: [256, 442], bodyAnchor: [256, 49], faceRadius: 137, mouth: [256, 393], eyes: [256, 320], hairTop: [256, 87], earL: [76, 365], earR: [430, 365]},
+  kiko: {head: 'streamer/kiko_head.png', body: 'streamer/kiko_body.png', headAnchor: [256, 365], neckOnHead: [256, 454], bodyAnchor: [256, 46], faceRadius: 137, mouth: [256, 409], eyes: [256, 338], hairTop: [266, 35], earL: [78, 381], earR: [420, 384]},
+  momo: {head: 'streamer/momo_head.png', body: 'streamer/momo_body.png', headAnchor: [256, 334], neckOnHead: [256, 406], bodyAnchor: [256, 36], faceRadius: 128, mouth: [256, 373], eyes: [256, 310], hairTop: [258, 42], earL: [94, 319], earR: [413, 320]}
 };
-// face_parts.png: 4 columns x 5 rows of 240x120 cells. `at` = where the cell centre sits on Luna's head.
-const FACE_IMG = 'streamer/face_parts.png';
-const FACE_EYES_AT = [256, 320], FACE_MOUTH_AT = [256, 408], FACE_FX_AT = [420, 300];
-const FACE = (function () {
-  const names = ['eyes_open', 'eyes_blink', 'eyes_happy', 'eyes_x', 'eyes_squiggle', 'eyes_heart', 'eyes_wide', 'eyes_squint',
-    'mouth_idle', 'mouth_open', 'mouth_chew_a', 'mouth_chew_b', 'mouth_yum', 'mouth_spicy', 'mouth_cold', 'mouth_sweet',
-    'mouth_fizzy', 'mouth_sour', 'fx_sweat', 'fx_frost'];
-  const out = {}; for (let i = 0; i < names.length; i++) out[names[i]] = { x: (i % 4) * 240, y: Math.floor(i / 4) * 120, w: 240, h: 120 };
-  return out;
-})();
-// expression → eyes, mouth, optional fx
+// face_parts.png / face_fx.png (V3): 240×120 cells; eyes / mouth cells are centred on each streamer's own `eyes` / `mouth`
+const FACE_IMG = 'streamer/face_parts.png', FX_IMG = 'streamer/face_fx.png';
+const FACE = {"eyes_open": {"x": 0, "y": 0, "w": 240, "h": 120}, "eyes_blink": {"x": 240, "y": 0, "w": 240, "h": 120}, "eyes_sparkle": {"x": 480, "y": 0, "w": 240, "h": 120}, "eyes_happy": {"x": 720, "y": 0, "w": 240, "h": 120}, "eyes_heart": {"x": 0, "y": 120, "w": 240, "h": 120}, "eyes_x": {"x": 240, "y": 120, "w": 240, "h": 120}, "eyes_squeeze": {"x": 480, "y": 120, "w": 240, "h": 120}, "eyes_wink_squeeze": {"x": 720, "y": 120, "w": 240, "h": 120}, "eyes_wide": {"x": 0, "y": 240, "w": 240, "h": 120}, "eyes_closed_bliss": {"x": 240, "y": 240, "w": 240, "h": 120}, "eyes_star": {"x": 480, "y": 240, "w": 240, "h": 120}, "mouth_smile": {"x": 720, "y": 240, "w": 240, "h": 120}, "mouth_open_wide": {"x": 0, "y": 360, "w": 240, "h": 120}, "mouth_chew_a": {"x": 240, "y": 360, "w": 240, "h": 120}, "mouth_chew_b": {"x": 480, "y": 360, "w": 240, "h": 120}, "mouth_cat": {"x": 720, "y": 360, "w": 240, "h": 120}, "mouth_fire": {"x": 0, "y": 480, "w": 240, "h": 120}, "mouth_shiver": {"x": 240, "y": 480, "w": 240, "h": 120}, "mouth_pucker": {"x": 480, "y": 480, "w": 240, "h": 120}, "mouth_o": {"x": 720, "y": 480, "w": 240, "h": 120}, "mouth_yum": {"x": 0, "y": 600, "w": 240, "h": 120}, "mouth_laugh": {"x": 240, "y": 600, "w": 240, "h": 120}};
+const FX = {"fx_sweat": {"x": 0, "y": 0, "w": 240, "h": 120}, "fx_frost": {"x": 240, "y": 0, "w": 240, "h": 120}, "fx_bubbles": {"x": 480, "y": 0, "w": 240, "h": 120}, "fx_hearts": {"x": 0, "y": 120, "w": 240, "h": 120}, "fx_stars": {"x": 240, "y": 120, "w": 240, "h": 120}, "fx_steam_ears": {"x": 480, "y": 120, "w": 240, "h": 120}};
+const FACE_EYES_AT = [256, 320], FACE_MOUTH_AT = [256, 393], FACE_FX_AT = [420, 300];
+// expression → eyes, mouth, optional fx (V3 adds blink / viral and two chew mouths)
 const EXPR = {
-  idle: ['eyes_open', 'mouth_idle'], open: ['eyes_open', 'mouth_open'], chew: ['eyes_happy', 'mouth_chew_a'], yum: ['eyes_happy', 'mouth_yum'],
-  spicy: ['eyes_x', 'mouth_spicy', 'fx_sweat'], cold: ['eyes_squiggle', 'mouth_cold', 'fx_frost'], sweet: ['eyes_heart', 'mouth_sweet'],
-  fizzy: ['eyes_wide', 'mouth_fizzy'], sour: ['eyes_squint', 'mouth_sour']
+  idle: ['eyes_open', 'mouth_smile'], open: ['eyes_sparkle', 'mouth_open_wide'], chew: ['eyes_happy', 'mouth_chew_a'], yum: ['eyes_closed_bliss', 'mouth_yum'],
+  spicy: ['eyes_x', 'mouth_fire', 'fx_sweat'], cold: ['eyes_squeeze', 'mouth_shiver', 'fx_frost'], sweet: ['eyes_heart', 'mouth_cat'],
+  fizzy: ['eyes_wide', 'mouth_o', 'fx_bubbles'], sour: ['eyes_wink_squeeze', 'mouth_pucker'], viral: ['eyes_star', 'mouth_laugh', 'fx_stars']
 };
+// where an fx cell sits on the head (head-image px), from the streamer's anchors
+function fxAt(name, sp) {
+  if (name === 'fx_sweat') return [sp.earR[0] - 40, sp.eyes[1] - 50];
+  if (name === 'fx_steam_ears') return [sp.headAnchor[0], sp.earL[1] - 60];
+  if (name === 'fx_frost') return [sp.eyes[0], sp.eyes[1] - 70];
+  return [sp.eyes[0], sp.hairTop[1] + 40];
+}
 // image px → logical units for a streamer drawn at scale 1 (face radius 160 px → 80)
 const STREAMER_K = 0.5;
+// per streamer: the face (faceRadius px) is drawn 80 logical units wide at scale 1, like the V1 art
+function streamerK(sp) { return 80 / (sp.faceRadius || 160); }
 
 function grid(cell, cols, names) { const out = {}; for (let i = 0; i < names.length; i++) out[names[i]] = { x: (i % cols) * cell, y: Math.floor(i / cols) * cell, w: cell, h: cell }; return out; }
 const ICONS = { image: 'ui/icons.png', frames: grid(96, 4, ['coin', 'star_on', 'star_off', 'heart', 'lock', 'eye', 'plus_coin']) };
@@ -87,7 +96,7 @@ const STORE = {
   machine: { image: 'store/checkout_machine.png', w: 864, h: 920, screen: [136, 248, 592, 352], slot: [256, 715, 352, 80] },
   conveyor: { image: 'store/conveyor.png', w: 1000, h: 240, slice: [40, 40, 920, 160] }
 };
-const UI = { logo: { image: 'ui/logo.png', w: 900, h: 420 }, phone: { image: 'ui/phone_stick.png', w: 200, h: 360, anchor: [100, 350] } };
+const UI = { logo: { image: 'ui/logo_v3.png', w: 900, h: 420 }, phone: { image: 'ui/phone_stick.png', w: 200, h: 360, anchor: [100, 350] } };
 const BG_W = 1080, BG_H = 2400;
 
 // ─── art V4 (docs/ART-REQUEST-V4.md; delivered files only — anything else keeps the vector fallback) ───
@@ -291,7 +300,7 @@ const V4 = {};
   'cook/ramen_noodles.png',
   'cook/ramen_steam.png'
 ].forEach(function (p) { V4[p] = 'art4'; });
-const SUB_ROOT = { art4: 'art4/' };
+const SUB_ROOT = { art4: 'art4/', art3: 'art3/', art1: 'art1/' };
 const sub = {};     // name → 'loading' | 'ok' | 'fail'
 function subReady(name) {
   if (sub[name] === 'ok') return true;
@@ -339,5 +348,5 @@ function nine(ctx, im, sl, iw, ih, x, y, w, h, k) {
 
 module.exports = {
   init, enabled, get, v4, v4draw, V4, preloadV4, subReady, canvas, getBg, preload, preloadFoods, foodPath, FOOD_SIZE, STREAMERS, STREAMER_K, FACE_IMG, FACE, FACE_EYES_AT, FACE_MOUTH_AT, FACE_FX_AT, EXPR,
-  ICONS, REACTIONS, AVATARS, STORE, UI, BG_W, BG_H, cell, atlas, cover, nine
+  ICONS, REACTIONS, AVATARS, STORE, UI, BG_W, BG_H, cell, atlas, cover, nine, FX_IMG, FX, fxAt, streamerK
 };

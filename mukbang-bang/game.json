@@ -8,6 +8,14 @@
     {
       "name": "art4",
       "root": "art4/"
+    },
+    {
+      "name": "art3",
+      "root": "art3/"
+    },
+    {
+      "name": "art1",
+      "root": "art1/"
     }
   ]
 }
