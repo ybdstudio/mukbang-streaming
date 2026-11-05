@@ -316,7 +316,7 @@ function streamerVec(ctx, ch, x, y, s, st) {
   const eyeSquiggle = function (sx) { ctx.lineWidth = lw; ctx.strokeStyle = ch.eye; ctx.lineCap = 'round'; ctx.beginPath(); ctx.moveTo(sx * ex - R * 0.13, ey); for (let i = 1; i <= 4; i++) ctx.lineTo(sx * ex - R * 0.13 + i * R * 0.065, ey + (i % 2 ? -R * 0.05 : R * 0.05)); ctx.stroke(); };
   for (let sx = -1; sx <= 1; sx += 2) {
     if (expr === 'idle' || expr === 'open') { if (st.blink) eyeLine(sx); else eyeOpen(sx); }
-    else if (expr === 'chew' || expr === 'yum') eyeHappy(sx);
+    else if (expr === 'chew' || expr === 'yum' || expr === 'sip') eyeHappy(sx);
     else if (expr === 'spicy') eyeX(sx);
     else if (expr === 'cold') eyeSquiggle(sx);
     else if (expr === 'sweet') heart(ctx, sx * ex, ey, R * 0.15, C.red, lw * 0.5);
@@ -329,6 +329,7 @@ function streamerVec(ctx, ch, x, y, s, st) {
   ctx.lineWidth = lw; ctx.strokeStyle = OUT; ctx.lineCap = 'round';
   if (expr === 'idle') { ctx.beginPath(); ctx.arc(0, my - R * 0.08, R * 0.14, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke(); }
   else if (expr === 'open') { ellipse(ctx, 0, my + R * 0.04, R * 0.2, R * 0.24, '#7a2d3a', lw); ellipse(ctx, 0, my + R * 0.16, R * 0.12, R * 0.08, '#ff7a8a', 0); }
+  else if (expr === 'sip') { const p2 = 1 + Math.sin(t * 9) * 0.08; ellipse(ctx, 0, my, R * 0.07 * p2, R * 0.08 * p2, '#7a2d3a', lw * 0.8); ellipse(ctx, 0, my, R * 0.12 * p2, R * 0.11 * p2, null, lw * 0.6); }
   else if (expr === 'chew') { const ch2 = Math.sin(t * 22) * R * 0.04; ellipse(ctx, 0, my, R * 0.1 + Math.abs(ch2), R * 0.06 + Math.abs(ch2) * 0.5, '#7a2d3a', lw * 0.8); ellipse(ctx, -R * 0.72, R * 0.3, R * 0.1, R * 0.12, ch.skin, lw * 0.6); ellipse(ctx, R * 0.72, R * 0.3, R * 0.1, R * 0.12, ch.skin, lw * 0.6); }
   else if (expr === 'yum') { ctx.beginPath(); ctx.arc(0, my - R * 0.1, R * 0.2, 0.1 * Math.PI, 0.9 * Math.PI); ctx.closePath(); fillStroke(ctx, '#7a2d3a', lw); ctx.beginPath(); ctx.ellipse(0, my + R * 0.06, R * 0.1, R * 0.06, 0, 0, TAU); ctx.fillStyle = '#ff7a8a'; ctx.fill(); }
   else if (expr === 'spicy') {
@@ -597,6 +598,7 @@ function streamer(ctx, ch, x, y, s, st) {
   const ex = S.EXPR[expr]; let eyes = ex[0], mouth = ex[1];
   if ((expr === 'idle' || expr === 'open' || expr === 'chew') && st.blink) eyes = 'eyes_blink';
   if (expr === 'chew' && Math.sin(t * 22) < 0) mouth = 'mouth_chew_b';
+  if (expr === 'sip' && Math.sin(t * 2.2) > 0.6) eyes = 'eyes_happy';
   const ey = sp.eyes || S.FACE_EYES_AT, dx = ey[0] - S.FACE_EYES_AT[0], dy = ey[1] - S.FACE_EYES_AT[1];
   const mx = sp.mouth[0] - S.FACE_MOUTH_AT[0], my = sp.mouth[1] - S.FACE_MOUTH_AT[1];
   // flushed (spicy) / chilled (cold) cheeks

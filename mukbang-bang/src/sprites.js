@@ -71,7 +71,8 @@ const FACE_EYES_AT = [256, 320], FACE_MOUTH_AT = [256, 393], FACE_FX_AT = [420, 
 const EXPR = {
   idle: ['eyes_open', 'mouth_smile'], open: ['eyes_sparkle', 'mouth_open_wide'], chew: ['eyes_happy', 'mouth_chew_a'], yum: ['eyes_closed_bliss', 'mouth_yum'],
   spicy: ['eyes_x', 'mouth_fire', 'fx_sweat'], cold: ['eyes_squeeze', 'mouth_shiver', 'fx_frost'], sweet: ['eyes_heart', 'mouth_cat'],
-  fizzy: ['eyes_wide', 'mouth_o', 'fx_bubbles'], sour: ['eyes_wink_squeeze', 'mouth_pucker'], viral: ['eyes_star', 'mouth_laugh', 'fx_stars']
+  fizzy: ['eyes_wide', 'mouth_o', 'fx_bubbles'], sour: ['eyes_wink_squeeze', 'mouth_pucker'], viral: ['eyes_star', 'mouth_laugh', 'fx_stars'],
+  sip: ['eyes_closed_bliss', 'mouth_pucker']  // sucking on the straw: lips pursed, eyes closed, no jaw movement
 };
 // where an fx cell sits on the head (head-image px), from the streamer's anchors
 function fxAt(name, sp) {

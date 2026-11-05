@@ -46,9 +46,10 @@ function jelly(ctx, dish, st, col, darker, plate) {
   const det = S.v4(p + '_out_detail.png'), b = OUT_BOUNDS[m] || OUT_BOUNDS.dome;
   const body = tinted(p + '_out_fill.png', col, dish.recipe === 'pudding' ? b : null); if (!det || !body) return false;
   // a plate wider than the jelly, a soft contact shadow, the jelly's front edge resting on the plate's surface
-  const K = 0.86, oy = 39 - (b[1] + b[3] - 300) * U * K / 600;
-  if (st.plate !== false) servePlate(ctx, 0, 40, 64);
-  ctx.globalAlpha = 0.18; ctx.fillStyle = '#5b3d3b'; ctx.beginPath(); ctx.ellipse(0, 39, (b[2] / 2) * U * K / 600, 6, 0, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1;
+  // the jelly's front-bottom edge sits a little in front of the plate centre, so it reads as resting ON the plate
+  const K = 0.86, foot = 47, oy = foot - (b[1] + b[3] - 300) * U * K / 600;
+  if (st.plate !== false) servePlate(ctx, 0, 41, 66);
+  ctx.globalAlpha = 0.22; ctx.fillStyle = '#5b3d3b'; ctx.beginPath(); ctx.ellipse(0, foot - 3, (b[2] / 2) * U * K / 600 * 0.95, 7, 0, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1;
   ctx.save(); ctx.scale(K, K); layer(ctx, body, 1, oy / K); layer(ctx, det, 1, oy / K); ctx.restore();
   return true;
 }

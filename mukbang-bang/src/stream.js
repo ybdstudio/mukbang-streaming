@@ -120,7 +120,7 @@ function install(Game) {
     return true;
   };
   P.openPack = function () { const r = this.run; r.phase = 'opening'; r.pt = 0; this.audio.play(L.PACK_INFO[r.pack].sound === 'ding' ? 'ding' : L.PACK_INFO[r.pack].sound, { gain: 1.1 }); this.vibrate('short'); this.setFace('open', 1); this.pushChat('idle'); this.saveRun(); };
-  P.deliver = function () { const r = this.run; if (r.phase !== 'carry') return; this.carry = null; r.phase = 'chew'; r.pt = 0; r.bites = 0; this.setFace('open', 0.3); this.saveRun(); };
+  P.deliver = function () { const r = this.run; if (r.phase !== 'carry') return; this.carry = null; r.phase = 'chew'; r.pt = 0; r.bites = 0; this.setFace(r.dish && r.dish.recipe === 'boba' ? 'sip' : 'open', r.dish && r.dish.recipe === 'boba' ? 1 : 0.3); this.saveRun(); };
   P.tapHeart = function (h) { const r = this.run; h.taken = true; r.hearts++; const v = Math.round(r.goal * HEART_BOOST); this.addViewers(v); this.floatText('+' + U.fmtViewers(v), h.x, h.y - 20, C.pink, 18); this.spawnSparkles(h.x, h.y, 8); this.audio.play('like', { gain: 0.6 }); };
   P.tapGift = function () { const r = this.run; r.giftTaken = true; const coins = r.cpb * 4, v = Math.round(r.goal * GIFT_BOOST); r.coins += coins; this.profile.add('coins', coins); this.addViewers(v); this.floatText('FAN GIFT  +' + coins, r.gift.x, r.gift.y - 50, C.gold, 22, true); this.spawnConfetti(r.gift.x, r.gift.y, 24); this.audio.play('cash'); r.gift = null; this.saveRun(); };
   // viewer milestones inside one stream: GOAL (2★) → GOAL 3★ → then +40 % each; the bar always aims at the next one
@@ -141,7 +141,8 @@ function install(Game) {
     const taste = d.tastes ? d.tastes[r.bites % d.tastes.length] : d.taste;
     const hype = Math.round(r.hu * beat.mult * [0.9, 1.0, 1.1][r.bites] * (0.9 + 0.1 * D.TASTES[taste].mult) * (0.95 + Math.random() * 0.1));
     this.addViewers(hype); r.coins += r.cpb; this.profile.add('coins', r.cpb);
-    this.setFace(r.bites % 2 ? 'chew' : D.TASTES[taste].face, 0.7);
+    const sipping = r.dish && r.dish.recipe === 'boba';
+    this.setFace(sipping ? 'sip' : r.bites % 2 ? 'chew' : D.TASTES[taste].face, sipping ? 2 : 0.7);
     this.audio.play(d.sound || 'bite', { rate: 0.9 + Math.random() * 0.25, gain: 0.85 + r.pickups * 0.2 });
     if (taste === 'spicy') this.audio.play('fire', { gain: 0.6 }); else if (taste === 'cold') this.audio.play('shiver', { gain: 0.6 }); else if (taste === 'fizzy') this.audio.play('fizz', { gain: 0.6 }); else if (taste === 'sour') this.audio.play('sour', { gain: 0.6 }); else if (taste === 'sweet') this.audio.play('sweet', { gain: 0.4 });
     this.vibrate('short');
@@ -275,7 +276,7 @@ function install(Game) {
     ctx.save(); if (zoom !== 1) { ctx.translate(W / 2, H * 0.35); ctx.scale(zoom, zoom); ctx.translate(-W / 2, -H * 0.35); }
     if (loc === 'restaurant') A.restaurantBg(ctx, W, H, this.time); else A.homeRoom(ctx, view, this.p.createCanvas, W, H, this.scale, this.time);
     const hp = this.headPos(); const fc = this.face; const sd = this.streamerDef();
-    A.streamer(ctx, sd, hp.x, hp.y, hp.s, { expr: fc.expr, t: fc.t, blink: fc.blink, bob: fc.bob + (r && r.phase === 'chew' ? Math.sin(r.pt * 14) * 3 : 0), look: WR.look(this.profile, sd.id) });
+    A.streamer(ctx, sd, hp.x, hp.y, hp.s, { expr: fc.expr, t: fc.t, blink: fc.blink, bob: fc.bob + (r && r.phase === 'chew' && !(r.dish && r.dish.recipe === 'boba') ? Math.sin(r.pt * 14) * 3 : 0), look: WR.look(this.profile, sd.id) });
     A.table(ctx, view, W, H * 0.5, H);
     A.phoneStick(ctx, W * 0.08, H * 0.38, 0.85, this.time);
     ctx.restore();
@@ -287,7 +288,7 @@ function install(Game) {
         // V4: the cooked dish, served as 3 portions on plates (eaten left → right)
         const served = !!r.dish && ph !== 'request';
         for (let i = 0; i < PICKUPS; i++) {
-          const pp = this.platePos(i); const eaten = served && i < r.pickups; if (!CA.sprite(ctx, eaten ? 'stream/serve_plate_empty_crumbs.png' : 'stream/serve_plate.png', pp.x, pp.y + pp.size * 0.31, pp.size * 1.05)) { A.ellipse(ctx, pp.x, pp.y + pp.size * 0.32, pp.size * 0.48, pp.size * 0.13, '#e9f3ff', 4); A.ellipse(ctx, pp.x, pp.y + pp.size * 0.31, pp.size * 0.36, pp.size * 0.08, '#f8fbff', 0); }
+          const pp = this.platePos(i); const eaten = served && i < r.pickups; const molded = r.dish && R.RECIPES[r.dish.recipe] && R.RECIPES[r.dish.recipe].container === 'mold'; if (!CA.sprite(ctx, eaten ? 'stream/serve_plate_empty_crumbs.png' : 'stream/serve_plate.png', pp.x, pp.y + pp.size * (molded ? 0.4 : 0.31), pp.size * 1.05)) { A.ellipse(ctx, pp.x, pp.y + pp.size * 0.32, pp.size * 0.48, pp.size * 0.13, '#e9f3ff', 4); A.ellipse(ctx, pp.x, pp.y + pp.size * 0.31, pp.size * 0.36, pp.size * 0.08, '#f8fbff', 0); }
           if (!served || i < r.pickups) continue;
           const ramen = r.dish.recipe === 'ramen', cur = i === r.pickups && (this.carry || ph === 'chew');
           if (cur && !ramen) continue;   // that portion is in her hands / at her mouth
@@ -299,7 +300,11 @@ function install(Game) {
         pk = this.platePos(1);
         if (this.carry && r.dish) this.drawBite(r.dish, this.carry.x, this.carry.y, 100, 0);
         // eaten bite by bite at her mouth
-        if (ph === 'chew' && r.dish) { const m = this.mouth(), b = Math.min(3, r.bites); this.drawBite(r.dish, m.x + 4, m.y + 112 + Math.sin(r.pt * 14) * 2, 150, b); }
+        if (ph === 'chew' && r.dish) { const m = this.mouth(), b = Math.min(3, r.bites);
+          if (r.dish.recipe === 'boba') { // the cup is raised so the straw tip touches her lips; the tea level drops with each sip
+            const t = this.time, sz = 190, sq = 1 + Math.sin(t * 9) * 0.015; this.drawBite(r.dish, m.x + 18, m.y + sz * 0.62, sz * sq, Math.min(2.6, r.bites + (r.pt % T.bite) / T.bite * 0.9));
+            for (let i = 0; i < 3; i++) { const ph2 = (t * 1.5 + i / 3) % 1; ctx.globalAlpha = 1 - ph2; A.circle(ctx, m.x + 30 + i * 8, m.y + sz * 0.95 - ph2 * sz * 0.4, 3.5, '#3d2a24', 0); } ctx.globalAlpha = 1;
+          } else this.drawBite(r.dish, m.x + 4, m.y + 112 + Math.sin(r.pt * 14) * 2, 150, b); }
         if (ph === 'request' && !still) this.drawRequest();
       } else {
         const state = ph === 'sealed' ? 'sealed' : ph === 'opening' ? 'opening' : (ph === 'empty' || ph === 'finale') ? 'empty' : 'open';
