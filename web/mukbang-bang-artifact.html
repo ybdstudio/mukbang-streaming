@@ -4269,7 +4269,7 @@ function install(Game) {
       ctx.save(); ctx.translate(W / 2, H * 0.24); ctx.scale(s, s); A.rr(ctx, -170, -44, 340, 88, 40); ctx.fillStyle = C.pink; ctx.fill(); ctx.lineWidth = 5; ctx.strokeStyle = C.pinkDark; ctx.stroke(); ui.title(k.perfect ? 'PERFECT!' : 'YUMMY!', 0, 2, 46, C.white, C.pinkDark); ctx.restore();
       ui.label(k.perfect ? 'exactly what the viewer asked for!' : 'not what they asked, but it looks so good!', W / 2, H * 0.24 + 66, 15, C.white, 'center', { stroke: 4 });
       if (k.serveAsk) { const by = H * 0.24 + 100; ui.button('ck_serve', W * 0.12, by, W * 0.36, 64, 'SERVE', { color: C.yellow, dark: C.yellowDark, size: 22 }); ui.button('ck_hot', W * 0.52, by, W * 0.36, 64, '▶ HOT START', { color: C.pink, dark: C.pinkDark, size: 18 }); ui.label('+40% viewers when you go live', W * 0.7, by + 82, 13, C.white, 'center', { stroke: 4 }); }
-      R.draw(ctx, A, k.dish, W / 2, H * 0.48, a.r * 1.7, k.st);
+      R.draw(ctx, A, k.dish, a.x, a.y, a.r * 1.9, k.st);  // the finished dish above the dim, exactly where it was made
     }
   };
   P.drawTool = function (tool, x, y, on) {

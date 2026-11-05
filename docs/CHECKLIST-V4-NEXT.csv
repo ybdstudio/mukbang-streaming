@@ -1,0 +1,68 @@
+path,size,package,layer,priority,status
+art4/cook/cupcake_liner_fill.png,600x600,art4,fill:cup,2,pending
+art4/cook/cupcake_liner_detail.png,600x600,art4,detail,2,pending
+art4/cook/cupcake_batter.png,600x600,art4,color,2,pending
+art4/cook/cupcake_base.png,600x600,art4,color,2,pending
+art4/cook/cupcake_cream_fill.png,600x600,art4,fill:flavor,2,pending
+art4/cook/cupcake_cream_detail.png,600x600,art4,detail,2,pending
+art4/cook/boba_cup_back.png,600x600,art4,color,1,pending
+art4/cook/boba_tea_fill.png,600x600,art4,fill:flavor reveal,1,pending
+art4/cook/boba_cup_front.png,600x600,art4,color translucent,1,pending
+art4/cook/boba_band_fill.png,600x600,art4,fill:cup,1,pending
+art4/cook/boba_band_detail.png,600x600,art4,detail,1,pending
+art4/cook/boba_foam.png,600x600,art4,color,1,pending
+art4/cook/ramen_bowl_fill.png,600x600,art4,fill:cup,1,pending
+art4/cook/ramen_bowl_detail.png,600x600,art4,detail,1,pending
+art4/cook/ramen_broth_fill.png,600x600,art4,fill:broth,1,pending
+art4/cook/ramen_noodles.png,600x600,art4,color,1,pending
+art4/cook/ramen_chopsticks.png,600x600,art4,color,1,pending
+art4/cook/ramen_steam.png,600x600,art4,color translucent,1,pending
+art4/cook/parfait_glass_back.png,600x600,art4,color,2,pending
+art4/cook/parfait_layers_fill.png,600x600,art4,fill:flavor reveal,2,pending
+art4/cook/parfait_layers_cream.png,600x600,art4,color reveal,2,pending
+art4/cook/parfait_cream_top.png,600x600,art4,color,2,pending
+art4/cook/parfait_glass_front.png,600x600,art4,color translucent,2,pending
+art4/cook/bingsu_bowl_fill.png,600x600,art4,fill:cup,2,pending
+art4/cook/bingsu_bowl_detail.png,600x600,art4,detail,2,pending
+art4/cook/bingsu_snow.png,600x600,art4,color,2,pending
+art4/cook/bingsu_syrup_fill.png,600x600,art4,fill:flavor,2,pending
+art4/cook/bingsu_syrup_detail.png,600x600,art4,detail,2,pending
+art4/cook/donut_plate.png,600x600,art4,color,2,pending
+art4/cook/donut_ring_dough.png,600x600,art4,color,2,pending
+art4/cook/donut_ring.png,600x600,art4,color,2,pending
+art4/cook/donut_ring_glaze_fill.png,600x600,art4,fill:flavor,2,pending
+art4/cook/donut_ring_glaze_detail.png,600x600,art4,detail,2,pending
+art4/cook/donut_heart_d_dough.png,600x600,art4,color,2,pending
+art4/cook/donut_heart_d.png,600x600,art4,color,2,pending
+art4/cook/donut_heart_d_glaze_fill.png,600x600,art4,fill:flavor,2,pending
+art4/cook/donut_heart_d_glaze_detail.png,600x600,art4,detail,2,pending
+art4/cook/donut_star_d_dough.png,600x600,art4,color,2,pending
+art4/cook/donut_star_d.png,600x600,art4,color,2,pending
+art4/cook/donut_star_d_glaze_fill.png,600x600,art4,fill:flavor,2,pending
+art4/cook/donut_star_d_glaze_detail.png,600x600,art4,detail,2,pending
+art4/cook/donut_bear_dough.png,600x600,art4,color,2,pending
+art4/cook/donut_bear.png,600x600,art4,color,2,pending
+art4/cook/donut_bear_glaze_fill.png,600x600,art4,fill:flavor,2,pending
+art4/cook/donut_bear_glaze_detail.png,600x600,art4,detail,2,pending
+assets/cook/opt_cup_pink.png,160x160,main,icon,1,pending
+assets/cook/opt_cup_mint_c.png,160x160,main,icon,1,pending
+assets/cook/opt_cup_lavender.png,160x160,main,icon,1,pending
+assets/cook/opt_cup_lemon_c.png,160x160,main,icon,1,pending
+assets/cook/opt_cup_sky.png,160x160,main,icon,1,pending
+assets/cook/opt_shape_ring.png,160x160,main,icon,2,pending
+assets/cook/opt_shape_heart_d.png,160x160,main,icon,2,pending
+assets/cook/opt_shape_star_d.png,160x160,main,icon,2,pending
+assets/cook/opt_shape_bear.png,160x160,main,icon,2,pending
+assets/cook/tray.png,520x160 9-slice,main,ui,3,pending
+assets/cook/card.png,220x224 9-slice,main,ui,3,pending
+assets/cook/card_selected.png,220x224 9-slice,main,ui,3,pending
+assets/cook/card_rare.png,220x224 9-slice,main,ui,3,pending
+assets/cook/badge_rare.png,160x52,main,ui,3,pending
+assets/cook/ok.png,136x136,main,ui,3,pending
+assets/cook/pip_on.png,40x40,main,ui,3,pending
+assets/cook/banner_perfect.png,680x176,main,ui,3,pending
+assets/cook/banner_yummy.png,680x176,main,ui,3,pending
+assets/cook/request_card.png,660x116 9-slice,main,ui,3,pending
+assets/cook/btn_make.png,9-slice like ui/btn_start.png,main,ui,3,pending
+assets/stream/serve_plate.png,400x160,main,plate,3,pending
+assets/stream/serve_plate_empty_crumbs.png,400x160,main,plate,3,pending
