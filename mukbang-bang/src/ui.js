@@ -93,7 +93,10 @@ class UI {
     const iw = Math.max(0, (w - 6) * U.clamp(t, 0, 1)); if (iw > 0) { roundRect(ctx, x + 3, y + 3, iw, h - 6, (h - 6) / 2); ctx.fillStyle = color || C.pink; ctx.fill(); }
   }
   // Big bubbly title: white fill, brown outline, pastel shadow
-  title(text, x, y, size, color, shadow) {
+  title(text, x, y, size, color, shadow, maxW) {
+    // never wider than the screen (or maxW): shrink the size to fit, measured with the real font
+    const lim = maxW || (this.W - 36); this.font(size); const tw = this.ctx.measureText ? this.ctx.measureText(String(text)).width + size * 0.3 : 0;
+    if (tw > lim && tw > 0) size = Math.max(12, size * lim / tw);
     this.label(text, x, y + size * 0.08, size, shadow || C.pinkDark, 'center', { stroke: size * 0.32 });
     this.label(text, x, y, size, color || C.white, 'center', { stroke: size * 0.22 });
   }

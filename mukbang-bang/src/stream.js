@@ -344,7 +344,7 @@ function install(Game) {
     if (r.superchat) { const a = Math.min(1, r.superchat.t * 4, (3 - r.superchat.t) * 3); ctx.globalAlpha = Math.max(0, a); ui.panel(40, top + 120, W - 80, 52, '#ffd95e', C.goldDark, 20, 4); ui.label('SUPER CHAT  +' + r.superchat.coins + '  ·  "you are the best!!"', W / 2, top + 146, 16, C.text); ctx.globalAlpha = 1; }
     if (r.duet) { const a = Math.min(1, r.duet.t * 3, (4 - r.duet.t) * 2); ctx.globalAlpha = Math.max(0, a); ui.panel(W - 140, top + 130, 120, 120, '#fff', C.outline, 18, 4); A.avatar(ctx, r.duet.avatar, W - 80, top + 182, 38); ui.label('FAN DUET', W - 80, top + 236, 12, C.pinkDark); ctx.globalAlpha = 1; }
     // beat banner
-    if (r.banner && !still) { const b = r.banner; const k = U.easeOutBack(Math.min(1, b.t * 3)); const a = b.big ? 1 : Math.min(1, (1.6 - b.t) * 3); ctx.globalAlpha = Math.max(0, a); ctx.save(); ctx.translate(W / 2, H * 0.47); ctx.scale(k, k); ui.title(b.text, 0, 0, b.big ? 64 : 36, b.big ? C.yellow : C.white, C.pinkDark); if (b.sub) ui.label(b.sub, 0, b.big ? 48 : 34, b.big ? 20 : 18, C.white, 'center', { stroke: 5 }); ctx.restore(); ctx.globalAlpha = 1; }
+    if (r.banner && !still) { const b = r.banner; const k = U.easeOutBack(Math.min(1, b.t * 3)); const a = b.big ? 1 : Math.min(1, (1.6 - b.t) * 3); ctx.globalAlpha = Math.max(0, a); ctx.save(); ctx.translate(W / 2, H * 0.47); ctx.scale(k, k); ui.title(b.text, 0, 0, b.big ? 64 : 36, b.big ? C.yellow : C.white, C.pinkDark, (W - 36) / Math.max(0.01, k)); if (b.sub) ui.label(b.sub, 0, b.big ? 48 : 34, b.big ? 20 : 18, C.white, 'center', { stroke: 5 }); ctx.restore(); ctx.globalAlpha = 1; }
   };
   // the viewer's request (start of every level) and the big MAKE button
   P.drawRequest = function () {

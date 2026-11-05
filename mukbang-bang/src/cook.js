@@ -144,7 +144,7 @@ function install(Game) {
     if (flipping) { const t = k.flipT / FLIP_T; ctx.save(); ctx.translate(a.x, a.y); ctx.rotate(Math.PI * t); ctx.translate(-a.x, -a.y); R.draw(ctx, A, k.dish, a.x, a.y, a.r * 1.9, k.st); ctx.restore(); }
     else R.draw(ctx, A, k.dish, a.x, a.y, a.r * 1.9, k.st);
     // pour stream / tool
-    if (st && st.t === 'pour') { const fo = R.opt(st.from, k.dish[SLOT_KEY[st.from]]); const bx = a.x + a.r * 0.6, by = a.y - a.r * 1.05; const pouring = k.holdId !== null; let sp = CA.bottle(ctx, fo ? fo.color : '#ff9fc4', bx + 34, by - 30, 300, pouring); if (!sp) { ctx.save(); ctx.translate(bx, by); ctx.rotate(pouring ? -0.9 : -0.3); R.drawOption(ctx, A, st.from === 'broth' ? 'broth' : 'flavor', fo || { color: '#ff9fc4' }, 0, 0, 34); ctx.restore(); sp = { x: bx - 26, y: by + 10 }; } if (pouring && fo) { ctx.strokeStyle = fo.color; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(sp.x, sp.y); ctx.quadraticCurveTo(sp.x - 14, sp.y + 50, a.x + 6, a.y - a.r * 0.2); ctx.stroke(); } ui.bar(a.x - 80, a.y + a.r + 26, 160, 12, k.st.fill, C.pink, 'rgba(255,255,255,0.7)'); }
+    if (st && st.t === 'pour') { const fo = R.opt(st.from, k.dish[SLOT_KEY[st.from]]); const bx = a.x + a.r * 0.6, by = a.y - a.r * 1.05; const pouring = k.holdId !== null; let sp = CA.bottle(ctx, fo ? fo.color : '#ff9fc4', bx + 34, by - 30, 300, pouring); if (!sp) { ctx.save(); ctx.translate(bx, by); ctx.rotate(pouring ? -0.9 : -0.3); R.drawOption(ctx, A, st.from === 'broth' ? 'broth' : 'flavor', fo || { color: '#ff9fc4' }, 0, 0, 34); ctx.restore(); sp = { x: bx - 26, y: by + 10 }; } if (pouring && fo) this.drawPour(sp.x, sp.y, a.x + 6, a.y - a.r * 0.18, fo.color); ui.bar(a.x - 80, a.y + a.r + 26, 160, 12, k.st.fill, C.pink, 'rgba(255,255,255,0.7)'); }
     if (st && st.t === 'hold') { const tp = this.toolPos(); this.drawTool(st.tool, tp.x, tp.y, k.holdId !== null); ui.bar(a.x - 80, a.y + a.r + 26, 160, 12, k.prog, st.tool === 'fire' || st.tool === 'oven' ? '#ff7a3a' : C.blue, 'rgba(255,255,255,0.7)'); }
     if (st && st.t === 'shake') { ui.bar(a.x - 80, a.y + a.r + 26, 160, 12, k.st.deco, C.yellow, 'rgba(255,255,255,0.7)'); const dop = R.opt('deco', k.dish.deco); if (dop) { const sx = a.x + Math.sin(this.time * 8) * 20, sy = a.y - a.r * 0.95; ctx.save(); ctx.translate(sx, sy); ctx.rotate(Math.sin(this.time * 8) * 0.3); optIcon(ctx, 'deco', dop, 0, 0, 30); ctx.restore(); } }
     if (st && (st.t === 'place' || st.t === 'flip' || st.t === 'shake') && !k.holdId) { const p = 0.4 + 0.3 * Math.sin(this.time * 6); ctx.strokeStyle = 'rgba(255,255,255,' + p + ')'; ctx.lineWidth = 5; ctx.setLineDash([10, 10]); ctx.beginPath(); ctx.arc(a.x, a.y, a.r * 0.9, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]); }
@@ -165,6 +165,24 @@ function install(Game) {
       if (k.serveAsk) { const by = H * 0.24 + 100; ui.button('ck_serve', W * 0.12, by, W * 0.36, 64, 'SERVE', { color: C.yellow, dark: C.yellowDark, size: 22 }); ui.button('ck_hot', W * 0.52, by, W * 0.36, 64, '▶ HOT START', { color: C.pink, dark: C.pinkDark, size: 18 }); ui.label('+40% viewers when you go live', W * 0.7, by + 82, 13, C.white, 'center', { stroke: 4 }); }
       R.draw(ctx, A, k.dish, a.x, a.y, a.r * 1.9, k.st);  // the finished dish above the dim, exactly where it was made
     }
+  };
+  // a syrupy pour: a tapered, gently wobbling ribbon with a glossy highlight, falling drops and a splash ring
+  P.drawPour = function (x0, y0, x1, y1, color) {
+    const ctx = this.ctx, t = this.time, N = 14, pts = [];
+    for (let i = 0; i <= N; i++) { const u = i / N; // leaves the spout sideways, then gravity bends it down
+      const bx = x0 + (x1 - x0) * (2 * u - u * u), by = y0 + (y1 - y0) * u * u, wob = Math.sin(t * 9 - u * 7) * 2.5 * u;
+      const w = 26 * (1 - u) + 15 * u + Math.sin(t * 13 + u * 11) * 1.6 + (u > 0.85 ? (u - 0.85) * 60 : 0); pts.push([bx + wob, by, w]); }
+    const dark = R.shade(color, -0.25), light = R.shade(color, 0.45);
+    ctx.save(); ctx.lineJoin = 'round';
+    ctx.beginPath(); for (let i = 0; i <= N; i++) ctx.lineTo(pts[i][0] - pts[i][2] / 2, pts[i][1]); for (let i = N; i >= 0; i--) ctx.lineTo(pts[i][0] + pts[i][2] / 2, pts[i][1]); ctx.closePath();
+    ctx.fillStyle = color; ctx.fill(); ctx.lineWidth = 2.5; ctx.strokeStyle = dark; ctx.stroke();
+    ctx.beginPath(); for (let i = 1; i < N; i++) ctx.lineTo(pts[i][0] - pts[i][2] * 0.15, pts[i][1]); ctx.lineWidth = 1.8; ctx.strokeStyle = light; ctx.globalAlpha = 0.85; ctx.stroke(); ctx.globalAlpha = 1;
+    // splash where it lands
+    const r = 10 + Math.sin(t * 10) * 2; ctx.beginPath(); ctx.ellipse(x1, y1, r * 1.8, r * 0.55, 0, 0, Math.PI * 2); ctx.fillStyle = color; ctx.globalAlpha = 0.9; ctx.fill(); ctx.globalAlpha = 1; ctx.lineWidth = 2; ctx.strokeStyle = dark; ctx.stroke();
+    for (let i = 0; i < 4; i++) { const ph = (t * 1.6 + i / 4) % 1, ax = x1 + (i % 2 ? 1 : -1) * (8 + ph * 26), ay = y1 - Math.sin(ph * Math.PI) * 20; ctx.globalAlpha = 1 - ph; ctx.beginPath(); ctx.arc(ax, ay, 3.2 * (1 - ph * 0.5), 0, Math.PI * 2); ctx.fillStyle = color; ctx.fill(); }
+    // drops dripping beside the stream
+    for (let i = 0; i < 2; i++) { const ph = (t * 1.2 + i * 0.5) % 1, dx = x0 + (x1 - x0) * ph * ph + (i ? 7 : -6), dy = y0 + (y1 - y0) * ph; ctx.globalAlpha = 0.9 * (1 - ph * 0.6); ctx.beginPath(); ctx.ellipse(dx, dy, 2.6, 3.6, 0, 0, Math.PI * 2); ctx.fillStyle = color; ctx.fill(); }
+    ctx.globalAlpha = 1; ctx.restore();
   };
   P.drawTool = function (tool, x, y, on) {
     const ctx = this.ctx, t = this.time;

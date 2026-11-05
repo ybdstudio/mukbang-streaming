@@ -194,4 +194,4 @@ function drawTopOnly(ctx, A, slot, o) {
   else A.circle(ctx, 0, 0, 6.5, c, 1.5);
 }
 
-module.exports = { setArt, noodleBite, OPT, OPT_BY, opt, options, RECIPES, tasteOf, colorOf, toppingSlot, dishName, draw, drawOption };
+module.exports = { setArt, noodleBite, shade, OPT, OPT_BY, opt, options, RECIPES, tasteOf, colorOf, toppingSlot, dishName, draw, drawOption };
