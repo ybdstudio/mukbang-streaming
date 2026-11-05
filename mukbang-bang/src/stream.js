@@ -45,10 +45,20 @@ function install(Game) {
   // V4: a level starts on the stream with the viewer's request; the dish is cooked first (cook.js), then eaten
   P.startStream = function (n) { CA.preload(); const lv = L.level(n); this.sessionLevels++; this.trans = 0.3; this.newRun({ level: lv.n, food: null, recipe: lv.recipe, request: lv.request, pack: 'plates', phase: 'request', loc: 'home', view: lv.view, cost: 0, cpb: lv.cpb, event: lv.event }); this.beginStream(); };
   // activities end here: one chosen food, a bonus stream that never advances the level
+  // the next food of a multi-item order (supermarket basket, delivery, buffet plate)
+  P.nextQueued = function () {
+    const r = this.run, p = this.profile; let book; try { book = JSON.parse(p.get('foods_json') || '[]'); } catch (e) { book = []; }
+    if (book.indexOf(r.food) < 0) { book.push(r.food); p.set('foods_json', JSON.stringify(book)); }
+    const d = K.dish(r.queue.shift()) || K.dish('cat_chips');
+    r.food = d.id; r.pack = L.packOf(d); r.pickups = 0; r.bites = 0; r.pt = 0; r.phase = 'sealed'; r.served = (r.served || 1) + 1; r.toppings = null;
+    r.banner = { text: 'NEXT UP!', sub: d.name.toUpperCase() + (r.queue.length ? '  ·  ' + r.queue.length + ' MORE' : '  ·  LAST ONE'), t: 0 };
+    this.audio.play('whoosh'); this.setFace('open', 0.8); this.pushChat('idle'); this.saveRun();
+  };
   P.startFoodStream = function (foodId, o) {
     o = o || {}; const d = K.dish(foodId) || K.dish('cat_chips'); const reached = this.curLevel(); const lv = L.level(reached);
-    const cpb = Math.max(4, Math.round(Math.max(o.cost || 0, 60 + 10 * reached) * 1.35 / (PICKUPS * BITES)));
-    this.newRun({ level: 0, side: o.side || 'free', food: d.id, pack: L.packOf(d), loc: o.loc || 'home', view: lv.view, cost: o.cost || 0, cpb: cpb, event: L.EVENTS[1 + Math.floor(Math.random() * (L.EVENTS.length - 1))], toppings: o.toppings || null, goalLevel: reached });
+    const nItems = 1 + ((o.queue && o.queue.length) || 0);
+    const cpb = Math.max(4, Math.round(Math.max((o.cost || 0) / nItems, 60 + 10 * reached) * 1.35 / (PICKUPS * BITES)));
+    this.newRun({ level: 0, side: o.side || 'free', food: d.id, pack: L.packOf(d), loc: o.loc || 'home', view: lv.view, cost: o.cost || 0, cpb: cpb, event: L.EVENTS[1 + Math.floor(Math.random() * (L.EVENTS.length - 1))], toppings: o.toppings || null, goalLevel: reached, queue: (o.queue || []).slice() });
     this.trans = 0.3; this.beginStream();
   };
   P.newRun = function (o) {
@@ -56,7 +66,9 @@ function install(Game) {
     const goal = o.level ? lv.goal : Math.round(lv.goal * 0.8), start = o.level ? lv.startViewers : Math.round(lv.startViewers * 0.8);
     this.run = { v: o.recipe ? 4 : 3, level: o.level || 0, side: o.side || null, food: o.food, recipe: o.recipe || null, request: o.request || null, dish: o.dish || null, perfect: false, pack: o.pack, loc: o.loc, view: o.view, event: o.event, toppings: o.toppings || null,
       cost: o.cost || 0, cpb: o.cpb, goal: goal, goal3: Math.round(goal * 1.3), start: start, hu: Math.max(1, (goal - start) * 1.0 / (PICKUPS * BITES)),
-      viewers: start, peak: start, coins: 0, pickups: 0, bites: 0, phase: o.phase || 'sealed', pt: 0, hearts: 0, gift: null, giftTaken: false, eventDone: false, t: 0, finaleDone: false };
+      viewers: start, peak: start, coins: 0, pickups: 0, bites: 0, phase: o.phase || 'sealed', pt: 0, hearts: 0, gift: null, giftTaken: false, eventDone: false, t: 0, finaleDone: false, queue: (o.queue || []).slice(), served: 1 };
+    // bonus streams with several foods: viewer goal grows with the order
+    if (this.run.queue.length) { const k = 1 + this.run.queue.length * 0.6; this.run.goal = Math.round(goal * k); this.run.goal3 = Math.round(this.run.goal * 1.3); this.run.hu = Math.max(1, (this.run.goal - start) / (PICKUPS * BITES * (1 + this.run.queue.length))); }
     this.saveRun();
   };
   P.beginStream = function () {
@@ -83,7 +95,7 @@ function install(Game) {
   // ── save / resume (run_json v3; older runs are dropped — the level itself is kept) ──
   P.saveRun = function () {
     const r = this.run; if (!r) { this.profile.set('run_json', ''); return; }
-    const o = {}; const keys = ['v', 'level', 'side', 'food', 'recipe', 'request', 'dish', 'perfect', 'giftAd', 'hyped', 'hotStart', 'pack', 'loc', 'view', 'event', 'toppings', 'cost', 'cpb', 'goal', 'goal3', 'start', 'hu', 'viewers', 'peak', 'coins', 'pickups', 'bites', 'phase', 'hearts', 'giftTaken', 'eventDone', 'goalLevel', 'ms'];
+    const o = {}; const keys = ['v', 'level', 'side', 'food', 'recipe', 'request', 'dish', 'perfect', 'giftAd', 'hyped', 'hotStart', 'pack', 'loc', 'view', 'event', 'toppings', 'cost', 'cpb', 'goal', 'goal3', 'start', 'hu', 'viewers', 'peak', 'coins', 'pickups', 'bites', 'phase', 'hearts', 'giftTaken', 'eventDone', 'goalLevel', 'ms', 'queue', 'served'];
     for (let i = 0; i < keys.length; i++) o[keys[i]] = r[keys[i]];
     o.viewers = Math.round(o.viewers); o.peak = Math.round(o.peak);
     this.profile.set('run_json', JSON.stringify(o));
@@ -216,7 +228,9 @@ function install(Game) {
         break;
       }
       case 'react': if (r.pt >= T.react) { r.pt = 0; if (r.pickups >= PICKUPS) { r.phase = 'empty'; this.audio.play('pop'); this.floatText('ALL GONE!', this.packPos().x, this.packPos().y - 90, C.white, 26, true); } else r.phase = 'open'; this.saveRun(); } break;
-      case 'empty': if (r.pt >= T.empty) { r.phase = 'finale'; r.pt = 0; this.viralFinish(); } break;
+      case 'empty': if (r.pt >= T.empty) {
+        if (!r.recipe && r.queue && r.queue.length) { this.nextQueued(); break; }   // more food in the order: open the next one
+        r.phase = 'finale'; r.pt = 0; this.viralFinish(); } break;
       case 'finale': if (r.pt >= T.finale) this.finishRun(); break;
     }
   };
@@ -329,11 +343,12 @@ function install(Game) {
     // tappable hearts
     for (let i = 0; i < (this.hearts || []).length; i++) { const h = this.hearts[i]; const a = h.life < 0.3 ? h.life / 0.3 : h.life > h.max - 0.6 ? (h.max - h.life) / 0.6 : 1; ctx.globalAlpha = Math.max(0, a); const hx = h.x + Math.sin(h.life * 2 + h.sway) * 10; h.x += 0; A.reaction(ctx, 'heart', hx, h.y, 20 + Math.sin(this.time * 6 + h.sway) * 2); ctx.globalAlpha = 1; }
     // chat
-    const chatY = this.bottom() - 30;
-    for (let i = this.chat.length - 1, k = 0; i >= 0 && k < 3; i--, k++) {
-      const c = this.chat[i]; const a = c.life < 0.25 ? c.life / 0.25 : 1; ctx.globalAlpha = a * (k === 2 ? 0.55 : 1);
-      const y = chatY - k * 46 + (1 - a) * 20; const tw = ui.measure(c.text, 15) + 26;
-      A.avatar(ctx, c.avatar, 40, y, 18); ui.panel(66, y - 18, Math.min(tw, W - 90), 36, 'rgba(255,255,255,0.92)', C.outline, 14, 3); ui.label(c.text, 79, y + 1, 15, C.text, 'left');
+    const chatY = this.bottom() - 38;
+    const maxChat = r && r.phase === 'request' ? 2 : 3; // the request screen keeps room for HOME / SHOP / WARDROBE
+    for (let i = this.chat.length - 1, k = 0; i >= 0 && k < maxChat; i--, k++) {
+      const c = this.chat[i]; const a = c.life < 0.25 ? c.life / 0.25 : 1; ctx.globalAlpha = a * (k === 2 ? 0.6 : 1);
+      const y = chatY - k * 60 + (1 - a) * 20; const tw = ui.measure(c.text, 21) + 34;
+      A.avatar(ctx, c.avatar, 46, y, 25); ui.panel(80, y - 24, Math.min(tw, W - 100), 48, 'rgba(255,255,255,0.94)', C.outline, 18, 3); ui.label(c.text, 97, y + 1, 21, C.text, 'left');
     }
     ctx.globalAlpha = 1;
     const top = this.hud({ viewers: r ? U.fmtViewers(r.viewers) : U.fmtViewers(this.result ? this.result.peak : 0) });
@@ -354,13 +369,13 @@ function install(Game) {
   // the viewer's request (start of every level) and the big MAKE button
   P.drawRequest = function () {
     const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, r = this.run, req = r.request, lv = L.level(r.level), top = this.top();
-    const y = top + 118, a = Math.min(1, r.t * 3); ctx.globalAlpha = a;
-    ui.panel(30, y, W - 60, 104, '#ffffff', C.lavenderDark, 22, 4); A.rr(ctx, 30, y, W - 60, 30, 14); ctx.fillStyle = '#efe4ff'; ctx.fill();
-    ui.label('VIEWER REQUEST', W / 2, y + 16, 14, C.lavenderDark);
-    A.avatar(ctx, D.AVATARS[r.level % D.AVATARS.length], 64, y + 66, 20);
-    R.draw(ctx, A, req, W / 2 - 40, y + 64, 66, { flipped: true, set: true, fill: 1, tops: 1, deco: 0 });
-    ui.label(R.dishName(req), W / 2 + 70, y + 54, 16, C.text); const ts = R.opt(R.toppingSlot(req.recipe), req.topping); ui.label('+ ' + (ts ? ts.name : ''), W / 2 + 70, y + 74, 12, C.textLight);
-    A.coin(ctx, W - 86, y + 92, 8); ui.label(String(lv.reward), W - 72, y + 93, 13, C.goldDark, 'left');
+    const y = top + 116, a = Math.min(1, r.t * 3); ctx.globalAlpha = a;
+    ui.panel(18, y, W - 36, 150, '#ffffff', C.lavenderDark, 26, 5); A.rr(ctx, 18, y, W - 36, 40, 18); ctx.fillStyle = '#efe4ff'; ctx.fill();
+    ui.label('VIEWER REQUEST', W / 2, y + 21, 20, C.lavenderDark);
+    A.avatar(ctx, D.AVATARS[r.level % D.AVATARS.length], 62, y + 96, 28);
+    R.draw(ctx, A, req, W * 0.33, y + 96, 100, { flipped: true, set: true, fill: 1, tops: 1, deco: 0 });
+    ui.label(R.dishName(req), W * 0.66, y + 80, 24, C.text); const ts = R.opt(R.toppingSlot(req.recipe), req.topping); ui.label('+ ' + (ts ? ts.name : ''), W * 0.66, y + 110, 18, C.textLight);
+    A.coin(ctx, W - 92, y + 130, 11); ui.label(String(lv.reward), W - 74, y + 131, 18, C.goldDark, 'left');
     ctx.globalAlpha = 1;
     const by = this.bottom() - 262, pulse = 1 + Math.sin(this.time * 5) * 0.04;
     ctx.save(); ctx.translate(W / 2, by + 36); ctx.scale(pulse, pulse); ctx.translate(-W / 2, -(by + 36));

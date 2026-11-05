@@ -99,7 +99,7 @@ function unlockLevel(id) { for (let i = 0; i < LEVELS.length; i++) if (LEVELS[i]
 // The activity's "level" config, sized for ONE food, based on how far the player is.
 function sideConfig(mode, reached) {
   const base = { n: Math.max(1, Math.min(LEVEL_COUNT, reached)), side: mode, chapter: 1, view: level(reached).view, bg: level(reached).view, loc: mode === 'buffet' ? 'restaurant' : 'home', title: modeOf(mode).name };
-  if (mode === 'market') { const sh = []; for (let i = 0; i < D.CATS.length; i++) if (D.CATS[i].unlock <= Math.max(2, Math.ceil(reached / 3))) sh.push(D.CATS[i].id); base.market = { shelves: sh.length ? sh : ['snacks'], pick: 1 }; }
+  if (mode === 'market') { const sh = []; for (let i = 0; i < D.CATS.length; i++) if (D.CATS[i].unlock <= Math.max(2, Math.ceil(reached / 3))) sh.push(D.CATS[i].id); base.market = { shelves: sh.length ? sh : ['snacks'], pick: 99 }; }
   if (mode === 'delivery') base.delivery = { rest: K.RESTAURANTS.filter(function (r) { return r.unlock <= Math.max(2, Math.round(reached * 0.6)); }).map(function (r) { return r.id; }), mains: 1, sides: 0 };
   if (mode === 'buffet') base.buffet = { stations: K.STATIONS.filter(function (s) { return s.unlock <= Math.max(3, Math.round(reached * 0.6)); }).map(function (s) { return s.id; }), slots: 1, fee: 120 + 8 * reached };
   if (mode === 'kitchen') { const rs = K.RECIPES.filter(function (r) { return r.unlock <= Math.max(4, Math.round(reached * 0.75)); }); base.kitchen = { recipes: rs.map(function (r) { return r.id; }), recipe: rs[rs.length - 1].id, extras: [] }; }

@@ -51,9 +51,9 @@ function install(Game) {
   };
   // QA / tests: complete the current food-source scene without input
   P.sceneAutoFill = function () {
-    if (this.state === 'market') { const m = this.market; const foods = D.foodsOf(m.cats[0]); const foods2 = D.foodsOf(m.cats[Math.min(1, m.cats.length - 1)]); while (m.basket.length < m.pick) m.basket.push((m.basket.length % 2 ? foods2 : foods)[m.basket.length % 6].id); this.beginCheckout(); return; }
-    if (this.state === 'delivery') { const d = this.deliv; const mains = this.deliveryMains(); for (let i = 0; d.mains.length < d.lv.delivery.mains && i < 20; i++) d.mains.push(mains[i % mains.length].id); if (d.lv.delivery.sides) d.sides = ['cola']; this.placeOrder(); return; }
-    if (this.state === 'buffet') { const b = this.buf; const items = this.buffetItems(); for (let i = 0; b.plate.length < b.lv.buffet.slots && i < 20; i++) b.plate.push(items[i % items.length].id); this.buffetGo(); return; }
+    if (this.state === 'market') { const m = this.market; const foods = D.foodsOf(m.cats[0]); const foods2 = D.foodsOf(m.cats[Math.min(1, m.cats.length - 1)]); while (m.basket.length < (this.autoItems || 1)) m.basket.push((m.basket.length % 2 ? foods2 : foods)[m.basket.length % 6].id); this.beginCheckout(); return; }
+    if (this.state === 'delivery') { const d = this.deliv; const mains = this.deliveryMains(); for (let i = 0; d.mains.length < (this.autoItems || 1) && i < 20; i++) d.mains.push(mains[i % mains.length].id); this.placeOrder(); return; }
+    if (this.state === 'buffet') { const b = this.buf; const items = this.buffetItems(); for (let i = 0; b.plate.length < (this.autoItems || 1) && i < 20; i++) b.plate.push(items[i % items.length].id); this.buffetGo(); return; }
     if (this.state === 'kitchen') { if (this.kit.phase === 'choose') this.kitStart(); const k = this.kit; while (k.phase === 'cook') { k.prog = 1; this.stepCheck(); } this.kitFinish(); }
   };
 
@@ -65,19 +65,18 @@ function install(Game) {
   P.toggleMain = function (id) {
     const d = this.deliv, need = d.lv.delivery.mains, i = d.mains.indexOf(id);
     if (i >= 0) { d.mains.splice(i, 1); this.audio.play('drop'); return; }
-    if ((this.profile.get('coins') || 0) < this.deliveryTotal() + K.dish(id).price - (d.mains.length >= need ? K.dish(d.mains[0]).price : 0)) { this.audio.play('error'); this.showToast('Not enough coins', 'Pick a cheaper dish'); return; }
-    if (d.mains.length >= need) d.mains.shift();
+    if ((this.profile.get('coins') || 0) < this.deliveryTotal() + K.dish(id).price) { this.audio.play('error'); this.showToast('Not enough coins', 'Pick a cheaper dish'); return; }
     d.mains.push(id); this.audio.play('pop');
   };
   P.toggleSide = function (id) {
     const d = this.deliv, max = d.lv.delivery.sides, i = d.sides.indexOf(id);
     if (i >= 0) { d.sides.splice(i, 1); this.audio.play('drop'); return; }
-    if (d.sides.length >= max) { this.audio.play('error'); this.showToast('Max ' + max + ' sides'); return; }
+
     if ((this.profile.get('coins') || 0) < this.deliveryTotal() + K.dish(id).price) { this.audio.play('error'); this.showToast('Not enough coins'); return; }
     d.sides.push(id); this.audio.play('pop');
   };
   P.placeOrder = function () {
-    const d = this.deliv; if (d.mains.length < d.lv.delivery.mains) { this.audio.play('error'); this.showToast('Pick ' + d.lv.delivery.mains + ' main dish' + (d.lv.delivery.mains > 1 ? 'es' : '')); return; }
+    const d = this.deliv; if (d.mains.length < 1) { this.audio.play('error'); this.showToast('Pick a main dish'); return; }
     const cost = this.deliveryTotal(); if ((this.profile.get('coins') || 0) < cost) { this.audio.play('error'); this.showToast('Not enough coins'); return; }
     this.profile.add('coins', -cost); this.audio.play('cash');
     d.cost = cost; d.t = 0; d.dinged = false; d.dropped = false;
@@ -91,7 +90,7 @@ function install(Game) {
   };
   P.arriveDone = function () {
     const d = this.deliv; if (this.state !== 'arrive') return;
-    this.startFoodStream(d.mains[0], { side: 'delivery', cost: d.cost });
+    this.startFoodStream(d.mains[0], { side: 'delivery', cost: d.cost, queue: d.mains.slice(1).concat(d.sides) });
   };
   P.drawDelivery = function () {
     const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, d = this.deliv, lv = d.lv;
@@ -112,7 +111,7 @@ function install(Game) {
     y += 54;
     // mains of the selected restaurant
     const r = rs[Math.min(d.rest, rs.length - 1)]; const mains = K.mainsOf(r.id); const coins = this.profile.get('coins') || 0;
-    ui.label(r.name.toUpperCase() + '  ·  PICK ' + lv.delivery.mains + ' MAIN' + (lv.delivery.mains > 1 ? 'S' : ''), sx + 16, y + 8, 14, C.textLight, 'left'); y += 20;
+    ui.label(r.name.toUpperCase() + '  ·  ORDER AS MUCH AS YOU LIKE', sx + 16, y + 8, 14, C.textLight, 'left'); y += 20;
     for (let i = 0; i < mains.length; i++) {
       const f = mains[i]; const on = d.mains.indexOf(f.id) >= 0; const ch = 112;
       ui.panel(sx + 10, y, sw - 20, ch, on ? '#eafff0' : '#fff', on ? C.greenDark : C.outline, 18, on ? 5 : 3);
@@ -137,11 +136,11 @@ function install(Game) {
       y += 2 * (chh + 6);
     }
     // footer: total + ORDER
-    const fy = sy + sh - 74; const total = this.deliveryTotal(); const ready = d.mains.length >= lv.delivery.mains;
+    const fy = sy + sh - 74; const total = this.deliveryTotal(); const ready = d.mains.length >= 1;
     ctx.fillStyle = '#ffe9f0'; ctx.fillRect(sx, fy - 6, sw, 2);
-    ui.label('MAINS ' + d.mains.length + '/' + lv.delivery.mains, sx + 20, fy + 20, 15, C.text, 'left'); A.coin(ctx, sx + 30, fy + 46, 10); ui.label(U.fmtCoins(total), sx + 46, fy + 47, 20, C.text, 'left');
+    ui.label('ITEMS ' + (d.mains.length + d.sides.length), sx + 20, fy + 20, 15, C.text, 'left'); A.coin(ctx, sx + 30, fy + 46, 10); ui.label(U.fmtCoins(total), sx + 46, fy + 47, 20, C.text, 'left');
     if (ready) { const pulse = 1 + Math.sin(this.time * 6) * 0.04; ctx.save(); ctx.translate(sx + sw - 110, fy + 32); ctx.scale(pulse, pulse); ctx.translate(-(sx + sw - 110), -(fy + 32)); ui.button('dorder', sx + sw - 200, fy + 6, 180, 54, 'ORDER  ›', { color: C.green, dark: C.greenDark, size: 24 }); ctx.restore(); }
-    else ui.label('pick ' + (lv.delivery.mains - d.mains.length) + ' more', sx + sw - 110, fy + 33, 15, C.textLight);
+    else ui.label('pick a dish', sx + sw - 110, fy + 33, 15, C.textLight);
   };
   P.drawArrive = function () {
     const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, d = this.deliv, lv = d.lv, t = d.t;
@@ -162,10 +161,11 @@ function install(Game) {
   P.buffetStations = function () { return this.buf.lv.buffet.stations.map(K.station); };
   P.buffetItems = function () { const st = this.buffetStations()[this.buf.st]; return K.stationItems(st.id); };
   P.panRect = function (i) { const top = this.top(); const cw = (this.W - 48) / 3; const tabs = this.buf.lv.buffet.stations.length > 1 ? 52 : 0; return { x: 24 + (i % 3) * cw + 4, y: top + 150 + tabs + Math.floor(i / 3) * 132, w: cw - 8, h: 120 }; };
-  P.plateGeo = function () { const W = this.W, b = this.bottom(); return { x: W / 2, y: b - 200, rx: Math.min(230, W * 0.44), ry: this.buf && this.buf.lv.buffet.slots > 3 ? 92 : 74 }; };
-  P.plateSlot = function (i) { const g = this.plateGeo(), n = this.buf.lv.buffet.slots; const per = n <= 3 ? n : Math.ceil(n / 2); const row = Math.floor(i / per), col = i % per, cnt = row === 0 ? per : n - per; const sp = Math.min(96, (g.rx * 1.7) / Math.max(1, cnt)); return { x: g.x + (col - (cnt - 1) / 2) * sp, y: g.y + (n <= 3 ? -8 : row === 0 ? -34 : 34) }; };
+  P.plateGeo = function () { const W = this.W, b = this.bottom(); return { x: W / 2, y: b - 200, rx: Math.min(230, W * 0.44), ry: this.buf && this.plateSlots() > 3 ? 92 : 74 }; };
+  P.plateSlots = function () { return Math.min(9, Math.max(this.buf.lv.buffet.slots, this.buf.plate.length + 1)); };
+  P.plateSlot = function (i) { const g = this.plateGeo(), n = this.plateSlots(); const per = n <= 3 ? n : Math.ceil(n / 2); const row = Math.floor(i / per), col = i % per, cnt = row === 0 ? per : n - per; const sp = Math.min(96, (g.rx * 1.7) / Math.max(1, cnt)); return { x: g.x + (col - (cnt - 1) / 2) * sp, y: g.y + (n <= 3 ? -8 : row === 0 ? -34 : 34) }; };
   P.addToPlate = function (id, fx, fy) {
-    const b = this.buf; if (b.plate.length >= b.lv.buffet.slots) { this.audio.play('error'); this.showToast('Plate is full', 'Tap a dish on the plate to put it back'); return; }
+    const b = this.buf; if (b.plate.length >= 9) { this.audio.play('error'); this.showToast('Your plate is piled high!', "Tap LET'S EAT"); return; }
     const s = this.plateSlot(b.plate.length); b.plate.push(id); b.flies.push({ id: id, x0: fx, y0: fy, x1: s.x, y1: s.y, t: 0 }); this.audio.play('pop'); this.vibrate('short');
   };
   P.buffetBonus = function () {
@@ -177,10 +177,10 @@ function install(Game) {
   };
   P.buffetGo = function () {
     const b = this.buf, fee = b.lv.buffet.fee;
-    if (b.plate.length < b.lv.buffet.slots) { this.audio.play('error'); this.showToast('Fill your plate first'); return; }
+    if (b.plate.length < 1) { this.audio.play('error'); this.showToast('Put some food on your plate'); return; }
     if ((this.profile.get('coins') || 0) < fee) { this.audio.play('error'); this.showToast('Not enough coins'); return; }
     this.profile.add('coins', -fee); this.audio.play('cash');
-    this.startFoodStream(b.plate[0], { side: 'buffet', cost: fee, loc: 'restaurant' });
+    this.startFoodStream(b.plate[0], { side: 'buffet', cost: fee, loc: 'restaurant', queue: b.plate.slice(1) });
   };
   P.buffetTouch = function (kind, id, x, y) {
     const b = this.buf;
@@ -212,7 +212,7 @@ function install(Game) {
     // plate
     const g = this.plateGeo();
     A.ellipse(ctx, g.x, g.y + 8, g.rx, g.ry, '#e9eef8', 0); A.ellipse(ctx, g.x, g.y, g.rx, g.ry, '#fff', 5); A.ellipse(ctx, g.x, g.y, g.rx * 0.82, g.ry * 0.72, '#f4f7ff', 0);
-    const n = lv.buffet.slots;
+    const n = this.plateSlots();
     for (let i = 0; i < n; i++) { const s = this.plateSlot(i); if (i < b.plate.length) { const flying = b.flies.some(function (f) { return f.id === b.plate[i] && i === b.plate.length - 1 && f.t < 1; }); if (!flying) A.food(ctx, K.dish(b.plate[i]), s.x, s.y, 72, 0, this.time); ui.hotspot('bpl' + i, s.x - 34, s.y - 34, 68, 68); } else { ctx.setLineDash([6, 6]); ctx.strokeStyle = 'rgba(91,61,59,0.3)'; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(s.x, s.y, 26, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]); } }
     for (let i = 0; i < b.flies.length; i++) { const f = b.flies[i], k = U.easeInOut(f.t); A.food(ctx, K.dish(f.id), U.lerp(f.x0, f.x1, k), U.lerp(f.y0, f.y1, k) - Math.sin(k * Math.PI) * 80, U.lerp(84, 72, k), 0, this.time); }
     // tongs: following the finger while picking, resting by the plate otherwise
@@ -220,10 +220,10 @@ function install(Game) {
     else A.tongs(ctx, W - 50, g.y + 40, 0.2);
     // info + go
     const bonus = this.buffetBonus();
-    ui.label('PLATE ' + b.plate.length + '/' + n + (bonus.text ? '  ·  ' + bonus.text + '!' : ''), W / 2, g.y - g.ry - 18, 16, bonus.text ? C.yellow : C.white, 'center', { stroke: 5 });
+    ui.label('PLATE ' + b.plate.length + (b.plate.length === 1 ? ' DISH' : ' DISHES') + (bonus.text ? '  ·  ' + bonus.text + '!' : ''), W / 2, g.y - g.ry - 18, 16, bonus.text ? C.yellow : C.white, 'center', { stroke: 5 });
     ui.label(b.plate.length ? 'drag with the tongs or tap a dish · tap the plate to put back' : 'TAP OR DRAG FOOD ONTO YOUR PLATE', W / 2, g.y - g.ry - 42, 13, C.white, 'center', { stroke: 4 });
     A.coin(ctx, 40, bottom - 40, 11); ui.label('TICKET ' + U.fmtCoins(lv.buffet.fee), 56, bottom - 39, 17, C.white, 'left', { stroke: 4 });
-    if (b.plate.length >= n) { const pulse = 1 + Math.sin(this.time * 6) * 0.04; ctx.save(); ctx.translate(W - 110, bottom - 40); ctx.scale(pulse, pulse); ctx.translate(-(W - 110), -(bottom - 40)); ui.button('bgo', W - 200, bottom - 68, 180, 56, "LET'S EAT  ›", { color: C.green, dark: C.greenDark, size: 22 }); ctx.restore(); }
+    if (b.plate.length >= 1) { const pulse = 1 + Math.sin(this.time * 6) * 0.04; ctx.save(); ctx.translate(W - 110, bottom - 40); ctx.scale(pulse, pulse); ctx.translate(-(W - 110), -(bottom - 40)); ui.button('bgo', W - 200, bottom - 68, 180, 56, "LET'S EAT  ›", { color: C.green, dark: C.greenDark, size: 22 }); ctx.restore(); }
   };
 
   // ════════ DIY KITCHEN ════════

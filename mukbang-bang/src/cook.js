@@ -132,12 +132,12 @@ function install(Game) {
     const pw = Math.min(30, (W - 160) / steps.length);
     for (let i = 0; i < steps.length; i++) { const px = 24 + i * pw + pw / 2, py = top + 40; if (CA.sprite(ctx, i < k.step ? 'cook/pip_on.png' : 'cook/pip_off.png', px, py, pw * (i === k.step ? 1.05 : 0.9))) continue; A.circle(ctx, px, py, pw * 0.4, i < k.step ? C.pink : i === k.step ? '#fff' : 'rgba(255,255,255,0.6)', 3); if (i < k.step) A.heart(ctx, px, py + 1, pw * 0.18, '#fff', 0); }
     // request reminder
-    const req = k.req; if (!CA.panel(ctx, 'cook/request_card.png', W / 2 - 165, top + 72, 330, 58)) ui.panel(W / 2 - 165, top + 72, 330, 58, '#fff7fb', C.pinkDark, 18, 3);
-    R.draw(ctx, A, req, W / 2 - 130, top + 101, 46, { flipped: true, set: true, fill: 1, tops: 1, deco: 0 });
-    ui.label('VIEWER WANTS: ' + R.dishName(req).toUpperCase(), W / 2 + 22, top + 92, 12, C.text); const ts = R.opt(R.toppingSlot(req.recipe), req.topping); ui.label('with ' + (ts ? ts.name : ''), W / 2 + 22, top + 112, 12, C.textLight);
+    const req = k.req; if (!CA.panel(ctx, 'cook/request_card.png', W / 2 - 200, top + 68, 400, 78)) ui.panel(W / 2 - 200, top + 68, 400, 78, '#fff7fb', C.pinkDark, 18, 3);
+    R.draw(ctx, A, req, W / 2 - 152, top + 107, 62, { flipped: true, set: true, fill: 1, tops: 1, deco: 0 });
+    ui.label('VIEWER WANTS: ' + R.dishName(req).toUpperCase(), W / 2 + 30, top + 94, 16, C.text); const ts = R.opt(R.toppingSlot(req.recipe), req.topping); ui.label('with ' + (ts ? ts.name : ''), W / 2 + 30, top + 122, 16, C.textLight);
     // instruction
     const text = k.doneT >= 0 ? '' : !st ? '' : st.t === 'pick' ? PICK_TEXT[st.slot] : st.t === 'pour' ? (st.text || 'HOLD TO POUR') : st.t === 'hold' ? st.text + ' · HOLD!' : st.t === 'flip' ? 'TAP TO FLIP IT OUT!' : st.t === 'place' ? (st.text || 'TAP TO ADD TOPPINGS') + ' (' + k.st.tops + '/' + st.n + ')' : 'RUB TO SPRINKLE!';
-    if (text) ui.label(text, W / 2, top + 158, 22, C.white, 'center', { stroke: 6 });
+    if (text) ui.label(text, W / 2, top + 176, 24, C.white, 'center', { stroke: 6 });
     // the dish
     const a = this.cookArea(); const flipping = k.flipT >= 0;
     A.ellipse(ctx, a.x, a.y + a.r * 0.62, a.r * 0.95, a.r * 0.2, 'rgba(91,61,59,0.12)', 0);

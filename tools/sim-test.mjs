@@ -228,6 +228,15 @@ for (const mode of ['market', 'delivery', 'buffet']) {
   runUntil(g, () => g.state === 'result', 8);
   check(mode + ': pays coins, adds to the food book, level unchanged', g.state === 'result' && g.result.coins > 0 && prof.get('level') === 20 && JSON.parse(prof.get('foods_json')).length === 1, { lvl: prof.get('level') });
 }
+seed(8);
+for (const mode of ['market', 'delivery', 'buffet']) { // no limit on how much you order: every item is eaten in the same bonus stream
+  const prof = fakeProfile(Object.assign({}, INIT, { level: 20, levels_done: 19, streams: 19, coins: 20000 })); const p = fakePlatform(), g = new Game(p, fakeHs(prof, 'ok')); g.hsReady = true; run(g, 0.1);
+  await tap(g, p, 'side_' + mode); g.autoItems = 4; g.sceneAutoFill(); runUntil(g, () => g.state === 'stream', 8);
+  check(mode + ': an order of 4 → a stream with 3 more queued', g.state === 'stream' && g.run.queue.length === 3, g.run && g.run.queue);
+  let eaten = 0; for (let guard = 0; guard < 300 && g.state === 'stream'; guard++) { const r = g.run; if (r.phase === 'sealed') { const pk = g.packPos(); touchAt(g, p, pk.x, pk.y); run(g, 1); continue; } if (r.phase === 'open') { const pk = g.packPos(); touchAt(g, p, pk.x, pk.y); } run(g, 0.5); if (g.run && g.run.served > eaten) eaten = g.run.served; }
+  runUntil(g, () => g.state === 'result', 12);
+  check(mode + ': all 4 foods opened and eaten, then one result', g.state === 'result' && eaten === 4 && JSON.parse(prof.get('foods_json')).length >= 3, { eaten, state: g.state });
+}
 { const prof = fakeProfile(Object.assign({}, INIT, { level: 2, streams: 1, coins: 5000 })); const p = fakePlatform(), g = new Game(p, fakeHs(prof, 'ok')); g.hsReady = true; run(g, 0.1);
   await tap(g, p, 'side_buffet'); check('a locked activity stays on home', g.state === 'home');
   const prof2 = fakeProfile(Object.assign({}, INIT, { level: 12, streams: 11, coins: 10 })); const p2 = fakePlatform(), g2 = new Game(p2, fakeHs(prof2, 'ok')); g2.hsReady = true; run(g2, 0.1);

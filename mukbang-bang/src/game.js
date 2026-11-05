@@ -76,7 +76,7 @@ class Game {
     if (coins < min) { this.audio.play('error'); this.showToast('Need ' + U.fmtCoins(min) + ' coins', 'Main streams are always free — earn more there!'); return; }
     this.flies.length = 0; this.trans = 0.3;
     if (id === 'delivery') this.enterDelivery(lv); else if (id === 'buffet') this.enterBuffet(lv); else if (id === 'kitchen') this.enterKitchen(lv);
-    else { this.market = { lv: lv, cats: lv.market.shelves, pick: 1, cat: 0, basket: [], shake: 0 }; this.setState('market'); }
+    else { this.market = { lv: lv, cats: lv.market.shelves, pick: 99, cat: 0, basket: [], shake: 0 }; this.setState('market'); }
   }
   marketTotal() { let t = 0; for (let i = 0; i < this.market.basket.length; i++) t += K.dish(this.market.basket[i]).price; return t; }
   beginCheckout() {
@@ -102,7 +102,7 @@ class Game {
     if (!left) {
       c.done = true; c.thankT = 0; this.audio.play('cash');
       this.profile.add('coins', -c.total);
-      c.food = c.items[0].id;
+      c.food = c.items[0].id; c.queue = c.items.slice(1).map(function (it) { return it.id; });
     }
   }
   headPos() { return { x: this.W / 2, y: this.H * 0.305, s: Math.min(1, this.H / 1000) }; }
@@ -154,7 +154,7 @@ class Game {
     const c = this.checkout; c.flash = Math.max(0, c.flash - dt * 3);
     if (c.auto && !c.done) { c.autoT -= dt; if (c.autoT <= 0) { c.autoT = 0.32; for (let i = 0; i < c.items.length; i++) { const it = c.items[i]; if (!it.scanned && !it.fly && !(this.drag && this.drag.item === it)) { this.flyToScanner(it); break; } } } }
     for (let i = 0; i < c.items.length; i++) { const it = c.items[i]; if (it.fly) { it.fly.t += dt * 2.5; const k = U.easeInOut(it.fly.t); it.x = U.lerp(it.fly.x0, it.fly.x1, k); it.y = U.lerp(it.fly.y0, it.fly.y1, k) - Math.sin(k * Math.PI) * 60; if (it.fly.t >= 1) { it.fly = null; this.scanItem(it); } } else if (this.drag && this.drag.item === it) { /* follows the finger */ } else if (!it.scanned) { it.x = U.damp(it.x, it.hx, 12, dt); it.y = U.damp(it.y, it.hy, 12, dt); } }
-    if (c.done) { c.thankT += dt; if (c.thankT > 1.0 && this.state === 'checkout') this.startFoodStream(c.food, { side: 'market', cost: c.total }); }
+    if (c.done) { c.thankT += dt; if (c.thankT > 1.0 && this.state === 'checkout') this.startFoodStream(c.food, { side: 'market', cost: c.total, queue: c.queue }); }
   }
   // ── input ──
   onTouch(kind, id, cx, cy) {
@@ -208,7 +208,7 @@ class Game {
       case 'shop_back': this.setState(this.popupFrom && this.popupFrom !== 'coins' ? this.popupFrom : 'home'); break;
       case 'cat_prev': this.market.cat = (this.market.cat + this.market.cats.length - 1) % this.market.cats.length; this.audio.play('whoosh', { gain: 0.5 }); break;
       case 'cat_next': this.market.cat = (this.market.cat + 1) % this.market.cats.length; this.audio.play('whoosh', { gain: 0.5 }); break;
-      case 'confirm': if (this.market.basket.length >= this.market.pick) this.beginCheckout(); break;
+      case 'confirm': if (this.market.basket.length >= 1) this.beginCheckout(); break;
       case 'pause': if (this.state === 'stream') this.setState('pause'); break;
       case 'resume': this.setState('stream'); break;
       case 'leave': this.saveRun(); this.setState('home'); break;
@@ -250,7 +250,7 @@ class Game {
   }
   pickItem(i) {
     const m = this.market; const foods = D.foodsOf(m.cats[m.cat]); const f = foods[i]; if (!f) return;
-    if (m.basket.length >= m.pick) { m.shake = 1; this.audio.play('error'); this.showToast('Basket is full', 'Tap the green button'); return; }
+    if (m.basket.length >= 12) { m.shake = 1; this.audio.play('error'); this.showToast('The basket is overflowing!', 'Tap GO to check out'); return; }
     const price = D.priceOf(f);
     if ((this.profile.get('coins') || 0) < this.marketTotal() + price) { m.shake = 1; this.audio.play('error'); this.showToast('Not enough coins', 'Tap + for more coins'); return; }
     m.basket.push(f.id); this.audio.play('pop');
@@ -512,7 +512,7 @@ class Game {
     ui.label(cat.name, W / 2, top + 153, 24, C.text);
     ui.button('cat_prev', W * 0.2 - 58, top + 128, 50, 48, '‹', { color: C.blue, dark: C.blueDark, size: 32, radius: 16 });
     ui.button('cat_next', W * 0.8 + 8, top + 128, 50, 48, '›', { color: C.blue, dark: C.blueDark, size: 32, radius: 16 });
-    ui.label('PICK ONE PACKAGE FOR A BONUS STREAM', W / 2, top + 194, 14, C.text);
+    ui.label('PICK AS MANY AS YOU LIKE · EAT THEM ALL ON STREAM', W / 2, top + 194, 14, C.text);
     // shelves
     const foods = D.foodsOf(catId); const total = this.marketTotal(); const coins = p.get('coins') || 0;
     for (let row = 0; row < 2; row++) { const sp = this.shelfPos(row * 3); A.shelfBoard(ctx, 18, sp.y + 52, W - 36, 30, cat.dark); }
@@ -526,7 +526,7 @@ class Game {
     const shake = Math.sin(this.time * 40) * m.shake * 6;
     for (let i = 0; i < foods.length; i++) {
       const f = foods[i]; const sp = this.shelfPos(i); const price = D.priceOf(f);
-      const afford = coins >= total + price && m.basket.length < m.pick;
+      const afford = coins >= total + price && m.basket.length < 12;
       ctx.globalAlpha = afford ? 1 : 0.55;
       A.food(ctx, f, sp.x + (afford ? 0 : shake), sp.y - 18, 150, 0, this.time);
       ctx.globalAlpha = 1;
@@ -541,10 +541,10 @@ class Game {
     A.basket(ctx, b.x, b.y, b.w, b.h);
     for (let i = 0; i < m.basket.length; i++) { const f = K.dish(m.basket[i]); const n = m.basket.length; const bx = b.x + b.w * (n === 1 ? 0.5 : 0.18 + 0.64 * i / (n - 1)); A.food(ctx, f, bx, b.y - 2 - (i % 2) * 10, 84, 0, this.time); ui.hotspot('bk' + i, bx - 42, b.y - 44, 84, 84); }
     for (let i = 0; i < this.flies.length; i++) { const fl = this.flies[i]; const k = U.easeInOut(fl.t); A.food(ctx, fl.food, U.lerp(fl.x0, fl.x1, k), U.lerp(fl.y0, fl.y1, k) - Math.sin(k * Math.PI) * 120, U.lerp(150, 84, k), 0, this.time); }
-    ui.panel(W - 150, bottom - 150, 130, 44, '#fff', C.outline, 14); ui.label('🛒', W - 130, bottom - 128, 18, C.text); ui.label(m.basket.length + ' / ' + m.pick, W - 78, bottom - 128, 20, C.text);
+    ui.panel(W - 150, bottom - 150, 130, 44, '#fff', C.outline, 14); ui.label('🛒', W - 130, bottom - 128, 18, C.text); ui.label(m.basket.length + (m.basket.length === 1 ? ' item' : ' items'), W - 74, bottom - 128, 17, C.text);
     ui.panel(W - 150, bottom - 98, 130, 44, '#fff', C.outline, 14); ui.label('Total', W - 126, bottom - 76, 15, C.text, 'left'); A.coin(ctx, W - 66, bottom - 76, 9); ui.label(String(total), W - 52, bottom - 76, 18, C.text, 'left');
-    if (m.basket.length >= m.pick) { const pulse = 1 + Math.sin(this.time * 6) * 0.05; ctx.save(); ctx.translate(W - 85, bottom - 24); ctx.scale(pulse, pulse); ctx.translate(-(W - 85), -(bottom - 24)); ui.button('confirm', W - 150, bottom - 48, 130, 48, 'GO  ›', { color: C.green, dark: C.greenDark, size: 24 }); ctx.restore(); }
-    else ui.label(m.pick - m.basket.length + ' more to pick', W - 85, bottom - 24, 14, C.text);
+    if (m.basket.length >= 1) { const pulse = 1 + Math.sin(this.time * 6) * 0.05; ctx.save(); ctx.translate(W - 85, bottom - 24); ctx.scale(pulse, pulse); ctx.translate(-(W - 85), -(bottom - 24)); ui.button('confirm', W - 150, bottom - 48, 130, 48, 'GO  ›', { color: C.green, dark: C.greenDark, size: 24 }); ctx.restore(); }
+    else ui.label('pick anything!', W - 85, bottom - 24, 14, C.text);
   }
   // ── CHECKOUT ──
   drawCheckout() {

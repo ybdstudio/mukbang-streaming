@@ -911,6 +911,15 @@ function portion(ctx, f, x, y, size, t) {
   const s = size / 100; ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.rotate(Math.sin((t || 0) * 6) * 0.05);
   const tags = f.tags || [], cat = f.cat;
   const kind = tags.indexOf('drink') >= 0 || cat === 'drinks' ? 'sip' : tags.indexOf('noodle') >= 0 || cat === 'noodles' ? 'noodle' : cat === 'icecream' || (tags.indexOf('cold') >= 0 && tags.indexOf('dessert') >= 0) ? 'scoop' : tags.indexOf('dessert') >= 0 || cat === 'cakes' ? 'cake' : cat === 'snacks' || tags.indexOf('crunchy') >= 0 ? 'chip' : cat === 'fruit' || tags.indexOf('fruit') >= 0 ? 'fruit' : 'chunk';
+  // finger food is held by hand: no chopsticks, no spoon
+  const hand = /burger|sandwich|pizza|taco|hotdog|hot_dog|fries|chicken|wing|nugget|drumstick|toast|kebab|corn_dog|donut|churro|pretzel|onigiri|kimbap|gimbap/.test(f.id);
+  if (hand) {
+    if (/burger|sandwich/.test(f.id)) { ellipse(ctx, 0, 14, 26, 9, '#e0a050', 4); rr(ctx, -26, 2, 52, 9, 4); fillStroke(ctx, '#7a4b2f', 3); ctx.beginPath(); ctx.moveTo(-28, 0); for (let i = 0; i <= 8; i++) ctx.lineTo(-28 + i * 7, i % 2 ? 4 : -3); ctx.lineTo(28, 0); ctx.closePath(); fillStroke(ctx, '#7fd46a', 2.5); rr(ctx, -24, -6, 48, 6, 2); fillStroke(ctx, '#ffd23f', 2); ctx.beginPath(); ctx.moveTo(-27, -6); ctx.quadraticCurveTo(-26, -30, 0, -30); ctx.quadraticCurveTo(26, -30, 27, -6); ctx.closePath(); fillStroke(ctx, '#f0b060', 4); for (let i = 0; i < 5; i++) ellipse(ctx, -14 + i * 7, -21 + (i % 2) * 4, 1.6, 1, '#fff6d8', 0); }
+    else if (/pizza/.test(f.id)) { ctx.beginPath(); ctx.moveTo(-24, -24); ctx.lineTo(24, -24); ctx.lineTo(0, 30); ctx.closePath(); fillStroke(ctx, '#ffd36b', 4); rr(ctx, -27, -30, 54, 9, 4); fillStroke(ctx, '#d9944a', 3); circle(ctx, -6, -10, 5, '#d9402a', 2); circle(ctx, 8, -4, 4.5, '#d9402a', 2); circle(ctx, 0, 10, 4, '#d9402a', 2); }
+    else if (/fries/.test(f.id)) { for (let i = 0; i < 6; i++) { ctx.save(); ctx.translate(-14 + i * 6, 0); ctx.rotate((i - 2.5) * 0.08); rr(ctx, -3, -26, 6, 40, 2); fillStroke(ctx, '#ffd23f', 2.5); ctx.restore(); } }
+    else { ctx.save(); ctx.rotate(-0.5); rr(ctx, 14, -4, 22, 8, 4); fillStroke(ctx, '#fff6e8', 3); circle(ctx, 36, -6, 5, '#fff6e8', 3); circle(ctx, 36, 6, 5, '#fff6e8', 3); ctx.beginPath(); ctx.ellipse(-4, 0, 24, 18, 0, 0, Math.PI * 2); fillStroke(ctx, f.c1, 4); for (let i = 0; i < 6; i++) circle(ctx, -14 + i * 5, -6 + (i % 3) * 5, 2, f.c3 || '#b5651d', 0); ctx.restore(); }
+    ctx.restore(); return;
+  }
   const stick = function (x0, y0, x1, y1, col) { ctx.lineCap = 'round'; ctx.strokeStyle = OUT; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke(); ctx.strokeStyle = col; ctx.lineWidth = 4.5; ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke(); };
   if (kind === 'noodle') { stick(-6, -40, 30, 40, '#c49a6c'); stick(6, -42, 40, 34, '#c49a6c');
     const dark = f.v === 5; // black bean noodles keep their dark sauce; every other noodle is golden
