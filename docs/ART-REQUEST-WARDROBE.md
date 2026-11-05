@@ -98,5 +98,6 @@ Giao kèm `preview-looks.png`: lưới 3×3 (3 streamer × 3 bộ), mỗi ô gh�
 
 ## 6. Thứ tự giao
 
+0. **Ưu tiên cao nhất: mũ nồi đỏ (`hair_beret`) và yếm Mukbang (`outfit_bib`).** Chủ dự án khoanh đúng 2 món này trên ảnh chụp game (`refs/owner-feedback.png`); hiện chúng chỉ là hình vector phẳng, không có khối và viền như streamer. Hai món này giao trước, cho cả 3 streamer, kèm icon.
 1. Bảng mẫu gồm Luna mặc đủ 3 bộ phối. Dừng chờ chủ dự án duyệt.
 2. Phần còn lại cho cả 3 streamer, kèm icon và UI.

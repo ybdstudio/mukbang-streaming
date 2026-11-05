@@ -2,9 +2,9 @@ path,size,package,layer,priority,status
 art5/wardrobe/outfit_mint_luna.png,512x420 (body canvas),art5,overlay,2,pending
 art5/wardrobe/outfit_mint_kiko.png,512x420 (body canvas),art5,overlay,2,pending
 art5/wardrobe/outfit_mint_momo.png,512x420 (body canvas),art5,overlay,2,pending
-art5/wardrobe/outfit_bib_luna.png,512x420 (body canvas),art5,overlay,2,pending
-art5/wardrobe/outfit_bib_kiko.png,512x420 (body canvas),art5,overlay,2,pending
-art5/wardrobe/outfit_bib_momo.png,512x420 (body canvas),art5,overlay,2,pending
+art5/wardrobe/outfit_bib_luna.png,512x420 (body canvas),art5,overlay,1,pending
+art5/wardrobe/outfit_bib_kiko.png,512x420 (body canvas),art5,overlay,1,pending
+art5/wardrobe/outfit_bib_momo.png,512x420 (body canvas),art5,overlay,1,pending
 art5/wardrobe/outfit_sunny_luna.png,512x420 (body canvas),art5,overlay,2,pending
 art5/wardrobe/outfit_sunny_kiko.png,512x420 (body canvas),art5,overlay,2,pending
 art5/wardrobe/outfit_sunny_momo.png,512x420 (body canvas),art5,overlay,2,pending
@@ -26,9 +26,9 @@ art5/wardrobe/hair_star_momo.png,512x512 (head canvas),art5,overlay,2,pending
 art5/wardrobe/hair_cat_ears_luna.png,512x512 (head canvas),art5,overlay,2,pending
 art5/wardrobe/hair_cat_ears_kiko.png,512x512 (head canvas),art5,overlay,2,pending
 art5/wardrobe/hair_cat_ears_momo.png,512x512 (head canvas),art5,overlay,2,pending
-art5/wardrobe/hair_beret_luna.png,512x512 (head canvas),art5,overlay,2,pending
-art5/wardrobe/hair_beret_kiko.png,512x512 (head canvas),art5,overlay,2,pending
-art5/wardrobe/hair_beret_momo.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/hair_beret_luna.png,512x512 (head canvas),art5,overlay,1,pending
+art5/wardrobe/hair_beret_kiko.png,512x512 (head canvas),art5,overlay,1,pending
+art5/wardrobe/hair_beret_momo.png,512x512 (head canvas),art5,overlay,1,pending
 art5/wardrobe/hair_flowers_luna.png,512x512 (head canvas),art5,overlay,2,pending
 art5/wardrobe/hair_flowers_kiko.png,512x512 (head canvas),art5,overlay,2,pending
 art5/wardrobe/hair_flowers_momo.png,512x512 (head canvas),art5,overlay,2,pending
@@ -55,7 +55,7 @@ art5/wardrobe/acc_scarf_kiko.png,512x512 (head canvas),art5,overlay,2,pending
 art5/wardrobe/acc_scarf_momo.png,512x512 (head canvas),art5,overlay,2,pending
 assets/wardrobe/icon_outfit_default.png,128x128,main,icon,2,pending
 assets/wardrobe/icon_outfit_mint.png,128x128,main,icon,2,pending
-assets/wardrobe/icon_outfit_bib.png,128x128,main,icon,2,pending
+assets/wardrobe/icon_outfit_bib.png,128x128,main,icon,1,pending
 assets/wardrobe/icon_outfit_sunny.png,128x128,main,icon,2,pending
 assets/wardrobe/icon_outfit_sakura.png,128x128,main,icon,2,pending
 assets/wardrobe/icon_outfit_chef.png,128x128,main,icon,2,pending
@@ -63,7 +63,7 @@ assets/wardrobe/icon_outfit_star.png,128x128,main,icon,2,pending
 assets/wardrobe/icon_hair_bow.png,128x128,main,icon,2,pending
 assets/wardrobe/icon_hair_star.png,128x128,main,icon,2,pending
 assets/wardrobe/icon_hair_cat_ears.png,128x128,main,icon,2,pending
-assets/wardrobe/icon_hair_beret.png,128x128,main,icon,2,pending
+assets/wardrobe/icon_hair_beret.png,128x128,main,icon,1,pending
 assets/wardrobe/icon_hair_flowers.png,128x128,main,icon,2,pending
 assets/wardrobe/icon_hair_bunny_ears.png,128x128,main,icon,2,pending
 assets/wardrobe/icon_hair_crown.png,128x128,main,icon,2,pending
