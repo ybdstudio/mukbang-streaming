@@ -92,7 +92,8 @@ function install(Game) {
     const k = this.ck; if (!k || this.state !== 'cook' || k.doneT >= 0) return false;
     const st = this.curCookStep(); if (!st) return false; const a = this.cookArea(); const inA = U.dist(x, y, a.x, a.y) < a.r + 40; const tp = this.toolPos(); const onTool = U.dist(x, y, tp.x, tp.y) < 70;
     if (kind === 'start') {
-      if ((st.t === 'pour' || st.t === 'hold') && (inA || onTool)) { k.holdId = id; return true; }
+      // hold anywhere: on the dish, the bottle, the tool or just the screen (only the top bar is excluded)
+      if ((st.t === 'pour' || st.t === 'hold') && (inA || onTool || y > this.top() + 70)) { k.holdId = id; return true; }
       if (st.t === 'flip' && inA && k.flipT < 0) { k.flipT = 0; this.audio.play('whoosh'); return true; }
       if (st.t === 'place' && inA) { k.st.tops = Math.min(st.n, k.st.tops + 1); this.audio.play('pop', { rate: 1 + k.st.tops * 0.15 }); this.vibrate('short'); this.spawnSparkles(x, y, 5); if (k.st.tops >= st.n) this.cookNext(); return true; }
       if (st.t === 'shake' && inA) { k.rub = { tid: id, x: x, y: y }; return true; }

@@ -6,11 +6,13 @@
 <title>Mukbang Bang</title>
 <meta name="description" content="Mukbang Bang: shop at the supermarket, scan at the checkout, then eat it all on a live stream. Same code as the TikTok mini game.">
 <style>
+  canvas { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; touch-action: none; }
   /* Layout: one canvas in a phone-shaped box, centred on wide screens; the game paints its own HUD. */
   :root { --bg: #ffe3ea; --bg2: #ffd1dc; --err: #b3261e; --fg: #5b3d3b; }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #3a2a3a; --bg2: #46324a; --fg: #ffe3ea; color-scheme: dark; } }
   :root[data-theme="dark"] { --bg: #3a2a3a; --bg2: #46324a; --fg: #ffe3ea; color-scheme: dark; }
-  html, body { height: 100%; margin: 0; color: var(--fg); overflow: hidden; touch-action: none; -webkit-user-select: none; user-select: none;
+  html, body { height: 100%; margin: 0; color: var(--fg); overflow: hidden; touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; overscroll-behavior: none;
+    /* a long press (HOLD TO POUR) must never turn into iOS text selection, a callout or a scroll */
     background: var(--bg) repeating-conic-gradient(var(--bg2) 0% 25%, var(--bg) 0% 50%) 0 0 / 56px 56px !important; }
   canvas.hs-screen { display: block; position: fixed; left: 0; top: 0; width: 100vw; height: 100vh; box-shadow: 0 0 0 4px #5b3d3b, 0 12px 40px rgba(91,61,59,0.35); }
   #err { position: fixed; left: max(16px, env(safe-area-inset-left, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); bottom: 8px; background: var(--err); color: #fff; font: 13px/1.4 monospace; padding: 8px 10px; border-radius: 8px; display: none; white-space: pre-wrap; z-index: 9; }
@@ -4235,7 +4237,8 @@ function install(Game) {
     const k = this.ck; if (!k || this.state !== 'cook' || k.doneT >= 0) return false;
     const st = this.curCookStep(); if (!st) return false; const a = this.cookArea(); const inA = U.dist(x, y, a.x, a.y) < a.r + 40; const tp = this.toolPos(); const onTool = U.dist(x, y, tp.x, tp.y) < 70;
     if (kind === 'start') {
-      if ((st.t === 'pour' || st.t === 'hold') && (inA || onTool)) { k.holdId = id; return true; }
+      // hold anywhere: on the dish, the bottle, the tool or just the screen (only the top bar is excluded)
+      if ((st.t === 'pour' || st.t === 'hold') && (inA || onTool || y > this.top() + 70)) { k.holdId = id; return true; }
       if (st.t === 'flip' && inA && k.flipT < 0) { k.flipT = 0; this.audio.play('whoosh'); return true; }
       if (st.t === 'place' && inA) { k.st.tops = Math.min(st.n, k.st.tops + 1); this.audio.play('pop', { rate: 1 + k.st.tops * 0.15 }); this.vibrate('short'); this.spawnSparkles(x, y, 5); if (k.st.tops >= st.n) this.cookNext(); return true; }
       if (st.t === 'shake' && inA) { k.rub = { tid: id, x: x, y: y }; return true; }

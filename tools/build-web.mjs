@@ -62,11 +62,13 @@ const assetScript = 'var __HS_ASSETS = ' + JSON.stringify(assets) + ';';
 const shim = readFileSync(join(kitDir, 'web', 'tt-web-shim.js'), 'utf8');
 const DESC = 'Mukbang Bang: shop at the supermarket, scan at the checkout, then eat it all on a live stream. Same code as the TikTok mini game.';
 const style = `
+  canvas { -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; touch-action: none; }
   /* Layout: one canvas in a phone-shaped box, centred on wide screens; the game paints its own HUD. */
   :root { --bg: #ffe3ea; --bg2: #ffd1dc; --err: #b3261e; --fg: #5b3d3b; }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg: #3a2a3a; --bg2: #46324a; --fg: #ffe3ea; color-scheme: dark; } }
   :root[data-theme="dark"] { --bg: #3a2a3a; --bg2: #46324a; --fg: #ffe3ea; color-scheme: dark; }
-  html, body { height: 100%; margin: 0; color: var(--fg); overflow: hidden; touch-action: none; -webkit-user-select: none; user-select: none;
+  html, body { height: 100%; margin: 0; color: var(--fg); overflow: hidden; touch-action: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; overscroll-behavior: none;
+    /* a long press (HOLD TO POUR) must never turn into iOS text selection, a callout or a scroll */
     background: var(--bg) repeating-conic-gradient(var(--bg2) 0% 25%, var(--bg) 0% 50%) 0 0 / 56px 56px !important; }
   canvas.hs-screen { display: block; position: fixed; left: 0; top: 0; width: 100vw; height: 100vh; box-shadow: 0 0 0 4px #5b3d3b, 0 12px 40px rgba(91,61,59,0.35); }
   #err { position: fixed; left: max(16px, env(safe-area-inset-left, 0px)); right: max(16px, env(safe-area-inset-right, 0px)); bottom: 8px; background: var(--err); color: #fff; font: 13px/1.4 monospace; padding: 8px 10px; border-radius: 8px; display: none; white-space: pre-wrap; z-index: 9; }
