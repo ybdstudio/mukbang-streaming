@@ -137,7 +137,9 @@ function top(ctx, id, x, y, size) { return S.v4draw(ctx, 'cook/top_' + id + '.pn
 // sprinkles over a w × h area; amount 0..1 fades them in
 function deco(ctx, id, x, y, w, h, amount) {
   const im = S.v4('cook/deco_' + id + '.png'); if (!im) return false;
-  ctx.globalAlpha = Math.max(0, Math.min(1, amount)); ctx.drawImage(im, x - w * 0.6, y - h * 0.6, w * 1.2, h * 1.2); ctx.globalAlpha = 1; return true;
+  // never squashed: the sprinkle sprite keeps its own proportions (full-size pieces), the top face only clips it
+  const z = Math.max(w, h * 1.6) * 1.15; ctx.save(); ctx.beginPath(); ctx.ellipse(x, y, w * 0.56, Math.max(h * 0.62, 8), 0, 0, Math.PI * 2); ctx.clip();
+  ctx.globalAlpha = Math.max(0, Math.min(1, amount)); ctx.drawImage(im, x - z / 2, y - z / 2, z, z); ctx.restore(); ctx.globalAlpha = 1; return true;
 }
 // kitchen background: cover, with the counter top (row 1404 of 2340) at 60 % of the screen
 function kitchenBg(ctx, W, H) {

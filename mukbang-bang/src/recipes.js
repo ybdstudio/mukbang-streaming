@@ -88,7 +88,7 @@ function draw(ctx, A, dish, x, y, size, st) {
   const jl = c === 'mold' && ART ? ART.jelly(ctx, dish, st, col, shade(col, 0.25), plate) : null;
   if (jl) {
     if (st.flipped && jl.top !== undefined) { // sprinkles over the top face, toppings resting in it (their base on the surface)
-      const ty = jl.top, ww = jl.w; drawDeco(0, ty + 9, ww * 0.62, 12);
+      const ty = jl.top, ww = jl.w; drawDeco(0, ty + 10, ww * 0.7, ww * 0.22);
       for (let i = 0; i < Math.min(tops, 3); i++) drawTop([0, -ww * 0.2, ww * 0.2][i], ty + [1, 6, 6][i], 1);
     }
   } else if (c === 'mold') {

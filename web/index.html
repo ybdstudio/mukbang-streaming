@@ -4296,7 +4296,7 @@ function install(Game) {
     // pour stream / tool
     if (st && st.t === 'pour') { const fo = R.opt(st.from, k.dish[SLOT_KEY[st.from]]); const bx = a.x + a.r * 0.6, by = a.y - a.r * 1.05; const pouring = k.holdId !== null; let sp = CA.bottle(ctx, fo ? fo.color : '#ff9fc4', bx + 34, by - 30, 300, pouring); if (!sp) { ctx.save(); ctx.translate(bx, by); ctx.rotate(pouring ? -0.9 : -0.3); R.drawOption(ctx, A, st.from === 'broth' ? 'broth' : 'flavor', fo || { color: '#ff9fc4' }, 0, 0, 34); ctx.restore(); sp = { x: bx - 26, y: by + 10 }; } if (pouring && fo) this.drawPour(sp.x, sp.y, a.x + 6, a.y - a.r * 0.18, fo.color); ui.bar(a.x - 80, a.y + a.r + 26, 160, 12, k.st.fill, C.pink, 'rgba(255,255,255,0.7)'); }
     if (st && st.t === 'hold') { const tp = this.toolPos(); this.drawTool(st.tool, tp.x, tp.y, k.holdId !== null); ui.bar(a.x - 80, a.y + a.r + 26, 160, 12, k.prog, st.tool === 'fire' || st.tool === 'oven' ? '#ff7a3a' : C.blue, 'rgba(255,255,255,0.7)'); }
-    if (st && st.t === 'shake') { ui.bar(a.x - 80, a.y + a.r + 26, 160, 12, k.st.deco, C.yellow, 'rgba(255,255,255,0.7)'); const dop = R.opt('deco', k.dish.deco); if (dop) { const sx = a.x + Math.sin(this.time * 8) * 20, sy = a.y - a.r * 0.95; ctx.save(); ctx.translate(sx, sy); ctx.rotate(Math.sin(this.time * 8) * 0.3); optIcon(ctx, 'deco', dop, 0, 0, 30); ctx.restore(); } }
+    if (st && st.t === 'shake') { ui.bar(a.x - 80, a.y + a.r + 26, 160, 12, k.st.deco, C.yellow, 'rgba(255,255,255,0.7)'); const dop = R.opt('deco', k.dish.deco); if (dop) { const sx = a.x + Math.sin(this.time * 8) * 26, sy = a.y - a.r * 1.22; ctx.save(); ctx.translate(sx, sy); ctx.rotate(Math.PI * 0.85 + Math.sin(this.time * 8) * 0.3); optIcon(ctx, 'deco', dop, 0, 0, 92); ctx.restore(); } }
     if (st && (st.t === 'place' || st.t === 'flip' || st.t === 'shake') && !k.holdId) { const p = 0.4 + 0.3 * Math.sin(this.time * 6); ctx.strokeStyle = 'rgba(255,255,255,' + p + ')'; ctx.lineWidth = 5; ctx.setLineDash([10, 10]); ctx.beginPath(); ctx.arc(a.x, a.y, a.r * 0.9, 0, Math.PI * 2); ctx.stroke(); ctx.setLineDash([]); }
     // bottom tray for choices + ✓
     if (st && st.t === 'pick' && k.opts) {
@@ -4494,7 +4494,9 @@ function top(ctx, id, x, y, size) { return S.v4draw(ctx, 'cook/top_' + id + '.pn
 // sprinkles over a w × h area; amount 0..1 fades them in
 function deco(ctx, id, x, y, w, h, amount) {
   const im = S.v4('cook/deco_' + id + '.png'); if (!im) return false;
-  ctx.globalAlpha = Math.max(0, Math.min(1, amount)); ctx.drawImage(im, x - w * 0.6, y - h * 0.6, w * 1.2, h * 1.2); ctx.globalAlpha = 1; return true;
+  // never squashed: the sprinkle sprite keeps its own proportions (full-size pieces), the top face only clips it
+  const z = Math.max(w, h * 1.6) * 1.15; ctx.save(); ctx.beginPath(); ctx.ellipse(x, y, w * 0.56, Math.max(h * 0.62, 8), 0, 0, Math.PI * 2); ctx.clip();
+  ctx.globalAlpha = Math.max(0, Math.min(1, amount)); ctx.drawImage(im, x - z / 2, y - z / 2, z, z); ctx.restore(); ctx.globalAlpha = 1; return true;
 }
 // kitchen background: cover, with the counter top (row 1404 of 2340) at 60 % of the screen
 function kitchenBg(ctx, W, H) {
@@ -5569,7 +5571,7 @@ function draw(ctx, A, dish, x, y, size, st) {
   const jl = c === 'mold' && ART ? ART.jelly(ctx, dish, st, col, shade(col, 0.25), plate) : null;
   if (jl) {
     if (st.flipped && jl.top !== undefined) { // sprinkles over the top face, toppings resting in it (their base on the surface)
-      const ty = jl.top, ww = jl.w; drawDeco(0, ty + 9, ww * 0.62, 12);
+      const ty = jl.top, ww = jl.w; drawDeco(0, ty + 10, ww * 0.7, ww * 0.22);
       for (let i = 0; i < Math.min(tops, 3); i++) drawTop([0, -ww * 0.2, ww * 0.2][i], ty + [1, 6, 6][i], 1);
     }
   } else if (c === 'mold') {
