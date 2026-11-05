@@ -85,8 +85,12 @@ function draw(ctx, A, dish, x, y, size, st) {
   const c = R.container;
   const cupCol = (opt('cup', dish.cup) || { color: dish.recipe === 'boba' ? '#c8e8ff' : '#ffc2d6' }).color;
   if (c !== 'mold' && ART && ART.dish && ART.dish(ctx, dish, st, col, { cup: cupCol, tops: tops, deco: deco, drawTop: drawTop, drawDeco: drawDeco })) { ctx.restore(); return; }
-  if (c === 'mold' && ART && ART.jelly(ctx, dish, st, col, shade(col, 0.25), plate)) {
-    if (st.flipped) { drawDeco(0, -14, 56, 34); for (let i = 0; i < Math.min(tops, 3); i++) drawTop([0, -15, 15][i], -34 + [0, 8, 8][i], 1); }
+  const jl = c === 'mold' && ART ? ART.jelly(ctx, dish, st, col, shade(col, 0.25), plate) : null;
+  if (jl) {
+    if (st.flipped && jl.top !== undefined) { // sprinkles over the top face, toppings resting in it (their base on the surface)
+      const ty = jl.top, ww = jl.w; drawDeco(0, ty + 9, ww * 0.62, 12);
+      for (let i = 0; i < Math.min(tops, 3); i++) drawTop([0, -ww * 0.2, ww * 0.2][i], ty + [1, 6, 6][i], 1);
+    }
   } else if (c === 'mold') {
     // before flip: the mould (container) with liquid; after flip: the set jelly on a plate
     if (!st.flipped) {

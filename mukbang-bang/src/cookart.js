@@ -51,11 +51,13 @@ function jelly(ctx, dish, st, col, darker, plate) {
   if (st.plate !== false) servePlate(ctx, 0, 41, 66);
   ctx.globalAlpha = 0.22; ctx.fillStyle = '#5b3d3b'; ctx.beginPath(); ctx.ellipse(0, foot - 3, (b[2] / 2) * U * K / 600 * 0.95, 7, 0, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1;
   ctx.save(); ctx.scale(K, K); layer(ctx, body, 1, oy / K); layer(ctx, det, 1, oy / K); ctx.restore();
-  return true;
+  // where the top of the jelly is (dish units) → toppings sit ON it, not above it
+  return { top: oy + (b[1] - 300) * U * K / 600, w: b[2] * U * K / 600 };
 }
 // ── the other 6 recipes (ART-REQUEST-V4-NEXT §1): every layer on the same 600 px canvas ──
 // content box of each layer, [x, y, w, h] px (qa.json) — used for bottom-up reveals and topping spots
-const BOX = { boba_tea_fill: [201, 232, 198, 225], parfait_layers_fill: [207, 280, 186, 119], parfait_layers_cream: [205, 240, 190, 119] };
+// boba tea is cut at the lid's rim line (y 262): above it the tea would read as a second cup mouth inside the lid
+const BOX = { boba_tea_fill: [201, 262, 198, 195], parfait_layers_fill: [207, 280, 186, 119], parfait_layers_cream: [205, 240, 190, 119] };
 function L(name) { return S.v4('cook/' + name + '.png'); }
 function T(name, color) { return tinted('cook/' + name + '.png', color, null); }
 // a layer revealed from its bottom up to `frac`
@@ -83,7 +85,7 @@ function dish(ctx, d, st, col, h) {
     layer(ctx, L('boba_cup_back'), 1, 0);
     for (let i = 0; i < Math.min(tops, 3) * 3; i++) h.drawTop(-14 + (i % 3) * 14, 34 - Math.floor(i / 3) * 6, 0.75);
     reveal(ctx, tf, fill, BOX.boba_tea_fill, 0.92);
-    if (deco > 0 && fill > 0.6) { layer(ctx, L('boba_foam'), Math.min(1, deco * 1.5), 0); h.drawDeco(0, -15, 40, 6); }
+    if (deco > 0 && fill > 0.6) { layer(ctx, L('boba_foam'), Math.min(1, deco * 1.5), 9); h.drawDeco(0, -6, 40, 6); }
     layer(ctx, L('boba_cup_front'), 1, 0); layer(ctx, bf, 1, 0); layer(ctx, L('boba_band_detail'), 1, 0);
     return true;
   }
