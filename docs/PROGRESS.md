@@ -1,6 +1,6 @@
 # Mukbang Bang — tiến trình & bàn giao (03/11/2026)
 
-> **Art V4 đợt tạm (04/11):** feature icons + icon khuôn đã vào game; phần còn lại lưu ở `art-src/art-v4-partial-20261104/`, xem `docs/ART-V4-PARTIAL-CHECK.md`.
+> **Art V4 core (05/11):** bếp dùng art thật (nền, khuôn + thạch tô theo vị, chai vị, topping, deco, 7 dụng cụ); thạch/khuôn/nền ở subpackage `art4`. **Art V4 đợt tạm (04/11):** feature icons + icon khuôn đã vào game; phần còn lại lưu ở `art-src/art-v4-partial-20261104/`, xem `docs/ART-V4-PARTIAL-CHECK.md`.
 >
 > **V4 (hiện tại)** — làm theo video: viewer yêu cầu món → **tự nấu** theo từng bước chọn (khay 4 ô + ✓, rót/giữ dụng cụ/lật/đặt/chà) → PERFECT! → stream ăn 3 đĩa × 3 miếng → MISSION COMPLETE; 40 màn, 8 công thức; chợ/giao hàng/buffet là hoạt động phụ; 13 ad place (thêm `fan_gift`, `rare_choice`, `cook_step`, `serve_bonus`, `extra_hype`, `unlock_level`, `unlock_look`), cooldown 30 s. Thiết kế + kết quả mô phỏng: `docs/GAME-DESIGN-V4.md`. V3 (`docs/GAME-DESIGN-V3.md`) là lịch sử của vòng mở gói, nay chỉ còn trong hoạt động phụ.
 >

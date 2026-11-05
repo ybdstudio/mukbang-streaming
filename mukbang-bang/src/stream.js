@@ -12,6 +12,7 @@ const L = require('./levels.js');
 const WR = require('./wardrobe.js');
 const R = require('./recipes.js');
 const S = require('./sprites.js');
+const CA = require('./cookart.js');
 const C = D.COLORS;
 
 const PICKUPS = 3, BITES = 3;
@@ -42,7 +43,7 @@ function install(Game) {
 
   // ── starting a stream ──
   // V4: a level starts on the stream with the viewer's request; the dish is cooked first (cook.js), then eaten
-  P.startStream = function (n) { const lv = L.level(n); this.sessionLevels++; this.trans = 0.3; this.newRun({ level: lv.n, food: null, recipe: lv.recipe, request: lv.request, pack: 'plates', phase: 'request', loc: 'home', view: lv.view, cost: 0, cpb: lv.cpb, event: lv.event }); this.beginStream(); };
+  P.startStream = function (n) { CA.preload(); const lv = L.level(n); this.sessionLevels++; this.trans = 0.3; this.newRun({ level: lv.n, food: null, recipe: lv.recipe, request: lv.request, pack: 'plates', phase: 'request', loc: 'home', view: lv.view, cost: 0, cpb: lv.cpb, event: lv.event }); this.beginStream(); };
   // activities end here: one chosen food, a bonus stream that never advances the level
   P.startFoodStream = function (foodId, o) {
     o = o || {}; const d = K.dish(foodId) || K.dish('cat_chips'); const reached = this.curLevel(); const lv = L.level(reached);

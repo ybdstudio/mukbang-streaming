@@ -17,6 +17,7 @@ const WR = require('./wardrobe.js');
 const WS = require('./wardrobe-scene.js');
 const CK = require('./cook.js');
 const R = require('./recipes.js');
+const CA = require('./cookart.js');
 const C = D.COLORS;
 
 const DESIGN_W = 540;
@@ -26,7 +27,7 @@ const AD_FREE_STREAMS = 3;       // the first 3 streams are ad-free; after that 
 class Game {
   constructor(platform, hs) {
     this.p = platform; this.hs = hs; this.profile = hs.profile;
-    S.init(platform); S.preload();
+    S.init(platform); S.preload(); R.setArt(CA);
     this.ctx = platform.ctx; this.ui = new UIM.UI(this.ctx);
     this.audio = new AU.Audio(platform.createAudioContext);
     this.W = DESIGN_W; this.H = 960; this.scale = 1;

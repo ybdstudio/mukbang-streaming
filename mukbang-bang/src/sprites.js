@@ -91,13 +91,161 @@ const UI = { logo: { image: 'ui/logo.png', w: 900, h: 420 }, phone: { image: 'ui
 const BG_W = 1080, BG_H = 2400;
 
 // ─── art V4 (docs/ART-REQUEST-V4.md; delivered files only — anything else keeps the vector fallback) ───
+// Small art lives in the main package (assets/), the big cooking layers in the TikTok subpackage "art4"
+// (game.json → subpackages). Subpackage files are loaded on first need; until then: vector fallback.
 const V4 = {};
 ['features/market.png', 'features/delivery.png', 'features/buffet.png', 'features/wardrobe.png', 'features/lock.png',
-  'cook/opt_mold_dome.png', 'cook/opt_mold_star.png', 'cook/opt_mold_heart.png', 'cook/opt_mold_flower.png', 'cook/opt_mold_bunny.png', 'cook/opt_mold_crown.png'
-].forEach(function (p) { V4[p] = true; });
-function v4(path) { return V4[path] ? get(path) : null; }
+  'cook/deco_cocoa.png',
+  'cook/deco_gold.png',
+  'cook/deco_hearts.png',
+  'cook/deco_pearls_d.png',
+  'cook/deco_snow.png',
+  'cook/deco_sprinkles.png',
+  'cook/deco_stars.png',
+  'cook/opt_boba_top_jelly_cubes.png',
+  'cook/opt_boba_top_pearls.png',
+  'cook/opt_boba_top_popping.png',
+  'cook/opt_boba_top_pudding_t.png',
+  'cook/opt_boba_top_red_bean.png',
+  'cook/opt_broth_creamy.png',
+  'cook/opt_broth_curry.png',
+  'cook/opt_broth_miso.png',
+  'cook/opt_broth_shoyu.png',
+  'cook/opt_broth_spicy.png',
+  'cook/opt_deco_cocoa.png',
+  'cook/opt_deco_gold.png',
+  'cook/opt_deco_hearts.png',
+  'cook/opt_deco_pearls_d.png',
+  'cook/opt_deco_snow.png',
+  'cook/opt_deco_sprinkles.png',
+  'cook/opt_deco_stars.png',
+  'cook/opt_flavor_blueberry.png',
+  'cook/opt_flavor_chocolate.png',
+  'cook/opt_flavor_grape.png',
+  'cook/opt_flavor_lemon.png',
+  'cook/opt_flavor_mango.png',
+  'cook/opt_flavor_matcha.png',
+  'cook/opt_flavor_milk.png',
+  'cook/opt_flavor_peach.png',
+  'cook/opt_flavor_sakura.png',
+  'cook/opt_flavor_soda.png',
+  'cook/opt_flavor_strawberry.png',
+  'cook/opt_mold_bunny.png',
+  'cook/opt_mold_crown.png',
+  'cook/opt_mold_dome.png',
+  'cook/opt_mold_flower.png',
+  'cook/opt_mold_heart.png',
+  'cook/opt_mold_star.png',
+  'cook/opt_ramen_top_chashu.png',
+  'cook/opt_ramen_top_corn.png',
+  'cook/opt_ramen_top_egg.png',
+  'cook/opt_ramen_top_naruto.png',
+  'cook/opt_ramen_top_nori.png',
+  'cook/opt_ramen_top_scallion.png',
+  'cook/opt_topping_blueberry_t.png',
+  'cook/opt_topping_cherry.png',
+  'cook/opt_topping_choco_stick.png',
+  'cook/opt_topping_cream.png',
+  'cook/opt_topping_gold_star.png',
+  'cook/opt_topping_kiwi.png',
+  'cook/opt_topping_mint.png',
+  'cook/opt_topping_mochi.png',
+  'cook/opt_topping_peach_t.png',
+  'cook/opt_topping_sakura_t.png',
+  'cook/opt_topping_strawberry_t.png',
+  'cook/tool_bottle_pour_0.png',
+  'cook/tool_bottle_pour_1.png',
+  'cook/tool_bottle_pour_fill.png',
+  'cook/tool_fan_0.png',
+  'cook/tool_fan_1.png',
+  'cook/tool_fire_0.png',
+  'cook/tool_fire_1.png',
+  'cook/tool_mixer_0.png',
+  'cook/tool_mixer_1.png',
+  'cook/tool_oven_0.png',
+  'cook/tool_oven_1.png',
+  'cook/tool_shaker_0.png',
+  'cook/tool_shaker_1.png',
+  'cook/tool_shaver_0.png',
+  'cook/tool_shaver_1.png',
+  'cook/top_blueberry_t.png',
+  'cook/top_chashu.png',
+  'cook/top_cherry.png',
+  'cook/top_choco_stick.png',
+  'cook/top_corn.png',
+  'cook/top_cream.png',
+  'cook/top_egg.png',
+  'cook/top_gold_star.png',
+  'cook/top_jelly_cubes.png',
+  'cook/top_kiwi.png',
+  'cook/top_mint.png',
+  'cook/top_mochi.png',
+  'cook/top_naruto.png',
+  'cook/top_nori.png',
+  'cook/top_peach_t.png',
+  'cook/top_pearls.png',
+  'cook/top_popping.png',
+  'cook/top_pudding_t.png',
+  'cook/top_red_bean.png',
+  'cook/top_sakura_t.png',
+  'cook/top_scallion.png',
+  'cook/top_strawberry_t.png'
+].forEach(function (p) { V4[p] = 'main'; });
+[  'cook/bg_kitchen.jpg',
+  'cook/jelly_bunny_detail.png',
+  'cook/jelly_bunny_fill.png',
+  'cook/jelly_bunny_out_detail.png',
+  'cook/jelly_bunny_out_fill.png',
+  'cook/jelly_crown_detail.png',
+  'cook/jelly_crown_fill.png',
+  'cook/jelly_crown_out_detail.png',
+  'cook/jelly_crown_out_fill.png',
+  'cook/jelly_dome_detail.png',
+  'cook/jelly_dome_fill.png',
+  'cook/jelly_dome_out_detail.png',
+  'cook/jelly_dome_out_fill.png',
+  'cook/jelly_flower_detail.png',
+  'cook/jelly_flower_fill.png',
+  'cook/jelly_flower_out_detail.png',
+  'cook/jelly_flower_out_fill.png',
+  'cook/jelly_heart_detail.png',
+  'cook/jelly_heart_fill.png',
+  'cook/jelly_heart_out_detail.png',
+  'cook/jelly_heart_out_fill.png',
+  'cook/jelly_star_detail.png',
+  'cook/jelly_star_fill.png',
+  'cook/jelly_star_out_detail.png',
+  'cook/jelly_star_out_fill.png',
+  'cook/mold_bunny.png',
+  'cook/mold_crown.png',
+  'cook/mold_dome.png',
+  'cook/mold_flower.png',
+  'cook/mold_heart.png',
+  'cook/mold_star.png'
+].forEach(function (p) { V4[p] = 'art4'; });
+const SUB_ROOT = { art4: 'art4/' };
+const sub = {};     // name → 'loading' | 'ok' | 'fail'
+function subReady(name) {
+  if (sub[name] === 'ok') return true;
+  if (!sub[name] && platform) {
+    if (typeof platform.loadSubpackage !== 'function') sub[name] = 'ok';
+    else { sub[name] = 'loading'; platform.loadSubpackage(name, function (ok) { sub[name] = ok ? 'ok' : 'fail'; }); }
+  }
+  return sub[name] === 'ok';
+}
+function v4(path) {
+  const pkg = V4[path]; if (!pkg) return null;
+  if (pkg === 'main') return get(path);
+  if (!subReady(pkg)) return null;
+  const key = SUB_ROOT[pkg] + path; const im = imgs[key]; if (im) return im;
+  if (platform && !asked[key]) { asked[key] = true; platform.loadImage(key, function (m) { if (m && m.width) imgs[key] = m; }); }
+  return null;
+}
 // draw a V4 sprite centred at (x, y), `size` logical units wide; false if not (yet) available
 function v4draw(ctx, path, x, y, size) { const im = v4(path); if (!im) return false; const h = size * im.height / im.width; ctx.drawImage(im, x - size / 2, y - h / 2, size, h); return true; }
+function preloadV4(paths) { for (let i = 0; i < paths.length; i++) v4(paths[i]); }
+// an offscreen canvas (tinting); null when the platform has none
+function canvas(w, h) { if (!platform || typeof platform.createCanvas !== 'function') return null; const c = platform.createCanvas(); if (!c || !c.getContext) return null; c.width = w; c.height = h; return c; }
 
 // ─── drawing helpers ───
 // draw one atlas cell centred at (x, y) with size w x h
@@ -122,6 +270,6 @@ function nine(ctx, im, sl, iw, ih, x, y, w, h, k) {
 }
 
 module.exports = {
-  init, enabled, get, v4, v4draw, V4, getBg, preload, preloadFoods, foodPath, FOOD_SIZE, STREAMERS, STREAMER_K, FACE_IMG, FACE, FACE_EYES_AT, FACE_MOUTH_AT, FACE_FX_AT, EXPR,
+  init, enabled, get, v4, v4draw, V4, preloadV4, subReady, canvas, getBg, preload, preloadFoods, foodPath, FOOD_SIZE, STREAMERS, STREAMER_K, FACE_IMG, FACE, FACE_EYES_AT, FACE_MOUTH_AT, FACE_FX_AT, EXPR,
   ICONS, REACTIONS, AVATARS, STORE, UI, BG_W, BG_H, cell, atlas, cover, nine
 };

@@ -45,7 +45,9 @@ function colorOf(dish) { const r = RECIPES[dish.recipe]; const o = r.taste === '
 function toppingSlot(recipe) { return recipe === 'ramen' ? 'ramen_top' : recipe === 'boba' ? 'boba_top' : 'topping'; }
 function dishName(dish) { const r = RECIPES[dish.recipe]; const o = r.taste === 'broth' ? opt('broth', dish.broth) : opt('flavor', dish.flavor); return (o ? o.name + ' ' : '') + r.name; }
 
-// ── vector renderer ──
+// ── renderer: vector, with art V4 layers when they are loaded (setArt, see cookart.js) ──
+let ART = null;
+function setArt(a) { ART = a; }
 // st: { fill 0..1, set bool (jelly set), flipped bool, tops n placed, deco 0..1, portion bool (small, plated) }
 function draw(ctx, A, dish, x, y, size, st) {
   st = st || {}; const R = RECIPES[dish.recipe]; const s = size / 100; const col = colorOf(dish);
@@ -55,7 +57,7 @@ function draw(ctx, A, dish, x, y, size, st) {
   const plate = function () { A.ellipse(ctx, 0, 34, 50, 13, '#e9f3ff', 4); A.ellipse(ctx, 0, 33, 38, 8, '#f8fbff', 0); };
   const tops = st.tops === undefined ? 3 : st.tops, deco = st.deco === undefined ? 1 : st.deco;
   const topOpt = opt(toppingSlot(dish.recipe), dish.topping), decoOpt = opt('deco', dish.deco);
-  const drawTop = function (tx, ty, k) { if (!topOpt) return; const c = topOpt.color, id = topOpt.id, r = 7 * (k || 1);
+  const drawTop = function (tx, ty, k) { if (!topOpt) return; if (ART && ART.top(ctx, topOpt.id, tx, ty, 24 * (k || 1))) return; const c = topOpt.color, id = topOpt.id, r = 7 * (k || 1);
     if (id === 'cherry') { ctx.strokeStyle = '#4a7a3a'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(tx, ty - r); ctx.quadraticCurveTo(tx + 4, ty - r * 2.2, tx + 8, ty - r * 2.4); ctx.stroke(); A.circle(ctx, tx, ty, r, c, 2.5); A.circle(ctx, tx - r * 0.35, ty - r * 0.35, r * 0.28, 'rgba(255,255,255,0.7)', 0); }
     else if (id === 'mint') { ctx.save(); ctx.translate(tx, ty); ctx.rotate(-0.5); A.ellipse(ctx, -4, 0, 7, 3.5, c, 2); A.ellipse(ctx, 4, 0, 7, 3.5, c, 2); ctx.restore(); }
     else if (id === 'cream') { A.circle(ctx, tx, ty, r * 1.2, c, 2.5); A.circle(ctx, tx, ty - r, r * 0.8, c, 2.5); }
@@ -71,7 +73,7 @@ function draw(ctx, A, dish, x, y, size, st) {
     else if (id === 'jelly_cubes' || id === 'pudding_t') { A.rr(ctx, tx - 5, ty - 5, 10, 10, 2); fs(c, 1.5); }
     else { A.circle(ctx, tx, ty, r, c, 2.5); A.circle(ctx, tx - r * 0.35, ty - r * 0.35, r * 0.28, 'rgba(255,255,255,0.6)', 0); }
   };
-  const drawDeco = function (cx, cy, w, h) { if (!decoOpt || deco <= 0) return; const n = Math.round(12 * deco); for (let i = 0; i < n; i++) { const px = cx + ((i * 37) % 100 / 100 - 0.5) * w, py = cy + ((i * 61) % 100 / 100 - 0.5) * h; const id = decoOpt.id;
+  const drawDeco = function (cx, cy, w, h) { if (!decoOpt || deco <= 0) return; if (ART && ART.deco(ctx, decoOpt.id, cx, cy, w, h, deco)) return; const n = Math.round(12 * deco); for (let i = 0; i < n; i++) { const px = cx + ((i * 37) % 100 / 100 - 0.5) * w, py = cy + ((i * 61) % 100 / 100 - 0.5) * h; const id = decoOpt.id;
     if (id === 'hearts') A.heart(ctx, px, py, 3, decoOpt.color, 0); else if (id === 'stars' || id === 'gold') A.star(ctx, px, py, 2.6, decoOpt.color, 0); else if (id === 'sprinkles') { ctx.save(); ctx.translate(px, py); ctx.rotate(i); ctx.fillStyle = ['#ff7fa8', '#7fd4ff', '#ffe066', '#9fe37a'][i % 4]; ctx.fillRect(-3, -1, 6, 2.2); ctx.restore(); } else A.circle(ctx, px, py, 1.8, decoOpt.color, 0); } };
   const moldPath = function (m, w, h, oy) { ctx.beginPath();
     if (m === 'star') { for (let i = 0; i < 10; i++) { const a = -Math.PI / 2 + i * Math.PI / 5, rr = i % 2 ? w * 0.6 : w; ctx.lineTo(Math.cos(a) * rr, oy + Math.sin(a) * h * 0.55 + h * 0.15); } ctx.closePath(); }
@@ -81,7 +83,9 @@ function draw(ctx, A, dish, x, y, size, st) {
     else if (m === 'crown') { ctx.moveTo(-w, oy + h * 0.5); ctx.lineTo(-w, oy - h * 0.3); ctx.lineTo(-w * 0.5, oy); ctx.lineTo(0, oy - h * 0.5); ctx.lineTo(w * 0.5, oy); ctx.lineTo(w, oy - h * 0.3); ctx.lineTo(w, oy + h * 0.5); ctx.closePath(); }
     else { ctx.moveTo(-w, oy + h * 0.5); ctx.quadraticCurveTo(-w, oy - h * 0.7, 0, oy - h * 0.7); ctx.quadraticCurveTo(w, oy - h * 0.7, w, oy + h * 0.5); ctx.closePath(); } };
   const c = R.container;
-  if (c === 'mold') {
+  if (c === 'mold' && ART && ART.jelly(ctx, dish, st, col, shade(col, 0.25), plate)) {
+    if (st.flipped) { drawDeco(0, -14, 56, 34); for (let i = 0; i < Math.min(tops, 3); i++) drawTop([0, -15, 15][i], -34 + [0, 8, 8][i], 1); }
+  } else if (c === 'mold') {
     // before flip: the mould (container) with liquid; after flip: the set jelly on a plate
     if (!st.flipped) {
       ctx.save(); ctx.scale(1, -1); moldPath(dish.mold || 'dome', 38, 50, 4); ctx.restore(); fs('rgba(255,255,255,0.85)', 4);
@@ -165,4 +169,4 @@ function drawTopOnly(ctx, A, slot, o) {
   else A.circle(ctx, 0, 0, 6.5, c, 1.5);
 }
 
-module.exports = { OPT, OPT_BY, opt, options, RECIPES, tasteOf, colorOf, toppingSlot, dishName, draw, drawOption };
+module.exports = { setArt, OPT, OPT_BY, opt, options, RECIPES, tasteOf, colorOf, toppingSlot, dishName, draw, drawOption };

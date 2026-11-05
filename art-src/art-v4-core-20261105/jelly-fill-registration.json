@@ -1,0 +1,104 @@
+[
+  {
+    "path": "cook/jelly_dome_fill.png",
+    "reference": "cook/mold_dome.png",
+    "sourceBounds": [
+      170,
+      160,
+      258,
+      137
+    ],
+    "cavityBounds": [
+      170,
+      160,
+      258,
+      137
+    ],
+    "operation": "Technical resampling and placement into measured original mould opening; generated artwork retained"
+  },
+  {
+    "path": "cook/jelly_star_fill.png",
+    "reference": "cook/mold_star.png",
+    "sourceBounds": [
+      122,
+      146,
+      355,
+      270
+    ],
+    "cavityBounds": [
+      146,
+      167,
+      308,
+      211
+    ],
+    "operation": "Technical resampling and placement into measured original mould opening; generated artwork retained"
+  },
+  {
+    "path": "cook/jelly_heart_fill.png",
+    "reference": "cook/mold_heart.png",
+    "sourceBounds": [
+      98,
+      159,
+      402,
+      251
+    ],
+    "cavityBounds": [
+      114,
+      166,
+      372,
+      217
+    ],
+    "operation": "Technical resampling and placement into measured original mould opening; generated artwork retained"
+  },
+  {
+    "path": "cook/jelly_flower_fill.png",
+    "reference": "cook/mold_flower.png",
+    "sourceBounds": [
+      133,
+      167,
+      329,
+      243
+    ],
+    "cavityBounds": [
+      147,
+      181,
+      298,
+      200
+    ],
+    "operation": "Technical resampling and placement into measured original mould opening; generated artwork retained"
+  },
+  {
+    "path": "cook/jelly_bunny_fill.png",
+    "reference": "cook/mold_bunny.png",
+    "sourceBounds": [
+      131,
+      127,
+      336,
+      298
+    ],
+    "cavityBounds": [
+      151,
+      148,
+      291,
+      252
+    ],
+    "operation": "Technical resampling and placement into measured original mould opening; generated artwork retained"
+  },
+  {
+    "path": "cook/jelly_crown_fill.png",
+    "reference": "cook/mold_crown.png",
+    "sourceBounds": [
+      116,
+      163,
+      368,
+      209
+    ],
+    "cavityBounds": [
+      145,
+      185,
+      309,
+      169
+    ],
+    "operation": "Technical resampling and placement into measured original mould opening; generated artwork retained"
+  }
+]

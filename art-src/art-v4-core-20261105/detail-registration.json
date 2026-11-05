@@ -1,0 +1,206 @@
+[
+  {
+    "path": "cook/jelly_dome_detail.png",
+    "reference": "cook/jelly_dome_fill.png",
+    "sourceBounds": [
+      142,
+      214,
+      316,
+      172
+    ],
+    "registeredBounds": [
+      170,
+      160,
+      258,
+      137
+    ],
+    "operation": "Technical bounding-box registration of generated contour to matching fill; no new drawing"
+  },
+  {
+    "path": "cook/jelly_dome_out_detail.png",
+    "reference": "cook/jelly_dome_out_fill.png",
+    "sourceBounds": [
+      114,
+      138,
+      370,
+      322
+    ],
+    "registeredBounds": [
+      117,
+      140,
+      366,
+      320
+    ],
+    "operation": "Technical bounding-box registration of generated contour to matching fill; no new drawing"
+  },
+  {
+    "path": "cook/jelly_star_detail.png",
+    "reference": "cook/jelly_star_fill.png",
+    "sourceBounds": [
+      120,
+      144,
+      359,
+      278
+    ],
+    "registeredBounds": [
+      146,
+      167,
+      308,
+      211
+    ],
+    "operation": "Technical bounding-box registration of generated contour to matching fill; no new drawing"
+  },
+  {
+    "path": "cook/jelly_star_out_detail.png",
+    "reference": "cook/jelly_star_out_fill.png",
+    "sourceBounds": [
+      111,
+      135,
+      376,
+      336
+    ],
+    "registeredBounds": [
+      112,
+      135,
+      375,
+      335
+    ],
+    "operation": "Technical bounding-box registration of generated contour to matching fill; no new drawing"
+  },
+  {
+    "path": "cook/jelly_heart_detail.png",
+    "reference": "cook/jelly_heart_fill.png",
+    "sourceBounds": [
+      95,
+      157,
+      406,
+      254
+    ],
+    "registeredBounds": [
+      114,
+      166,
+      372,
+      217
+    ],
+    "operation": "Technical bounding-box registration of generated contour to matching fill; no new drawing"
+  },
+  {
+    "path": "cook/jelly_heart_out_detail.png",
+    "reference": "cook/jelly_heart_out_fill.png",
+    "sourceBounds": [
+      82,
+      137,
+      433,
+      350
+    ],
+    "registeredBounds": [
+      84,
+      138,
+      432,
+      351
+    ],
+    "operation": "Technical bounding-box registration of generated contour to matching fill; no new drawing"
+  },
+  {
+    "path": "cook/jelly_flower_detail.png",
+    "reference": "cook/jelly_flower_fill.png",
+    "sourceBounds": [
+      131,
+      166,
+      333,
+      246
+    ],
+    "registeredBounds": [
+      147,
+      181,
+      298,
+      200
+    ],
+    "operation": "Technical bounding-box registration of generated contour to matching fill; no new drawing"
+  },
+  {
+    "path": "cook/jelly_flower_out_detail.png",
+    "reference": "cook/jelly_flower_out_fill.png",
+    "sourceBounds": [
+      119,
+      154,
+      359,
+      320
+    ],
+    "registeredBounds": [
+      119,
+      155,
+      358,
+      318
+    ],
+    "operation": "Technical bounding-box registration of generated contour to matching fill; no new drawing"
+  },
+  {
+    "path": "cook/jelly_bunny_detail.png",
+    "reference": "cook/jelly_bunny_fill.png",
+    "sourceBounds": [
+      128,
+      126,
+      341,
+      301
+    ],
+    "registeredBounds": [
+      151,
+      148,
+      291,
+      252
+    ],
+    "operation": "Technical bounding-box registration of generated contour to matching fill; no new drawing"
+  },
+  {
+    "path": "cook/jelly_bunny_out_detail.png",
+    "reference": "cook/jelly_bunny_out_fill.png",
+    "sourceBounds": [
+      121,
+      118,
+      356,
+      361
+    ],
+    "registeredBounds": [
+      123,
+      118,
+      353,
+      362
+    ],
+    "operation": "Technical bounding-box registration of generated contour to matching fill; no new drawing"
+  },
+  {
+    "path": "cook/jelly_crown_detail.png",
+    "reference": "cook/jelly_crown_fill.png",
+    "sourceBounds": [
+      115,
+      164,
+      370,
+      210
+    ],
+    "registeredBounds": [
+      145,
+      185,
+      309,
+      169
+    ],
+    "operation": "Technical bounding-box registration of generated contour to matching fill; no new drawing"
+  },
+  {
+    "path": "cook/jelly_crown_out_detail.png",
+    "reference": "cook/jelly_crown_out_fill.png",
+    "sourceBounds": [
+      106,
+      160,
+      386,
+      291
+    ],
+    "registeredBounds": [
+      109,
+      162,
+      381,
+      288
+    ],
+    "operation": "Technical bounding-box registration of generated contour to matching fill; no new drawing"
+  }
+]

@@ -1,0 +1,17 @@
+{
+  "path": "cook/tool_bottle_pour_fill.png",
+  "reference": "cook/tool_bottle_pour_0.png",
+  "sourceBounds": [
+    56,
+    118,
+    110,
+    67
+  ],
+  "liquidBounds": [
+    57,
+    119,
+    76,
+    48
+  ],
+  "operation": "Resample generated fill into measured amber liquid region; no new drawing"
+}

@@ -98,6 +98,12 @@ function makePlatform() {
     vibrate: function (kind) { try { if (kind === 'long') tt.vibrateLong({}); else tt.vibrateShort({}); } catch (e) { /* optional */ } },
     createAudioContext: function () { return tt.createWebAudioContext(); },
     createCanvas: function () { return tt.createCanvas(); },
+    // TikTok subpackages (game.json → subpackages): the web shim has none, there everything is already in the page
+    loadSubpackage: function (name, done) {
+      // feature-detect with `in` (no property read): the Android app runtime has no subpackages, its package holds every file
+      if (!('loadSubpackage' in tt)) { done(true); return; }
+      try { tt.loadSubpackage({ name: name, success: function () { done(true); }, fail: function () { done(false); } }); } catch (e) { done(false); }
+    },
     // tester tools (unlock all levels): only the web / artifact build defines __HS_DEV — never the TikTok package
     devTools: typeof __HS_DEV !== 'undefined' && __HS_DEV === true,
     // Bitmap art: a path inside the game package (assets/...). The single-file
