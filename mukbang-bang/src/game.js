@@ -233,6 +233,8 @@ class Game {
       case 'bonus_ad': this.watchBonus(); break;
       case 'cook_go': if (this.state === 'stream' && this.run && this.run.phase === 'request') this.enterCook(); break;
       case 'fangift_ad': this.watchFanGift(); break;
+      case 'gift_watch': this.watchFanGift(); break;
+      case 'gift_no': if (this.run) this.run.giftAsk = false; break;
       case 'hype_ad': this.watchHype(); break;
       case 'req_home': if (this.run) this.saveRun(); this.setState('home'); break;
       case 'feat_block': break;
@@ -333,9 +335,9 @@ class Game {
   }
   // fan gift: a rewarded ad offered between pickups on the stream (never while chewing), once per stream
   watchFanGift() {
-    const r = this.run; if (this.adBusy || !r || r.giftAd || r.phase !== 'open' || !this.canFanGift()) return;
-    const self = this; r.giftAd = true;
-    this.adRun('fan_gift', this.hs.showFanGift(), function (res) { if (res === null) { if (self.run) self.run.giftAd = false; self.showToast('No ad right now'); return; } self.spawnConfetti(self.W / 2, self.H * 0.3, 30); self.audio.play('cash'); for (let i = 0; i < 8; i++) self.spawnHeart(true); self.saveRun(); });
+    const r = this.run; if (this.adBusy || !r || r.giftAd || r.phase === 'finale' || !this.canFanGift()) return;
+    const self = this; r.giftAd = true; r.giftAsk = false; r.bal = null;
+    this.adRun('fan_gift', this.hs.showFanGift(), function (res) { if (self.run) self.run.giftAd = false; if (res === null) { self.showToast('No ad right now'); return; } self.spawnConfetti(self.W / 2, self.H * 0.3, 30); self.audio.play('cash'); for (let i = 0; i < 8; i++) self.spawnHeart(true); self.saveRun(); });
   }
   watchHype() {
     const r = this.run; if (this.adBusy || !r || r.hyped || r.phase !== 'open' || !this.canHype()) return;

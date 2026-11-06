@@ -273,8 +273,10 @@ seed(5);
   await eatAll(g, p, 'tap'); clk = 100; await tap(g, p, 'next'); check('interstitial at NEXT after stream 4 (a tap, a natural transition)', hs.ads.filter(a => a === 'stream_end').length === 1, hs.ads);
   await tap(g, p, 'cook_go'); await cookAll(g, p); const fp = foodPos(g); touchAt(g, p, fp.x, fp.y); run(g, 0.6);
   check('no ad button while chewing', !hasBtn(g, 'fangift_ad') && !hasBtn(g, 'bonus_ad'));
-  runUntil(g, () => g.run.phase === 'open', 8); check('fan gift offered between portions', hasBtn(g, 'fangift_ad'));
-  const c0 = prof.get('coins'); await tap(g, p, 'fangift_ad'); await flush(); run(g, 0.1); check('fan gift ad → coins from the SDK reward, offered once', prof.get('coins') === c0 + 300 && !hasBtn(g, 'fangift_ad'));
+  runUntil(g, () => g.run.phase === 'open', 8); check('no fan gift before the balloons come', !hasBtn(g, 'fangift_ad') && !g.run.bal);
+  g.run.balT = 1000; run(g, 0.1); check('fan gift balloons cross the table (with the GET offer)', !!g.run.bal && hasBtn(g, 'fangift_ad'));
+  { const b = g.balloonPos(); touchAt(g, p, b.x, b.y - 40); run(g, 1 / 60); check('tapping the balloons opens the opt-in card, no ad yet', g.run.giftAsk && hasBtn(g, 'gift_watch') && hs.ads.filter(a => a === 'fan_gift').length === 0); await tap(g, p, 'gift_no'); check('no thanks closes the card', !g.run.giftAsk); g.run.balT = 1000; run(g, 0.1); }
+  const c0 = prof.get('coins'); await tap(g, p, 'fangift_ad'); await flush(); run(g, 0.1); check('fan gift ad → coins from the SDK reward; balloons leave', prof.get('coins') === c0 + 300 && !hasBtn(g, 'fangift_ad') && !g.run.bal);
   for (let k = 0; k < 2; k++) { runUntil(g, () => g.run.phase === 'open', 8); const q = foodPos(g); touchAt(g, p, q.x, q.y); } runUntil(g, () => g.state === 'result', 12);
   clk = 110; await tap(g, p, 'next');
  check('cooldown: within 30 s the game does not even ask for an interstitial', hs.ads.filter(a => a === 'stream_end').length === 1 && JSON.parse(prof.get('ad_stats')).stream_end.req === 1 && g.state === 'stream', hs.ads);
