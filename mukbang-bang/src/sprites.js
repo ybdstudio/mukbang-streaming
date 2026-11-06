@@ -17,7 +17,7 @@ function init(p) { platform = p && typeof p.loadImage === 'function' ? p : null;
 function enabled() { return !!platform; }
 
 // paths that live in a TikTok subpackage (game.json → subpackages); loaded once the subpackage is in
-const SUB_OF = [['food/', 'art1'], ['food3/', 'art3']];
+const SUB_OF = [['food/', 'art1'], ['food3/', 'art3'], ['bg/view_', 'art3']];
 function subOf(path) { for (let i = 0; i < SUB_OF.length; i++) if (path.indexOf(SUB_OF[i][0]) === 0) return SUB_OF[i][1]; return null; }
 function request(path) {
   if (!platform || asked[path]) return;
@@ -119,6 +119,10 @@ const V4 = {};
   'cook/deco_snow.png',
   'cook/deco_sprinkles.png',
   'cook/deco_stars.png',
+  'cook/fx_cold.png',
+  'cook/fx_pour.png',
+  'cook/fx_sparkle.png',
+  'cook/fx_steam.png',
   'cook/ok.png',
   'cook/opt_boba_top_jelly_cubes.png',
   'cook/opt_boba_top_pearls.png',
@@ -299,7 +303,46 @@ const V4 = {};
   'cook/ramen_broth_fill.png',
   'cook/ramen_chopsticks.png',
   'cook/ramen_noodles.png',
-  'cook/ramen_steam.png'
+  'cook/ramen_steam.png',
+  'bite/bingsu_spoon_0_detail.png',
+  'bite/bingsu_spoon_0_fill.png',
+  'bite/bingsu_spoon_1_detail.png',
+  'bite/bingsu_spoon_1_fill.png',
+  'bite/bingsu_spoon_2_detail.png',
+  'bite/bingsu_spoon_2_fill.png',
+  'bite/cupcake_bite_0_detail.png',
+  'bite/cupcake_bite_0_fill.png',
+  'bite/cupcake_bite_1_detail.png',
+  'bite/cupcake_bite_1_fill.png',
+  'bite/cupcake_bite_2_detail.png',
+  'bite/cupcake_bite_2_fill.png',
+  'bite/donut_bite_0_detail.png',
+  'bite/donut_bite_0_fill.png',
+  'bite/donut_bite_1_detail.png',
+  'bite/donut_bite_1_fill.png',
+  'bite/donut_bite_2_detail.png',
+  'bite/donut_bite_2_fill.png',
+  'bite/jelly_spoon_0_detail.png',
+  'bite/jelly_spoon_0_fill.png',
+  'bite/jelly_spoon_1_detail.png',
+  'bite/jelly_spoon_1_fill.png',
+  'bite/jelly_spoon_2_detail.png',
+  'bite/jelly_spoon_2_fill.png',
+  'bite/parfait_spoon_0_detail.png',
+  'bite/parfait_spoon_0_fill.png',
+  'bite/parfait_spoon_1_detail.png',
+  'bite/parfait_spoon_1_fill.png',
+  'bite/parfait_spoon_2_detail.png',
+  'bite/parfait_spoon_2_fill.png',
+  'bite/pudding_spoon_0_detail.png',
+  'bite/pudding_spoon_0_fill.png',
+  'bite/pudding_spoon_1_detail.png',
+  'bite/pudding_spoon_1_fill.png',
+  'bite/pudding_spoon_2_detail.png',
+  'bite/pudding_spoon_2_fill.png',
+  'bite/ramen_chopsticks_0.png',
+  'bite/ramen_chopsticks_1.png',
+  'bite/ramen_chopsticks_2.png'
 ].forEach(function (p) { V4[p] = 'art4'; });
 const SUB_ROOT = { art4: 'art4/', art3: 'art3/', art1: 'art1/' };
 const sub = {};     // name → 'loading' | 'ok' | 'fail'

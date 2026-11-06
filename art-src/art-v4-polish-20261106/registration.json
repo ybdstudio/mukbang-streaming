@@ -1,0 +1,506 @@
+[
+  {
+    "id": "jelly_spoon_0",
+    "anchor": [
+      200,
+      200
+    ],
+    "canvas": [
+      400,
+      400
+    ],
+    "sourceBounds": [
+      358,
+      202,
+      537,
+      885
+    ],
+    "operation": "Common family union crop and shared resample across all 3 states",
+    "targetBounds": [
+      93,
+      24,
+      214,
+      352
+    ]
+  },
+  {
+    "id": "jelly_spoon_1",
+    "anchor": [
+      200,
+      200
+    ],
+    "canvas": [
+      400,
+      400
+    ],
+    "sourceBounds": [
+      358,
+      202,
+      537,
+      885
+    ],
+    "operation": "Common family union crop and shared resample across all 3 states",
+    "targetBounds": [
+      93,
+      24,
+      214,
+      352
+    ]
+  },
+  {
+    "id": "jelly_spoon_2",
+    "anchor": [
+      200,
+      200
+    ],
+    "canvas": [
+      400,
+      400
+    ],
+    "sourceBounds": [
+      358,
+      202,
+      537,
+      885
+    ],
+    "operation": "Common family union crop and shared resample across all 3 states",
+    "targetBounds": [
+      93,
+      24,
+      214,
+      352
+    ]
+  },
+  {
+    "id": "pudding_spoon_0",
+    "anchor": [
+      200,
+      200
+    ],
+    "canvas": [
+      400,
+      400
+    ],
+    "sourceBounds": [
+      349,
+      277,
+      556,
+      835
+    ],
+    "operation": "Common family union crop and shared resample across all 3 states",
+    "targetBounds": [
+      83,
+      24,
+      234,
+      352
+    ]
+  },
+  {
+    "id": "pudding_spoon_1",
+    "anchor": [
+      200,
+      200
+    ],
+    "canvas": [
+      400,
+      400
+    ],
+    "sourceBounds": [
+      349,
+      277,
+      556,
+      835
+    ],
+    "operation": "Common family union crop and shared resample across all 3 states",
+    "targetBounds": [
+      83,
+      24,
+      234,
+      352
+    ]
+  },
+  {
+    "id": "pudding_spoon_2",
+    "anchor": [
+      200,
+      200
+    ],
+    "canvas": [
+      400,
+      400
+    ],
+    "sourceBounds": [
+      349,
+      277,
+      556,
+      835
+    ],
+    "operation": "Common family union crop and shared resample across all 3 states",
+    "targetBounds": [
+      83,
+      24,
+      234,
+      352
+    ]
+  },
+  {
+    "id": "cupcake_bite_0",
+    "anchor": [
+      200,
+      200
+    ],
+    "canvas": [
+      400,
+      400
+    ],
+    "sourceBounds": [
+      374,
+      134,
+      505,
+      694
+    ],
+    "operation": "Common family union crop and shared resample across all 3 states",
+    "targetBounds": [
+      72,
+      24,
+      256,
+      352
+    ]
+  },
+  {
+    "id": "cupcake_bite_1",
+    "anchor": [
+      200,
+      200
+    ],
+    "canvas": [
+      400,
+      400
+    ],
+    "sourceBounds": [
+      374,
+      134,
+      505,
+      694
+    ],
+    "operation": "Common family union crop and shared resample across all 3 states",
+    "targetBounds": [
+      72,
+      24,
+      256,
+      352
+    ]
+  },
+  {
+    "id": "cupcake_bite_2",
+    "anchor": [
+      200,
+      200
+    ],
+    "canvas": [
+      400,
+      400
+    ],
+    "sourceBounds": [
+      374,
+      134,
+      505,
+      694
+    ],
+    "operation": "Common family union crop and shared resample across all 3 states",
+    "targetBounds": [
+      72,
+      24,
+      256,
+      352
+    ]
+  },
+  {
+    "id": "donut_bite_0",
+    "anchor": [
+      200,
+      200
+    ],
+    "canvas": [
+      400,
+      400
+    ],
+    "sourceBounds": [
+      309,
+      229,
+      622,
+      619
+    ],
+    "operation": "Common family union crop and shared resample across all 3 states",
+    "targetBounds": [
+      40,
+      58,
+      320,
+      318
+    ]
+  },
+  {
+    "id": "donut_bite_1",
+    "anchor": [
+      200,
+      200
+    ],
+    "canvas": [
+      400,
+      400
+    ],
+    "sourceBounds": [
+      309,
+      229,
+      622,
+      619
+    ],
+    "operation": "Common family union crop and shared resample across all 3 states",
+    "targetBounds": [
+      40,
+      58,
+      320,
+      318
+    ]
+  },
+  {
+    "id": "donut_bite_2",
+    "anchor": [
+      200,
+      200
+    ],
+    "canvas": [
+      400,
+      400
+    ],
+    "sourceBounds": [
+      309,
+      229,
+      622,
+      619
+    ],
+    "operation": "Common family union crop and shared resample across all 3 states",
+    "targetBounds": [
+      40,
+      58,
+      320,
+      318
+    ]
+  },
+  {
+    "id": "parfait_spoon_0",
+    "anchor": [
+      200,
+      200
+    ],
+    "canvas": [
+      400,
+      400
+    ],
+    "sourceBounds": [
+      407,
+      167,
+      429,
+      1002
+    ],
+    "operation": "Common family union crop and shared resample across all 3 states",
+    "targetBounds": [
+      124,
+      24,
+      151,
+      352
+    ]
+  },
+  {
+    "id": "parfait_spoon_1",
+    "anchor": [
+      200,
+      200
+    ],
+    "canvas": [
+      400,
+      400
+    ],
+    "sourceBounds": [
+      407,
+      167,
+      429,
+      1002
+    ],
+    "operation": "Common family union crop and shared resample across all 3 states",
+    "targetBounds": [
+      124,
+      24,
+      151,
+      352
+    ]
+  },
+  {
+    "id": "parfait_spoon_2",
+    "anchor": [
+      200,
+      200
+    ],
+    "canvas": [
+      400,
+      400
+    ],
+    "sourceBounds": [
+      407,
+      167,
+      429,
+      1002
+    ],
+    "operation": "Common family union crop and shared resample across all 3 states",
+    "targetBounds": [
+      124,
+      24,
+      151,
+      352
+    ]
+  },
+  {
+    "id": "bingsu_spoon_0",
+    "anchor": [
+      200,
+      200
+    ],
+    "canvas": [
+      400,
+      400
+    ],
+    "sourceBounds": [
+      384,
+      214,
+      485,
+      863
+    ],
+    "operation": "Common family union crop and shared resample across all 3 states",
+    "targetBounds": [
+      101,
+      24,
+      198,
+      352
+    ]
+  },
+  {
+    "id": "bingsu_spoon_1",
+    "anchor": [
+      200,
+      200
+    ],
+    "canvas": [
+      400,
+      400
+    ],
+    "sourceBounds": [
+      384,
+      214,
+      485,
+      863
+    ],
+    "operation": "Common family union crop and shared resample across all 3 states",
+    "targetBounds": [
+      101,
+      24,
+      198,
+      352
+    ]
+  },
+  {
+    "id": "bingsu_spoon_2",
+    "anchor": [
+      200,
+      200
+    ],
+    "canvas": [
+      400,
+      400
+    ],
+    "sourceBounds": [
+      384,
+      214,
+      485,
+      863
+    ],
+    "operation": "Common family union crop and shared resample across all 3 states",
+    "targetBounds": [
+      101,
+      24,
+      198,
+      352
+    ]
+  },
+  {
+    "id": "ramen_chopsticks_0",
+    "anchor": [
+      200,
+      200
+    ],
+    "canvas": [
+      400,
+      400
+    ],
+    "sourceBounds": [
+      157,
+      215,
+      1017,
+      696
+    ],
+    "operation": "Common family union crop and shared resample across all 3 states",
+    "targetBounds": [
+      40,
+      157,
+      320,
+      219
+    ]
+  },
+  {
+    "id": "ramen_chopsticks_1",
+    "anchor": [
+      200,
+      200
+    ],
+    "canvas": [
+      400,
+      400
+    ],
+    "sourceBounds": [
+      157,
+      215,
+      1017,
+      696
+    ],
+    "operation": "Common family union crop and shared resample across all 3 states",
+    "targetBounds": [
+      40,
+      157,
+      320,
+      219
+    ]
+  },
+  {
+    "id": "ramen_chopsticks_2",
+    "anchor": [
+      200,
+      200
+    ],
+    "canvas": [
+      400,
+      400
+    ],
+    "sourceBounds": [
+      157,
+      215,
+      1017,
+      696
+    ],
+    "operation": "Common family union crop and shared resample across all 3 states",
+    "targetBounds": [
+      40,
+      157,
+      320,
+      219
+    ]
+  }
+]

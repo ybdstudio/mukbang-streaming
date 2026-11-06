@@ -1,0 +1,58 @@
+[
+  {
+    "frames": 4,
+    "order": "left-to-right",
+    "frameSize": [
+      128,
+      128
+    ],
+    "id": "fx_steam",
+    "canvas": [
+      512,
+      128
+    ],
+    "operation": "Four equal source cells, aspect-preserving resample into 128px cells"
+  },
+  {
+    "frames": 4,
+    "order": "left-to-right",
+    "frameSize": [
+      128,
+      128
+    ],
+    "id": "fx_cold",
+    "canvas": [
+      512,
+      128
+    ],
+    "operation": "Four equal source cells, aspect-preserving resample into 128px cells"
+  },
+  {
+    "frames": 4,
+    "order": "left-to-right",
+    "frameSize": [
+      128,
+      128
+    ],
+    "id": "fx_pour",
+    "canvas": [
+      512,
+      128
+    ],
+    "operation": "Four equal source cells, aspect-preserving resample into 128px cells"
+  },
+  {
+    "frames": 4,
+    "order": "left-to-right",
+    "frameSize": [
+      128,
+      128
+    ],
+    "id": "fx_sparkle",
+    "canvas": [
+      512,
+      128
+    ],
+    "operation": "Four equal source cells, aspect-preserving resample into 128px cells"
+  }
+]

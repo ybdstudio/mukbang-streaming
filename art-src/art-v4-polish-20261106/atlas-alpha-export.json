@@ -1,0 +1,22 @@
+[
+  {
+    "id": "fx_steam",
+    "removedPixels": 5900,
+    "operation": "Technical alpha matte export: flood-connected near-white background and isolated cell-edge slivers only; source retained"
+  },
+  {
+    "id": "fx_cold",
+    "removedPixels": 6095,
+    "operation": "Technical alpha matte export: flood-connected near-white background and isolated cell-edge slivers only; source retained"
+  },
+  {
+    "id": "fx_pour",
+    "removedPixels": 2023,
+    "operation": "Technical alpha matte export: flood-connected near-white background and isolated cell-edge slivers only; source retained"
+  },
+  {
+    "id": "fx_sparkle",
+    "removedPixels": 40251,
+    "operation": "Technical alpha matte export: flood-connected near-white background and isolated cell-edge slivers only; source retained"
+  }
+]

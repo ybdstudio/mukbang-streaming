@@ -16,11 +16,12 @@ const cache = {}; let order = [];
 function tinted(path, color, cap) {
   const key = path + '|' + color + '|' + (cap || ''); if (cache[key]) return cache[key];
   const im = S.v4(path); if (!im) return null;
-  const c = S.canvas(TINT_N, TINT_N); if (!c) return null; const x = c.getContext('2d'); if (!x) return null;
-  x.drawImage(im, 0, 0, TINT_N, TINT_N);
-  x.globalCompositeOperation = 'multiply'; x.fillStyle = color; x.fillRect(0, 0, TINT_N, TINT_N);
-  x.globalCompositeOperation = 'destination-in'; x.drawImage(im, 0, 0, TINT_N, TINT_N);
-  if (cap) { const k = TINT_N / 600; x.globalCompositeOperation = 'source-atop'; x.fillStyle = 'rgba(138,74,24,0.9)'; x.fillRect(0, 0, TINT_N, (cap[1] + cap[3] * 0.24) * k); }
+  const tw = im.width === im.height ? TINT_N : im.width, th = im.width === im.height ? TINT_N : im.height;
+  const c = S.canvas(tw, th); if (!c) return null; const x = c.getContext('2d'); if (!x) return null;
+  x.drawImage(im, 0, 0, tw, th);
+  x.globalCompositeOperation = 'multiply'; x.fillStyle = color; x.fillRect(0, 0, tw, th);
+  x.globalCompositeOperation = 'destination-in'; x.drawImage(im, 0, 0, tw, th);
+  if (cap) { const k = tw / 600; x.globalCompositeOperation = 'source-atop'; x.fillStyle = 'rgba(138,74,24,0.9)'; x.fillRect(0, 0, tw, (cap[1] + cap[3] * 0.24) * k); }
   x.globalCompositeOperation = 'source-over';
   cache[key] = c; order.push(key); if (order.length > 18) delete cache[order.shift()];
   return c;
@@ -156,6 +157,20 @@ function bottle(ctx, color, x, y, size, pouring) {
   ctx.save(); ctx.translate(x, y); ctx.scale(-1, 1); ctx.drawImage(im, -size / 2, -size / 2, size, size); if (fill) ctx.drawImage(fill, -size / 2, -size / 2, size, size); ctx.restore();
   return { x: x - size * 64 / 240, y: y + size * 38 / 240 };
 }
+// ── bites at her mouth (art4/bite, 400 px, 3 states: whole / bitten / last bite) ──
+const BITE = { jelly: 'jelly_spoon', pudding: 'pudding_spoon', cupcake: 'cupcake_bite', donut: 'donut_bite', parfait: 'parfait_spoon', bingsu: 'bingsu_spoon' };
+function bite(ctx, recipe, color, k, x, y, size) {
+  if (recipe === 'ramen') return S.v4draw(ctx, 'bite/ramen_chopsticks_' + k + '.png', x, y, size);
+  const fam = BITE[recipe]; if (!fam) return false;
+  const det = S.v4('bite/' + fam + '_' + k + '_detail.png'), fill = tinted('bite/' + fam + '_' + k + '_fill.png', color, null); if (!det || !fill) return false;
+  ctx.drawImage(fill, x - size / 2, y - size / 2, size, size); ctx.drawImage(det, x - size / 2, y - size / 2, size, size); return true;
+}
+// ── cooking FX: 4-frame atlases 512×128 (steam / cold / pour / sparkle); pour is grey → tinted ──
+function fx(ctx, name, t, x, y, size, color, alpha) {
+  const im = color ? tinted('cook/' + name + '.png', color, null) : S.v4('cook/' + name + '.png'); if (!im) return false;
+  const fw = im.width / 4, f = Math.floor(t) % 4; ctx.globalAlpha = alpha === undefined ? 1 : alpha;
+  ctx.drawImage(im, f * fw, 0, fw, im.height, x - size / 2, y - size / 2, size, size * im.height / fw); ctx.globalAlpha = 1; return true;
+}
 // UI sprites: 9-slice panels and plain sprites (manifest.next.fragment.json)
 const SLICE = { 'cook/tray.png': [520, 160, [40, 40, 440, 80]], 'cook/card.png': [220, 224, [40, 40, 140, 144]], 'cook/card_selected.png': [220, 224, [40, 40, 140, 144]],
   'cook/card_rare.png': [220, 224, [40, 40, 140, 144]], 'cook/request_card.png': [660, 116, [40, 40, 580, 36]], 'cook/btn_make.png': [480, 120, [60, 48, 360, 24]] };
@@ -165,8 +180,8 @@ function sprite(ctx, path, x, y, w) { return S.v4draw(ctx, path, x, y, w); }
 function preload(dish) {
   const list = ['cook/bg_kitchen.jpg', 'cook/tool_bottle_pour_0.png', 'cook/tool_bottle_pour_1.png', 'cook/tool_bottle_pour_fill.png'];
   ['dome', 'star', 'heart', 'flower', 'bunny', 'crown'].forEach(function (m) { list.push('cook/mold_' + m + '.png', 'cook/jelly_' + m + '_fill.png', 'cook/jelly_' + m + '_detail.png', 'cook/jelly_' + m + '_out_fill.png', 'cook/jelly_' + m + '_out_detail.png'); });
-  for (const k in S.V4) if (S.V4[k] === 'art4' || k.indexOf('cook/') === 0 || k.indexOf('stream/') === 0) list.push(k);
+  for (const k in S.V4) if (S.V4[k] === 'art4' || k.indexOf('cook/') === 0 || k.indexOf('stream/') === 0) list.push(k); // includes bite/
   S.preloadV4(list);
 }
 
-module.exports = { panel, sprite, dish, jelly, top, deco, kitchenBg, tool, bottle, tinted, preload };
+module.exports = { bite, fx, panel, sprite, dish, jelly, top, deco, kitchenBg, tool, bottle, tinted, preload };

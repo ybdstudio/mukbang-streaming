@@ -1,0 +1,602 @@
+[
+  {
+    "id": "jelly_spoon_0",
+    "source": "sources/jelly_spoon_0.png",
+    "prompt": "Use case: stylized-concept. Production transparent game sprite for Mukbang Bang, match warm brown hand drawn outlines, soft glossy pastel kawaii 2D style of attached approved PNG references. ONE spoon holding one wobbling jelly bite, no hands, no character, no plate. Spoon bowl near center, ivory pink plastic handle pointing down to bottom; jelly dome above it. Intact state 0, appetizing. Centered within square canvas with generous transparent margin, whole object fits x80..320 y50..365 on conceptual 400x400, spoon remains identical in subsequent bite states. SPECIAL LAYER EXPORT: all flavor-tintable jelly body is vivid pure CYAN (R=0,G=B, shading cyan120..235), no cyan elsewhere; white specular highlights and warm brown outlines stay normal. Spoon ivory pink (not cyan). Cyan is technical separation key, not intended final color. Transparent background genuinely alpha, no text, no shadows outside sprite.",
+    "tool": "built-in ImageGen",
+    "references": [
+      "production/assets/cook/jelly_dome_out_detail.png",
+      "mukbang-bang/assets/food/straw_cake_0.png"
+    ],
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "jelly_spoon_1",
+    "family": "jelly_spoon",
+    "k": 1,
+    "subject": "jelly dome on an ivory pink plastic spoon, flavor-tintable jelly only cyan",
+    "source": "sources/jelly_spoon_1.png",
+    "prompt": "Use case: precise-object-edit. Transparent production game sprite, one asset only. Warm brown hand drawn outline and premium kawaii pastel glossy food matching approved reference. Subject: jelly dome on an ivory pink plastic spoon, flavor-tintable jelly only cyan. State 1: one clear large rounded scalloped bite removed from TOP, about 35 percent food eaten, exposed edible cross section and two tiny crumbs. EDIT reference state0: keep exact spoon/chopstick/container/liner geometry, handle position, scale and canvas registration unchanged; change food quantity at top only. Do not shrink or reposition whole sprite. TECHNICAL LAYER KEY: flavor-tintable food regions vivid CYAN r0,g=b with cyan shading, no cyan on other parts; white highlights and brown contours remain natural. Cyan will be separated into neutral gray fill, not final color. No face, no person, no plate or bowl, no typography, no environment, transparent alpha background.",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/jelly_spoon_0.png",
+    "tool": "built-in ImageGen",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "jelly_spoon_2",
+    "family": "jelly_spoon",
+    "k": 2,
+    "subject": "jelly dome on an ivory pink plastic spoon, flavor-tintable jelly only cyan",
+    "source": "sources/jelly_spoon_2.png",
+    "prompt": "Use case: precise-object-edit. Transparent production game sprite, one asset only. Warm brown hand drawn outline and premium kawaii pastel glossy food matching approved reference. Subject: jelly dome on an ivory pink plastic spoon, flavor-tintable jelly only cyan. State 2: only LAST SMALL mouthful remains, about 25 percent original food, two obvious round bite cutouts from TOP, a couple tiny crumbs. EDIT reference state0: keep exact spoon/chopstick/container/liner geometry, handle position, scale and canvas registration unchanged; change food quantity at top only. Do not shrink or reposition whole sprite. TECHNICAL LAYER KEY: flavor-tintable food regions vivid CYAN r0,g=b with cyan shading, no cyan on other parts; white highlights and brown contours remain natural. Cyan will be separated into neutral gray fill, not final color. No face, no person, no plate or bowl, no typography, no environment, transparent alpha background.",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/jelly_spoon_0.png",
+    "tool": "built-in ImageGen",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "pudding_spoon_0",
+    "family": "pudding_spoon",
+    "k": 0,
+    "subject": "small custard pudding on an ivory pink plastic spoon, custard body only cyan, glossy brown caramel cap stays warm brown",
+    "source": "sources/pudding_spoon_0.png",
+    "prompt": "Use case: precise-object-edit. Transparent production game sprite, one asset only. Warm brown hand drawn outline and premium kawaii pastel glossy food matching approved reference. Subject: small custard pudding on an ivory pink plastic spoon, custard body only cyan, glossy brown caramel cap stays warm brown. State 0: whole intact appetizing portion. Center square canvas, generous transparent padding; conceptual400px bounding x80..320 y50..365. For spoons handle points down; for handheld cupcake/donut biting side at top, no hands. TECHNICAL LAYER KEY: flavor-tintable food regions vivid CYAN r0,g=b with cyan shading, no cyan on other parts; white highlights and brown contours remain natural. Cyan will be separated into neutral gray fill, not final color. No face, no person, no plate or bowl, no typography, no environment, transparent alpha background.",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/mukbang-bang/assets/food/straw_cake_0.png",
+    "tool": "built-in ImageGen",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "pudding_spoon_1",
+    "family": "pudding_spoon",
+    "k": 1,
+    "subject": "small custard pudding on an ivory pink plastic spoon, custard body only cyan, glossy brown caramel cap stays warm brown",
+    "source": "sources/pudding_spoon_1.png",
+    "prompt": "Use case: precise-object-edit. Transparent production game sprite, one asset only. Warm brown hand drawn outline and premium kawaii pastel glossy food matching approved reference. Subject: small custard pudding on an ivory pink plastic spoon, custard body only cyan, glossy brown caramel cap stays warm brown. State 1: one clear large rounded scalloped bite removed from TOP, about 35 percent food eaten, exposed edible cross section and two tiny crumbs. EDIT reference state0: keep exact spoon/chopstick/container/liner geometry, handle position, scale and canvas registration unchanged; change food quantity at top only. Do not shrink or reposition whole sprite. TECHNICAL LAYER KEY: flavor-tintable food regions vivid CYAN r0,g=b with cyan shading, no cyan on other parts; white highlights and brown contours remain natural. Cyan will be separated into neutral gray fill, not final color. No face, no person, no plate or bowl, no typography, no environment, transparent alpha background.",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/pudding_spoon_0.png",
+    "tool": "built-in ImageGen",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "pudding_spoon_2",
+    "family": "pudding_spoon",
+    "k": 2,
+    "subject": "small custard pudding on an ivory pink plastic spoon, custard body only cyan, glossy brown caramel cap stays warm brown",
+    "source": "sources/pudding_spoon_2.png",
+    "prompt": "Use case: precise-object-edit. Transparent production game sprite, one asset only. Warm brown hand drawn outline and premium kawaii pastel glossy food matching approved reference. Subject: small custard pudding on an ivory pink plastic spoon, custard body only cyan, glossy brown caramel cap stays warm brown. State 2: only LAST SMALL mouthful remains, about 25 percent original food, two obvious round bite cutouts from TOP, a couple tiny crumbs. EDIT reference state0: keep exact spoon/chopstick/container/liner geometry, handle position, scale and canvas registration unchanged; change food quantity at top only. Do not shrink or reposition whole sprite. TECHNICAL LAYER KEY: flavor-tintable food regions vivid CYAN r0,g=b with cyan shading, no cyan on other parts; white highlights and brown contours remain natural. Cyan will be separated into neutral gray fill, not final color. No face, no person, no plate or bowl, no typography, no environment, transparent alpha background.",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/pudding_spoon_0.png",
+    "tool": "built-in ImageGen",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "cupcake_bite_0",
+    "family": "cupcake_bite",
+    "k": 0,
+    "subject": "handheld cupcake, no hand drawn, golden cake and pink paper liner, flavor-tintable frosting only cyan",
+    "source": "sources/cupcake_bite_0.png",
+    "prompt": "Use case: precise-object-edit. Transparent production game sprite. Warm brown hand drawn outlines, premium kawaii pastel glossy food matching reference. Subject: handheld cupcake, no hand drawn, golden cake and pink paper liner, flavor-tintable frosting only cyan. State 0: whole intact appetizing portion. Center square canvas, generous transparent padding. Spoon handle down. Handheld pastry biting side up, no hands. TECHNICAL LAYER KEY: flavor-tintable regions vivid CYAN r0,g=b with cyan shading, no cyan elsewhere; white highlights and warm contours natural. Cyan will be separated into neutralgray fill, not final color. No face/person/plate/bowl/text/environment. Transparent alpha background.",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/mukbang-bang/assets/food/straw_cake_0.png",
+    "tool": "built-in ImageGen",
+    "selectionStatus": "superseded"
+  },
+  {
+    "id": "cupcake_bite_1",
+    "family": "cupcake_bite",
+    "k": 1,
+    "subject": "handheld cupcake, no hand drawn, golden cake and pink paper liner, flavor-tintable frosting only cyan",
+    "source": "sources/cupcake_bite_1.png",
+    "prompt": "Use case: precise-object-edit. Transparent production game sprite. Warm brown hand drawn outlines, premium kawaii pastel glossy food matching reference. Subject: handheld cupcake, no hand drawn, golden cake and pink paper liner, flavor-tintable frosting only cyan. State 1: one clear large rounded scalloped bite removed from TOP, about 35 percent food eaten, exposed edible cross section and two tiny crumbs. EDIT reference state0 keep EXACT utensil/liner geometry position scale and canvas registration; change food at top only. Do not shrink/reposition entire sprite. TECHNICAL LAYER KEY: flavor-tintable regions vivid CYAN r0,g=b with cyan shading, no cyan elsewhere; white highlights and warm contours natural. Cyan will be separated into neutralgray fill, not final color. No face/person/plate/bowl/text/environment. Transparent alpha background.",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/cupcake_bite_0.png",
+    "tool": "built-in ImageGen",
+    "selectionStatus": "superseded"
+  },
+  {
+    "id": "cupcake_bite_2",
+    "family": "cupcake_bite",
+    "k": 2,
+    "subject": "handheld cupcake, no hand drawn, golden cake and pink paper liner, flavor-tintable frosting only cyan",
+    "source": "sources/cupcake_bite_2.png",
+    "prompt": "Use case: precise-object-edit. Transparent production game sprite. Warm brown hand drawn outlines, premium kawaii pastel glossy food matching reference. Subject: handheld cupcake, no hand drawn, golden cake and pink paper liner, flavor-tintable frosting only cyan. State 2: only LAST SMALL mouthful remains, about25 percent original food, two obvious round bite cutouts from TOP, couple tiny crumbs. EDIT reference state0 keep EXACT utensil/liner geometry position scale and canvas registration; change food at top only. Do not shrink/reposition entire sprite. TECHNICAL LAYER KEY: flavor-tintable regions vivid CYAN r0,g=b with cyan shading, no cyan elsewhere; white highlights and warm contours natural. Cyan will be separated into neutralgray fill, not final color. No face/person/plate/bowl/text/environment. Transparent alpha background.",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/cupcake_bite_0.png",
+    "tool": "built-in ImageGen",
+    "selectionStatus": "superseded"
+  },
+  {
+    "id": "donut_bite_0",
+    "family": "donut_bite",
+    "k": 0,
+    "subject": "handheld golden fried RING donut with center hole, no hand drawn, flavor-tintable glaze only cyan",
+    "source": "sources/donut_bite_0.png",
+    "prompt": "Use case: precise-object-edit. Transparent production game sprite. Warm brown hand drawn outlines, premium kawaii pastel glossy food matching reference. Subject: handheld golden fried RING donut with center hole, no hand drawn, flavor-tintable glaze only cyan. State 0: whole intact appetizing portion. Center square canvas, generous transparent padding. Spoon handle down. Handheld pastry biting side up, no hands. TECHNICAL LAYER KEY: flavor-tintable regions vivid CYAN r0,g=b with cyan shading, no cyan elsewhere; white highlights and warm contours natural. Cyan will be separated into neutralgray fill, not final color. No face/person/plate/bowl/text/environment. Transparent alpha background.",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/mukbang-bang/assets/food/straw_cake_0.png",
+    "tool": "built-in ImageGen",
+    "selectionStatus": "superseded"
+  },
+  {
+    "id": "donut_bite_1",
+    "family": "donut_bite",
+    "k": 1,
+    "subject": "handheld golden fried RING donut with center hole, no hand drawn, flavor-tintable glaze only cyan",
+    "source": "sources/donut_bite_1.png",
+    "prompt": "Use case: precise-object-edit. Transparent production game sprite. Warm brown hand drawn outlines, premium kawaii pastel glossy food matching reference. Subject: handheld golden fried RING donut with center hole, no hand drawn, flavor-tintable glaze only cyan. State 1: one clear large rounded scalloped bite removed from TOP, about 35 percent food eaten, exposed edible cross section and two tiny crumbs. EDIT reference state0 keep EXACT utensil/liner geometry position scale and canvas registration; change food at top only. Do not shrink/reposition entire sprite. TECHNICAL LAYER KEY: flavor-tintable regions vivid CYAN r0,g=b with cyan shading, no cyan elsewhere; white highlights and warm contours natural. Cyan will be separated into neutralgray fill, not final color. No face/person/plate/bowl/text/environment. Transparent alpha background.",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/donut_bite_0.png",
+    "tool": "built-in ImageGen",
+    "selectionStatus": "superseded"
+  },
+  {
+    "id": "donut_bite_2",
+    "family": "donut_bite",
+    "k": 2,
+    "subject": "handheld golden fried RING donut with center hole, no hand drawn, flavor-tintable glaze only cyan",
+    "source": "sources/donut_bite_2.png",
+    "prompt": "Use case: precise-object-edit. Transparent production game sprite. Warm brown hand drawn outlines, premium kawaii pastel glossy food matching reference. Subject: handheld golden fried RING donut with center hole, no hand drawn, flavor-tintable glaze only cyan. State 2: only LAST SMALL mouthful remains, about25 percent original food, two obvious round bite cutouts from TOP, couple tiny crumbs. EDIT reference state0 keep EXACT utensil/liner geometry position scale and canvas registration; change food at top only. Do not shrink/reposition entire sprite. TECHNICAL LAYER KEY: flavor-tintable regions vivid CYAN r0,g=b with cyan shading, no cyan elsewhere; white highlights and warm contours natural. Cyan will be separated into neutralgray fill, not final color. No face/person/plate/bowl/text/environment. Transparent alpha background.",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/donut_bite_0.png",
+    "tool": "built-in ImageGen",
+    "selectionStatus": "superseded"
+  },
+  {
+    "id": "parfait_spoon_0",
+    "family": "parfait_spoon",
+    "k": 0,
+    "subject": "long ivory pink dessert spoon carrying a small layered parfait bite, white cream and flavor jelly bands only cyan",
+    "source": "sources/parfait_spoon_0.png",
+    "prompt": "Use case: precise-object-edit. Transparent production game sprite. Warm brown hand drawn outlines, premium kawaii pastel glossy food matching reference. Subject: long ivory pink dessert spoon carrying a small layered parfait bite, white cream and flavor jelly bands only cyan. State 0: whole intact appetizing portion. Center square canvas, generous transparent padding. Spoon handle down. Handheld pastry biting side up, no hands. TECHNICAL LAYER KEY: flavor-tintable regions vivid CYAN r0,g=b with cyan shading, no cyan elsewhere; white highlights and warm contours natural. Cyan will be separated into neutralgray fill, not final color. No face/person/plate/bowl/text/environment. Transparent alpha background.",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/mukbang-bang/assets/food/straw_cake_0.png",
+    "tool": "built-in ImageGen",
+    "selectionStatus": "superseded"
+  },
+  {
+    "id": "parfait_spoon_1",
+    "family": "parfait_spoon",
+    "k": 1,
+    "subject": "long ivory pink dessert spoon carrying a small layered parfait bite, white cream and flavor jelly bands only cyan",
+    "source": "sources/parfait_spoon_1.png",
+    "prompt": "Use case: precise-object-edit. Transparent production game sprite. Warm brown hand drawn outlines, premium kawaii pastel glossy food matching reference. Subject: long ivory pink dessert spoon carrying a small layered parfait bite, white cream and flavor jelly bands only cyan. State 1: one clear large rounded scalloped bite removed from TOP, about 35 percent food eaten, exposed edible cross section and two tiny crumbs. EDIT reference state0 keep EXACT utensil/liner geometry position scale and canvas registration; change food at top only. Do not shrink/reposition entire sprite. TECHNICAL LAYER KEY: flavor-tintable regions vivid CYAN r0,g=b with cyan shading, no cyan elsewhere; white highlights and warm contours natural. Cyan will be separated into neutralgray fill, not final color. No face/person/plate/bowl/text/environment. Transparent alpha background.",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/parfait_spoon_0.png",
+    "tool": "built-in ImageGen",
+    "selectionStatus": "superseded"
+  },
+  {
+    "id": "parfait_spoon_2",
+    "family": "parfait_spoon",
+    "k": 2,
+    "subject": "long ivory pink dessert spoon carrying a small layered parfait bite, white cream and flavor jelly bands only cyan",
+    "source": "sources/parfait_spoon_2.png",
+    "prompt": "Use case: precise-object-edit. Transparent production game sprite. Warm brown hand drawn outlines, premium kawaii pastel glossy food matching reference. Subject: long ivory pink dessert spoon carrying a small layered parfait bite, white cream and flavor jelly bands only cyan. State 2: only LAST SMALL mouthful remains, about25 percent original food, two obvious round bite cutouts from TOP, couple tiny crumbs. EDIT reference state0 keep EXACT utensil/liner geometry position scale and canvas registration; change food at top only. Do not shrink/reposition entire sprite. TECHNICAL LAYER KEY: flavor-tintable regions vivid CYAN r0,g=b with cyan shading, no cyan elsewhere; white highlights and warm contours natural. Cyan will be separated into neutralgray fill, not final color. No face/person/plate/bowl/text/environment. Transparent alpha background.",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/parfait_spoon_0.png",
+    "tool": "built-in ImageGen",
+    "selectionStatus": "superseded"
+  },
+  {
+    "id": "bingsu_spoon_0",
+    "family": "bingsu_spoon",
+    "k": 0,
+    "subject": "ivory pink spoon carrying white snowy shaved ice mound, flavor-tintable syrup cap and drips only cyan",
+    "source": "sources/bingsu_spoon_0.png",
+    "prompt": "Use case: precise-object-edit. Transparent production game sprite. Warm brown hand drawn outlines, premium kawaii pastel glossy food matching reference. Subject: ivory pink spoon carrying white snowy shaved ice mound, flavor-tintable syrup cap and drips only cyan. State 0: whole intact appetizing portion. Center square canvas, generous transparent padding. Spoon handle down. Handheld pastry biting side up, no hands. TECHNICAL LAYER KEY: flavor-tintable regions vivid CYAN r0,g=b with cyan shading, no cyan elsewhere; white highlights and warm contours natural. Cyan will be separated into neutralgray fill, not final color. No face/person/plate/bowl/text/environment. Transparent alpha background.",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/mukbang-bang/assets/food/straw_cake_0.png",
+    "tool": "built-in ImageGen",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "bingsu_spoon_1",
+    "family": "bingsu_spoon",
+    "k": 1,
+    "subject": "ivory pink spoon carrying white snowy shaved ice mound, flavor-tintable syrup cap and drips only cyan",
+    "source": "sources/bingsu_spoon_1.png",
+    "prompt": "Use case: precise-object-edit. Transparent production game sprite. Warm brown hand drawn outlines, premium kawaii pastel glossy food matching reference. Subject: ivory pink spoon carrying white snowy shaved ice mound, flavor-tintable syrup cap and drips only cyan. State 1: one clear large rounded scalloped bite removed from TOP, about 35 percent food eaten, exposed edible cross section and two tiny crumbs. EDIT reference state0 keep EXACT utensil/liner geometry position scale and canvas registration; change food at top only. Do not shrink/reposition entire sprite. TECHNICAL LAYER KEY: flavor-tintable regions vivid CYAN r0,g=b with cyan shading, no cyan elsewhere; white highlights and warm contours natural. Cyan will be separated into neutralgray fill, not final color. No face/person/plate/bowl/text/environment. Transparent alpha background.",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/bingsu_spoon_0.png",
+    "tool": "built-in ImageGen",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "bingsu_spoon_2",
+    "family": "bingsu_spoon",
+    "k": 2,
+    "subject": "ivory pink spoon carrying white snowy shaved ice mound, flavor-tintable syrup cap and drips only cyan",
+    "source": "sources/bingsu_spoon_2.png",
+    "prompt": "Use case: precise-object-edit. Transparent production game sprite. Warm brown hand drawn outlines, premium kawaii pastel glossy food matching reference. Subject: ivory pink spoon carrying white snowy shaved ice mound, flavor-tintable syrup cap and drips only cyan. State 2: only LAST SMALL mouthful remains, about25 percent original food, two obvious round bite cutouts from TOP, couple tiny crumbs. EDIT reference state0 keep EXACT utensil/liner geometry position scale and canvas registration; change food at top only. Do not shrink/reposition entire sprite. TECHNICAL LAYER KEY: flavor-tintable regions vivid CYAN r0,g=b with cyan shading, no cyan elsewhere; white highlights and warm contours natural. Cyan will be separated into neutralgray fill, not final color. No face/person/plate/bowl/text/environment. Transparent alpha background.",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/bingsu_spoon_0.png",
+    "tool": "built-in ImageGen",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "ramen_chopsticks_0",
+    "family": "ramen_chopsticks",
+    "k": 0,
+    "subject": "two warm wooden chopsticks at lower right gripping glossy yellow noodles hanging towards upper center, broth droplets, real colors no cyan",
+    "source": "sources/ramen_chopsticks_0.png",
+    "prompt": "Use case: precise-object-edit. Transparent production game sprite. Warm brown hand drawn outlines, premium kawaii pastel glossy food matching reference. Subject: two warm wooden chopsticks at lower right gripping glossy yellow noodles hanging towards upper center, broth droplets, real colors no cyan. State 0: whole intact appetizing portion. Center square canvas, generous transparent padding. Spoon handle down. Handheld pastry biting side up, no hands. Yellow noodles shorten substantially across states. Broth drops. Real colors no cyan. No face/person/plate/bowl/text/environment. Transparent alpha background.",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/mukbang-bang/assets/food/straw_cake_0.png",
+    "tool": "built-in ImageGen",
+    "selectionStatus": "superseded"
+  },
+  {
+    "id": "ramen_chopsticks_1",
+    "family": "ramen_chopsticks",
+    "k": 1,
+    "subject": "two warm wooden chopsticks at lower right gripping glossy yellow noodles hanging towards upper center, broth droplets, real colors no cyan",
+    "source": "sources/ramen_chopsticks_1.png",
+    "prompt": "Use case: precise-object-edit. Transparent production game sprite. Warm brown hand drawn outlines, premium kawaii pastel glossy food matching reference. Subject: two warm wooden chopsticks at lower right gripping glossy yellow noodles hanging towards upper center, broth droplets, real colors no cyan. State 1: one clear large rounded scalloped bite removed from TOP, about 35 percent food eaten, exposed edible cross section and two tiny crumbs. EDIT reference state0 keep EXACT utensil/liner geometry position scale and canvas registration; change food at top only. Do not shrink/reposition entire sprite. Yellow noodles shorten substantially across states. Broth drops. Real colors no cyan. No face/person/plate/bowl/text/environment. Transparent alpha background.",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/ramen_chopsticks_0.png",
+    "tool": "built-in ImageGen",
+    "selectionStatus": "superseded"
+  },
+  {
+    "id": "ramen_chopsticks_2",
+    "family": "ramen_chopsticks",
+    "k": 2,
+    "subject": "two warm wooden chopsticks at lower right gripping glossy yellow noodles hanging towards upper center, broth droplets, real colors no cyan",
+    "source": "sources/ramen_chopsticks_2.png",
+    "prompt": "Use case: precise-object-edit. Transparent production game sprite. Warm brown hand drawn outlines, premium kawaii pastel glossy food matching reference. Subject: two warm wooden chopsticks at lower right gripping glossy yellow noodles hanging towards upper center, broth droplets, real colors no cyan. State 2: only LAST SMALL mouthful remains, about25 percent original food, two obvious round bite cutouts from TOP, couple tiny crumbs. EDIT reference state0 keep EXACT utensil/liner geometry position scale and canvas registration; change food at top only. Do not shrink/reposition entire sprite. Yellow noodles shorten substantially across states. Broth drops. Real colors no cyan. No face/person/plate/bowl/text/environment. Transparent alpha background.",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/ramen_chopsticks_0.png",
+    "tool": "built-in ImageGen",
+    "selectionStatus": "superseded"
+  },
+  {
+    "id": "cupcake_bite_0",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/cupcake_bite_0.png"
+    ],
+    "prompt": "Precise object edit of this transparent game sprite. Keep warm brown kawaii linework, glossy shading, exact object position and scale. REMOVE the wooden stick/handle below the cupcake paper liner. It is a handheld pastry with no hand pictured, no utensil. Restore completely INTACT smooth top silhouette, NO bite indentation anywhere. State 0: intact full food, no bite. Flavor food pigment stays CYAN as technical layer matte, other food true pastel colors. No additional objects or text. Transparent alpha background.",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/cupcake_bite_0.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "cupcake_bite_1",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/cupcake_bite_1.png"
+    ],
+    "prompt": "Precise object edit of this transparent game sprite. Keep warm brown kawaii linework, glossy shading, exact object position and scale. REMOVE the wooden stick/handle below the cupcake paper liner. It is a handheld pastry with no hand pictured, no utensil.  State 1: one large rounded top bite, food about65 percent remains. Flavor food pigment stays CYAN as technical layer matte, other food true pastel colors. No additional objects or text. Transparent alpha background.",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/cupcake_bite_1.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "cupcake_bite_2",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/cupcake_bite_2.png"
+    ],
+    "prompt": "Precise object edit of this transparent game sprite. Keep warm brown kawaii linework, glossy shading, exact object position and scale. REMOVE the wooden stick/handle below the cupcake paper liner. It is a handheld pastry with no hand pictured, no utensil.  State 2: only last small25 percent food remains with obvious scalloped top bites. Flavor food pigment stays CYAN as technical layer matte, other food true pastel colors. No additional objects or text. Transparent alpha background.",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/cupcake_bite_2.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "donut_bite_0",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/donut_bite_0.png"
+    ],
+    "prompt": "Precise object edit of this transparent game sprite. Keep warm brown kawaii linework, glossy shading, exact object position and scale. REMOVE the wooden stick/handle below the donut. It is a handheld pastry with no hand pictured, no utensil. Restore completely INTACT smooth top silhouette, NO bite indentation anywhere. State 0: intact full food, no bite. Flavor food pigment stays CYAN as technical layer matte, other food true pastel colors. No additional objects or text. Transparent alpha background.",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/donut_bite_0.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "donut_bite_1",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/donut_bite_1.png"
+    ],
+    "prompt": "Precise object edit of this transparent game sprite. Keep warm brown kawaii linework, glossy shading, exact object position and scale. REMOVE the wooden stick/handle below the donut. It is a handheld pastry with no hand pictured, no utensil.  State 1: one large rounded top bite, food about65 percent remains. Flavor food pigment stays CYAN as technical layer matte, other food true pastel colors. No additional objects or text. Transparent alpha background.",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/donut_bite_1.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "donut_bite_2",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/donut_bite_2.png"
+    ],
+    "prompt": "Precise object edit of this transparent game sprite. Keep warm brown kawaii linework, glossy shading, exact object position and scale. REMOVE the wooden stick/handle below the donut. It is a handheld pastry with no hand pictured, no utensil.  State 2: only last small25 percent food remains with obvious scalloped top bites. Flavor food pigment stays CYAN as technical layer matte, other food true pastel colors. No additional objects or text. Transparent alpha background.",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/donut_bite_2.png",
+    "selectionStatus": "superseded"
+  },
+  {
+    "id": "parfait_spoon_0",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/parfait_spoon_0.png"
+    ],
+    "prompt": "Precise object edit of this transparent game sprite. Keep warm brown kawaii linework, glossy shading, exact object position and scale. Replace the triangular strawberry cake with a NATURAL small scoop of white parfait cream and two cyan jelly/sauce layers on the existing long pink spoon. No cake wedge, no strawberry fruit. State 0: intact full food, no bite. Flavor food pigment stays CYAN as technical layer matte, other food true pastel colors. No additional objects or text. Transparent alpha background.",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/parfait_spoon_0.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "parfait_spoon_1",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/parfait_spoon_1.png"
+    ],
+    "prompt": "Precise object edit of this transparent game sprite. Keep warm brown kawaii linework, glossy shading, exact object position and scale. Replace the triangular strawberry cake with a NATURAL small scoop of white parfait cream and two cyan jelly/sauce layers on the existing long pink spoon. No cake wedge, no strawberry fruit. State 1: one large rounded top bite, food about65 percent remains. Flavor food pigment stays CYAN as technical layer matte, other food true pastel colors. No additional objects or text. Transparent alpha background.",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/parfait_spoon_1.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "parfait_spoon_2",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/parfait_spoon_2.png"
+    ],
+    "prompt": "Precise object edit of this transparent game sprite. Keep warm brown kawaii linework, glossy shading, exact object position and scale. Replace the triangular strawberry cake with a NATURAL small scoop of white parfait cream and two cyan jelly/sauce layers on the existing long pink spoon. No cake wedge, no strawberry fruit. State 2: only last small25 percent food remains with obvious scalloped top bites. Flavor food pigment stays CYAN as technical layer matte, other food true pastel colors. No additional objects or text. Transparent alpha background.",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/parfait_spoon_2.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "ramen_chopsticks_0",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/ramen_chopsticks_0.png"
+    ],
+    "prompt": "Precise object edit of this transparent game sprite. Keep warm brown kawaii linework, glossy shading, exact object position and scale. KEEP ONLY the two chopsticks and yellow noodles with broth drops. Completely REMOVE the strawberry cake and the spoon and all their shadows, leaving transparent pixels. Chopstick grip side should be lower right (not upper right), noodle bundle at upper left/center. State 0: intact full food, no bite.  No additional objects or text. Transparent alpha background.",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/ramen_chopsticks_0.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "ramen_chopsticks_1",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/ramen_chopsticks_1.png"
+    ],
+    "prompt": "Precise object edit of this transparent game sprite. Keep warm brown kawaii linework, glossy shading, exact object position and scale. KEEP ONLY the two chopsticks and yellow noodles with broth drops. Completely REMOVE the strawberry cake and the spoon and all their shadows, leaving transparent pixels. Chopstick grip side should be lower right (not upper right), noodle bundle at upper left/center. State 1: one large rounded top bite, food about65 percent remains.  No additional objects or text. Transparent alpha background.",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/ramen_chopsticks_1.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "ramen_chopsticks_2",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/ramen_chopsticks_2.png"
+    ],
+    "prompt": "Precise object edit of this transparent game sprite. Keep warm brown kawaii linework, glossy shading, exact object position and scale. KEEP ONLY the two chopsticks and yellow noodles with broth drops. Completely REMOVE the strawberry cake and the spoon and all their shadows, leaving transparent pixels. Chopstick grip side should be lower right (not upper right), noodle bundle at upper left/center. State 2: only last small25 percent food remains with obvious scalloped top bites.  No additional objects or text. Transparent alpha background.",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/ramen_chopsticks_2.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "fx_steam",
+    "prompt": "Transparent PNG game effect ATLAS, EXACT four equal square frames arranged horizontally in ONE ROW, no gap, 4:1 aspect ratio. Each frame centered in its own cell, separated by transparent padding, no element crosses boundaries. three soft ivory steam wisps rise and fade. Four animation phases from left to right: emerging small, full, expanding, dissipating small. Soft warm brown kawaii 2D outlines matching Mukbang Bang pastel food game. No food, no utensils, no text, no boxes or numbers, no environment. Transparent alpha backdrop. Designed export512x128 (4frames128sq).",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/fx_steam.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "fx_cold",
+    "prompt": "Transparent PNG game effect ATLAS, EXACT four equal square frames arranged horizontally in ONE ROW, no gap, 4:1 aspect ratio. Each frame centered in its own cell, separated by transparent padding, no element crosses boundaries. pale blue snowflakes and cold mist expand then fade. Four animation phases from left to right: emerging small, full, expanding, dissipating small. Soft warm brown kawaii 2D outlines matching Mukbang Bang pastel food game. No food, no utensils, no text, no boxes or numbers, no environment. Transparent alpha backdrop. Designed export512x128 (4frames128sq).",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/fx_cold.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "fx_pour",
+    "prompt": "Transparent PNG game effect ATLAS, EXACT four equal square frames arranged horizontally in ONE ROW, no gap, 4:1 aspect ratio. Each frame centered in its own cell, separated by transparent padding, no element crosses boundaries. vertical liquid stream and splash droplets, neutral grayscale120..235 only, tintable. Four animation phases from left to right: emerging small, full, expanding, dissipating small. Soft warm brown kawaii 2D outlines matching Mukbang Bang pastel food game. No food, no utensils, no text, no boxes or numbers, no environment. Transparent alpha backdrop. Designed export512x128 (4frames128sq).",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/fx_pour.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "fx_sparkle",
+    "prompt": "Transparent PNG game effect ATLAS, EXACT four equal square frames arranged horizontally in ONE ROW, no gap, 4:1 aspect ratio. Each frame centered in its own cell, separated by transparent padding, no element crosses boundaries. small warm yellow and ivory four-point sparkles pulse bigger then fade. Four animation phases from left to right: emerging small, full, expanding, dissipating small. Soft warm brown kawaii 2D outlines matching Mukbang Bang pastel food game. No food, no utensils, no text, no boxes or numbers, no environment. Transparent alpha backdrop. Designed export512x128 (4frames128sq).",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/fx_sparkle.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "pip_on",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production/assets/cook/pip_off.png"
+    ],
+    "prompt": "Create the ACTIVE companion to this tiny kawaii progress indicator. One bold pink heart, warm brown outline, single small white shine, simple crisp silhouette readable at40x40. No blur, no glow, no shadow, no decoration, transparent padded square background. Match reference stroke weight and soft pastel style, but heart is pink and clearly active. Large clean source for downsample.",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/pip_on.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "soda_pop_sealed",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang concept/stage1/V3-stage1-partial/art3/assets/food3/peach_milk_sealed.png"
+    ],
+    "prompt": "Use case: precise-object-edit. Premium kawaii 2D hand painted food game sprite matching reference warm brown outlines and soft pastel glossy shading. Reference is STYLE ONLY: replace subject completely. ONE clear rounded soda bottle with pink bubbly sparkling soda, pink small screwcap, cute simple pink label with bubble motif, NO fruit or milk. State sealed: factory sealed full package. Keep same canvas registration and package size across sealed/open/p1/p2/empty, no hands, no utensils, no unrelated items, no characters, no shadows outside object, no text. Transparent alpha square canvas with padding; final export384x384. Clearly watery bubbly PINK SODA, never a milk drink.",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/soda_pop_sealed.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "soda_pop_open",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/soda_pop_sealed.png"
+    ],
+    "prompt": "Use case: precise-object-edit. Premium kawaii 2D hand painted food game sprite matching reference warm brown outlines and soft pastel glossy shading. Reference is exact package design to preserve through states. ONE clear rounded soda bottle with pink bubbly sparkling soda, pink small screwcap, cute simple pink label with bubble motif, NO fruit or milk. State open: opened cap/upper bag seal, full contents, opening clearly visible. Keep same canvas registration and package size across sealed/open/p1/p2/empty, no hands, no utensils, no unrelated items, no characters, no shadows outside object, no text. Transparent alpha square canvas with padding; final export384x384. Clearly watery bubbly PINK SODA, never a milk drink.",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/soda_pop_open.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "soda_pop_p1",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/soda_pop_sealed.png"
+    ],
+    "prompt": "Use case: precise-object-edit. Premium kawaii 2D hand painted food game sprite matching reference warm brown outlines and soft pastel glossy shading. Reference is exact package design to preserve through states. ONE clear rounded soda bottle with pink bubbly sparkling soda, pink small screwcap, cute simple pink label with bubble motif, NO fruit or milk. State p1: open package, two thirds contents remain. Keep same canvas registration and package size across sealed/open/p1/p2/empty, no hands, no utensils, no unrelated items, no characters, no shadows outside object, no text. Transparent alpha square canvas with padding; final export384x384. Clearly watery bubbly PINK SODA, never a milk drink.",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/soda_pop_p1.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "soda_pop_p2",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/soda_pop_sealed.png"
+    ],
+    "prompt": "Use case: precise-object-edit. Premium kawaii 2D hand painted food game sprite matching reference warm brown outlines and soft pastel glossy shading. Reference is exact package design to preserve through states. ONE clear rounded soda bottle with pink bubbly sparkling soda, pink small screwcap, cute simple pink label with bubble motif, NO fruit or milk. State p2: open package, one third contents remain. Keep same canvas registration and package size across sealed/open/p1/p2/empty, no hands, no utensils, no unrelated items, no characters, no shadows outside object, no text. Transparent alpha square canvas with padding; final export384x384. Clearly watery bubbly PINK SODA, never a milk drink.",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/soda_pop_p2.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "soda_pop_empty",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/soda_pop_sealed.png"
+    ],
+    "prompt": "Use case: precise-object-edit. Premium kawaii 2D hand painted food game sprite matching reference warm brown outlines and soft pastel glossy shading. Reference is exact package design to preserve through states. ONE clear rounded soda bottle with pink bubbly sparkling soda, pink small screwcap, cute simple pink label with bubble motif, NO fruit or milk. State empty: open EMPTY package, same geometry, zero contents. Keep same canvas registration and package size across sealed/open/p1/p2/empty, no hands, no utensils, no unrelated items, no characters, no shadows outside object, no text. Transparent alpha square canvas with padding; final export384x384. Clearly watery bubbly PINK SODA, never a milk drink.",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/soda_pop_empty.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "soda_pop_portion",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/soda_pop_sealed.png"
+    ],
+    "prompt": "Use case: precise-object-edit. Premium kawaii 2D hand painted food game sprite matching reference warm brown outlines and soft pastel glossy shading. Reference is exact package design to preserve through states. ONE clear rounded soda bottle with pink bubbly sparkling soda, pink small screwcap, cute simple pink label with bubble motif, NO fruit or milk. State portion: ONLY one small rounded pink soda sip splash with bubbles, no bottle or packaging. Keep same canvas registration and package size across sealed/open/p1/p2/empty, no hands, no utensils, no unrelated items, no characters, no shadows outside object, no text. Transparent alpha square canvas with padding; final export384x384. Clearly watery bubbly PINK SODA, never a milk drink.",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/soda_pop_portion.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "rainbow_candy_sealed",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang concept/stage1/V3-stage1-partial/art3/assets/food3/honey_puffs_sealed.png"
+    ],
+    "prompt": "Use case: precise-object-edit. Premium kawaii 2D hand painted food game sprite matching reference warm brown outlines and soft pastel glossy shading. Reference is STYLE ONLY: replace subject completely. ONE rainbow candy snack BAG with colorful pastel rainbow stripe design, visible rainbow hard candy pieces through small transparent window, NO honey or cereal. State sealed: factory sealed full package. Keep same canvas registration and package size across sealed/open/p1/p2/empty, no hands, no utensils, no unrelated items, no characters, no shadows outside object, no text. Transparent alpha square canvas with padding; final export384x384. Clearly a snack BAG of RAINBOW CANDY.",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/rainbow_candy_sealed.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "rainbow_candy_open",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/rainbow_candy_sealed.png"
+    ],
+    "prompt": "Use case: precise-object-edit. Premium kawaii 2D hand painted food game sprite matching reference warm brown outlines and soft pastel glossy shading. Reference is exact package design to preserve through states. ONE rainbow candy snack BAG with colorful pastel rainbow stripe design, visible rainbow hard candy pieces through small transparent window, NO honey or cereal. State open: opened cap/upper bag seal, full contents, opening clearly visible. Keep same canvas registration and package size across sealed/open/p1/p2/empty, no hands, no utensils, no unrelated items, no characters, no shadows outside object, no text. Transparent alpha square canvas with padding; final export384x384. Clearly a snack BAG of RAINBOW CANDY.",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/rainbow_candy_open.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "rainbow_candy_p1",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/rainbow_candy_sealed.png"
+    ],
+    "prompt": "Use case: precise-object-edit. Premium kawaii 2D hand painted food game sprite matching reference warm brown outlines and soft pastel glossy shading. Reference is exact package design to preserve through states. ONE rainbow candy snack BAG with colorful pastel rainbow stripe design, visible rainbow hard candy pieces through small transparent window, NO honey or cereal. State p1: open package, two thirds contents remain. Keep same canvas registration and package size across sealed/open/p1/p2/empty, no hands, no utensils, no unrelated items, no characters, no shadows outside object, no text. Transparent alpha square canvas with padding; final export384x384. Clearly a snack BAG of RAINBOW CANDY.",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/rainbow_candy_p1.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "rainbow_candy_p2",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/rainbow_candy_sealed.png"
+    ],
+    "prompt": "Use case: precise-object-edit. Premium kawaii 2D hand painted food game sprite matching reference warm brown outlines and soft pastel glossy shading. Reference is exact package design to preserve through states. ONE rainbow candy snack BAG with colorful pastel rainbow stripe design, visible rainbow hard candy pieces through small transparent window, NO honey or cereal. State p2: open package, one third contents remain. Keep same canvas registration and package size across sealed/open/p1/p2/empty, no hands, no utensils, no unrelated items, no characters, no shadows outside object, no text. Transparent alpha square canvas with padding; final export384x384. Clearly a snack BAG of RAINBOW CANDY.",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/rainbow_candy_p2.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "rainbow_candy_empty",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/rainbow_candy_sealed.png"
+    ],
+    "prompt": "Use case: precise-object-edit. Premium kawaii 2D hand painted food game sprite matching reference warm brown outlines and soft pastel glossy shading. Reference is exact package design to preserve through states. ONE rainbow candy snack BAG with colorful pastel rainbow stripe design, visible rainbow hard candy pieces through small transparent window, NO honey or cereal. State empty: open EMPTY package, same geometry, zero contents. Keep same canvas registration and package size across sealed/open/p1/p2/empty, no hands, no utensils, no unrelated items, no characters, no shadows outside object, no text. Transparent alpha square canvas with padding; final export384x384. Clearly a snack BAG of RAINBOW CANDY.",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/rainbow_candy_empty.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "rainbow_candy_portion",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/rainbow_candy_sealed.png"
+    ],
+    "prompt": "Use case: precise-object-edit. Premium kawaii 2D hand painted food game sprite matching reference warm brown outlines and soft pastel glossy shading. Reference is exact package design to preserve through states. ONE rainbow candy snack BAG with colorful pastel rainbow stripe design, visible rainbow hard candy pieces through small transparent window, NO honey or cereal. State portion: ONLY one small cluster of rainbow candies outside package, no bag. Keep same canvas registration and package size across sealed/open/p1/p2/empty, no hands, no utensils, no unrelated items, no characters, no shadows outside object, no text. Transparent alpha square canvas with padding; final export384x384. Clearly a snack BAG of RAINBOW CANDY.",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/rainbow_candy_portion.png",
+    "selectionStatus": "superseded"
+  },
+  {
+    "id": "donut_bite_2",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/donut_bite_2.png"
+    ],
+    "prompt": "Precise tiny edit: remove the ENTIRE upper arch/upper half of the brown circular hole outline that currently floats above the bitten donut crescent. The eaten donut should be ONLY a clean lower crescent with scalloped bite edges, no floating circle, no ring loop sticking above it. Preserve lower pastry, cyan glaze, tiny crumbs, exact position, scale, warm kawaii linework. Transparent alpha background. No other changes.",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/donut_bite_2.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "view_park",
+    "transparent": false,
+    "prompt": "Premium kawaii 2D hand painted game BACKGROUND ONLY: quiet pastel green city park, rounded trees and a distant path, tiny shrubs and flowers, bright blue sky. Soft pastel palette, gentle warm brown contour lines, soft shaded painterly texture matching a cozy Mukbang streaming game. Square-ish landscape composition designed720x680. Horizon at55 percent image height from top. View through a window, but do NOT draw window, border, frame, room, furniture, characters, food, UI, text or signage. Fill whole image edge to edge opaque. Center upper35 percent remains airy, main scenery lower half, restrained details so streamer foreground remains readable.",
+    "tool": "built-in ImageGen",
+    "source": "sources/view_park.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "view_beach",
+    "transparent": false,
+    "prompt": "Premium kawaii 2D hand painted game BACKGROUND ONLY: calm tropical beach, turquoise sea, pale sand foreground, soft palm leaves only at sides, blue sky with soft clouds. Soft pastel palette, gentle warm brown contour lines, soft shaded painterly texture matching a cozy Mukbang streaming game. Square-ish landscape composition designed720x680. Horizon at55 percent image height from top. View through a window, but do NOT draw window, border, frame, room, furniture, characters, food, UI, text or signage. Fill whole image edge to edge opaque. Center upper35 percent remains airy, main scenery lower half, restrained details so streamer foreground remains readable.",
+    "tool": "built-in ImageGen",
+    "source": "sources/view_beach.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "view_sakura",
+    "transparent": false,
+    "prompt": "Premium kawaii 2D hand painted game BACKGROUND ONLY: gentle spring cherry blossom garden, rounded pink sakura trees framing distant pale hills and pathway, blue sky. Soft pastel palette, gentle warm brown contour lines, soft shaded painterly texture matching a cozy Mukbang streaming game. Square-ish landscape composition designed720x680. Horizon at55 percent image height from top. View through a window, but do NOT draw window, border, frame, room, furniture, characters, food, UI, text or signage. Fill whole image edge to edge opaque. Center upper35 percent remains airy, main scenery lower half, restrained details so streamer foreground remains readable.",
+    "tool": "built-in ImageGen",
+    "source": "sources/view_sakura.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "view_night",
+    "transparent": false,
+    "prompt": "Premium kawaii 2D hand painted game BACKGROUND ONLY: peaceful deep lavender night sky with crescent moon and tiny stars, distant low dark blue hills and sleepy glowing houses. Soft pastel palette, gentle warm brown contour lines, soft shaded painterly texture matching a cozy Mukbang streaming game. Square-ish landscape composition designed720x680. Horizon at55 percent image height from top. View through a window, but do NOT draw window, border, frame, room, furniture, characters, food, UI, text or signage. Fill whole image edge to edge opaque. Center upper35 percent remains airy, main scenery lower half, restrained details so streamer foreground remains readable.",
+    "tool": "built-in ImageGen",
+    "source": "sources/view_night.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "view_city",
+    "transparent": false,
+    "prompt": "Premium kawaii 2D hand painted game BACKGROUND ONLY: friendly pastel city skyline, low rounded buildings with a few taller towers in distance, blue sky and soft clouds, quiet green foreground. Soft pastel palette, gentle warm brown contour lines, soft shaded painterly texture matching a cozy Mukbang streaming game. Square-ish landscape composition designed720x680. Horizon at55 percent image height from top. View through a window, but do NOT draw window, border, frame, room, furniture, characters, food, UI, text or signage. Fill whole image edge to edge opaque. Center upper35 percent remains airy, main scenery lower half, restrained details so streamer foreground remains readable.",
+    "tool": "built-in ImageGen",
+    "source": "sources/view_city.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "rainbow_candy_portion",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-polish/sources/rainbow_candy_portion.png"
+    ],
+    "prompt": "Precise object removal. Keep ONLY the tiny loose rainbow candies at the lower right of this image. Completely remove the entire rainbow package/bag and everything belonging to it, leaving transparent alpha. Output only a small cluster of 3 colorful round rainbow hard candies, same warm brown kawaii outline and glossy pastel shading. No package, no bag, no container, no extra objects, no text. Center cluster in transparent square with generous margin.",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/rainbow_candy_portion.png",
+    "selectionStatus": "selected-source"
+  }
+]

@@ -395,6 +395,8 @@ function install(Game) {
   P.drawBite = function (dish, x, y, size, bites) {
     const ctx = this.ctx, left = 1 - bites / BITES;
     if (bites >= BITES) return;
+    // art V4 bites (spoon / hand / chopsticks, 3 states) when loaded
+    if (dish.recipe !== 'boba' && CA.bite(ctx, dish.recipe, R.colorOf(dish), Math.min(2, Math.floor(bites)), x, y + size * 0.18, size * 1.35)) return;
     if (dish.recipe === 'ramen') { const b = R.opt('broth', dish.broth); R.noodleBite(ctx, x, y + size * 0.2, size * 1.15, left, b ? b.color : null); return; }
     const st = { flipped: true, set: true, fill: 1, tops: 3, deco: 1 };
     if (dish.recipe === 'boba') { st.fill = Math.max(0.12, left); st.deco = bites ? 0 : 1; R.draw(ctx, A, dish, x, y, size, st); return; }

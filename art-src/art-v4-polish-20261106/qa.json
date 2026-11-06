@@ -1,0 +1,1233 @@
+{
+  "total": 61,
+  "exported": 61,
+  "missing": [],
+  "failures": [],
+  "budget": {
+    "main": 20642,
+    "art3": 591868,
+    "art4": 383282
+  },
+  "checks": [
+    {
+      "path": "art4/bite/jelly_spoon_0_fill.png",
+      "package": "art4",
+      "layer": "fill:flavor",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 3166,
+      "sha256": "0de9945cb00c38fc5a9a61420533a0ee4b70bf02625f834292d5da98e969d7ef",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 144056,
+      "grayRange": [
+        124,
+        236
+      ]
+    },
+    {
+      "path": "art4/bite/jelly_spoon_0_detail.png",
+      "package": "art4",
+      "layer": "detail",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 14679,
+      "sha256": "bf456d2fc61bd5db993eee06a97eae6cf8e18e25281856b96b70ba6dae266486",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 139625
+    },
+    {
+      "path": "art4/bite/jelly_spoon_1_fill.png",
+      "package": "art4",
+      "layer": "fill:flavor",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 3548,
+      "sha256": "651ab1f1c112bdfd20f002c89a47ef7cbbd38d0d2fb23960b4b8108d9e5f7553",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 147323,
+      "grayRange": [
+        124,
+        236
+      ]
+    },
+    {
+      "path": "art4/bite/jelly_spoon_1_detail.png",
+      "package": "art4",
+      "layer": "detail",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 14561,
+      "sha256": "7715276d9a254f20cb089ce8a23d3b898e035ec5ebd79948b3dc7ac29566e167",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 139583
+    },
+    {
+      "path": "art4/bite/jelly_spoon_2_fill.png",
+      "package": "art4",
+      "layer": "fill:flavor",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 1792,
+      "sha256": "2d102cf6fa64b19b50c3a221fe5303963130e9d161442adf1659bb23ca8ee7dd",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 155195,
+      "grayRange": [
+        124,
+        236
+      ]
+    },
+    {
+      "path": "art4/bite/jelly_spoon_2_detail.png",
+      "package": "art4",
+      "layer": "detail",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 14060,
+      "sha256": "e2eb94e94f7c4e658a12632aba8ee1cada67b99590f0de04809798ba38069b6c",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 139589
+    },
+    {
+      "path": "art4/bite/pudding_spoon_0_fill.png",
+      "package": "art4",
+      "layer": "fill:flavor",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 1321,
+      "sha256": "fb6b74ce3244da912f7da23a825619cdd9dabc932df55bfa48711787e2534d1e",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 147038,
+      "grayRange": [
+        124,
+        236
+      ]
+    },
+    {
+      "path": "art4/bite/pudding_spoon_0_detail.png",
+      "package": "art4",
+      "layer": "detail",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 16761,
+      "sha256": "fd1b3f2277746cbc55726646c486d785c65e170b2896e6a2b608cfafe94dde9a",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 130172
+    },
+    {
+      "path": "art4/bite/pudding_spoon_1_fill.png",
+      "package": "art4",
+      "layer": "fill:flavor",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 1791,
+      "sha256": "40cf7d07b3d69d16275378e41d7fdfba7cb41399ddc88b2a30f3e38e9cbbbe82",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 145769,
+      "grayRange": [
+        124,
+        236
+      ]
+    },
+    {
+      "path": "art4/bite/pudding_spoon_1_detail.png",
+      "package": "art4",
+      "layer": "detail",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 15839,
+      "sha256": "9179e10f2bd16a12d365fdc291dfc1977edb5dc8e4978b55ceecc6a5df086efa",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 134033
+    },
+    {
+      "path": "art4/bite/pudding_spoon_2_fill.png",
+      "package": "art4",
+      "layer": "fill:flavor",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 1255,
+      "sha256": "7a6af334aa24319df8a10ca01f2bd3d806dd8ffb21ca5d8afb22ca452383f8e9",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 155237,
+      "grayRange": [
+        124,
+        236
+      ]
+    },
+    {
+      "path": "art4/bite/pudding_spoon_2_detail.png",
+      "package": "art4",
+      "layer": "detail",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 15476,
+      "sha256": "94b9add05027d7174eac3ac829b83df23a1548ff8c813b37522c1ede66c0986d",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 133998
+    },
+    {
+      "path": "art4/bite/cupcake_bite_0_fill.png",
+      "package": "art4",
+      "layer": "fill:flavor",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 3374,
+      "sha256": "4fac1115a995f6d74acca90064d933b007ebc98f3b43c9ad49286d733b71386c",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 139620,
+      "grayRange": [
+        124,
+        236
+      ]
+    },
+    {
+      "path": "art4/bite/cupcake_bite_0_detail.png",
+      "package": "art4",
+      "layer": "detail",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 19900,
+      "sha256": "d3f47a1ab75793e5f0b6f0a84302c39e3c418f329eeaad2d9f888645b3e751b5",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 120491
+    },
+    {
+      "path": "art4/bite/cupcake_bite_1_fill.png",
+      "package": "art4",
+      "layer": "fill:flavor",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 2273,
+      "sha256": "82832b357f5cde8d67511bb36b548b5b2e0f9382a72825c32517160bf531e69c",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 152186,
+      "grayRange": [
+        124,
+        236
+      ]
+    },
+    {
+      "path": "art4/bite/cupcake_bite_1_detail.png",
+      "package": "art4",
+      "layer": "detail",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 17800,
+      "sha256": "56a7c51e484bb8b36c538e2f0c1fd0642a8524b2272972fea8f63d4fcd2567a2",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 127754
+    },
+    {
+      "path": "art4/bite/cupcake_bite_2_fill.png",
+      "package": "art4",
+      "layer": "fill:flavor",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 1142,
+      "sha256": "910594f5f18c8e441b6ae7ff58f0ee9a10aadc70c2c9dd20a15d3cd0e1209e07",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 158248,
+      "grayRange": [
+        124,
+        236
+      ]
+    },
+    {
+      "path": "art4/bite/cupcake_bite_2_detail.png",
+      "package": "art4",
+      "layer": "detail",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 11874,
+      "sha256": "0eda18449264f78bec6dcbda05afbc574848115c9087cfcad5e50b874bb8ee11",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 139430
+    },
+    {
+      "path": "art4/bite/donut_bite_0_fill.png",
+      "package": "art4",
+      "layer": "fill:flavor",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 3730,
+      "sha256": "49de1866c204470c44635beb931f98fea68e57166df997aac63841793bb5f6c4",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 123595,
+      "grayRange": [
+        124,
+        236
+      ]
+    },
+    {
+      "path": "art4/bite/donut_bite_0_detail.png",
+      "package": "art4",
+      "layer": "detail",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 22681,
+      "sha256": "54c8291f0e0e65a1e702a5009e26becde388c4277e2a64af8da6b874e7146c20",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 127273
+    },
+    {
+      "path": "art4/bite/donut_bite_1_fill.png",
+      "package": "art4",
+      "layer": "fill:flavor",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 3921,
+      "sha256": "f73f97766e8641782ef5eac9657d5625ebc21ccae9c26afc4d944d849d732664",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 134243,
+      "grayRange": [
+        124,
+        236
+      ]
+    },
+    {
+      "path": "art4/bite/donut_bite_1_detail.png",
+      "package": "art4",
+      "layer": "detail",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 24050,
+      "sha256": "8cf47911076be767b39daf04a8b0ac5184632aa1602d24e8547b2fcccc04835a",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 125294
+    },
+    {
+      "path": "art4/bite/donut_bite_2_fill.png",
+      "package": "art4",
+      "layer": "fill:flavor",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 2125,
+      "sha256": "7d38ab872ea541a727fba7f90a2dc7122c972913daa5735596bc9afb96ebe0eb",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 153509,
+      "grayRange": [
+        124,
+        236
+      ]
+    },
+    {
+      "path": "art4/bite/donut_bite_2_detail.png",
+      "package": "art4",
+      "layer": "detail",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 15718,
+      "sha256": "e81f7ed3c15580062cac540f399fbd5db0e023f835cf7f7ea2b00679bcac9e17",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 139963
+    },
+    {
+      "path": "art4/bite/parfait_spoon_0_fill.png",
+      "package": "art4",
+      "layer": "fill:flavor",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 2014,
+      "sha256": "ac669b9f8ac2b5e5a1b00553793addd316ac4705745bed0e58d2d0b2ac020d71",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 154742,
+      "grayRange": [
+        124,
+        236
+      ]
+    },
+    {
+      "path": "art4/bite/parfait_spoon_0_detail.png",
+      "package": "art4",
+      "layer": "detail",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 12484,
+      "sha256": "431bb8b2a611cacd81e9bdc709ca9ac9c9c087ec9f7c479078290e6457c4f5b0",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 143836
+    },
+    {
+      "path": "art4/bite/parfait_spoon_1_fill.png",
+      "package": "art4",
+      "layer": "fill:flavor",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 1569,
+      "sha256": "3eb365abadb9d9417ab5aa78b9473f79b61e1ca6af393ebf25658d77049785b5",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 156531,
+      "grayRange": [
+        124,
+        236
+      ]
+    },
+    {
+      "path": "art4/bite/parfait_spoon_1_detail.png",
+      "package": "art4",
+      "layer": "detail",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 12647,
+      "sha256": "794474060e991957bfac278725cbb6ce5844aeb77418f9229c11aa1be2af106b",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 143915
+    },
+    {
+      "path": "art4/bite/parfait_spoon_2_fill.png",
+      "package": "art4",
+      "layer": "fill:flavor",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 1112,
+      "sha256": "6657a47923254460efca511d943990c2ee35ca4117cde7fd7e8291e1f63fa570",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 157876,
+      "grayRange": [
+        124,
+        236
+      ]
+    },
+    {
+      "path": "art4/bite/parfait_spoon_2_detail.png",
+      "package": "art4",
+      "layer": "detail",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 11572,
+      "sha256": "850130b71448117e9894f1dc99de33e3397fb4d35e7101d6ebffad731bc313fb",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 146471
+    },
+    {
+      "path": "art4/bite/bingsu_spoon_0_fill.png",
+      "package": "art4",
+      "layer": "fill:flavor",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 2409,
+      "sha256": "1bc99d99f0fe4dd58b5d204d52e59759ae5d21bebb0885b950e03eea89a8f986",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 153320,
+      "grayRange": [
+        124,
+        236
+      ]
+    },
+    {
+      "path": "art4/bite/bingsu_spoon_0_detail.png",
+      "package": "art4",
+      "layer": "detail",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 18410,
+      "sha256": "5fb29388dbaff8d573794ea3f619b38d0f2fa5e7e89bab9f339301cc1fc0596f",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 132841
+    },
+    {
+      "path": "art4/bite/bingsu_spoon_1_fill.png",
+      "package": "art4",
+      "layer": "fill:flavor",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 2103,
+      "sha256": "08f86d93f3456228eb931915b7b608315862870d6b9fe796637615278a07c989",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 156791,
+      "grayRange": [
+        124,
+        236
+      ]
+    },
+    {
+      "path": "art4/bite/bingsu_spoon_1_detail.png",
+      "package": "art4",
+      "layer": "detail",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 18459,
+      "sha256": "1188db88cc222a62a3c43c6397bfe2bdfdeca277cf8bc7d8c1ca965f6203aea3",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 135530
+    },
+    {
+      "path": "art4/bite/bingsu_spoon_2_fill.png",
+      "package": "art4",
+      "layer": "fill:flavor",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 1539,
+      "sha256": "1765d5bfce0e3e1291379f544782ce8e459b77536c0ba103c8367002722bdb8f",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 157850,
+      "grayRange": [
+        124,
+        236
+      ]
+    },
+    {
+      "path": "art4/bite/bingsu_spoon_2_detail.png",
+      "package": "art4",
+      "layer": "detail",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 15379,
+      "sha256": "3be3204f36c7982087ea3079c7800f2f262f24fc10a28000fc264b582fc537a3",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 139967
+    },
+    {
+      "path": "art4/bite/ramen_chopsticks_0.png",
+      "package": "art4",
+      "layer": "color",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 21075,
+      "sha256": "a71592095092cbaaad5023fcd93c6442d1bb1ef649437ca92872537e9e08d039",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 136472
+    },
+    {
+      "path": "art4/bite/ramen_chopsticks_1.png",
+      "package": "art4",
+      "layer": "color",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 17886,
+      "sha256": "817f697dd34cde0d55bc2280bc3355aa12666a4c38cacf5a50c093b1199e993d",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 139285
+    },
+    {
+      "path": "art4/bite/ramen_chopsticks_2.png",
+      "package": "art4",
+      "layer": "color",
+      "width": 400,
+      "height": 400,
+      "anchor": [
+        200,
+        200
+      ],
+      "bytes": 11787,
+      "sha256": "a0b5dab9235d3d38b9aedacea36cd1598cc2d258cab63c175c234524ffa805aa",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 148155
+    },
+    {
+      "path": "assets/cook/fx_steam.png",
+      "package": "main",
+      "layer": "atlas",
+      "width": 512,
+      "height": 128,
+      "anchor": [
+        64,
+        64
+      ],
+      "bytes": 4378,
+      "sha256": "eba6d789f7295d93fbb7c893677a9dd6544f5bad8c86a7c9f3a4c103e30f5bf7",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 59526,
+      "canvasAnchor": [
+        256,
+        64
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "w": 128,
+          "h": 128,
+          "anchor": [
+            64,
+            64
+          ]
+        },
+        {
+          "x": 128,
+          "y": 0,
+          "w": 128,
+          "h": 128,
+          "anchor": [
+            64,
+            64
+          ]
+        },
+        {
+          "x": 256,
+          "y": 0,
+          "w": 128,
+          "h": 128,
+          "anchor": [
+            64,
+            64
+          ]
+        },
+        {
+          "x": 384,
+          "y": 0,
+          "w": 128,
+          "h": 128,
+          "anchor": [
+            64,
+            64
+          ]
+        }
+      ]
+    },
+    {
+      "path": "assets/cook/fx_cold.png",
+      "package": "main",
+      "layer": "atlas",
+      "width": 512,
+      "height": 128,
+      "anchor": [
+        64,
+        64
+      ],
+      "bytes": 7948,
+      "sha256": "ce3b0da13d8efe7e0543078536c90b41dab3af8d17d7baee8c64698bd1989aaa",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 51855,
+      "canvasAnchor": [
+        256,
+        64
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "w": 128,
+          "h": 128,
+          "anchor": [
+            64,
+            64
+          ]
+        },
+        {
+          "x": 128,
+          "y": 0,
+          "w": 128,
+          "h": 128,
+          "anchor": [
+            64,
+            64
+          ]
+        },
+        {
+          "x": 256,
+          "y": 0,
+          "w": 128,
+          "h": 128,
+          "anchor": [
+            64,
+            64
+          ]
+        },
+        {
+          "x": 384,
+          "y": 0,
+          "w": 128,
+          "h": 128,
+          "anchor": [
+            64,
+            64
+          ]
+        }
+      ]
+    },
+    {
+      "path": "assets/cook/fx_pour.png",
+      "package": "main",
+      "layer": "atlas fill",
+      "width": 512,
+      "height": 128,
+      "anchor": [
+        64,
+        64
+      ],
+      "bytes": 3950,
+      "sha256": "0b0af392249324b73385f3fab0ce4f9334f3457652b03cab5956545407ee1d7c",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 59308,
+      "grayRange": [
+        124,
+        236
+      ],
+      "canvasAnchor": [
+        256,
+        64
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "w": 128,
+          "h": 128,
+          "anchor": [
+            64,
+            64
+          ]
+        },
+        {
+          "x": 128,
+          "y": 0,
+          "w": 128,
+          "h": 128,
+          "anchor": [
+            64,
+            64
+          ]
+        },
+        {
+          "x": 256,
+          "y": 0,
+          "w": 128,
+          "h": 128,
+          "anchor": [
+            64,
+            64
+          ]
+        },
+        {
+          "x": 384,
+          "y": 0,
+          "w": 128,
+          "h": 128,
+          "anchor": [
+            64,
+            64
+          ]
+        }
+      ]
+    },
+    {
+      "path": "assets/cook/fx_sparkle.png",
+      "package": "main",
+      "layer": "atlas",
+      "width": 512,
+      "height": 128,
+      "anchor": [
+        64,
+        64
+      ],
+      "bytes": 3589,
+      "sha256": "15872147bced76390987d042689153ca5987339838e21e185d9e6f395ae2f45c",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 62587,
+      "canvasAnchor": [
+        256,
+        64
+      ],
+      "frames": [
+        {
+          "x": 0,
+          "y": 0,
+          "w": 128,
+          "h": 128,
+          "anchor": [
+            64,
+            64
+          ]
+        },
+        {
+          "x": 128,
+          "y": 0,
+          "w": 128,
+          "h": 128,
+          "anchor": [
+            64,
+            64
+          ]
+        },
+        {
+          "x": 256,
+          "y": 0,
+          "w": 128,
+          "h": 128,
+          "anchor": [
+            64,
+            64
+          ]
+        },
+        {
+          "x": 384,
+          "y": 0,
+          "w": 128,
+          "h": 128,
+          "anchor": [
+            64,
+            64
+          ]
+        }
+      ]
+    },
+    {
+      "path": "assets/cook/pip_on.png",
+      "package": "main",
+      "layer": "ui re-export",
+      "width": 40,
+      "height": 40,
+      "anchor": [
+        20,
+        20
+      ],
+      "bytes": 777,
+      "sha256": "6d6a9b53bd50c90d39df6f424c6296f9b15b8f5f7a9844c00c3d0211b616e312",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 832
+    },
+    {
+      "path": "art3/food3/soda_pop_sealed.png",
+      "package": "art3",
+      "layer": "color",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "bytes": 34293,
+      "sha256": "0c9f96e0d09cfdc420d5ed375641a76ccbaa018ca5bf4458dee1c969e618e941",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 85753
+    },
+    {
+      "path": "art3/food3/soda_pop_open.png",
+      "package": "art3",
+      "layer": "color",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "bytes": 34601,
+      "sha256": "d2b78ad3b89d056064be681b63ba5e9358a3a28e34bc9516c3fe4e06896dbcbd",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 88140
+    },
+    {
+      "path": "art3/food3/soda_pop_p1.png",
+      "package": "art3",
+      "layer": "color",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "bytes": 32409,
+      "sha256": "bb859f4fc630a851e9bdd3f6b9e2b7986974c9ccc3c336a630b7ca0a5531859f",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 89400
+    },
+    {
+      "path": "art3/food3/soda_pop_p2.png",
+      "package": "art3",
+      "layer": "color",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "bytes": 29479,
+      "sha256": "bf3416c89e3d98e27c82fc2a8b0925c69add0feff1cae4784d96e541172be689",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 88200
+    },
+    {
+      "path": "art3/food3/soda_pop_empty.png",
+      "package": "art3",
+      "layer": "color",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "bytes": 23459,
+      "sha256": "61ba4b6f7e1e930379f0b438fc972941027e8c3162eb8ad8467ca7ae03f30784",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 86699
+    },
+    {
+      "path": "art3/food3/soda_pop_portion.png",
+      "package": "art3",
+      "layer": "color",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "bytes": 10587,
+      "sha256": "3bdbd227500b52f9597d3027d35e6a499fb8bfafa0a0e359856b8e8a14f14913",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 135210
+    },
+    {
+      "path": "art3/food3/rainbow_candy_sealed.png",
+      "package": "art3",
+      "layer": "color",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "bytes": 30653,
+      "sha256": "a6af86c3ee4019f7653749b1a6ca3f8d4e398ec4c2d891305054c2cc8769643a",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 68776
+    },
+    {
+      "path": "art3/food3/rainbow_candy_open.png",
+      "package": "art3",
+      "layer": "color",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "bytes": 36948,
+      "sha256": "7c0358c842eca004e6668742d36ca2aed0de1609f0f550a563610dc374ecf926",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 67207
+    },
+    {
+      "path": "art3/food3/rainbow_candy_p1.png",
+      "package": "art3",
+      "layer": "color",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "bytes": 34199,
+      "sha256": "340db0aa80ef8bf18d099e1fd0732f7fb817dfb8eb374a334b9c2afbf989972f",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 69011
+    },
+    {
+      "path": "art3/food3/rainbow_candy_p2.png",
+      "package": "art3",
+      "layer": "color",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "bytes": 33599,
+      "sha256": "22c69219d8695b6d6145073b0fc06c260450b2741238491fad60200ac4d37f19",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 69635
+    },
+    {
+      "path": "art3/food3/rainbow_candy_empty.png",
+      "package": "art3",
+      "layer": "color",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "bytes": 29230,
+      "sha256": "1d493883c68258bdfbb61b7b4cd07486d6dbc6cadcbd22e2a58b81573260142d",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 67897
+    },
+    {
+      "path": "art3/food3/rainbow_candy_portion.png",
+      "package": "art3",
+      "layer": "color",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "bytes": 10065,
+      "sha256": "d06e0959021e403d71d9d5db3ca6ada326c23d2c47206548c7cafbfedd6c2996",
+      "format": "indexed PNG with alpha, no dither",
+      "transparentPixels": 132994
+    },
+    {
+      "path": "art3/bg/view_park.jpg",
+      "package": "art3",
+      "layer": "color",
+      "width": 720,
+      "height": 680,
+      "anchor": [
+        360,
+        340
+      ],
+      "bytes": 53335,
+      "sha256": "f5fd7ac5a11145ac7189757b19653df0d5e953a38670550da67e6f6501fe8281",
+      "format": "JPEG q80",
+      "windowCrop": {
+        "homeRoom": [
+          216,
+          191,
+          623,
+          585
+        ],
+        "verticalFocus": 0.35,
+        "horizonTarget": 0.55
+      }
+    },
+    {
+      "path": "art3/bg/view_beach.jpg",
+      "package": "art3",
+      "layer": "color",
+      "width": 720,
+      "height": 680,
+      "anchor": [
+        360,
+        340
+      ],
+      "bytes": 44352,
+      "sha256": "571a31e05bcc016c512c0598be14be43c51c5e629d3f8b2c38f631a6f4baf238",
+      "format": "JPEG q80",
+      "windowCrop": {
+        "homeRoom": [
+          216,
+          191,
+          623,
+          585
+        ],
+        "verticalFocus": 0.35,
+        "horizonTarget": 0.55
+      }
+    },
+    {
+      "path": "art3/bg/view_sakura.jpg",
+      "package": "art3",
+      "layer": "color",
+      "width": 720,
+      "height": 680,
+      "anchor": [
+        360,
+        340
+      ],
+      "bytes": 63849,
+      "sha256": "a9f378e5667b0e99b38f30d862aafe6531e2b958e990b83cfafa50c5a5d8d92d",
+      "format": "JPEG q80",
+      "windowCrop": {
+        "homeRoom": [
+          216,
+          191,
+          623,
+          585
+        ],
+        "verticalFocus": 0.35,
+        "horizonTarget": 0.55
+      }
+    },
+    {
+      "path": "art3/bg/view_night.jpg",
+      "package": "art3",
+      "layer": "color",
+      "width": 720,
+      "height": 680,
+      "anchor": [
+        360,
+        340
+      ],
+      "bytes": 40675,
+      "sha256": "65851beddc05402d5f95200def62d89bfeee1642acefa721ac9365d68dd216c4",
+      "format": "JPEG q80",
+      "windowCrop": {
+        "homeRoom": [
+          216,
+          191,
+          623,
+          585
+        ],
+        "verticalFocus": 0.35,
+        "horizonTarget": 0.55
+      }
+    },
+    {
+      "path": "art3/bg/view_city.jpg",
+      "package": "art3",
+      "layer": "color",
+      "width": 720,
+      "height": 680,
+      "anchor": [
+        360,
+        340
+      ],
+      "bytes": 50135,
+      "sha256": "55a32dc0df01c8cdb5708c05e05ec4826def2264367f8fea64872cd1dc8862cd",
+      "format": "JPEG q80",
+      "windowCrop": {
+        "homeRoom": [
+          216,
+          191,
+          623,
+          585
+        ],
+        "verticalFocus": 0.35,
+        "horizonTarget": 0.55
+      }
+    }
+  ]
+}

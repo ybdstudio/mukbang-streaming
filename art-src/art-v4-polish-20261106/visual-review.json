@@ -1,0 +1,266 @@
+{
+  "reviewer": "Codex agent visual QA",
+  "status": "passed",
+  "checks": [
+    "7 bite families in 3 states, two flavor tint colors",
+    "Clean donut last crescent without floating loop",
+    "Candy portion contains loose candy only",
+    "Pink bubbly soda bottle levels decrease to empty",
+    "Four separate 128px effect frames, sparkle alpha background clean",
+    "40px heart readable at native resolution",
+    "5 edge-to-edge window scenes, no frames or UI"
+  ],
+  "assets": [
+    {
+      "path": "art4/bite/jelly_spoon_0_fill.png",
+      "sha256": "0de9945cb00c38fc5a9a61420533a0ee4b70bf02625f834292d5da98e969d7ef"
+    },
+    {
+      "path": "art4/bite/jelly_spoon_0_detail.png",
+      "sha256": "bf456d2fc61bd5db993eee06a97eae6cf8e18e25281856b96b70ba6dae266486"
+    },
+    {
+      "path": "art4/bite/jelly_spoon_1_fill.png",
+      "sha256": "651ab1f1c112bdfd20f002c89a47ef7cbbd38d0d2fb23960b4b8108d9e5f7553"
+    },
+    {
+      "path": "art4/bite/jelly_spoon_1_detail.png",
+      "sha256": "7715276d9a254f20cb089ce8a23d3b898e035ec5ebd79948b3dc7ac29566e167"
+    },
+    {
+      "path": "art4/bite/jelly_spoon_2_fill.png",
+      "sha256": "2d102cf6fa64b19b50c3a221fe5303963130e9d161442adf1659bb23ca8ee7dd"
+    },
+    {
+      "path": "art4/bite/jelly_spoon_2_detail.png",
+      "sha256": "e2eb94e94f7c4e658a12632aba8ee1cada67b99590f0de04809798ba38069b6c"
+    },
+    {
+      "path": "art4/bite/pudding_spoon_0_fill.png",
+      "sha256": "fb6b74ce3244da912f7da23a825619cdd9dabc932df55bfa48711787e2534d1e"
+    },
+    {
+      "path": "art4/bite/pudding_spoon_0_detail.png",
+      "sha256": "fd1b3f2277746cbc55726646c486d785c65e170b2896e6a2b608cfafe94dde9a"
+    },
+    {
+      "path": "art4/bite/pudding_spoon_1_fill.png",
+      "sha256": "40cf7d07b3d69d16275378e41d7fdfba7cb41399ddc88b2a30f3e38e9cbbbe82"
+    },
+    {
+      "path": "art4/bite/pudding_spoon_1_detail.png",
+      "sha256": "9179e10f2bd16a12d365fdc291dfc1977edb5dc8e4978b55ceecc6a5df086efa"
+    },
+    {
+      "path": "art4/bite/pudding_spoon_2_fill.png",
+      "sha256": "7a6af334aa24319df8a10ca01f2bd3d806dd8ffb21ca5d8afb22ca452383f8e9"
+    },
+    {
+      "path": "art4/bite/pudding_spoon_2_detail.png",
+      "sha256": "94b9add05027d7174eac3ac829b83df23a1548ff8c813b37522c1ede66c0986d"
+    },
+    {
+      "path": "art4/bite/cupcake_bite_0_fill.png",
+      "sha256": "4fac1115a995f6d74acca90064d933b007ebc98f3b43c9ad49286d733b71386c"
+    },
+    {
+      "path": "art4/bite/cupcake_bite_0_detail.png",
+      "sha256": "d3f47a1ab75793e5f0b6f0a84302c39e3c418f329eeaad2d9f888645b3e751b5"
+    },
+    {
+      "path": "art4/bite/cupcake_bite_1_fill.png",
+      "sha256": "82832b357f5cde8d67511bb36b548b5b2e0f9382a72825c32517160bf531e69c"
+    },
+    {
+      "path": "art4/bite/cupcake_bite_1_detail.png",
+      "sha256": "56a7c51e484bb8b36c538e2f0c1fd0642a8524b2272972fea8f63d4fcd2567a2"
+    },
+    {
+      "path": "art4/bite/cupcake_bite_2_fill.png",
+      "sha256": "910594f5f18c8e441b6ae7ff58f0ee9a10aadc70c2c9dd20a15d3cd0e1209e07"
+    },
+    {
+      "path": "art4/bite/cupcake_bite_2_detail.png",
+      "sha256": "0eda18449264f78bec6dcbda05afbc574848115c9087cfcad5e50b874bb8ee11"
+    },
+    {
+      "path": "art4/bite/donut_bite_0_fill.png",
+      "sha256": "49de1866c204470c44635beb931f98fea68e57166df997aac63841793bb5f6c4"
+    },
+    {
+      "path": "art4/bite/donut_bite_0_detail.png",
+      "sha256": "54c8291f0e0e65a1e702a5009e26becde388c4277e2a64af8da6b874e7146c20"
+    },
+    {
+      "path": "art4/bite/donut_bite_1_fill.png",
+      "sha256": "f73f97766e8641782ef5eac9657d5625ebc21ccae9c26afc4d944d849d732664"
+    },
+    {
+      "path": "art4/bite/donut_bite_1_detail.png",
+      "sha256": "8cf47911076be767b39daf04a8b0ac5184632aa1602d24e8547b2fcccc04835a"
+    },
+    {
+      "path": "art4/bite/donut_bite_2_fill.png",
+      "sha256": "7d38ab872ea541a727fba7f90a2dc7122c972913daa5735596bc9afb96ebe0eb"
+    },
+    {
+      "path": "art4/bite/donut_bite_2_detail.png",
+      "sha256": "e81f7ed3c15580062cac540f399fbd5db0e023f835cf7f7ea2b00679bcac9e17"
+    },
+    {
+      "path": "art4/bite/parfait_spoon_0_fill.png",
+      "sha256": "ac669b9f8ac2b5e5a1b00553793addd316ac4705745bed0e58d2d0b2ac020d71"
+    },
+    {
+      "path": "art4/bite/parfait_spoon_0_detail.png",
+      "sha256": "431bb8b2a611cacd81e9bdc709ca9ac9c9c087ec9f7c479078290e6457c4f5b0"
+    },
+    {
+      "path": "art4/bite/parfait_spoon_1_fill.png",
+      "sha256": "3eb365abadb9d9417ab5aa78b9473f79b61e1ca6af393ebf25658d77049785b5"
+    },
+    {
+      "path": "art4/bite/parfait_spoon_1_detail.png",
+      "sha256": "794474060e991957bfac278725cbb6ce5844aeb77418f9229c11aa1be2af106b"
+    },
+    {
+      "path": "art4/bite/parfait_spoon_2_fill.png",
+      "sha256": "6657a47923254460efca511d943990c2ee35ca4117cde7fd7e8291e1f63fa570"
+    },
+    {
+      "path": "art4/bite/parfait_spoon_2_detail.png",
+      "sha256": "850130b71448117e9894f1dc99de33e3397fb4d35e7101d6ebffad731bc313fb"
+    },
+    {
+      "path": "art4/bite/bingsu_spoon_0_fill.png",
+      "sha256": "1bc99d99f0fe4dd58b5d204d52e59759ae5d21bebb0885b950e03eea89a8f986"
+    },
+    {
+      "path": "art4/bite/bingsu_spoon_0_detail.png",
+      "sha256": "5fb29388dbaff8d573794ea3f619b38d0f2fa5e7e89bab9f339301cc1fc0596f"
+    },
+    {
+      "path": "art4/bite/bingsu_spoon_1_fill.png",
+      "sha256": "08f86d93f3456228eb931915b7b608315862870d6b9fe796637615278a07c989"
+    },
+    {
+      "path": "art4/bite/bingsu_spoon_1_detail.png",
+      "sha256": "1188db88cc222a62a3c43c6397bfe2bdfdeca277cf8bc7d8c1ca965f6203aea3"
+    },
+    {
+      "path": "art4/bite/bingsu_spoon_2_fill.png",
+      "sha256": "1765d5bfce0e3e1291379f544782ce8e459b77536c0ba103c8367002722bdb8f"
+    },
+    {
+      "path": "art4/bite/bingsu_spoon_2_detail.png",
+      "sha256": "3be3204f36c7982087ea3079c7800f2f262f24fc10a28000fc264b582fc537a3"
+    },
+    {
+      "path": "art4/bite/ramen_chopsticks_0.png",
+      "sha256": "a71592095092cbaaad5023fcd93c6442d1bb1ef649437ca92872537e9e08d039"
+    },
+    {
+      "path": "art4/bite/ramen_chopsticks_1.png",
+      "sha256": "817f697dd34cde0d55bc2280bc3355aa12666a4c38cacf5a50c093b1199e993d"
+    },
+    {
+      "path": "art4/bite/ramen_chopsticks_2.png",
+      "sha256": "a0b5dab9235d3d38b9aedacea36cd1598cc2d258cab63c175c234524ffa805aa"
+    },
+    {
+      "path": "assets/cook/fx_steam.png",
+      "sha256": "eba6d789f7295d93fbb7c893677a9dd6544f5bad8c86a7c9f3a4c103e30f5bf7"
+    },
+    {
+      "path": "assets/cook/fx_cold.png",
+      "sha256": "ce3b0da13d8efe7e0543078536c90b41dab3af8d17d7baee8c64698bd1989aaa"
+    },
+    {
+      "path": "assets/cook/fx_pour.png",
+      "sha256": "0b0af392249324b73385f3fab0ce4f9334f3457652b03cab5956545407ee1d7c"
+    },
+    {
+      "path": "assets/cook/fx_sparkle.png",
+      "sha256": "15872147bced76390987d042689153ca5987339838e21e185d9e6f395ae2f45c"
+    },
+    {
+      "path": "assets/cook/pip_on.png",
+      "sha256": "6d6a9b53bd50c90d39df6f424c6296f9b15b8f5f7a9844c00c3d0211b616e312"
+    },
+    {
+      "path": "art3/food3/soda_pop_sealed.png",
+      "sha256": "0c9f96e0d09cfdc420d5ed375641a76ccbaa018ca5bf4458dee1c969e618e941"
+    },
+    {
+      "path": "art3/food3/soda_pop_open.png",
+      "sha256": "d2b78ad3b89d056064be681b63ba5e9358a3a28e34bc9516c3fe4e06896dbcbd"
+    },
+    {
+      "path": "art3/food3/soda_pop_p1.png",
+      "sha256": "bb859f4fc630a851e9bdd3f6b9e2b7986974c9ccc3c336a630b7ca0a5531859f"
+    },
+    {
+      "path": "art3/food3/soda_pop_p2.png",
+      "sha256": "bf3416c89e3d98e27c82fc2a8b0925c69add0feff1cae4784d96e541172be689"
+    },
+    {
+      "path": "art3/food3/soda_pop_empty.png",
+      "sha256": "61ba4b6f7e1e930379f0b438fc972941027e8c3162eb8ad8467ca7ae03f30784"
+    },
+    {
+      "path": "art3/food3/soda_pop_portion.png",
+      "sha256": "3bdbd227500b52f9597d3027d35e6a499fb8bfafa0a0e359856b8e8a14f14913"
+    },
+    {
+      "path": "art3/food3/rainbow_candy_sealed.png",
+      "sha256": "a6af86c3ee4019f7653749b1a6ca3f8d4e398ec4c2d891305054c2cc8769643a"
+    },
+    {
+      "path": "art3/food3/rainbow_candy_open.png",
+      "sha256": "7c0358c842eca004e6668742d36ca2aed0de1609f0f550a563610dc374ecf926"
+    },
+    {
+      "path": "art3/food3/rainbow_candy_p1.png",
+      "sha256": "340db0aa80ef8bf18d099e1fd0732f7fb817dfb8eb374a334b9c2afbf989972f"
+    },
+    {
+      "path": "art3/food3/rainbow_candy_p2.png",
+      "sha256": "22c69219d8695b6d6145073b0fc06c260450b2741238491fad60200ac4d37f19"
+    },
+    {
+      "path": "art3/food3/rainbow_candy_empty.png",
+      "sha256": "1d493883c68258bdfbb61b7b4cd07486d6dbc6cadcbd22e2a58b81573260142d"
+    },
+    {
+      "path": "art3/food3/rainbow_candy_portion.png",
+      "sha256": "d06e0959021e403d71d9d5db3ca6ada326c23d2c47206548c7cafbfedd6c2996"
+    },
+    {
+      "path": "art3/bg/view_park.jpg",
+      "sha256": "f5fd7ac5a11145ac7189757b19653df0d5e953a38670550da67e6f6501fe8281"
+    },
+    {
+      "path": "art3/bg/view_beach.jpg",
+      "sha256": "571a31e05bcc016c512c0598be14be43c51c5e629d3f8b2c38f631a6f4baf238"
+    },
+    {
+      "path": "art3/bg/view_sakura.jpg",
+      "sha256": "a9f378e5667b0e99b38f30d862aafe6531e2b958e990b83cfafa50c5a5d8d92d"
+    },
+    {
+      "path": "art3/bg/view_night.jpg",
+      "sha256": "65851beddc05402d5f95200def62d89bfeee1642acefa721ac9365d68dd216c4"
+    },
+    {
+      "path": "art3/bg/view_city.jpg",
+      "sha256": "55a32dc0df01c8cdb5708c05e05ec4826def2264367f8fea64872cd1dc8862cd"
+    }
+  ],
+  "reviewedAt": "2026-11-06T11:09:58.5162593+07:00",
+  "evidence": [
+    "previews/bite-states.png",
+    "previews/food3-final.png",
+    "previews/effects-final.png",
+    "previews/window-views.png"
+  ]
+}

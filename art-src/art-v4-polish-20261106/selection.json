@@ -1,0 +1,860 @@
+{
+  "assets": [
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "0de9945cb00c38fc5a9a61420533a0ee4b70bf02625f834292d5da98e969d7ef",
+      "source": "sources/jelly_spoon_0.png",
+      "sourceSha256": "00afe346ecc630d4d7a3e5b408071d81e6ee380276b8616e07d341af5bbce1f4",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 0,
+      "path": "art4/bite/jelly_spoon_0_fill.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "bf456d2fc61bd5db993eee06a97eae6cf8e18e25281856b96b70ba6dae266486",
+      "source": "sources/jelly_spoon_0.png",
+      "sourceSha256": "00afe346ecc630d4d7a3e5b408071d81e6ee380276b8616e07d341af5bbce1f4",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 0,
+      "path": "art4/bite/jelly_spoon_0_detail.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "651ab1f1c112bdfd20f002c89a47ef7cbbd38d0d2fb23960b4b8108d9e5f7553",
+      "source": "sources/jelly_spoon_1.png",
+      "sourceSha256": "1f87b8bfe2fe14288b372591435d9bbf25aca7c7912595aabc8791cd02d20d0e",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 1,
+      "path": "art4/bite/jelly_spoon_1_fill.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "7715276d9a254f20cb089ce8a23d3b898e035ec5ebd79948b3dc7ac29566e167",
+      "source": "sources/jelly_spoon_1.png",
+      "sourceSha256": "1f87b8bfe2fe14288b372591435d9bbf25aca7c7912595aabc8791cd02d20d0e",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 1,
+      "path": "art4/bite/jelly_spoon_1_detail.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "2d102cf6fa64b19b50c3a221fe5303963130e9d161442adf1659bb23ca8ee7dd",
+      "source": "sources/jelly_spoon_2.png",
+      "sourceSha256": "68ad0f570ab34d4b0311e551eb3502031d7d741114584448192f054c7eb478ab",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 2,
+      "path": "art4/bite/jelly_spoon_2_fill.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "e2eb94e94f7c4e658a12632aba8ee1cada67b99590f0de04809798ba38069b6c",
+      "source": "sources/jelly_spoon_2.png",
+      "sourceSha256": "68ad0f570ab34d4b0311e551eb3502031d7d741114584448192f054c7eb478ab",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 2,
+      "path": "art4/bite/jelly_spoon_2_detail.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "fb6b74ce3244da912f7da23a825619cdd9dabc932df55bfa48711787e2534d1e",
+      "source": "sources/pudding_spoon_0.png",
+      "sourceSha256": "173869eca9a3c68a86bfeb43d8a42117d7b62f9e52c020b8ac57f33ff7a61552",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 3,
+      "path": "art4/bite/pudding_spoon_0_fill.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "fd1b3f2277746cbc55726646c486d785c65e170b2896e6a2b608cfafe94dde9a",
+      "source": "sources/pudding_spoon_0.png",
+      "sourceSha256": "173869eca9a3c68a86bfeb43d8a42117d7b62f9e52c020b8ac57f33ff7a61552",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 3,
+      "path": "art4/bite/pudding_spoon_0_detail.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "40cf7d07b3d69d16275378e41d7fdfba7cb41399ddc88b2a30f3e38e9cbbbe82",
+      "source": "sources/pudding_spoon_1.png",
+      "sourceSha256": "6f985f5859031f7e6c7b9632e850aa23fc4458d4a66377a5293f2c140e6cdabb",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 4,
+      "path": "art4/bite/pudding_spoon_1_fill.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "9179e10f2bd16a12d365fdc291dfc1977edb5dc8e4978b55ceecc6a5df086efa",
+      "source": "sources/pudding_spoon_1.png",
+      "sourceSha256": "6f985f5859031f7e6c7b9632e850aa23fc4458d4a66377a5293f2c140e6cdabb",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 4,
+      "path": "art4/bite/pudding_spoon_1_detail.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "7a6af334aa24319df8a10ca01f2bd3d806dd8ffb21ca5d8afb22ca452383f8e9",
+      "source": "sources/pudding_spoon_2.png",
+      "sourceSha256": "673d50e67155c853899cf43aeb9a330633e1c758dbd0219999cbe32e273af482",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 5,
+      "path": "art4/bite/pudding_spoon_2_fill.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "94b9add05027d7174eac3ac829b83df23a1548ff8c813b37522c1ede66c0986d",
+      "source": "sources/pudding_spoon_2.png",
+      "sourceSha256": "673d50e67155c853899cf43aeb9a330633e1c758dbd0219999cbe32e273af482",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 5,
+      "path": "art4/bite/pudding_spoon_2_detail.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "4fac1115a995f6d74acca90064d933b007ebc98f3b43c9ad49286d733b71386c",
+      "source": "sources/cupcake_bite_0.png",
+      "sourceSha256": "1c50a14a9f4028cf842e12e0aade55a0bf070319ac93048b9aa8c119f6e25172",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 21,
+      "path": "art4/bite/cupcake_bite_0_fill.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "d3f47a1ab75793e5f0b6f0a84302c39e3c418f329eeaad2d9f888645b3e751b5",
+      "source": "sources/cupcake_bite_0.png",
+      "sourceSha256": "1c50a14a9f4028cf842e12e0aade55a0bf070319ac93048b9aa8c119f6e25172",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 21,
+      "path": "art4/bite/cupcake_bite_0_detail.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "82832b357f5cde8d67511bb36b548b5b2e0f9382a72825c32517160bf531e69c",
+      "source": "sources/cupcake_bite_1.png",
+      "sourceSha256": "f1809df577259cf4d703dd0613f11ec2a3d380c04c82341ce383f17275b8dc8d",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 22,
+      "path": "art4/bite/cupcake_bite_1_fill.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "56a7c51e484bb8b36c538e2f0c1fd0642a8524b2272972fea8f63d4fcd2567a2",
+      "source": "sources/cupcake_bite_1.png",
+      "sourceSha256": "f1809df577259cf4d703dd0613f11ec2a3d380c04c82341ce383f17275b8dc8d",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 22,
+      "path": "art4/bite/cupcake_bite_1_detail.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "910594f5f18c8e441b6ae7ff58f0ee9a10aadc70c2c9dd20a15d3cd0e1209e07",
+      "source": "sources/cupcake_bite_2.png",
+      "sourceSha256": "f229e55a0f3e4f4adcc37be94e2bbec8225ad9e21ae4b2819ae4d4cfecfcc2ec",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 23,
+      "path": "art4/bite/cupcake_bite_2_fill.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "0eda18449264f78bec6dcbda05afbc574848115c9087cfcad5e50b874bb8ee11",
+      "source": "sources/cupcake_bite_2.png",
+      "sourceSha256": "f229e55a0f3e4f4adcc37be94e2bbec8225ad9e21ae4b2819ae4d4cfecfcc2ec",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 23,
+      "path": "art4/bite/cupcake_bite_2_detail.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "49de1866c204470c44635beb931f98fea68e57166df997aac63841793bb5f6c4",
+      "source": "sources/donut_bite_0.png",
+      "sourceSha256": "8c33d1c97e44ac790c9a16989586ccfc79effa49c17d8d53385d7cfce880b2cc",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 24,
+      "path": "art4/bite/donut_bite_0_fill.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "54c8291f0e0e65a1e702a5009e26becde388c4277e2a64af8da6b874e7146c20",
+      "source": "sources/donut_bite_0.png",
+      "sourceSha256": "8c33d1c97e44ac790c9a16989586ccfc79effa49c17d8d53385d7cfce880b2cc",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 24,
+      "path": "art4/bite/donut_bite_0_detail.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "f73f97766e8641782ef5eac9657d5625ebc21ccae9c26afc4d944d849d732664",
+      "source": "sources/donut_bite_1.png",
+      "sourceSha256": "8bb587f6b4aa2ce2f830f2d3e66e20e6fb25bbcd63e22840b4659c6170a49f84",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 25,
+      "path": "art4/bite/donut_bite_1_fill.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "8cf47911076be767b39daf04a8b0ac5184632aa1602d24e8547b2fcccc04835a",
+      "source": "sources/donut_bite_1.png",
+      "sourceSha256": "8bb587f6b4aa2ce2f830f2d3e66e20e6fb25bbcd63e22840b4659c6170a49f84",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 25,
+      "path": "art4/bite/donut_bite_1_detail.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "7d38ab872ea541a727fba7f90a2dc7122c972913daa5735596bc9afb96ebe0eb",
+      "source": "sources/donut_bite_2.png",
+      "sourceSha256": "b1682fcd51c995f4f7646fa72e7fb247d3b92236213d5cc06f94389efea6279d",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 50,
+      "path": "art4/bite/donut_bite_2_fill.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "e81f7ed3c15580062cac540f399fbd5db0e023f835cf7f7ea2b00679bcac9e17",
+      "source": "sources/donut_bite_2.png",
+      "sourceSha256": "b1682fcd51c995f4f7646fa72e7fb247d3b92236213d5cc06f94389efea6279d",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 50,
+      "path": "art4/bite/donut_bite_2_detail.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "ac669b9f8ac2b5e5a1b00553793addd316ac4705745bed0e58d2d0b2ac020d71",
+      "source": "sources/parfait_spoon_0.png",
+      "sourceSha256": "ebda4d36efb899997e012711b4d8a349654aaa8becc6426921ed0f9e6eafd65a",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 27,
+      "path": "art4/bite/parfait_spoon_0_fill.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "431bb8b2a611cacd81e9bdc709ca9ac9c9c087ec9f7c479078290e6457c4f5b0",
+      "source": "sources/parfait_spoon_0.png",
+      "sourceSha256": "ebda4d36efb899997e012711b4d8a349654aaa8becc6426921ed0f9e6eafd65a",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 27,
+      "path": "art4/bite/parfait_spoon_0_detail.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "3eb365abadb9d9417ab5aa78b9473f79b61e1ca6af393ebf25658d77049785b5",
+      "source": "sources/parfait_spoon_1.png",
+      "sourceSha256": "ec29bd8af60cd88e0f4f24a6d0a0badf692737404b634949f1a8f25db85507f8",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 28,
+      "path": "art4/bite/parfait_spoon_1_fill.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "794474060e991957bfac278725cbb6ce5844aeb77418f9229c11aa1be2af106b",
+      "source": "sources/parfait_spoon_1.png",
+      "sourceSha256": "ec29bd8af60cd88e0f4f24a6d0a0badf692737404b634949f1a8f25db85507f8",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 28,
+      "path": "art4/bite/parfait_spoon_1_detail.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "6657a47923254460efca511d943990c2ee35ca4117cde7fd7e8291e1f63fa570",
+      "source": "sources/parfait_spoon_2.png",
+      "sourceSha256": "82817b02314b41837a0bfd1efa0eb8d568a061b79d7dd3ce468b2ab081e712c0",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 29,
+      "path": "art4/bite/parfait_spoon_2_fill.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "850130b71448117e9894f1dc99de33e3397fb4d35e7101d6ebffad731bc313fb",
+      "source": "sources/parfait_spoon_2.png",
+      "sourceSha256": "82817b02314b41837a0bfd1efa0eb8d568a061b79d7dd3ce468b2ab081e712c0",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 29,
+      "path": "art4/bite/parfait_spoon_2_detail.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "1bc99d99f0fe4dd58b5d204d52e59759ae5d21bebb0885b950e03eea89a8f986",
+      "source": "sources/bingsu_spoon_0.png",
+      "sourceSha256": "4ffaf29eaa53ed74f7acdea7fa03bc038278c3a4a701ec77fbe0c155d25ce4d4",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 15,
+      "path": "art4/bite/bingsu_spoon_0_fill.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "5fb29388dbaff8d573794ea3f619b38d0f2fa5e7e89bab9f339301cc1fc0596f",
+      "source": "sources/bingsu_spoon_0.png",
+      "sourceSha256": "4ffaf29eaa53ed74f7acdea7fa03bc038278c3a4a701ec77fbe0c155d25ce4d4",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 15,
+      "path": "art4/bite/bingsu_spoon_0_detail.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "08f86d93f3456228eb931915b7b608315862870d6b9fe796637615278a07c989",
+      "source": "sources/bingsu_spoon_1.png",
+      "sourceSha256": "67a127a224f50eea0b1925ac5be6e6a8cbf87a3dcde7a7a51be1b36d2cd69abb",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 16,
+      "path": "art4/bite/bingsu_spoon_1_fill.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "1188db88cc222a62a3c43c6397bfe2bdfdeca277cf8bc7d8c1ca965f6203aea3",
+      "source": "sources/bingsu_spoon_1.png",
+      "sourceSha256": "67a127a224f50eea0b1925ac5be6e6a8cbf87a3dcde7a7a51be1b36d2cd69abb",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 16,
+      "path": "art4/bite/bingsu_spoon_1_detail.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "1765d5bfce0e3e1291379f544782ce8e459b77536c0ba103c8367002722bdb8f",
+      "source": "sources/bingsu_spoon_2.png",
+      "sourceSha256": "bd34458fb4c84eb96ccdf78581ff0b9ee5b0b1d0dcf48cb5a29b01a5afcbad12",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 17,
+      "path": "art4/bite/bingsu_spoon_2_fill.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "3be3204f36c7982087ea3079c7800f2f262f24fc10a28000fc264b582fc537a3",
+      "source": "sources/bingsu_spoon_2.png",
+      "sourceSha256": "bd34458fb4c84eb96ccdf78581ff0b9ee5b0b1d0dcf48cb5a29b01a5afcbad12",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 17,
+      "path": "art4/bite/bingsu_spoon_2_detail.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "a71592095092cbaaad5023fcd93c6442d1bb1ef649437ca92872537e9e08d039",
+      "source": "sources/ramen_chopsticks_0.png",
+      "sourceSha256": "c20a82b602511ef058e0d1065e3924fa67d5159ca88e7441523d3211a5571253",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 30,
+      "path": "art4/bite/ramen_chopsticks_0.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "817f697dd34cde0d55bc2280bc3355aa12666a4c38cacf5a50c093b1199e993d",
+      "source": "sources/ramen_chopsticks_1.png",
+      "sourceSha256": "7789e1b3673fe20f8c98c8ad6548cfa621bf585c86522947837c17d1d8c5beaf",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 31,
+      "path": "art4/bite/ramen_chopsticks_1.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "a0b5dab9235d3d38b9aedacea36cd1598cc2d258cab63c175c234524ffa805aa",
+      "source": "sources/ramen_chopsticks_2.png",
+      "sourceSha256": "fe4c559c83c32f4745ce1e783cc66cd42d9a4c64ece9248428c739738f93ac1f",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 32,
+      "path": "art4/bite/ramen_chopsticks_2.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "eba6d789f7295d93fbb7c893677a9dd6544f5bad8c86a7c9f3a4c103e30f5bf7",
+      "source": "sources/fx_steam.png",
+      "sourceSha256": "a992e08deed5ffa756eeddc1c9f902190b6a065813ac2d2daa924c8ab76e9e05",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 33,
+      "path": "assets/cook/fx_steam.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "ce3b0da13d8efe7e0543078536c90b41dab3af8d17d7baee8c64698bd1989aaa",
+      "source": "sources/fx_cold.png",
+      "sourceSha256": "d6868b17a45b0c0138f9ae824cfd1e8c4b963a87214d877499f60b3c841c34f8",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 34,
+      "path": "assets/cook/fx_cold.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "0b0af392249324b73385f3fab0ce4f9334f3457652b03cab5956545407ee1d7c",
+      "source": "sources/fx_pour.png",
+      "sourceSha256": "632b50277b6fa3dbbdd6eb0d5ed6b6a201fbc2e1a07d170b7da28a8717d8930a",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 35,
+      "path": "assets/cook/fx_pour.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "15872147bced76390987d042689153ca5987339838e21e185d9e6f395ae2f45c",
+      "source": "sources/fx_sparkle.png",
+      "sourceSha256": "34cc32d41e5a7c1c4def7fd084d7a5d5c6fe910e476145e221b38b76469b901b",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 36,
+      "path": "assets/cook/fx_sparkle.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "6d6a9b53bd50c90d39df6f424c6296f9b15b8f5f7a9844c00c3d0211b616e312",
+      "source": "sources/pip_on.png",
+      "sourceSha256": "52bea93a8540c2da365904a2a49fec1874916b1040adff48571abc782fc91a0e",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 37,
+      "path": "assets/cook/pip_on.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "0c9f96e0d09cfdc420d5ed375641a76ccbaa018ca5bf4458dee1c969e618e941",
+      "source": "sources/soda_pop_sealed.png",
+      "sourceSha256": "a609564dadf14092ebec8803b220352eefa4bb137e8d5fe287251f55337fcfe4",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 38,
+      "path": "art3/food3/soda_pop_sealed.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "d2b78ad3b89d056064be681b63ba5e9358a3a28e34bc9516c3fe4e06896dbcbd",
+      "source": "sources/soda_pop_open.png",
+      "sourceSha256": "51251d9325abd6f0f10867d6e5a0a49527e2b6d5013260f1b21badea595baaf7",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 39,
+      "path": "art3/food3/soda_pop_open.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "bb859f4fc630a851e9bdd3f6b9e2b7986974c9ccc3c336a630b7ca0a5531859f",
+      "source": "sources/soda_pop_p1.png",
+      "sourceSha256": "2c5c790cfdfd297456470c71a83f20296a5a7f75e3f083f84ac9b82b9598cd88",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 40,
+      "path": "art3/food3/soda_pop_p1.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "bf3416c89e3d98e27c82fc2a8b0925c69add0feff1cae4784d96e541172be689",
+      "source": "sources/soda_pop_p2.png",
+      "sourceSha256": "259c9c625f45af1e221c37f8e12edfd3eb2f1f239e1fc1e2c882d306018b348e",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 41,
+      "path": "art3/food3/soda_pop_p2.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "61ba4b6f7e1e930379f0b438fc972941027e8c3162eb8ad8467ca7ae03f30784",
+      "source": "sources/soda_pop_empty.png",
+      "sourceSha256": "2e27dda72070416fce305cca6ed359cdd50ea7134c7871d83265748175c33a4b",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 42,
+      "path": "art3/food3/soda_pop_empty.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "3bdbd227500b52f9597d3027d35e6a499fb8bfafa0a0e359856b8e8a14f14913",
+      "source": "sources/soda_pop_portion.png",
+      "sourceSha256": "4d61b46b1592bea725029e189a1d005b2483491eb78ee56176fcf25c5e8f47f5",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 43,
+      "path": "art3/food3/soda_pop_portion.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "a6af86c3ee4019f7653749b1a6ca3f8d4e398ec4c2d891305054c2cc8769643a",
+      "source": "sources/rainbow_candy_sealed.png",
+      "sourceSha256": "a76a7f95dbe42ad80594c36a77cdec15191e9f827b65ab74f1898483327bfc1b",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 44,
+      "path": "art3/food3/rainbow_candy_sealed.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "7c0358c842eca004e6668742d36ca2aed0de1609f0f550a563610dc374ecf926",
+      "source": "sources/rainbow_candy_open.png",
+      "sourceSha256": "284c9bd919f250aad081a08a9fdca481faf1ff73162728b79279b5d2d69f91f0",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 45,
+      "path": "art3/food3/rainbow_candy_open.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "340db0aa80ef8bf18d099e1fd0732f7fb817dfb8eb374a334b9c2afbf989972f",
+      "source": "sources/rainbow_candy_p1.png",
+      "sourceSha256": "d603d008d28b5c5e424ed590547e206d32437ca3de9511998ffcbcb79e63c80a",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 46,
+      "path": "art3/food3/rainbow_candy_p1.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "22c69219d8695b6d6145073b0fc06c260450b2741238491fad60200ac4d37f19",
+      "source": "sources/rainbow_candy_p2.png",
+      "sourceSha256": "9380b6898a613980d5a0a701f68016ded71ff2cace203d6d22e84b2b6a5f6117",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 47,
+      "path": "art3/food3/rainbow_candy_p2.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "1d493883c68258bdfbb61b7b4cd07486d6dbc6cadcbd22e2a58b81573260142d",
+      "source": "sources/rainbow_candy_empty.png",
+      "sourceSha256": "c8435b48896ba437f7d87cb9a286462465897de4884385d058183593489b97c3",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 48,
+      "path": "art3/food3/rainbow_candy_empty.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "d06e0959021e403d71d9d5db3ca6ada326c23d2c47206548c7cafbfedd6c2996",
+      "source": "sources/rainbow_candy_portion.png",
+      "sourceSha256": "da379db99e43f70486c1d46961492d8e29a81ab503516e6beafa993fd4b12e30",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 56,
+      "path": "art3/food3/rainbow_candy_portion.png"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "f5fd7ac5a11145ac7189757b19653df0d5e953a38670550da67e6f6501fe8281",
+      "source": "sources/view_park.png",
+      "sourceSha256": "a746704cfde41b4a90eb97abceb6fa3bb2af4482df3657ef26947307b2d3f07d",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 51,
+      "path": "art3/bg/view_park.jpg"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "571a31e05bcc016c512c0598be14be43c51c5e629d3f8b2c38f631a6f4baf238",
+      "source": "sources/view_beach.png",
+      "sourceSha256": "ea2b6aef5c93d77ebd87185811cbc918a94162c5b93f8416f22788d72d57790c",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 52,
+      "path": "art3/bg/view_beach.jpg"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "a9f378e5667b0e99b38f30d862aafe6531e2b958e990b83cfafa50c5a5d8d92d",
+      "source": "sources/view_sakura.png",
+      "sourceSha256": "71a6f3b584eda74da5740906fd9bfe9b9975bd2588daf632b4e6fad07992c292",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 53,
+      "path": "art3/bg/view_sakura.jpg"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "65851beddc05402d5f95200def62d89bfeee1642acefa721ac9365d68dd216c4",
+      "source": "sources/view_night.png",
+      "sourceSha256": "8d0830b81329b765a65b90c6753d04c30eb4481148c1d6695de6ceac7d8a7300",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 54,
+      "path": "art3/bg/view_night.jpg"
+    },
+    {
+      "technicalExports": [
+        "registration.json",
+        "atlas-registration.json",
+        "layer-separation.json",
+        "atlas-alpha-export.json"
+      ],
+      "finalSha256": "55a32dc0df01c8cdb5708c05e05ec4826def2264367f8fea64872cd1dc8862cd",
+      "source": "sources/view_city.png",
+      "sourceSha256": "dab7c9ab9f176d2a5aea1463191b9ca95fefac37e8172ba816c72aac045934da",
+      "tool": "built-in ImageGen",
+      "generationLogIndex": 55,
+      "path": "art3/bg/view_city.jpg"
+    }
+  ],
+  "count": 61,
+  "scope": "ART-REQUEST-V4-POLISH"
+}

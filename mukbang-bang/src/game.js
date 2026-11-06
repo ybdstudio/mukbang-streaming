@@ -528,10 +528,10 @@ class Game {
       const f = foods[i]; const sp = this.shelfPos(i); const price = D.priceOf(f);
       const afford = coins >= total + price && m.basket.length < 12;
       ctx.globalAlpha = afford ? 1 : 0.55;
-      A.food(ctx, f, sp.x + (afford ? 0 : shake), sp.y - 18, 150, 0, this.time);
+      A.food(ctx, f, sp.x + (afford ? 0 : shake), sp.y - 26, 176, 0, this.time);
       ctx.globalAlpha = 1;
       A.priceTag(ctx, sp.x, sp.y + 92, price, !afford);
-      ui.hotspot('item' + i, sp.x - 75, sp.y - 95, 150, 185);
+      ui.hotspot('item' + i, sp.x - 86, sp.y - 112, 172, 200);
     }
     // bottom: portrait, basket, count + total
     const b = this.basketRect(); const bottom = this.bottom();

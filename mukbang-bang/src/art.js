@@ -787,7 +787,8 @@ function homeRoom(ctx, view, createCanvas, W, H, scale, t) {
   if (room) {
     const s = Math.max(W / S.BG_W, H / S.BG_H), ox = (W - S.BG_W * s) / 2, w = ROOM.win;
     const vx = ox + w[0] * s, vy = w[1] * s, vw = w[2] * s, vh = w[3] * s;
-    const v = S.getBg(bgPath(view));
+    const VIEW = { park: 'view_park', beach: 'view_beach', sakura: 'view_sakura', room: 'view_night', city: 'view_city' };
+    const bid = D.BACKGROUNDS[view % D.BACKGROUNDS.length].id; const v = S.getBg('bg/' + VIEW[bid] + '.jpg') || S.getBg(bgPath(view));
     ctx.save(); ctx.beginPath(); ctx.rect(vx, vy, vw, vh); ctx.clip();
     if (v) { const k = Math.max(vw / v.width, vh / v.height); ctx.drawImage(v, vx + (vw - v.width * k) / 2, vy + (vh - v.height * k) * 0.35, v.width * k, v.height * k); }
     else { ctx.fillStyle = '#bfe9ff'; ctx.fillRect(vx, vy, vw, vh); }
@@ -869,7 +870,7 @@ function flames(ctx, x, y, r, t) {
 // ─── V3: one package on the table + the portion carried to the mouth ───
 // state: 'sealed' · 'opening' (k 0..1) · 'open' (e = pickups / 3) · 'empty'
 // art V3 packaged food (subpackage art3): 6 states per food + an opening strip per package type
-const FOOD3 = { cat_chips: 1, honey_puffs: 1, cheese_noodle: 1, straw_cake: 1, peach_milk: 1, chili_noodle: 1, kfc_chicken: 1, mint_choc: 1 };
+const FOOD3 = { cat_chips: 1, honey_puffs: 1, cheese_noodle: 1, straw_cake: 1, peach_milk: 1, chili_noodle: 1, kfc_chicken: 1, mint_choc: 1, soda_pop: 1, rainbow_candy: 1 };
 function food3(ctx, id, state, x, y, size) { const im = S.get('food3/' + id + '_' + state + '.png'); if (!im) return false; ctx.drawImage(im, x - size / 2, y - size / 2, size, size); return true; }
 function pack3(ctx, f, kind, x, y, size, state, k, e) {
   if (!FOOD3[f.id]) return false; const z = size * (kind === 'bag' ? 0.92 : 1.05); // the V3 packages are drawn edge to edge: bags read too big at 1:1
