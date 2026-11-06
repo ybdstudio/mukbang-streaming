@@ -225,9 +225,10 @@ seed(7);
 }
 // ═════════ test-build autoplay ═════════
 {
-  const p = fakePlatform(); p.devTools = true; const prof = fakeProfile(Object.assign({}, INIT, { level: 2, levels_done: 1, streams: 3 })); const hs = fakeHs(prof, 'ok'); const g = new Game(p, hs); g.hsReady = true; run(g, 0.2);
+  const p = fakePlatform(); p.devTools = true; const prof = fakeProfile(Object.assign({}, INIT, { level: 12, levels_done: 11, streams: 13, coins: 5000 })); const hs = fakeHs(prof, 'ok'); const g = new Game(p, hs); g.hsReady = true; run(g, 0.2);
   await tap(g, p, 'settings'); await tap(g, p, 'auto_play'); check('settings (test build): AUTO PLAY toggles on', g.autoplay === true); await tap(g, p, 'settings_close');
-  const ads0 = hs.ads.length; let lv0 = prof.get('levels_done'); for (let i = 0; i < 360 && prof.get('levels_done') < lv0 + 2; i++) { run(g, 1); await flush(); }
+  const ads0 = hs.ads.length; let lv0 = prof.get('levels_done'); const seen = new Set(); for (let i = 0; i < 900 && (prof.get('levels_done') < lv0 + 4 || !seen.has('arrive')); i++) { run(g, 1); await flush(); seen.add(g.state); }
+  check('autoplay takes side trips: supermarket (checkout) and delivery', seen.has('market') && seen.has('checkout') && seen.has('delivery') && seen.has('arrive'), [...seen]);
   check('autoplay clears levels on its own at normal pace (2 levels within 6 min of game time)', prof.get('levels_done') >= lv0 + 2, { done: prof.get('levels_done'), state: g.state, phase: g.run && g.run.phase });
   check('autoplay never starts a rewarded ad (interstitials only)', hs.ads.filter(a => a !== 'stream_end' && a !== 'cook_step').length === ads0, hs.ads); // interstitials still play as for a player
   const p2 = fakePlatform(); const g2 = new Game(p2, fakeHs(fakeProfile(INIT), 'ok')); g2.hsReady = true; run(g2, 0.1); g2.setState('settings'); run(g2, 0.05); check('TikTok build: no AUTO PLAY button', !hasBtn(g2, 'auto_play'));

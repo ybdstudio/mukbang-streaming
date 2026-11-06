@@ -1,6 +1,6 @@
 'use strict';
 // Test-build autoplay (Settings → AUTO PLAY, web / artifact only): plays the main levels on
-// its own at a normal human pace, through the same touch handlers a player uses. It cooks
+// its own at a normal human pace (every other level a supermarket or delivery trip), through the same touch handlers a player uses. It cooks
 // what the viewer asked for, eats every portion, closes tips and moves on to the next level.
 // It never taps an ad button.
 const CK = require('./cook.js');
@@ -23,8 +23,21 @@ function install(Game) {
     // tips and popups first
     if (tapBtn('gtip_ok') || tapBtn('mtip_ok') || tapBtn('gift_no') || tapBtn('feat_ok') || tapBtn('feat_later')) return;
     const s = this.state, r = this.run;
-    if (s === 'home') { tapBtn('play'); return; }
-    if (s === 'result') { if (!tapBtn('next')) tapBtn('res_main'); return; }
+    // every other level it takes a side trip: supermarket, then delivery (when they are open)
+    if (s === 'home') { if (a.side) { const sd = a.side; a.side = null; if (tapBtn('side_' + sd)) return; } tapBtn('play'); return; }
+    if (s === 'result') {
+      if (this.result && this.result.side) { tapBtn('res_home'); return; }
+      a.round = (a.round || 0) + 1;
+      if (a.round % 2 === 0) { const sd = (a.sideN = (a.sideN || 0) + 1) % 2 ? 'market' : 'delivery'; if (this.modeOpen && this.modeOpen(sd)) { a.side = sd; if (tapBtn('res_home')) return; } }
+      if (!tapBtn('next')) tapBtn('res_main'); return; }
+    if (s === 'market') { // pick 2–3 things it can afford, then GO
+      const m = this.market; a.want = a.want || 2 + Math.floor(Math.random() * 2);
+      if (m.basket.length < a.want) { if (Math.random() < 0.3) { tapBtn('cat_next'); return; } const items = this.ui.buttons.filter(function (b) { return b.id.indexOf('item') === 0; }); if (items.length) { const before = m.basket.length; this.tap(items[Math.floor(Math.random() * items.length)].id); if (m.basket.length === before) a.want = m.basket.length; } else a.want = m.basket.length; return; }
+      a.want = 0; if (!tapBtn('confirm')) tapBtn('home'); return; }
+    if (s === 'checkout') { const c = this.checkout; if (c && c.review && !c.done) { if (!tapBtn('pay')) tapBtn('rml0'); } return; }
+    if (s === 'delivery') { const d = this.deliv; const mains = this.ui.buttons.filter(function (b) { return b.id.indexOf('dmain_') === 0; });
+      if (d && d.mains.length < 1 && mains.length) { this.tap(mains[Math.floor(Math.random() * mains.length)].id); return; }
+      if (d && d.mains.length >= 1) { tapBtn('dorder'); if (this.state === 'delivery') tapBtn('home'); } else tapBtn('home'); return; }
     if (s === 'pause') { tapBtn('resume'); return; }
     if (s === 'cook') {
       const k = this.ck; if (!k) return;
