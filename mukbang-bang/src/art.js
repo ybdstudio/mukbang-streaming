@@ -612,6 +612,10 @@ function streamer(ctx, ch, x, y, s, st) {
   ctx.drawImage(body, sp.neckOnHead[0] - bodyAnchor[0], sp.neckOnHead[1] - bodyAnchor[1]);
   if (oIm) ctx.drawImage(oIm, sp.neckOnHead[0] - sp.bodyAnchor[0], sp.neckOnHead[1] - sp.bodyAnchor[1]);
   else if (lk) WR.drawBody(ctx, module.exports, lk, { nx: sp.neckOnHead[0], ny: sp.neckOnHead[1], bw: 343 });
+  const fit = S.WEAR_FIT[ch.id] || {};
+  const wearAt = function (im, id) { const a = fit[id] || {}, sc = a.s || 1, c = a.c || [256, 256]; ctx.save(); ctx.translate(c[0] + (a.dx || 0), c[1] + (a.dy || 0)); ctx.scale(sc, sc); ctx.translate(-c[0], -c[1]); ctx.drawImage(im, 0, 0); ctx.restore(); };
+  const under = function (id) { return !!(fit[id] && fit[id].under); };
+  if (aIm && under(lk.acc)) wearAt(aIm, lk.acc);
   ctx.drawImage(P.head, 0, 0);
   if (sp.neckClip) { // Momo's back hair hides the neck: repaint the body's neck (and outfit collar) in front of it
     const nc = sp.neckClip, ox = sp.neckOnHead[0] - sp.bodyAnchor[0], oy = sp.neckOnHead[1] - sp.bodyAnchor[1], bd = oIm ? null : body;
@@ -634,8 +638,8 @@ function streamer(ctx, ch, x, y, s, st) {
   if (S.FACE[mouth]) S.cell(ctx, P.face, S.FACE[mouth], sp.mouth[0], sp.mouth[1], 240, 120);
   if (ex[2] && P.fx && S.FX[ex[2]]) { const fa = S.fxAt(ex[2], sp); S.cell(ctx, P.fx, S.FX[ex[2]], fa[0], fa[1] + Math.sin(t * 6) * 4, 240, 120); }
   if (expr === 'fizzy') for (let i = 0; i < 3; i++) sparkle(ctx, ey[0] + [-180, 185, 140][i], ey[1] + [-70, -40, 120][i], 18 + Math.sin(t * 12 + i) * 6, '#fff');
-  if (aIm) ctx.drawImage(aIm, 0, 0);
-  if (hIm) ctx.drawImage(hIm, 0, 0);
+  if (aIm && !under(lk.acc)) wearAt(aIm, lk.acc);
+  if (hIm) wearAt(hIm, lk.hair);
   if (lk && (!aIm || !hIm)) { const vl = { outfit: 'outfit_default', hair: hIm ? 'hair_none' : lk.hair, acc: aIm ? 'acc_none' : lk.acc }; WR.drawHead(ctx, module.exports, vl, { cx: sp.headAnchor[0], cy: sp.headAnchor[1] - (sp.headAnchor[1] - ey[1]) * 0.2, r: sp.faceRadius, ey: ey[1], ny: sp.neckOnHead[1] }, ch, t); }
   ctx.restore();
 }

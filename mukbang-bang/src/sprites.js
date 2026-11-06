@@ -350,6 +350,12 @@ const V4 = {};
   V4['wardrobe/icon_' + id + '.png'] = 'main';
 });
 ['icon_outfit_default', 'tab_outfit', 'tab_hair', 'tab_extras', 'badge_ad', 'badge_gift'].forEach(function (n) { V4['wardrobe/' + n + '.png'] = 'main'; });
+// per-streamer fit for the Codex wardrobe layers (head canvas px): s = scale about c, dx/dy = shift, under = draw before the head (scarf)
+const WEAR_FIT = {
+  luna: { acc_headphones: { s: 0.82, c: [256, 270] }, hair_cat_ears: { dy: 26 }, hair_bunny_ears: { dy: 26 }, hair_flowers: { dy: 10 }, acc_scarf: { under: 1, s: 1.2, c: [256, 463], dy: 22 } },
+  kiko: { acc_headphones: { s: 0.78, c: [256, 260], dy: 10 }, hair_cat_ears: { dy: 14 }, hair_bunny_ears: { dy: 12 }, acc_scarf: { under: 1, s: 1.2, c: [256, 469], dy: 10 } },
+  momo: { acc_headphones: { s: 0.84, c: [256, 220], dy: 6 }, hair_cat_ears: { dy: 24 }, hair_bunny_ears: { dy: 22 }, hair_flowers: { dy: 6 }, acc_scarf: { s: 1.15, c: [256, 433], dy: 26 } }
+};
 const SUB_ROOT = { art4: 'art4/', art3: 'art3/', art1: 'art1/', art5: 'art5/' };
 const sub = {};     // name → 'loading' | 'ok' | 'fail'
 function subReady(name) {
@@ -396,7 +402,7 @@ function nine(ctx, im, sl, iw, ih, x, y, w, h, k) {
   for (let j = 0; j < 3; j++) for (let i = 0; i < 3; i++) if (dw[i] > 0 && dh[j] > 0) ctx.drawImage(im, sx[i], sy[j], sw[i], sh[j], dx[i], dy[j], dw[i], dh[j]);
 }
 
-module.exports = {
+module.exports = { WEAR_FIT,
   init, enabled, get, v4, v4draw, V4, preloadV4, subReady, canvas, getBg, preload, preloadFoods, foodPath, FOOD_SIZE, STREAMERS, STREAMER_K, FACE_IMG, FACE, FACE_EYES_AT, FACE_MOUTH_AT, FACE_FX_AT, EXPR,
   ICONS, REACTIONS, AVATARS, STORE, UI, BG_W, BG_H, cell, atlas, cover, nine, FX_IMG, FX, fxAt, streamerK
 };
