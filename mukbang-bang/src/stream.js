@@ -417,6 +417,27 @@ function install(Game) {
     const ui = this.ui, ctx = this.ctx, W = this.W, top = this.top(), y = top + 120;
     ui.panel(24, y, W - 150, 54, '#ffe6f0', C.pinkDark, 20, 3); A.avatar(ctx, 'bear', 52, y + 27, 17); ui.label('I have a gift for you!', 80, y + 20, 13, C.text, 'left'); const g = this.hs.rewardsFanGift ? this.hs.rewardsFanGift() : null; ui.label(g ? this.itemsText(g) : '', 80, y + 39, 12, C.goldDark, 'left');
     ui.button('fangift_ad', W - 170, y + 6, 120, 42, '▶ GET', { color: C.green, dark: C.greenDark, size: 17 });
+    this.drawGiftBalloons();
+  };
+  // Fan-gift balloons: a labelled balloon bunch with a gift box drifts slowly around the table.
+  // Same opt-in rewarded ad as the GET button; the box always shows the ▶ AD tag so the tap is a choice.
+  P.drawGiftBalloons = function () {
+    const ctx = this.ctx, ui = this.ui, W = this.W, H = this.H, t = this.time;
+    // drifts up and down a side lane beside the streamer, swapping sides now and then; never over the plates or the food
+    const cyc = 14, ph = t % cyc, side = Math.floor(t / cyc) % 2, fade = Math.min(1, ph / 0.8, (cyc - ph) / 0.8);
+    const x = (side ? W * 0.86 : W * 0.14) + Math.sin(t * 0.9) * 10, y = H * 0.43 + Math.sin(t * 0.7) * H * 0.04 + (1 - fade) * 40, sway = Math.sin(t * 1.7) * 0.08;
+    ctx.globalAlpha = fade;
+    const cols = ['#ff8fb3', '#ffd95e', '#9fd8ff'];
+    ctx.save(); ctx.translate(x, y); ctx.rotate(sway);
+    ctx.strokeStyle = 'rgba(91,61,59,0.7)'; ctx.lineWidth = 2;
+    for (let i = 0; i < 3; i++) { const bx = (i - 1) * 24, by = -92 - (i === 1 ? 16 : 0); ctx.beginPath(); ctx.moveTo(0, -8); ctx.quadraticCurveTo(bx * 0.4, by * 0.5, bx, by + 26); ctx.stroke(); }
+    for (let i = 0; i < 3; i++) { const bx = (i - 1) * 24, by = -92 - (i === 1 ? 16 : 0); A.ellipse(ctx, bx, by, 21, 26, cols[i], 3); A.ellipse(ctx, bx - 7, by - 9, 5, 8, 'rgba(255,255,255,0.75)', 0); ctx.beginPath(); ctx.moveTo(bx - 4, by + 28); ctx.lineTo(bx + 4, by + 28); ctx.lineTo(bx, by + 23); ctx.closePath(); ctx.fillStyle = cols[i]; ctx.fill(); }
+    A.rr(ctx, -24, -10, 48, 38, 8); ctx.fillStyle = '#ff6f91'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = C.outline; ctx.stroke();
+    ctx.fillStyle = '#ffd95e'; ctx.fillRect(-5, -10, 10, 38); ctx.fillRect(-24, 4, 48, 8);
+    A.rr(ctx, -30, 32, 60, 22, 11); ctx.fillStyle = C.green; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = '#fff'; ctx.stroke();
+    ctx.restore();
+    ui.label('▶ AD GIFT', x, y + 43, 12, C.white, 'center', { stroke: 3 }); ctx.globalAlpha = 1;
+    if (fade > 0.6) ui.hotspot('fangift_ad', x - 40, y - 130, 80, 186);
   };
   P.drawFeature = function (fe) {
     const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, f = fe.f, open = fe.kind === 'open';

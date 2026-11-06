@@ -137,7 +137,15 @@ function install(Game) {
     ui.label('VIEWER WANTS: ' + R.dishName(req).toUpperCase(), W / 2 + 30, top + 94, 16, C.text); const ts = R.opt(R.toppingSlot(req.recipe), req.topping); ui.label('with ' + (ts ? ts.name : ''), W / 2 + 30, top + 122, 16, C.textLight);
     // instruction
     const text = k.doneT >= 0 ? '' : !st ? '' : st.t === 'pick' ? PICK_TEXT[st.slot] : st.t === 'pour' ? (st.text || 'HOLD TO POUR') : st.t === 'hold' ? st.text + ' · HOLD!' : st.t === 'flip' ? 'TAP TO FLIP IT OUT!' : st.t === 'place' ? (st.text || 'TAP TO ADD TOPPINGS') + ' (' + k.st.tops + '/' + st.n + ')' : 'RUB TO SPRINKLE!';
-    if (text) ui.label(text, W / 2, top + 176, 24, C.white, 'center', { stroke: 6 });
+    if (text) { // a solid pill so the step stands out over the jars / tray behind it
+      let fs = 24; while (fs > 16 && ui.measure(text, fs) > W - 90) fs--;
+      const tw = ui.measure(text, fs) + 44, th = fs + 22, cy = top + 176, pulse = 1 + 0.035 * Math.sin(this.time * 5);
+      ctx.save(); ctx.translate(W / 2, cy); ctx.scale(pulse, pulse);
+      A.rr(ctx, -tw / 2, -th / 2 + 4, tw, th, th / 2); ctx.fillStyle = 'rgba(91,61,59,0.28)'; ctx.fill();
+      A.rr(ctx, -tw / 2, -th / 2, tw, th, th / 2); ctx.fillStyle = '#e8508a'; ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = '#fff'; ctx.stroke();
+      ctx.restore();
+      ui.label(text, W / 2, cy + 1, fs * pulse, C.white, 'center', { stroke: 4 });
+    }
     // the dish
     const a = this.cookArea(); const flipping = k.flipT >= 0;
     A.ellipse(ctx, a.x, a.y + a.r * 0.62, a.r * 0.95, a.r * 0.2, 'rgba(91,61,59,0.12)', 0);

@@ -3893,7 +3893,7 @@ function pack(ctx, f, kind, x, y, size, state, k, e, t, toppings) {
   const g = state === 'sealed' ? 0 : U.easeInOut(k);
   ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
   if (kind === 'bag') { ctx.translate(g * 40, -38 - g * 60); ctx.rotate(g * 0.9); ctx.globalAlpha = 1 - g; rr(ctx, -40, -6, 80, 14, 4); fillStroke(ctx, '#ffffff', 3); ctx.strokeStyle = 'rgba(91,61,59,0.5)'; ctx.lineWidth = 2; ctx.setLineDash([4, 4]); ctx.beginPath(); ctx.moveTo(-36, 1); ctx.lineTo(36, 1); ctx.stroke(); ctx.setLineDash([]); }
-  else if (kind === 'cup') { ctx.translate(-g * 50, -34 - g * 30); ctx.rotate(-g * 1.1); ctx.globalAlpha = 1 - g * 0.9; ellipse(ctx, 0, 0, 40, 11, f.c2 || '#fff', 4); text(ctx, 'OPEN', 0, 1, 10, f.c3 || OUT, 0); rr(ctx, 36, -4, 14, 8, 3); fillStroke(ctx, f.c1, 2); }
+  else if (kind === 'cup') { /* the cup art already shows its own lid: no extra vector seal on top */ }
   else { ctx.translate(0, -48 - g * 70); ctx.rotate(g * 2.5); ctx.globalAlpha = 1 - g; rr(ctx, -12, -8, 24, 16, 4); fillStroke(ctx, f.c1 || C.pink, 3); }
   ctx.restore(); ctx.globalAlpha = 1;
   if (state === 'opening' && kind === 'bottle' && g > 0.2) { for (let i = 0; i < 6; i++) { const a = -Math.PI / 2 + (i - 2.5) * 0.3; circle(ctx, x + Math.cos(a) * size * 0.3 * g, y - size * 0.5 + Math.sin(a) * size * 0.3 * g, size * 0.025, 'rgba(255,255,255,0.9)', 0); } }
@@ -4311,7 +4311,15 @@ function install(Game) {
     ui.label('VIEWER WANTS: ' + R.dishName(req).toUpperCase(), W / 2 + 30, top + 94, 16, C.text); const ts = R.opt(R.toppingSlot(req.recipe), req.topping); ui.label('with ' + (ts ? ts.name : ''), W / 2 + 30, top + 122, 16, C.textLight);
     // instruction
     const text = k.doneT >= 0 ? '' : !st ? '' : st.t === 'pick' ? PICK_TEXT[st.slot] : st.t === 'pour' ? (st.text || 'HOLD TO POUR') : st.t === 'hold' ? st.text + ' · HOLD!' : st.t === 'flip' ? 'TAP TO FLIP IT OUT!' : st.t === 'place' ? (st.text || 'TAP TO ADD TOPPINGS') + ' (' + k.st.tops + '/' + st.n + ')' : 'RUB TO SPRINKLE!';
-    if (text) ui.label(text, W / 2, top + 176, 24, C.white, 'center', { stroke: 6 });
+    if (text) { // a solid pill so the step stands out over the jars / tray behind it
+      let fs = 24; while (fs > 16 && ui.measure(text, fs) > W - 90) fs--;
+      const tw = ui.measure(text, fs) + 44, th = fs + 22, cy = top + 176, pulse = 1 + 0.035 * Math.sin(this.time * 5);
+      ctx.save(); ctx.translate(W / 2, cy); ctx.scale(pulse, pulse);
+      A.rr(ctx, -tw / 2, -th / 2 + 4, tw, th, th / 2); ctx.fillStyle = 'rgba(91,61,59,0.28)'; ctx.fill();
+      A.rr(ctx, -tw / 2, -th / 2, tw, th, th / 2); ctx.fillStyle = '#e8508a'; ctx.fill(); ctx.lineWidth = 4; ctx.strokeStyle = '#fff'; ctx.stroke();
+      ctx.restore();
+      ui.label(text, W / 2, cy + 1, fs * pulse, C.white, 'center', { stroke: 4 });
+    }
     // the dish
     const a = this.cookArea(); const flipping = k.flipT >= 0;
     A.ellipse(ctx, a.x, a.y + a.r * 0.62, a.r * 0.95, a.r * 0.2, 'rgba(91,61,59,0.12)', 0);
@@ -5251,7 +5259,7 @@ class Game {
     ctx.save(); A.rr(ctx, 26, bottom - 164, 76, 138, 12); ctx.clip(); ctx.fillStyle = '#ffe3ea'; ctx.fillRect(26, bottom - 164, 76, 138); A.streamer(ctx, this.streamerDef(), 64, bottom - 96, 0.3, { expr: 'yum' }); ctx.restore();
     A.rr(ctx, 36, bottom - 48, 56, 22, 11); ctx.fillStyle = '#ff4a5f'; ctx.fill(); ctx.strokeStyle = C.outline; ctx.lineWidth = 3; ctx.stroke(); ui.label('live', 64, bottom - 37, 13, C.white);
     A.basket(ctx, b.x, b.y, b.w, b.h);
-    for (let i = 0; i < m.basket.length; i++) { const f = K.dish(m.basket[i]); const n = m.basket.length; const bx = b.x + b.w * (n === 1 ? 0.5 : 0.18 + 0.64 * i / (n - 1)); A.food(ctx, f, bx, b.y - 2 - (i % 2) * 10, 84, 0, this.time); ui.hotspot('bk' + i, bx - 42, b.y - 44, 84, 84); }
+    for (let i = 0; i < m.basket.length; i++) { const f = K.dish(m.basket[i]); const n = m.basket.length; const bx = b.x + b.w * (n === 1 ? 0.5 : 0.18 + 0.64 * i / (n - 1)); const z = n <= 2 ? 150 : n <= 4 ? 128 : n <= 7 ? 108 : 92; A.food(ctx, f, bx, b.y - z * 0.22 - (i % 2) * 12, z, 0, this.time); ui.hotspot('bk' + i, bx - z / 2, b.y - z * 0.72, z, z); }
     for (let i = 0; i < this.flies.length; i++) { const fl = this.flies[i]; const k = U.easeInOut(fl.t); A.food(ctx, fl.food, U.lerp(fl.x0, fl.x1, k), U.lerp(fl.y0, fl.y1, k) - Math.sin(k * Math.PI) * 120, U.lerp(150, 84, k), 0, this.time); }
     ui.panel(W - 150, bottom - 150, 130, 44, '#fff', C.outline, 14); ui.label('🛒', W - 130, bottom - 128, 18, C.text); ui.label(m.basket.length + (m.basket.length === 1 ? ' item' : ' items'), W - 74, bottom - 128, 17, C.text);
     ui.panel(W - 150, bottom - 98, 130, 44, '#fff', C.outline, 14); ui.label('Total', W - 126, bottom - 76, 15, C.text, 'left'); A.coin(ctx, W - 66, bottom - 76, 9); ui.label(String(total), W - 52, bottom - 76, 18, C.text, 'left');
@@ -6889,6 +6897,27 @@ function install(Game) {
     const ui = this.ui, ctx = this.ctx, W = this.W, top = this.top(), y = top + 120;
     ui.panel(24, y, W - 150, 54, '#ffe6f0', C.pinkDark, 20, 3); A.avatar(ctx, 'bear', 52, y + 27, 17); ui.label('I have a gift for you!', 80, y + 20, 13, C.text, 'left'); const g = this.hs.rewardsFanGift ? this.hs.rewardsFanGift() : null; ui.label(g ? this.itemsText(g) : '', 80, y + 39, 12, C.goldDark, 'left');
     ui.button('fangift_ad', W - 170, y + 6, 120, 42, '▶ GET', { color: C.green, dark: C.greenDark, size: 17 });
+    this.drawGiftBalloons();
+  };
+  // Fan-gift balloons: a labelled balloon bunch with a gift box drifts slowly around the table.
+  // Same opt-in rewarded ad as the GET button; the box always shows the ▶ AD tag so the tap is a choice.
+  P.drawGiftBalloons = function () {
+    const ctx = this.ctx, ui = this.ui, W = this.W, H = this.H, t = this.time;
+    // drifts up and down a side lane beside the streamer, swapping sides now and then; never over the plates or the food
+    const cyc = 14, ph = t % cyc, side = Math.floor(t / cyc) % 2, fade = Math.min(1, ph / 0.8, (cyc - ph) / 0.8);
+    const x = (side ? W * 0.86 : W * 0.14) + Math.sin(t * 0.9) * 10, y = H * 0.43 + Math.sin(t * 0.7) * H * 0.04 + (1 - fade) * 40, sway = Math.sin(t * 1.7) * 0.08;
+    ctx.globalAlpha = fade;
+    const cols = ['#ff8fb3', '#ffd95e', '#9fd8ff'];
+    ctx.save(); ctx.translate(x, y); ctx.rotate(sway);
+    ctx.strokeStyle = 'rgba(91,61,59,0.7)'; ctx.lineWidth = 2;
+    for (let i = 0; i < 3; i++) { const bx = (i - 1) * 24, by = -92 - (i === 1 ? 16 : 0); ctx.beginPath(); ctx.moveTo(0, -8); ctx.quadraticCurveTo(bx * 0.4, by * 0.5, bx, by + 26); ctx.stroke(); }
+    for (let i = 0; i < 3; i++) { const bx = (i - 1) * 24, by = -92 - (i === 1 ? 16 : 0); A.ellipse(ctx, bx, by, 21, 26, cols[i], 3); A.ellipse(ctx, bx - 7, by - 9, 5, 8, 'rgba(255,255,255,0.75)', 0); ctx.beginPath(); ctx.moveTo(bx - 4, by + 28); ctx.lineTo(bx + 4, by + 28); ctx.lineTo(bx, by + 23); ctx.closePath(); ctx.fillStyle = cols[i]; ctx.fill(); }
+    A.rr(ctx, -24, -10, 48, 38, 8); ctx.fillStyle = '#ff6f91'; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = C.outline; ctx.stroke();
+    ctx.fillStyle = '#ffd95e'; ctx.fillRect(-5, -10, 10, 38); ctx.fillRect(-24, 4, 48, 8);
+    A.rr(ctx, -30, 32, 60, 22, 11); ctx.fillStyle = C.green; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = '#fff'; ctx.stroke();
+    ctx.restore();
+    ui.label('▶ AD GIFT', x, y + 43, 12, C.white, 'center', { stroke: 3 }); ctx.globalAlpha = 1;
+    if (fade > 0.6) ui.hotspot('fangift_ad', x - 40, y - 130, 80, 186);
   };
   P.drawFeature = function (fe) {
     const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, f = fe.f, open = fe.kind === 'open';

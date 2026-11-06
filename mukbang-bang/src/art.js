@@ -911,7 +911,7 @@ function pack(ctx, f, kind, x, y, size, state, k, e, t, toppings) {
   const g = state === 'sealed' ? 0 : U.easeInOut(k);
   ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
   if (kind === 'bag') { ctx.translate(g * 40, -38 - g * 60); ctx.rotate(g * 0.9); ctx.globalAlpha = 1 - g; rr(ctx, -40, -6, 80, 14, 4); fillStroke(ctx, '#ffffff', 3); ctx.strokeStyle = 'rgba(91,61,59,0.5)'; ctx.lineWidth = 2; ctx.setLineDash([4, 4]); ctx.beginPath(); ctx.moveTo(-36, 1); ctx.lineTo(36, 1); ctx.stroke(); ctx.setLineDash([]); }
-  else if (kind === 'cup') { ctx.translate(-g * 50, -34 - g * 30); ctx.rotate(-g * 1.1); ctx.globalAlpha = 1 - g * 0.9; ellipse(ctx, 0, 0, 40, 11, f.c2 || '#fff', 4); text(ctx, 'OPEN', 0, 1, 10, f.c3 || OUT, 0); rr(ctx, 36, -4, 14, 8, 3); fillStroke(ctx, f.c1, 2); }
+  else if (kind === 'cup') { /* the cup art already shows its own lid: no extra vector seal on top */ }
   else { ctx.translate(0, -48 - g * 70); ctx.rotate(g * 2.5); ctx.globalAlpha = 1 - g; rr(ctx, -12, -8, 24, 16, 4); fillStroke(ctx, f.c1 || C.pink, 3); }
   ctx.restore(); ctx.globalAlpha = 1;
   if (state === 'opening' && kind === 'bottle' && g > 0.2) { for (let i = 0; i < 6; i++) { const a = -Math.PI / 2 + (i - 2.5) * 0.3; circle(ctx, x + Math.cos(a) * size * 0.3 * g, y - size * 0.5 + Math.sin(a) * size * 0.3 * g, size * 0.025, 'rgba(255,255,255,0.9)', 0); } }
