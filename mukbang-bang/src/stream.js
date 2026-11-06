@@ -344,8 +344,10 @@ function install(Game) {
         // eaten bite by bite at her mouth
         if (ph === 'chew' && r.dish) { const m = this.mouth(), b = Math.min(3, r.bites);
           if (r.dish.recipe === 'boba') { // the cup is raised so the straw tip touches her lips; the tea level drops with each sip
-            const t = this.time, sz = 190, sq = 1 + Math.sin(t * 9) * 0.015; this.drawBite(r.dish, m.x + 18, m.y + sz * 0.62, sz * sq, Math.min(2.6, r.bites + (r.pt % T.bite) / T.bite * 0.9));
-            for (let i = 0; i < 3; i++) { const ph2 = (t * 1.5 + i / 3) % 1; ctx.globalAlpha = 1 - ph2; A.circle(ctx, m.x + 30 + i * 8, m.y + sz * 0.95 - ph2 * sz * 0.4, 3.5, '#3d2a24', 0); } ctx.globalAlpha = 1;
+            // the cup is tilted so its straw points straight up, and placed so the straw tip sits on her lips
+            const t = this.time, sz = 190, sq = 1 + Math.sin(t * 9) * 0.015, TILT = -0.3, cx = m.x, cy = m.y + 4 + 0.467 * sz * sq;
+            ctx.save(); ctx.translate(cx, cy); ctx.rotate(TILT); this.drawBite(r.dish, 0, 0, sz * sq, Math.min(2.6, r.bites + (r.pt % T.bite) / T.bite * 0.9)); ctx.restore();
+            for (let i = 0; i < 3; i++) { const ph2 = (t * 1.5 + i / 3) % 1; ctx.globalAlpha = 1 - ph2; A.circle(ctx, m.x + 1, m.y + 14 + sz * 0.3 * (1 - ph2), 3.5, '#3d2a24', 0); } ctx.globalAlpha = 1;
           } else this.drawBite(r.dish, m.x + 4, m.y + 112 + Math.sin(r.pt * 14) * 2, 150, b); }
         if (ph === 'request' && !still) this.drawRequest();
       } else {
@@ -471,7 +473,8 @@ function install(Game) {
     const ctx = this.ctx, left = 1 - bites / BITES;
     if (bites >= BITES) return;
     // art V4 bites (spoon / hand / chopsticks, 3 states) when loaded
-    if (dish.recipe !== 'boba' && CA.bite(ctx, dish.recipe, R.colorOf(dish), Math.min(2, Math.floor(bites)), x, y + size * 0.18, size * 1.35)) return;
+    const shaped = (dish.recipe === 'jelly' || dish.recipe === 'pudding') && dish.mold && dish.mold !== 'dome'; // bite art is a dome: other moulds are cut from the dish itself
+    if (dish.recipe !== 'boba' && !shaped && CA.bite(ctx, dish.recipe, R.colorOf(dish), Math.min(2, Math.floor(bites)), x, y + size * 0.18, size * 1.35)) return;
     if (dish.recipe === 'ramen') { const b = R.opt('broth', dish.broth); R.noodleBite(ctx, x, y + size * 0.2, size * 1.15, left, b ? b.color : null); return; }
     const st = { flipped: true, set: true, fill: 1, tops: 3, deco: 1 };
     if (dish.recipe === 'boba') { st.fill = Math.max(0.12, left); st.deco = bites ? 0 : 1; R.draw(ctx, A, dish, x, y, size, st); return; }

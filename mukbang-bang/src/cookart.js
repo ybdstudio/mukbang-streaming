@@ -10,15 +10,20 @@ const OUT_BOUNDS = {      // unmoulded jelly: content box in the 600 px layer (d
   dome: [117, 140, 366, 320], star: [112, 135, 375, 335], heart: [84, 138, 432, 351],
   flower: [119, 155, 358, 318], bunny: [123, 118, 353, 362], crown: [109, 162, 381, 288]
 };
+const SEAT = { dome: 0, star: 0.2, heart: 0.12, flower: 0.06, bunny: 0.24, crown: 0.16 };
+const WIDE = { star: 0.75, heart: 0.8, bunny: 0.8, crown: 0.85 };
+// mix a colour with white (k 0..1): frosting is a light pastel of the flavour — a deep mango × grey cream read brown
+function pastel(hex, k) { const n = parseInt(String(hex).slice(1), 16); if (isNaN(n)) return hex; const c = [n >> 16 & 255, n >> 8 & 255, n & 255].map(function (v) { return Math.round(v + (255 - v) * k); }); return '#' + ((1 << 24) + (c[0] << 16) + (c[1] << 8) + c[2]).toString(16).slice(1); }
 const cache = {}; let order = [];
 
 // grey layer × colour, alpha kept (multiply, then the layer's own alpha). Pudding: a caramel cap on top.
-function tinted(path, color, cap) {
-  const key = path + '|' + color + '|' + (cap || ''); if (cache[key]) return cache[key];
+function tinted(path, color, cap, lift) {
+  const key = path + '|' + color + '|' + (cap || '') + '|' + (lift || ''); if (cache[key]) return cache[key];
   const im = S.v4(path); if (!im) return null;
   const tw = im.width === im.height ? TINT_N : im.width, th = im.width === im.height ? TINT_N : im.height;
   const c = S.canvas(tw, th); if (!c) return null; const x = c.getContext('2d'); if (!x) return null;
   x.drawImage(im, 0, 0, tw, th);
+  if (lift) { x.globalCompositeOperation = 'screen'; x.fillStyle = 'rgb(' + lift + ',' + lift + ',' + lift + ')'; x.fillRect(0, 0, tw, th); } // lighter base shading (frosting)
   x.globalCompositeOperation = 'multiply'; x.fillStyle = color; x.fillRect(0, 0, tw, th);
   x.globalCompositeOperation = 'destination-in'; x.drawImage(im, 0, 0, tw, th);
   if (cap) { const k = tw / 600; x.globalCompositeOperation = 'source-atop'; x.fillStyle = 'rgba(138,74,24,0.9)'; x.fillRect(0, 0, tw, (cap[1] + cap[3] * 0.24) * k); }
@@ -53,7 +58,8 @@ function jelly(ctx, dish, st, col, darker, plate) {
   ctx.globalAlpha = 0.22; ctx.fillStyle = '#5b3d3b'; ctx.beginPath(); ctx.ellipse(0, foot - 3, (b[2] / 2) * U * K / 600 * 0.95, 7, 0, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = 1;
   ctx.save(); ctx.scale(K, K); layer(ctx, body, 1, oy / K); layer(ctx, det, 1, oy / K); ctx.restore();
   // where the top of the jelly is (dish units) → toppings sit ON it, not above it
-  return { top: oy + (b[1] - 300) * U * K / 600, w: b[2] * U * K / 600 };
+  const seat = SEAT[m] || 0; // non-dome moulds: the flat top face is below the highest point (star tip, heart lobes, ears…)
+  return { top: oy + (b[1] + b[3] * seat - 300) * U * K / 600, w: b[2] * U * K / 600 * (WIDE[m] || 1) };
 }
 // ── the other 6 recipes (ART-REQUEST-V4-NEXT §1): every layer on the same 600 px canvas ──
 // content box of each layer, [x, y, w, h] px (qa.json) — used for bottom-up reveals and topping spots
@@ -76,7 +82,7 @@ function dish(ctx, d, st, col, h) {
   const need = function (names) { for (let i = 0; i < names.length; i++) if (!L(names[i])) return false; return true; };
   if (r === 'cupcake') {
     if (!need(['cupcake_liner_fill', 'cupcake_liner_detail', 'cupcake_batter', 'cupcake_base', 'cupcake_cream_fill', 'cupcake_cream_detail'])) return false;
-    const lf = T('cupcake_liner_fill', cup), cf = fill > 0 ? T('cupcake_cream_fill', col) : null; if (!lf || (fill > 0 && !cf)) return false;
+    const lf = T('cupcake_liner_fill', cup), cf = fill > 0 ? tinted('cook/cupcake_cream_fill.png', pastel(col, 0.4), null, 170) : null; if (!lf || (fill > 0 && !cf)) return false;
     layer(ctx, lf, 1, 0); layer(ctx, L('cupcake_liner_detail'), 1, 0); layer(ctx, L(set ? 'cupcake_base' : 'cupcake_batter'), 1, 0);
     if (fill > 0) { grow(ctx, cf, fill, 2); grow(ctx, L('cupcake_cream_detail'), fill, 2); h.drawDeco(0, -20, 46, 28); for (let i = 0; i < Math.min(tops, 2); i++) h.drawTop(i ? 9 : -6, i ? -30 : -38, 1); }
     return true;
@@ -108,8 +114,8 @@ function dish(ctx, d, st, col, h) {
     const lf = T('parfait_layers_fill', col); if (!lf) return false;
     layer(ctx, L('parfait_glass_back'), 1, 0);
     reveal(ctx, lf, fill, PARFAIT_SPAN); reveal(ctx, L('parfait_layers_cream'), fill, PARFAIT_SPAN); // one rising line for sauce + cream: the layers fill together
-    if (st.set) layer(ctx, L('parfait_cream_top'), 1, 0);
     layer(ctx, L('parfait_glass_front'), 1, 0);
+    if (st.set) layer(ctx, L('parfait_cream_top'), 1, 0); // over the rim: the cream sits on the layers, not behind the glass edge
     if (st.set) { h.drawDeco(0, -26, 40, 14); for (let i = 0; i < Math.min(tops, 3); i++) h.drawTop([0, -12, 12][i], -36 + [0, 6, 6][i], 1); }
     return true;
   }
@@ -140,8 +146,12 @@ function top(ctx, id, x, y, size) { return S.v4draw(ctx, 'cook/top_' + id + '.pn
 function deco(ctx, id, x, y, w, h, amount) {
   const im = S.v4('cook/deco_' + id + '.png'); if (!im) return false;
   // never squashed: the sprinkle sprite keeps its own proportions (full-size pieces), the top face only clips it
-  const z = Math.max(w, h * 1.6) * 1.15; ctx.save(); ctx.beginPath(); ctx.ellipse(x, y, w * 0.56, Math.max(h * 0.62, 8), 0, 0, Math.PI * 2); ctx.clip();
-  ctx.globalAlpha = Math.max(0, Math.min(1, amount)); ctx.drawImage(im, x - z / 2, y - z / 2, z, z); ctx.restore(); ctx.globalAlpha = 1; return true;
+  // the sprite is masked by a soft-edged oval on an offscreen canvas: pieces near the rim fade out whole instead of being cut in half
+  const z = Math.max(w, h * 1.6) * 1.15, N = 256, cv = S.canvas(N, N); if (!cv) return false; const g = cv.getContext('2d');
+  g.clearRect(0, 0, N, N); g.globalCompositeOperation = 'source-over'; g.drawImage(im, 0, 0, N, N);
+  const rx = w * 0.62 / z * N, ry = Math.max(h * 0.7, 9) / z * N; g.globalCompositeOperation = 'destination-in';
+  g.save(); g.translate(N / 2, N / 2); g.scale(1, ry / rx); const gr = g.createRadialGradient ? g.createRadialGradient(0, 0, rx * 0.55, 0, 0, rx) : null; if (gr && gr.addColorStop) { gr.addColorStop(0, 'rgba(0,0,0,1)'); gr.addColorStop(1, 'rgba(0,0,0,0)'); g.fillStyle = gr; g.fillRect(-N, -N * 4, N * 2, N * 8); } else { g.fillStyle = '#000'; g.beginPath(); g.arc(0, 0, rx, 0, Math.PI * 2); g.fill(); } g.restore(); g.globalCompositeOperation = 'source-over';
+  ctx.globalAlpha = Math.max(0, Math.min(1, amount)); ctx.drawImage(cv, x - z / 2, y - z / 2, z, z); ctx.globalAlpha = 1; return true;
 }
 // kitchen background: cover, with the counter top (row 1404 of 2340) at 60 % of the screen
 function kitchenBg(ctx, W, H) {
@@ -156,7 +166,7 @@ function bottle(ctx, color, x, y, size, pouring) {
   const im = S.v4('cook/tool_bottle_pour_' + (pouring ? 1 : 0) + '.png'); if (!im) return null;
   const fill = tinted('cook/tool_bottle_pour_fill.png', color, null);
   ctx.save(); ctx.translate(x, y); ctx.scale(-1, 1); ctx.drawImage(im, -size / 2, -size / 2, size, size); if (fill) ctx.drawImage(fill, -size / 2, -size / 2, size, size); ctx.restore();
-  return { x: x - size * 64 / 240, y: y + size * 38 / 240 };
+  return { x: x - size * 57 / 240, y: y + size * 4 / 240 }; // spout tip (pour_1 sprite px 176,124, mirrored)
 }
 // ── bites at her mouth (art4/bite, 400 px, 3 states: whole / bitten / last bite) ──
 const BITE = { jelly: 'jelly_spoon', pudding: 'pudding_spoon', cupcake: 'cupcake_bite', donut: 'donut_bite', parfait: 'parfait_spoon', bingsu: 'bingsu_spoon' };
