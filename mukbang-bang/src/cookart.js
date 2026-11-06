@@ -133,9 +133,10 @@ function dish(ctx, d, st, col, h) {
     if (!need(['bingsu_bowl_fill', 'bingsu_bowl_detail', 'bingsu_snow', 'bingsu_syrup_fill', 'bingsu_syrup_detail'])) return false;
     const bw = T('bingsu_bowl_fill', cup), sy = fill > 0 ? T('bingsu_syrup_fill', col) : null; if (!bw || (fill > 0 && !sy)) return false;
     layer(ctx, bw, 1, 0); layer(ctx, L('bingsu_bowl_detail'), 1, 0);
-    if (set) { layer(ctx, L('bingsu_snow'), 1, 0);
-      if (sy) { layer(ctx, sy, Math.min(1, fill * 1.3), 0); layer(ctx, L('bingsu_syrup_detail'), Math.min(1, fill * 1.3), 0); }
-      h.drawDeco(0, -18, 50, 26); for (let i = 0; i < Math.min(tops, 3); i++) h.drawTop([0, -14, 14][i], -36 + [0, 9, 9][i], 1); }
+    const SNOW = 7; // the ice mound sits down IN the bowl (its art floats ~28 px above the rim)
+    if (set) { layer(ctx, L('bingsu_snow'), 1, SNOW);
+      if (sy) { layer(ctx, sy, Math.min(1, fill * 1.3), SNOW); layer(ctx, L('bingsu_syrup_detail'), Math.min(1, fill * 1.3), SNOW); }
+      h.drawDeco(0, -18 + SNOW, 50, 26); for (let i = 0; i < Math.min(tops, 3); i++) h.drawTop([0, -14, 14][i], -36 + SNOW + [0, 9, 9][i], 1); }
     return true;
   }
   return false;

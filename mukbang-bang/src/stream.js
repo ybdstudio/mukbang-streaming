@@ -473,10 +473,10 @@ function install(Game) {
     const ctx = this.ctx, left = 1 - bites / BITES;
     if (bites >= BITES) return;
     // art V4 bites (spoon / hand / chopsticks, 3 states) when loaded
-    const shaped = (dish.recipe === 'jelly' || dish.recipe === 'pudding') && dish.mold && dish.mold !== 'dome'; // bite art is a dome: other moulds are cut from the dish itself
+    const shaped = ((dish.recipe === 'jelly' || dish.recipe === 'pudding') && dish.mold && dish.mold !== 'dome') || (dish.recipe === 'donut' && dish.shape && dish.shape !== 'ring'); // bite art is a dome: other moulds are cut from the dish itself
     if (dish.recipe !== 'boba' && !shaped && CA.bite(ctx, dish.recipe, R.colorOf(dish), Math.min(2, Math.floor(bites)), x, y + size * 0.18, size * 1.35)) return;
     if (dish.recipe === 'ramen') { const b = R.opt('broth', dish.broth); R.noodleBite(ctx, x, y + size * 0.2, size * 1.15, left, b ? b.color : null); return; }
-    const st = { flipped: true, set: true, fill: 1, tops: 3, deco: 1 };
+    const st = { flipped: true, set: true, fill: 1, tops: 3, deco: 1, plate: false }; // held at her mouth: no plate
     if (dish.recipe === 'boba') { st.fill = Math.max(0.12, left); st.deco = bites ? 0 : 1; R.draw(ctx, A, dish, x, y, size, st); return; }
     const N = 360; if (!this.biteCv) this.biteCv = S.canvas(N, N);
     const cv = this.biteCv, bx = cv && cv.getContext ? cv.getContext('2d') : null;
