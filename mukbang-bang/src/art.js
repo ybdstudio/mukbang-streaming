@@ -635,7 +635,7 @@ function streamer(ctx, ch, x, y, s, st) {
     ctx.globalAlpha = 1;
   }
   if (S.FACE[eyes]) S.cell(ctx, P.face, S.FACE[eyes], ey[0], ey[1], 240, 120);
-  if (S.FACE[mouth]) S.cell(ctx, P.face, S.FACE[mouth], sp.mouth[0], sp.mouth[1], 240, 120);
+  if (S.FACE[mouth]) { const ms = sp.mouthScale || 1; S.cell(ctx, P.face, S.FACE[mouth], sp.mouth[0], sp.mouth[1] - (1 - ms) * 20, 240 * ms, 120 * ms); } // Momo's face is smaller
   if (ex[2] && P.fx && S.FX[ex[2]]) { const fa = S.fxAt(ex[2], sp); S.cell(ctx, P.fx, S.FX[ex[2]], fa[0], fa[1] + Math.sin(t * 6) * 4, 240, 120); }
   if (expr === 'fizzy') for (let i = 0; i < 3; i++) sparkle(ctx, ey[0] + [-180, 185, 140][i], ey[1] + [-70, -40, 120][i], 18 + Math.sin(t * 12 + i) * 6, '#fff');
   if (aIm && !under(lk.acc)) wearAt(aIm, lk.acc);
