@@ -337,7 +337,10 @@ class Game {
   watchFanGift() {
     const r = this.run; if (this.adBusy || !r || r.giftAd || r.phase === 'finale' || !this.canFanGift()) return;
     const self = this; r.giftAd = true; r.giftAsk = false; r.bal = null;
-    this.adRun('fan_gift', this.hs.showFanGift(), function (res) { if (self.run) self.run.giftAd = false; if (res === null) { self.showToast('No ad right now'); return; } self.spawnConfetti(self.W / 2, self.H * 0.3, 30); self.audio.play('cash'); for (let i = 0; i < 8; i++) self.spawnHeart(true); self.saveRun(); });
+    const pv = this.adPreview(); // web preview: no SDK, pretend the ad played and pay the dashboard reward (300 coins)
+    if (pv) this.showToast('AD PREVIEW', 'web build: no real ad');
+    const pr = pv ? new Promise(function (ok) { setTimeout(function () { self.profile.add('coins', 300); ok({ coins: 300 }); }, 1200); }) : this.hs.showFanGift();
+    this.adRun('fan_gift', pr, function (res) { if (self.run) self.run.giftAd = false; if (res === null) { self.showToast('No ad right now'); return; } self.spawnConfetti(self.W / 2, self.H * 0.3, 30); self.audio.play('cash'); for (let i = 0; i < 8; i++) self.spawnHeart(true); self.saveRun(); });
   }
   watchHype() {
     const r = this.run; if (this.adBusy || !r || r.hyped || r.phase !== 'open' || !this.canHype()) return;

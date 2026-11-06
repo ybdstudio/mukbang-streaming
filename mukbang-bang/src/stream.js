@@ -435,7 +435,9 @@ function install(Game) {
     this.drawLeaveRow();
     if (r.level === 1 && (this.profile.get('streams') || 0) === 0) { const fx = W * 0.7 + Math.sin(this.time * 4) * 6, fy = by + 60 + Math.cos(this.time * 4) * 6; A.circle(ctx, fx, fy, 16, 'rgba(255,255,255,0.85)', 3); ui.label('TAP!', fx, fy + 30, 14, C.white, 'center', { stroke: 4 }); }
   };
-  P.canFanGift = function () { return this.hs.hasAds() && this.hs.canShowFanGift && this.hs.canShowFanGift() && (this.profile.get('streams') || 0) >= 2; };
+  // web / artifact build has no ad SDK: preview the fan gift with a simulated ad so the balloons can be tested
+  P.adPreview = function () { return !!this.p.devTools && !this.hs.hasAds(); };
+  P.canFanGift = function () { if (this.adPreview()) return true; return this.hs.hasAds() && this.hs.canShowFanGift && this.hs.canShowFanGift() && (this.profile.get('streams') || 0) >= 2; };
   // extra hype: before the stream ends (last plate) an opt-in ad pushes the viewers up for the finale
   P.canHype = function () { const r = this.run; return this.hs.hasAds() && r && !!r.recipe && !r.side && this.hs.canShowHype && (this.profile.get('streams') || 0) >= 2 && this.hs.canShowHype(); };
   P.drawHypeBtn = function () {
