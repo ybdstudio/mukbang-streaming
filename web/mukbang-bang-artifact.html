@@ -4048,6 +4048,61 @@ class Audio {
 module.exports = { Audio };
 
 };
+__mods["src/autoplay.js"] = function (require, module, exports, __filename, __dirname) {
+'use strict';
+// Test-build autoplay (Settings → AUTO PLAY, web / artifact only): plays the main levels on
+// its own at a normal human pace, through the same touch handlers a player uses. It cooks
+// what the viewer asked for, eats every portion, closes tips and moves on to the next level.
+// It never taps an ad button.
+const CK = require('./cook.js');
+
+const PACE = 0.75; // seconds between two "taps"
+
+function install(Game) {
+  const P = Game.prototype;
+  P.has = function (id) { const b = this.ui.buttons; for (let i = 0; i < b.length; i++) if (b[i].id === id) return true; return false; };
+  P.autoTick = function (dt) {
+    if (!this.autoplay || this.adBusy) return;
+    const a = this.auto || (this.auto = { wait: 1, hold: null });
+    // a press in progress (pour / hold / shake) is released by its own timer
+    if (a.hold) { a.hold.t -= dt; const k = this.ck;
+      if (a.hold.rub && k) { const ar = this.cookArea(); const ang = this.time * 14; this.cookTouch('move', 'auto', ar.x + Math.cos(ang) * 70, ar.y + Math.sin(ang) * 40); }
+      if (a.hold.t <= 0 || !this.ck || this.state !== 'cook' || (this.ck && this.curCookStep() !== a.hold.st)) { if (this.ck) this.cookTouch('end', 'auto', 0, 0); a.hold = null; a.wait = PACE; }
+      return; }
+    a.wait -= dt; if (a.wait > 0) return; a.wait = PACE * (0.8 + Math.random() * 0.5);
+    const tapBtn = (id) => { if (this.has(id)) { this.tap(id); return true; } return false; };
+    // tips and popups first
+    if (tapBtn('gtip_ok') || tapBtn('mtip_ok') || tapBtn('gift_no') || tapBtn('feat_ok') || tapBtn('feat_later')) return;
+    const s = this.state, r = this.run;
+    if (s === 'home') { tapBtn('play'); return; }
+    if (s === 'result') { if (!tapBtn('next')) tapBtn('res_main'); return; }
+    if (s === 'pause') { tapBtn('resume'); return; }
+    if (s === 'cook') {
+      const k = this.ck; if (!k) return;
+      if (k.serveAsk) { tapBtn('ck_serve'); return; }
+      if (k.doneT >= 0) return;
+      const st = this.curCookStep(); if (!st) return; const ar = this.cookArea();
+      if (st.t === 'pick') {
+        const want = k.req[CK.SLOT_KEY[st.slot]]; const o = (want && k.opts.find(function (x) { return x.id === want; })) || k.opts[Math.floor(Math.random() * k.opts.length)];
+        if (k.sel !== o.id) this.cookTap('cko_' + o.id); else this.cookTap('ck_ok'); return; }
+      if (st.t === 'pour' || st.t === 'hold') { this.cookTouch('start', 'auto', ar.x, ar.y); a.hold = { t: 6, st: st }; return; }
+      if (st.t === 'shake') { this.cookTouch('start', 'auto', ar.x, ar.y); a.hold = { t: 6, st: st, rub: true }; return; }
+      if (st.t === 'place' || st.t === 'flip') { this.cookTouch('start', 'auto', ar.x + (Math.random() - 0.5) * 60, ar.y - 20); this.cookTouch('end', 'auto', ar.x, ar.y); a.wait = PACE * 0.6; return; }
+      return;
+    }
+    if (s === 'stream' && r) {
+      if (r.phase === 'request') { tapBtn('cook_go'); return; }
+      const fp = r.recipe ? this.platePos(Math.min(2, r.pickups || 0)) : this.packPos();
+      if (r.phase === 'sealed' || r.phase === 'open') { this.streamTouch('start', 'auto', fp.x, fp.y); this.streamTouch('end', 'auto', fp.x, fp.y); return; }
+      // between bites: now and then catch a floating heart like a player would
+      if (this.hearts && this.hearts.length && Math.random() < 0.5) { const h = this.hearts.find(function (q) { return !q.taken; }); if (h) { this.streamTouch('start', 'auto', h.x, h.y); this.streamTouch('end', 'auto', h.x, h.y); } }
+    }
+  };
+}
+
+module.exports = { install };
+
+};
 __mods["src/catalog.js"] = function (require, module, exports, __filename, __dirname) {
 'use strict';
 // V2 food catalogs — one per food source. Every food the stream can eat is
@@ -4470,6 +4525,7 @@ function jelly(ctx, dish, st, col, darker, plate) {
 // ── the other 6 recipes (ART-REQUEST-V4-NEXT §1): every layer on the same 600 px canvas ──
 // content box of each layer, [x, y, w, h] px (qa.json) — used for bottom-up reveals and topping spots
 // boba tea is cut at the lid's rim line (y 262): above it the tea would read as a second cup mouth inside the lid
+const PARFAIT_SPAN = [205, 240, 190, 159]; // the two parfait layers share one fill height (240..399)
 const BOX = { boba_tea_fill: [201, 262, 198, 195], parfait_layers_fill: [207, 280, 186, 119], parfait_layers_cream: [205, 240, 190, 119] };
 function L(name) { return S.v4('cook/' + name + '.png'); }
 function T(name, color) { return tinted('cook/' + name + '.png', color, null); }
@@ -4518,7 +4574,7 @@ function dish(ctx, d, st, col, h) {
     if (!need(['parfait_glass_back', 'parfait_layers_fill', 'parfait_layers_cream', 'parfait_cream_top', 'parfait_glass_front'])) return false;
     const lf = T('parfait_layers_fill', col); if (!lf) return false;
     layer(ctx, L('parfait_glass_back'), 1, 0);
-    reveal(ctx, lf, fill, BOX.parfait_layers_fill); reveal(ctx, L('parfait_layers_cream'), fill, BOX.parfait_layers_cream);
+    reveal(ctx, lf, fill, PARFAIT_SPAN); reveal(ctx, L('parfait_layers_cream'), fill, PARFAIT_SPAN); // one rising line for sauce + cream: the layers fill together
     if (st.set) layer(ctx, L('parfait_cream_top'), 1, 0);
     layer(ctx, L('parfait_glass_front'), 1, 0);
     if (st.set) { h.drawDeco(0, -26, 40, 14); for (let i = 0; i < Math.min(tops, 3); i++) h.drawTop([0, -12, 12][i], -36 + [0, 6, 6][i], 1); }
@@ -4755,6 +4811,7 @@ const SC = require('./scenes.js');
 const ST = require('./stream.js');
 const WR = require('./wardrobe.js');
 const WS = require('./wardrobe-scene.js');
+const AP = require('./autoplay.js');
 const CK = require('./cook.js');
 const R = require('./recipes.js');
 const CA = require('./cookart.js');
@@ -4876,6 +4933,7 @@ class Game {
     this.ui.begin(dt);
     if (!this.frozen) this.update(dt);
     this.draw(dt);
+    if (this.autoplay && !this.frozen && this.state !== 'settings') this.autoTick(dt); // test build: autoplay acts on what was just drawn
   }
   update(dt) {
     this.time += dt;
@@ -4952,6 +5010,7 @@ class Game {
       case 'sound': p.set('sound', !p.get('sound')); this.audio.setMuted(!p.get('sound')); break;
       case 'settings': this.settingsFrom = this.state === 'pause' ? 'pause' : 'home'; this.setState('settings'); break;
       case 'settings_close': this.setState(this.settingsFrom === 'pause' && this.run ? 'pause' : 'home'); this.settingsFrom = null; break;
+      case 'auto_play': if (this.p.devTools) { this.autoplay = !this.autoplay; this.auto = null; this.showToast(this.autoplay ? 'AUTO PLAY ON' : 'AUTO PLAY OFF', this.autoplay ? 'close settings and watch' : ''); } break;
       case 'unlock_all': this.unlockAll(); break;
       case 'coins': this.popupFrom = this.state; this.setState('coins'); break;
       case 'coins_close': this.setState(this.popupFrom || 'home'); break;
@@ -5153,6 +5212,7 @@ class Game {
     }
     if (this.trans > 0) { ctx.globalAlpha = this.trans / 0.35; ctx.fillStyle = C.cream; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = 1; }
     this.drawConfetti(); this.drawFloats();
+    if (this.autoplay) ui.button('auto_play', 12, this.bottom() - 40, 112, 34, '■ AUTO PLAY', { color: C.green, dark: C.greenDark, size: 13, radius: 14 });
     if (this.toast) { const a = this.toast.life < 0.3 ? this.toast.life / 0.3 : this.toast.life > 2.2 ? (2.6 - this.toast.life) / 0.4 : 1; ctx.globalAlpha = Math.max(0, a); const ty = this.top() + 70; ui.panel(W / 2 - 180, ty, 360, this.toast.sub ? 64 : 50, C.cream, C.outline, 18); ui.label(this.toast.text, W / 2, ty + 25, 19, C.text); if (this.toast.sub) ui.label(this.toast.sub, W / 2, ty + 48, 14, C.textLight); ctx.globalAlpha = 1; }
     if (this.frozen) { ui.dim(0.5); ui.title('PAUSED', W / 2, H / 2, 44); }
     if (this.debug) ui.label('w' + this.p.width() + ' h' + this.p.height() + ' dpr' + this.p.dpr() + ' cw' + this.p.canvas.width + ' sc' + this.scale.toFixed(3) + ' H' + H, 10, H - 10, 14, '#000', 'left');
@@ -5443,7 +5503,7 @@ class Game {
   drawSettings() {
     const ui = this.ui, W = this.W, H = this.H, p = this.profile, dev = !!this.p.devTools;
     ui.dim(0.5);
-    const ph = dev ? 330 : 240, py = (H - ph) / 2;
+    const ph = dev ? 400 : 240, py = (H - ph) / 2;
     ui.panel(40, py, W - 80, ph, C.cream, C.outline, 26);
     ui.title('SETTINGS', W / 2, py + 46, 32, C.white, C.pinkDark);
     let y = py + 88;
@@ -5451,6 +5511,7 @@ class Game {
     if (dev) {
       const all = this.curLevel() >= L.LEVEL_COUNT;
       ui.button('unlock_all', 64, y, W - 128, 58, all ? 'ALL LEVELS UNLOCKED ✓' : 'UNLOCK ALL LEVELS', { color: all ? '#e0d6d6' : C.yellow, dark: all ? '#bfb0b0' : C.yellowDark, size: 19, disabled: all });
+      y += 70; ui.button('auto_play', 64, y, W - 128, 58, this.autoplay ? 'AUTO PLAY: ON' : 'AUTO PLAY: OFF', { color: this.autoplay ? C.green : C.blue, dark: this.autoplay ? C.greenDark : C.blueDark, size: 19 });
       ui.label('test build only — not in the TikTok version', W / 2, y + 72, 13, C.textLight); y += 90;
     }
     ui.button('settings_close', 64, y, W - 128, 52, 'CLOSE', { color: C.lavender, dark: C.lavenderDark, size: 18 });
@@ -5491,6 +5552,7 @@ class Game {
 SC.install(Game);
 ST.install(Game);
 WS.install(Game);
+AP.install(Game);
 CK.install(Game);
 
 module.exports = { Game };

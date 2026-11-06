@@ -223,6 +223,15 @@ seed(7);
   check('checkout: profit estimate is positive', g.estimateEarn(g.checkout.items.map((it) => it.id), g.checkout.total) > g.checkout.total);
   const tot = g.checkout.total; g.payCheckout(); runUntil(g, () => g.state === 'stream', 4); check('checkout: PAY charges the reviewed total and starts the stream', g.state === 'stream' && prof.get('coins') <= 3000 - tot + 2000 && g.run.queue.length === 1, prof.get('coins'));
 }
+// ═════════ test-build autoplay ═════════
+{
+  const p = fakePlatform(); p.devTools = true; const prof = fakeProfile(Object.assign({}, INIT, { level: 2, levels_done: 1, streams: 3 })); const hs = fakeHs(prof, 'ok'); const g = new Game(p, hs); g.hsReady = true; run(g, 0.2);
+  await tap(g, p, 'settings'); await tap(g, p, 'auto_play'); check('settings (test build): AUTO PLAY toggles on', g.autoplay === true); await tap(g, p, 'settings_close');
+  const ads0 = hs.ads.length; let lv0 = prof.get('levels_done'); for (let i = 0; i < 360 && prof.get('levels_done') < lv0 + 2; i++) { run(g, 1); await flush(); }
+  check('autoplay clears levels on its own at normal pace (2 levels within 6 min of game time)', prof.get('levels_done') >= lv0 + 2, { done: prof.get('levels_done'), state: g.state, phase: g.run && g.run.phase });
+  check('autoplay never starts a rewarded ad (interstitials only)', hs.ads.filter(a => a !== 'stream_end' && a !== 'cook_step').length === ads0, hs.ads); // interstitials still play as for a player
+  const p2 = fakePlatform(); const g2 = new Game(p2, fakeHs(fakeProfile(INIT), 'ok')); g2.hsReady = true; run(g2, 0.1); g2.setState('settings'); run(g2, 0.05); check('TikTok build: no AUTO PLAY button', !hasBtn(g2, 'auto_play'));
+}
 // ═════════ side quests ═════════
 {
   check('side quest on every level from 2 (none on level 1)', !L.LEVELS[0].quest && L.LEVELS.slice(1).every(l => l.quest && l.quest.pay > 0 && l.quest.need >= 1));

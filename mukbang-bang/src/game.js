@@ -15,6 +15,7 @@ const SC = require('./scenes.js');
 const ST = require('./stream.js');
 const WR = require('./wardrobe.js');
 const WS = require('./wardrobe-scene.js');
+const AP = require('./autoplay.js');
 const CK = require('./cook.js');
 const R = require('./recipes.js');
 const CA = require('./cookart.js');
@@ -136,6 +137,7 @@ class Game {
     this.ui.begin(dt);
     if (!this.frozen) this.update(dt);
     this.draw(dt);
+    if (this.autoplay && !this.frozen && this.state !== 'settings') this.autoTick(dt); // test build: autoplay acts on what was just drawn
   }
   update(dt) {
     this.time += dt;
@@ -212,6 +214,7 @@ class Game {
       case 'sound': p.set('sound', !p.get('sound')); this.audio.setMuted(!p.get('sound')); break;
       case 'settings': this.settingsFrom = this.state === 'pause' ? 'pause' : 'home'; this.setState('settings'); break;
       case 'settings_close': this.setState(this.settingsFrom === 'pause' && this.run ? 'pause' : 'home'); this.settingsFrom = null; break;
+      case 'auto_play': if (this.p.devTools) { this.autoplay = !this.autoplay; this.auto = null; this.showToast(this.autoplay ? 'AUTO PLAY ON' : 'AUTO PLAY OFF', this.autoplay ? 'close settings and watch' : ''); } break;
       case 'unlock_all': this.unlockAll(); break;
       case 'coins': this.popupFrom = this.state; this.setState('coins'); break;
       case 'coins_close': this.setState(this.popupFrom || 'home'); break;
@@ -413,6 +416,7 @@ class Game {
     }
     if (this.trans > 0) { ctx.globalAlpha = this.trans / 0.35; ctx.fillStyle = C.cream; ctx.fillRect(0, 0, W, H); ctx.globalAlpha = 1; }
     this.drawConfetti(); this.drawFloats();
+    if (this.autoplay) ui.button('auto_play', 12, this.bottom() - 40, 112, 34, '■ AUTO PLAY', { color: C.green, dark: C.greenDark, size: 13, radius: 14 });
     if (this.toast) { const a = this.toast.life < 0.3 ? this.toast.life / 0.3 : this.toast.life > 2.2 ? (2.6 - this.toast.life) / 0.4 : 1; ctx.globalAlpha = Math.max(0, a); const ty = this.top() + 70; ui.panel(W / 2 - 180, ty, 360, this.toast.sub ? 64 : 50, C.cream, C.outline, 18); ui.label(this.toast.text, W / 2, ty + 25, 19, C.text); if (this.toast.sub) ui.label(this.toast.sub, W / 2, ty + 48, 14, C.textLight); ctx.globalAlpha = 1; }
     if (this.frozen) { ui.dim(0.5); ui.title('PAUSED', W / 2, H / 2, 44); }
     if (this.debug) ui.label('w' + this.p.width() + ' h' + this.p.height() + ' dpr' + this.p.dpr() + ' cw' + this.p.canvas.width + ' sc' + this.scale.toFixed(3) + ' H' + H, 10, H - 10, 14, '#000', 'left');
@@ -703,7 +707,7 @@ class Game {
   drawSettings() {
     const ui = this.ui, W = this.W, H = this.H, p = this.profile, dev = !!this.p.devTools;
     ui.dim(0.5);
-    const ph = dev ? 330 : 240, py = (H - ph) / 2;
+    const ph = dev ? 400 : 240, py = (H - ph) / 2;
     ui.panel(40, py, W - 80, ph, C.cream, C.outline, 26);
     ui.title('SETTINGS', W / 2, py + 46, 32, C.white, C.pinkDark);
     let y = py + 88;
@@ -711,6 +715,7 @@ class Game {
     if (dev) {
       const all = this.curLevel() >= L.LEVEL_COUNT;
       ui.button('unlock_all', 64, y, W - 128, 58, all ? 'ALL LEVELS UNLOCKED ✓' : 'UNLOCK ALL LEVELS', { color: all ? '#e0d6d6' : C.yellow, dark: all ? '#bfb0b0' : C.yellowDark, size: 19, disabled: all });
+      y += 70; ui.button('auto_play', 64, y, W - 128, 58, this.autoplay ? 'AUTO PLAY: ON' : 'AUTO PLAY: OFF', { color: this.autoplay ? C.green : C.blue, dark: this.autoplay ? C.greenDark : C.blueDark, size: 19 });
       ui.label('test build only — not in the TikTok version', W / 2, y + 72, 13, C.textLight); y += 90;
     }
     ui.button('settings_close', 64, y, W - 128, 52, 'CLOSE', { color: C.lavender, dark: C.lavenderDark, size: 18 });
@@ -751,6 +756,7 @@ class Game {
 SC.install(Game);
 ST.install(Game);
 WS.install(Game);
+AP.install(Game);
 CK.install(Game);
 
 module.exports = { Game };

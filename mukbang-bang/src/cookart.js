@@ -58,6 +58,7 @@ function jelly(ctx, dish, st, col, darker, plate) {
 // ── the other 6 recipes (ART-REQUEST-V4-NEXT §1): every layer on the same 600 px canvas ──
 // content box of each layer, [x, y, w, h] px (qa.json) — used for bottom-up reveals and topping spots
 // boba tea is cut at the lid's rim line (y 262): above it the tea would read as a second cup mouth inside the lid
+const PARFAIT_SPAN = [205, 240, 190, 159]; // the two parfait layers share one fill height (240..399)
 const BOX = { boba_tea_fill: [201, 262, 198, 195], parfait_layers_fill: [207, 280, 186, 119], parfait_layers_cream: [205, 240, 190, 119] };
 function L(name) { return S.v4('cook/' + name + '.png'); }
 function T(name, color) { return tinted('cook/' + name + '.png', color, null); }
@@ -106,7 +107,7 @@ function dish(ctx, d, st, col, h) {
     if (!need(['parfait_glass_back', 'parfait_layers_fill', 'parfait_layers_cream', 'parfait_cream_top', 'parfait_glass_front'])) return false;
     const lf = T('parfait_layers_fill', col); if (!lf) return false;
     layer(ctx, L('parfait_glass_back'), 1, 0);
-    reveal(ctx, lf, fill, BOX.parfait_layers_fill); reveal(ctx, L('parfait_layers_cream'), fill, BOX.parfait_layers_cream);
+    reveal(ctx, lf, fill, PARFAIT_SPAN); reveal(ctx, L('parfait_layers_cream'), fill, PARFAIT_SPAN); // one rising line for sauce + cream: the layers fill together
     if (st.set) layer(ctx, L('parfait_cream_top'), 1, 0);
     layer(ctx, L('parfait_glass_front'), 1, 0);
     if (st.set) { h.drawDeco(0, -26, 40, 14); for (let i = 0; i < Math.min(tops, 3); i++) h.drawTop([0, -12, 12][i], -36 + [0, 6, 6][i], 1); }
