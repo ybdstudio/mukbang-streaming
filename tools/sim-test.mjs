@@ -232,6 +232,12 @@ seed(7);
   check('autoplay never starts a rewarded ad (interstitials only)', hs.ads.filter(a => a !== 'stream_end' && a !== 'cook_step').length === ads0, hs.ads); // interstitials still play as for a player
   const p2 = fakePlatform(); const g2 = new Game(p2, fakeHs(fakeProfile(INIT), 'ok')); g2.hsReady = true; run(g2, 0.1); g2.setState('settings'); run(g2, 0.05); check('TikTok build: no AUTO PLAY button', !hasBtn(g2, 'auto_play'));
 }
+// ═════════ test-build reset progress ═════════
+{
+  const p = fakePlatform(); p.devTools = true; const prof = fakeProfile(Object.assign({}, INIT, { level: 12, levels_done: 11, streams: 14, coins: 9000, wardrobe_json: '{"own":["hair_bow"],"eq":{}}', tip_goal: 1 })); const g = new Game(p, fakeHs(prof, 'ok')); g.hsReady = true; run(g, 0.2);
+  g.setState('settings'); run(g, 0.05); await tap(g, p, 'reset_progress'); check('reset asks for a second tap', prof.get('level') === 12);
+  await tap(g, p, 'reset_progress'); check('reset progress → level 1, 500 coins, no looks, tutorials again', prof.get('level') === 1 && prof.get('levels_done') === 0 && prof.get('coins') === 500 && prof.get('wardrobe_json') === '{}' && prof.get('tip_goal') === 0 && g.state === 'home' && !g.run);
+}
 // ═════════ side quests ═════════
 {
   check('side quest on every level from 2 (none on level 1)', !L.LEVELS[0].quest && L.LEVELS.slice(1).every(l => l.quest && l.quest.pay > 0 && l.quest.need >= 1));

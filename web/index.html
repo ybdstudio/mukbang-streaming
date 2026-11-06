@@ -633,8 +633,8 @@ var profile = HSGame.profile({
   foods_json: '[]',    // V3: food book — every food eaten once
   wardrobe_json: '{}', // V3: owned looks + equipped look per streamer
   ad_stats: '{}',      // V3: ad requests / impressions / completions / rewards per place (measured, local)
-  tip_market: 0,
-  tip_goal: 0,         // V4: 1 = the viewer-goal tutorial was shown       // V4: 1 = the supermarket profit tutorial was shown
+  tip_market: 0,       // V4: 1 = the supermarket profit tutorial was shown
+  tip_goal: 0,         // V4: 1 = the viewer-goal tutorial was shown
   no_ads: 0,           // > 0 = bought "No Ads" (number field so the shop item credits itself)
   sound: true
 }, {
@@ -5027,6 +5027,7 @@ class Game {
       case 'sound': p.set('sound', !p.get('sound')); this.audio.setMuted(!p.get('sound')); break;
       case 'settings': this.settingsFrom = this.state === 'pause' ? 'pause' : 'home'; this.setState('settings'); break;
       case 'settings_close': this.setState(this.settingsFrom === 'pause' && this.run ? 'pause' : 'home'); this.settingsFrom = null; break;
+      case 'reset_progress': if (this.p.devTools) { if (this.resetArm && this.time - this.resetArm < 3) { this.resetArm = 0; this.resetProgress(); } else this.resetArm = this.time; } break;
       case 'auto_play': if (this.p.devTools) { this.autoplay = !this.autoplay; this.auto = null; this.showToast(this.autoplay ? 'AUTO PLAY ON' : 'AUTO PLAY OFF', this.autoplay ? 'close settings and watch' : ''); } break;
       case 'unlock_all': this.unlockAll(); break;
       case 'coins': this.popupFrom = this.state; this.setState('coins'); break;
@@ -5509,6 +5510,13 @@ class Game {
   }
   // Settings: sound, and — only in the web / artifact build (platform.devTools) — a tester's "unlock all levels".
   // It only opens the levels: levels_done is untouched, so each first clear still pays its level bonus once.
+  // test build only: back to a brand-new player (level 1, 500 coins, no looks, tutorials shown again)
+  resetProgress() {
+    const p = this.profile, D0 = { level: 1, levels_done: 0, coins: 500, streamer: 0, stars_json: '{}', run_json: '', streams: 0, best_viewers: 0, combo_best: 0, foods_json: '[]', wardrobe_json: '{}', ad_stats: '{}', tip_market: 0, tip_goal: 0 };
+    for (const k in D0) p.set(k, D0[k]);
+    this.run = null; this.ck = null; this.result = null; this.market = null; this.autoplay = false; this.auto = null; this.adLog = [];
+    this.audio.play('whoosh'); this.setState('home'); this.showToast('PROGRESS RESET', 'Level 1 · 500 coins');
+  }
   unlockAll() {
     if (!this.p.devTools) return;
     if ((this.profile.get('level') || 1) < L.LEVEL_COUNT) this.profile.set('level', L.LEVEL_COUNT);
@@ -5519,7 +5527,7 @@ class Game {
   drawSettings() {
     const ui = this.ui, W = this.W, H = this.H, p = this.profile, dev = !!this.p.devTools;
     ui.dim(0.5);
-    const ph = dev ? 400 : 240, py = (H - ph) / 2;
+    const ph = dev ? 470 : 240, py = (H - ph) / 2;
     ui.panel(40, py, W - 80, ph, C.cream, C.outline, 26);
     ui.title('SETTINGS', W / 2, py + 46, 32, C.white, C.pinkDark);
     let y = py + 88;
@@ -5527,6 +5535,8 @@ class Game {
     if (dev) {
       const all = this.curLevel() >= L.LEVEL_COUNT;
       ui.button('unlock_all', 64, y, W - 128, 58, all ? 'ALL LEVELS UNLOCKED ✓' : 'UNLOCK ALL LEVELS', { color: all ? '#e0d6d6' : C.yellow, dark: all ? '#bfb0b0' : C.yellowDark, size: 19, disabled: all });
+      y += 70; const armed = this.resetArm && this.time - this.resetArm < 3;
+      ui.button('reset_progress', 64, y, W - 128, 58, armed ? 'TAP AGAIN TO RESET' : 'RESET PROGRESS', { color: armed ? C.red : '#e0d6d6', dark: armed ? '#c93b55' : '#bfb0b0', size: 19 });
       y += 70; ui.button('auto_play', 64, y, W - 128, 58, this.autoplay ? 'AUTO PLAY: ON' : 'AUTO PLAY: OFF', { color: this.autoplay ? C.green : C.blue, dark: this.autoplay ? C.greenDark : C.blueDark, size: 19 });
       ui.label('test build only — not in the TikTok version', W / 2, y + 72, 13, C.textLight); y += 90;
     }

@@ -46,8 +46,8 @@ var profile = HSGame.profile({
   foods_json: '[]',    // V3: food book — every food eaten once
   wardrobe_json: '{}', // V3: owned looks + equipped look per streamer
   ad_stats: '{}',      // V3: ad requests / impressions / completions / rewards per place (measured, local)
-  tip_market: 0,
-  tip_goal: 0,         // V4: 1 = the viewer-goal tutorial was shown       // V4: 1 = the supermarket profit tutorial was shown
+  tip_market: 0,       // V4: 1 = the supermarket profit tutorial was shown
+  tip_goal: 0,         // V4: 1 = the viewer-goal tutorial was shown
   no_ads: 0,           // > 0 = bought "No Ads" (number field so the shop item credits itself)
   sound: true
 }, {
