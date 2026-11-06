@@ -1,0 +1,305 @@
+priority,source,package,path,food,open_kind,state,size,status
+1,delivery,art6,art6/food5/cheese_burger_sealed.png,Cheese Burger,box,sealed,384x384,todo
+1,delivery,art6,art6/food5/cheese_burger_open.png,Cheese Burger,box,open,384x384,todo
+1,delivery,art6,art6/food5/cheese_burger_p1.png,Cheese Burger,box,p1,384x384,todo
+1,delivery,art6,art6/food5/cheese_burger_p2.png,Cheese Burger,box,p2,384x384,todo
+1,delivery,art6,art6/food5/cheese_burger_empty.png,Cheese Burger,box,empty,384x384,todo
+1,delivery,art6,art6/food5/cheese_burger_portion.png,Cheese Burger,box,portion,384x384,todo
+1,delivery,art6,art6/food5/pizza_sealed.png,Pepperoni Pizza,box,sealed,384x384,todo
+1,delivery,art6,art6/food5/pizza_open.png,Pepperoni Pizza,box,open,384x384,todo
+1,delivery,art6,art6/food5/pizza_p1.png,Pepperoni Pizza,box,p1,384x384,todo
+1,delivery,art6,art6/food5/pizza_p2.png,Pepperoni Pizza,box,p2,384x384,todo
+1,delivery,art6,art6/food5/pizza_empty.png,Pepperoni Pizza,box,empty,384x384,todo
+1,delivery,art6,art6/food5/pizza_portion.png,Pepperoni Pizza,box,portion,384x384,todo
+1,delivery,art6,art6/food5/pasta_sealed.png,Creamy Pasta,box,sealed,384x384,todo
+1,delivery,art6,art6/food5/pasta_open.png,Creamy Pasta,box,open,384x384,todo
+1,delivery,art6,art6/food5/pasta_p1.png,Creamy Pasta,box,p1,384x384,todo
+1,delivery,art6,art6/food5/pasta_p2.png,Creamy Pasta,box,p2,384x384,todo
+1,delivery,art6,art6/food5/pasta_empty.png,Creamy Pasta,box,empty,384x384,todo
+1,delivery,art6,art6/food5/pasta_portion.png,Creamy Pasta,box,portion,384x384,todo
+1,delivery,art6,art6/food5/tteokbokki_sealed.png,Tteokbokki,box,sealed,384x384,todo
+1,delivery,art6,art6/food5/tteokbokki_open.png,Tteokbokki,box,open,384x384,todo
+1,delivery,art6,art6/food5/tteokbokki_p1.png,Tteokbokki,box,p1,384x384,todo
+1,delivery,art6,art6/food5/tteokbokki_p2.png,Tteokbokki,box,p2,384x384,todo
+1,delivery,art6,art6/food5/tteokbokki_empty.png,Tteokbokki,box,empty,384x384,todo
+1,delivery,art6,art6/food5/tteokbokki_portion.png,Tteokbokki,box,portion,384x384,todo
+1,delivery,art6,art6/food5/dumplings_sealed.png,Dumplings,box,sealed,384x384,todo
+1,delivery,art6,art6/food5/dumplings_open.png,Dumplings,box,open,384x384,todo
+1,delivery,art6,art6/food5/dumplings_p1.png,Dumplings,box,p1,384x384,todo
+1,delivery,art6,art6/food5/dumplings_p2.png,Dumplings,box,p2,384x384,todo
+1,delivery,art6,art6/food5/dumplings_empty.png,Dumplings,box,empty,384x384,todo
+1,delivery,art6,art6/food5/dumplings_portion.png,Dumplings,box,portion,384x384,todo
+1,delivery,art6,art6/food5/sushi_set_sealed.png,Sushi Set,box,sealed,384x384,todo
+1,delivery,art6,art6/food5/sushi_set_open.png,Sushi Set,box,open,384x384,todo
+1,delivery,art6,art6/food5/sushi_set_p1.png,Sushi Set,box,p1,384x384,todo
+1,delivery,art6,art6/food5/sushi_set_p2.png,Sushi Set,box,p2,384x384,todo
+1,delivery,art6,art6/food5/sushi_set_empty.png,Sushi Set,box,empty,384x384,todo
+1,delivery,art6,art6/food5/sushi_set_portion.png,Sushi Set,box,portion,384x384,todo
+1,delivery,art6,art6/food5/curry_rice_sealed.png,Curry Rice,box,sealed,384x384,todo
+1,delivery,art6,art6/food5/curry_rice_open.png,Curry Rice,box,open,384x384,todo
+1,delivery,art6,art6/food5/curry_rice_p1.png,Curry Rice,box,p1,384x384,todo
+1,delivery,art6,art6/food5/curry_rice_p2.png,Curry Rice,box,p2,384x384,todo
+1,delivery,art6,art6/food5/curry_rice_empty.png,Curry Rice,box,empty,384x384,todo
+1,delivery,art6,art6/food5/curry_rice_portion.png,Curry Rice,box,portion,384x384,todo
+1,delivery,art6,art6/food5/mini_hotpot_sealed.png,Mini Hotpot,box,sealed,384x384,todo
+1,delivery,art6,art6/food5/mini_hotpot_open.png,Mini Hotpot,box,open,384x384,todo
+1,delivery,art6,art6/food5/mini_hotpot_p1.png,Mini Hotpot,box,p1,384x384,todo
+1,delivery,art6,art6/food5/mini_hotpot_p2.png,Mini Hotpot,box,p2,384x384,todo
+1,delivery,art6,art6/food5/mini_hotpot_empty.png,Mini Hotpot,box,empty,384x384,todo
+1,delivery,art6,art6/food5/mini_hotpot_portion.png,Mini Hotpot,box,portion,384x384,todo
+1,delivery,art6,art6/food5/seafood_boil_sealed.png,Seafood Boil,box,sealed,384x384,todo
+1,delivery,art6,art6/food5/seafood_boil_open.png,Seafood Boil,box,open,384x384,todo
+1,delivery,art6,art6/food5/seafood_boil_p1.png,Seafood Boil,box,p1,384x384,todo
+1,delivery,art6,art6/food5/seafood_boil_p2.png,Seafood Boil,box,p2,384x384,todo
+1,delivery,art6,art6/food5/seafood_boil_empty.png,Seafood Boil,box,empty,384x384,todo
+1,delivery,art6,art6/food5/seafood_boil_portion.png,Seafood Boil,box,portion,384x384,todo
+1,delivery,art6,art6/food5/fries_sealed.png,Fries,box,sealed,384x384,todo
+1,delivery,art6,art6/food5/fries_open.png,Fries,box,open,384x384,todo
+1,delivery,art6,art6/food5/fries_p1.png,Fries,box,p1,384x384,todo
+1,delivery,art6,art6/food5/fries_p2.png,Fries,box,p2,384x384,todo
+1,delivery,art6,art6/food5/fries_empty.png,Fries,box,empty,384x384,todo
+1,delivery,art6,art6/food5/fries_portion.png,Fries,box,portion,384x384,todo
+1,delivery,art6,art6/food5/cheese_sticks_sealed.png,Cheese Sticks,box,sealed,384x384,todo
+1,delivery,art6,art6/food5/cheese_sticks_open.png,Cheese Sticks,box,open,384x384,todo
+1,delivery,art6,art6/food5/cheese_sticks_p1.png,Cheese Sticks,box,p1,384x384,todo
+1,delivery,art6,art6/food5/cheese_sticks_p2.png,Cheese Sticks,box,p2,384x384,todo
+1,delivery,art6,art6/food5/cheese_sticks_empty.png,Cheese Sticks,box,empty,384x384,todo
+1,delivery,art6,art6/food5/cheese_sticks_portion.png,Cheese Sticks,box,portion,384x384,todo
+1,delivery,art6,art6/food5/pickled_radish_sealed.png,Pickled Radish,box,sealed,384x384,todo
+1,delivery,art6,art6/food5/pickled_radish_open.png,Pickled Radish,box,open,384x384,todo
+1,delivery,art6,art6/food5/pickled_radish_p1.png,Pickled Radish,box,p1,384x384,todo
+1,delivery,art6,art6/food5/pickled_radish_p2.png,Pickled Radish,box,p2,384x384,todo
+1,delivery,art6,art6/food5/pickled_radish_empty.png,Pickled Radish,box,empty,384x384,todo
+1,delivery,art6,art6/food5/pickled_radish_portion.png,Pickled Radish,box,portion,384x384,todo
+1,delivery,art6,art6/food5/miso_soup_sealed.png,Miso Soup,box,sealed,384x384,todo
+1,delivery,art6,art6/food5/miso_soup_open.png,Miso Soup,box,open,384x384,todo
+1,delivery,art6,art6/food5/miso_soup_p1.png,Miso Soup,box,p1,384x384,todo
+1,delivery,art6,art6/food5/miso_soup_p2.png,Miso Soup,box,p2,384x384,todo
+1,delivery,art6,art6/food5/miso_soup_empty.png,Miso Soup,box,empty,384x384,todo
+1,delivery,art6,art6/food5/miso_soup_portion.png,Miso Soup,box,portion,384x384,todo
+1,delivery,art6,art6/food5/mochi_sealed.png,Mochi,box,sealed,384x384,todo
+1,delivery,art6,art6/food5/mochi_open.png,Mochi,box,open,384x384,todo
+1,delivery,art6,art6/food5/mochi_p1.png,Mochi,box,p1,384x384,todo
+1,delivery,art6,art6/food5/mochi_p2.png,Mochi,box,p2,384x384,todo
+1,delivery,art6,art6/food5/mochi_empty.png,Mochi,box,empty,384x384,todo
+1,delivery,art6,art6/food5/mochi_portion.png,Mochi,box,portion,384x384,todo
+1,delivery,art6,art6/food5/cola_sealed.png,Cola,bottle,sealed,384x384,todo
+1,delivery,art6,art6/food5/cola_open.png,Cola,bottle,open,384x384,todo
+1,delivery,art6,art6/food5/cola_p1.png,Cola,bottle,p1,384x384,todo
+1,delivery,art6,art6/food5/cola_p2.png,Cola,bottle,p2,384x384,todo
+1,delivery,art6,art6/food5/cola_empty.png,Cola,bottle,empty,384x384,todo
+1,delivery,art6,art6/food5/cola_portion.png,Cola,bottle,portion,384x384,todo
+2,mystery,art6,art6/food5/choco_ramen_sealed.png,Chocolate Ramen,dome,sealed,384x384,todo
+2,mystery,art6,art6/food5/choco_ramen_open.png,Chocolate Ramen,dome,open,384x384,todo
+2,mystery,art6,art6/food5/choco_ramen_p1.png,Chocolate Ramen,dome,p1,384x384,todo
+2,mystery,art6,art6/food5/choco_ramen_p2.png,Chocolate Ramen,dome,p2,384x384,todo
+2,mystery,art6,art6/food5/choco_ramen_empty.png,Chocolate Ramen,dome,empty,384x384,todo
+2,mystery,art6,art6/food5/choco_ramen_portion.png,Chocolate Ramen,dome,portion,384x384,todo
+2,mystery,art6,art6/food5/pickle_icecream_sealed.png,Pickle Ice Cream,dome,sealed,384x384,todo
+2,mystery,art6,art6/food5/pickle_icecream_open.png,Pickle Ice Cream,dome,open,384x384,todo
+2,mystery,art6,art6/food5/pickle_icecream_p1.png,Pickle Ice Cream,dome,p1,384x384,todo
+2,mystery,art6,art6/food5/pickle_icecream_p2.png,Pickle Ice Cream,dome,p2,384x384,todo
+2,mystery,art6,art6/food5/pickle_icecream_empty.png,Pickle Ice Cream,dome,empty,384x384,todo
+2,mystery,art6,art6/food5/pickle_icecream_portion.png,Pickle Ice Cream,dome,portion,384x384,todo
+2,mystery,art6,art6/food5/wasabi_cake_sealed.png,Wasabi Cake,dome,sealed,384x384,todo
+2,mystery,art6,art6/food5/wasabi_cake_open.png,Wasabi Cake,dome,open,384x384,todo
+2,mystery,art6,art6/food5/wasabi_cake_p1.png,Wasabi Cake,dome,p1,384x384,todo
+2,mystery,art6,art6/food5/wasabi_cake_p2.png,Wasabi Cake,dome,p2,384x384,todo
+2,mystery,art6,art6/food5/wasabi_cake_empty.png,Wasabi Cake,dome,empty,384x384,todo
+2,mystery,art6,art6/food5/wasabi_cake_portion.png,Wasabi Cake,dome,portion,384x384,todo
+2,mystery,art6,art6/food5/golden_parfait_sealed.png,Golden Parfait,dome,sealed,384x384,todo
+2,mystery,art6,art6/food5/golden_parfait_open.png,Golden Parfait,dome,open,384x384,todo
+2,mystery,art6,art6/food5/golden_parfait_p1.png,Golden Parfait,dome,p1,384x384,todo
+2,mystery,art6,art6/food5/golden_parfait_p2.png,Golden Parfait,dome,p2,384x384,todo
+2,mystery,art6,art6/food5/golden_parfait_empty.png,Golden Parfait,dome,empty,384x384,todo
+2,mystery,art6,art6/food5/golden_parfait_portion.png,Golden Parfait,dome,portion,384x384,todo
+3,buffet,art7,art7/food5/spicy_wings_sealed.png,Spicy Wings,dome,sealed,384x384,todo
+3,buffet,art7,art7/food5/spicy_wings_open.png,Spicy Wings,dome,open,384x384,todo
+3,buffet,art7,art7/food5/spicy_wings_p1.png,Spicy Wings,dome,p1,384x384,todo
+3,buffet,art7,art7/food5/spicy_wings_p2.png,Spicy Wings,dome,p2,384x384,todo
+3,buffet,art7,art7/food5/spicy_wings_empty.png,Spicy Wings,dome,empty,384x384,todo
+3,buffet,art7,art7/food5/spicy_wings_portion.png,Spicy Wings,dome,portion,384x384,todo
+3,buffet,art7,art7/food5/kimchi_rice_sealed.png,Kimchi Fried Rice,dome,sealed,384x384,todo
+3,buffet,art7,art7/food5/kimchi_rice_open.png,Kimchi Fried Rice,dome,open,384x384,todo
+3,buffet,art7,art7/food5/kimchi_rice_p1.png,Kimchi Fried Rice,dome,p1,384x384,todo
+3,buffet,art7,art7/food5/kimchi_rice_p2.png,Kimchi Fried Rice,dome,p2,384x384,todo
+3,buffet,art7,art7/food5/kimchi_rice_empty.png,Kimchi Fried Rice,dome,empty,384x384,todo
+3,buffet,art7,art7/food5/kimchi_rice_portion.png,Kimchi Fried Rice,dome,portion,384x384,todo
+3,buffet,art7,art7/food5/mapo_tofu_sealed.png,Mapo Tofu,dome,sealed,384x384,todo
+3,buffet,art7,art7/food5/mapo_tofu_open.png,Mapo Tofu,dome,open,384x384,todo
+3,buffet,art7,art7/food5/mapo_tofu_p1.png,Mapo Tofu,dome,p1,384x384,todo
+3,buffet,art7,art7/food5/mapo_tofu_p2.png,Mapo Tofu,dome,p2,384x384,todo
+3,buffet,art7,art7/food5/mapo_tofu_empty.png,Mapo Tofu,dome,empty,384x384,todo
+3,buffet,art7,art7/food5/mapo_tofu_portion.png,Mapo Tofu,dome,portion,384x384,todo
+3,buffet,art7,art7/food5/fried_shrimp_sealed.png,Fried Shrimp,dome,sealed,384x384,todo
+3,buffet,art7,art7/food5/fried_shrimp_open.png,Fried Shrimp,dome,open,384x384,todo
+3,buffet,art7,art7/food5/fried_shrimp_p1.png,Fried Shrimp,dome,p1,384x384,todo
+3,buffet,art7,art7/food5/fried_shrimp_p2.png,Fried Shrimp,dome,p2,384x384,todo
+3,buffet,art7,art7/food5/fried_shrimp_empty.png,Fried Shrimp,dome,empty,384x384,todo
+3,buffet,art7,art7/food5/fried_shrimp_portion.png,Fried Shrimp,dome,portion,384x384,todo
+3,buffet,art7,art7/food5/spring_rolls_sealed.png,Spring Rolls,dome,sealed,384x384,todo
+3,buffet,art7,art7/food5/spring_rolls_open.png,Spring Rolls,dome,open,384x384,todo
+3,buffet,art7,art7/food5/spring_rolls_p1.png,Spring Rolls,dome,p1,384x384,todo
+3,buffet,art7,art7/food5/spring_rolls_p2.png,Spring Rolls,dome,p2,384x384,todo
+3,buffet,art7,art7/food5/spring_rolls_empty.png,Spring Rolls,dome,empty,384x384,todo
+3,buffet,art7,art7/food5/spring_rolls_portion.png,Spring Rolls,dome,portion,384x384,todo
+3,buffet,art7,art7/food5/iced_lemon_tea_sealed.png,Iced Lemon Tea,dome,sealed,384x384,todo
+3,buffet,art7,art7/food5/iced_lemon_tea_open.png,Iced Lemon Tea,dome,open,384x384,todo
+3,buffet,art7,art7/food5/iced_lemon_tea_p1.png,Iced Lemon Tea,dome,p1,384x384,todo
+3,buffet,art7,art7/food5/iced_lemon_tea_p2.png,Iced Lemon Tea,dome,p2,384x384,todo
+3,buffet,art7,art7/food5/iced_lemon_tea_empty.png,Iced Lemon Tea,dome,empty,384x384,todo
+3,buffet,art7,art7/food5/iced_lemon_tea_portion.png,Iced Lemon Tea,dome,portion,384x384,todo
+3,buffet,art7,art7/food5/salmon_nigiri_sealed.png,Salmon Nigiri,dome,sealed,384x384,todo
+3,buffet,art7,art7/food5/salmon_nigiri_open.png,Salmon Nigiri,dome,open,384x384,todo
+3,buffet,art7,art7/food5/salmon_nigiri_p1.png,Salmon Nigiri,dome,p1,384x384,todo
+3,buffet,art7,art7/food5/salmon_nigiri_p2.png,Salmon Nigiri,dome,p2,384x384,todo
+3,buffet,art7,art7/food5/salmon_nigiri_empty.png,Salmon Nigiri,dome,empty,384x384,todo
+3,buffet,art7,art7/food5/salmon_nigiri_portion.png,Salmon Nigiri,dome,portion,384x384,todo
+3,buffet,art7,art7/food5/cold_soba_sealed.png,Cold Soba,dome,sealed,384x384,todo
+3,buffet,art7,art7/food5/cold_soba_open.png,Cold Soba,dome,open,384x384,todo
+3,buffet,art7,art7/food5/cold_soba_p1.png,Cold Soba,dome,p1,384x384,todo
+3,buffet,art7,art7/food5/cold_soba_p2.png,Cold Soba,dome,p2,384x384,todo
+3,buffet,art7,art7/food5/cold_soba_empty.png,Cold Soba,dome,empty,384x384,todo
+3,buffet,art7,art7/food5/cold_soba_portion.png,Cold Soba,dome,portion,384x384,todo
+3,buffet,art7,art7/food5/tamago_sealed.png,Tamago,dome,sealed,384x384,todo
+3,buffet,art7,art7/food5/tamago_open.png,Tamago,dome,open,384x384,todo
+3,buffet,art7,art7/food5/tamago_p1.png,Tamago,dome,p1,384x384,todo
+3,buffet,art7,art7/food5/tamago_p2.png,Tamago,dome,p2,384x384,todo
+3,buffet,art7,art7/food5/tamago_empty.png,Tamago,dome,empty,384x384,todo
+3,buffet,art7,art7/food5/tamago_portion.png,Tamago,dome,portion,384x384,todo
+3,buffet,art7,art7/food5/seaweed_salad_sealed.png,Seaweed Salad,dome,sealed,384x384,todo
+3,buffet,art7,art7/food5/seaweed_salad_open.png,Seaweed Salad,dome,open,384x384,todo
+3,buffet,art7,art7/food5/seaweed_salad_p1.png,Seaweed Salad,dome,p1,384x384,todo
+3,buffet,art7,art7/food5/seaweed_salad_p2.png,Seaweed Salad,dome,p2,384x384,todo
+3,buffet,art7,art7/food5/seaweed_salad_empty.png,Seaweed Salad,dome,empty,384x384,todo
+3,buffet,art7,art7/food5/seaweed_salad_portion.png,Seaweed Salad,dome,portion,384x384,todo
+3,buffet,art7,art7/food5/ice_jelly_sealed.png,Ice Jelly,dome,sealed,384x384,todo
+3,buffet,art7,art7/food5/ice_jelly_open.png,Ice Jelly,dome,open,384x384,todo
+3,buffet,art7,art7/food5/ice_jelly_p1.png,Ice Jelly,dome,p1,384x384,todo
+3,buffet,art7,art7/food5/ice_jelly_p2.png,Ice Jelly,dome,p2,384x384,todo
+3,buffet,art7,art7/food5/ice_jelly_empty.png,Ice Jelly,dome,empty,384x384,todo
+3,buffet,art7,art7/food5/ice_jelly_portion.png,Ice Jelly,dome,portion,384x384,todo
+3,buffet,art7,art7/food5/melon_slice_sealed.png,Melon Slice,dome,sealed,384x384,todo
+3,buffet,art7,art7/food5/melon_slice_open.png,Melon Slice,dome,open,384x384,todo
+3,buffet,art7,art7/food5/melon_slice_p1.png,Melon Slice,dome,p1,384x384,todo
+3,buffet,art7,art7/food5/melon_slice_p2.png,Melon Slice,dome,p2,384x384,todo
+3,buffet,art7,art7/food5/melon_slice_empty.png,Melon Slice,dome,empty,384x384,todo
+3,buffet,art7,art7/food5/melon_slice_portion.png,Melon Slice,dome,portion,384x384,todo
+3,buffet,art7,art7/food5/beef_slices_sealed.png,Beef Slices,dome,sealed,384x384,todo
+3,buffet,art7,art7/food5/beef_slices_open.png,Beef Slices,dome,open,384x384,todo
+3,buffet,art7,art7/food5/beef_slices_p1.png,Beef Slices,dome,p1,384x384,todo
+3,buffet,art7,art7/food5/beef_slices_p2.png,Beef Slices,dome,p2,384x384,todo
+3,buffet,art7,art7/food5/beef_slices_empty.png,Beef Slices,dome,empty,384x384,todo
+3,buffet,art7,art7/food5/beef_slices_portion.png,Beef Slices,dome,portion,384x384,todo
+3,buffet,art7,art7/food5/mushroom_mix_sealed.png,Mushroom Mix,dome,sealed,384x384,todo
+3,buffet,art7,art7/food5/mushroom_mix_open.png,Mushroom Mix,dome,open,384x384,todo
+3,buffet,art7,art7/food5/mushroom_mix_p1.png,Mushroom Mix,dome,p1,384x384,todo
+3,buffet,art7,art7/food5/mushroom_mix_p2.png,Mushroom Mix,dome,p2,384x384,todo
+3,buffet,art7,art7/food5/mushroom_mix_empty.png,Mushroom Mix,dome,empty,384x384,todo
+3,buffet,art7,art7/food5/mushroom_mix_portion.png,Mushroom Mix,dome,portion,384x384,todo
+3,buffet,art7,art7/food5/fish_balls_sealed.png,Fish Balls,dome,sealed,384x384,todo
+3,buffet,art7,art7/food5/fish_balls_open.png,Fish Balls,dome,open,384x384,todo
+3,buffet,art7,art7/food5/fish_balls_p1.png,Fish Balls,dome,p1,384x384,todo
+3,buffet,art7,art7/food5/fish_balls_p2.png,Fish Balls,dome,p2,384x384,todo
+3,buffet,art7,art7/food5/fish_balls_empty.png,Fish Balls,dome,empty,384x384,todo
+3,buffet,art7,art7/food5/fish_balls_portion.png,Fish Balls,dome,portion,384x384,todo
+3,buffet,art7,art7/food5/corn_cob_sealed.png,Corn Cob,dome,sealed,384x384,todo
+3,buffet,art7,art7/food5/corn_cob_open.png,Corn Cob,dome,open,384x384,todo
+3,buffet,art7,art7/food5/corn_cob_p1.png,Corn Cob,dome,p1,384x384,todo
+3,buffet,art7,art7/food5/corn_cob_p2.png,Corn Cob,dome,p2,384x384,todo
+3,buffet,art7,art7/food5/corn_cob_empty.png,Corn Cob,dome,empty,384x384,todo
+3,buffet,art7,art7/food5/corn_cob_portion.png,Corn Cob,dome,portion,384x384,todo
+3,buffet,art7,art7/food5/udon_bowl_sealed.png,Udon Bowl,dome,sealed,384x384,todo
+3,buffet,art7,art7/food5/udon_bowl_open.png,Udon Bowl,dome,open,384x384,todo
+3,buffet,art7,art7/food5/udon_bowl_p1.png,Udon Bowl,dome,p1,384x384,todo
+3,buffet,art7,art7/food5/udon_bowl_p2.png,Udon Bowl,dome,p2,384x384,todo
+3,buffet,art7,art7/food5/udon_bowl_empty.png,Udon Bowl,dome,empty,384x384,todo
+3,buffet,art7,art7/food5/udon_bowl_portion.png,Udon Bowl,dome,portion,384x384,todo
+3,buffet,art7,art7/food5/spicy_broth_sealed.png,Spicy Broth,dome,sealed,384x384,todo
+3,buffet,art7,art7/food5/spicy_broth_open.png,Spicy Broth,dome,open,384x384,todo
+3,buffet,art7,art7/food5/spicy_broth_p1.png,Spicy Broth,dome,p1,384x384,todo
+3,buffet,art7,art7/food5/spicy_broth_p2.png,Spicy Broth,dome,p2,384x384,todo
+3,buffet,art7,art7/food5/spicy_broth_empty.png,Spicy Broth,dome,empty,384x384,todo
+3,buffet,art7,art7/food5/spicy_broth_portion.png,Spicy Broth,dome,portion,384x384,todo
+3,buffet,art8,art8/food5/mini_steak_sealed.png,Mini Steak,dome,sealed,384x384,todo
+3,buffet,art8,art8/food5/mini_steak_open.png,Mini Steak,dome,open,384x384,todo
+3,buffet,art8,art8/food5/mini_steak_p1.png,Mini Steak,dome,p1,384x384,todo
+3,buffet,art8,art8/food5/mini_steak_p2.png,Mini Steak,dome,p2,384x384,todo
+3,buffet,art8,art8/food5/mini_steak_empty.png,Mini Steak,dome,empty,384x384,todo
+3,buffet,art8,art8/food5/mini_steak_portion.png,Mini Steak,dome,portion,384x384,todo
+3,buffet,art8,art8/food5/yakitori_sealed.png,Yakitori,dome,sealed,384x384,todo
+3,buffet,art8,art8/food5/yakitori_open.png,Yakitori,dome,open,384x384,todo
+3,buffet,art8,art8/food5/yakitori_p1.png,Yakitori,dome,p1,384x384,todo
+3,buffet,art8,art8/food5/yakitori_p2.png,Yakitori,dome,p2,384x384,todo
+3,buffet,art8,art8/food5/yakitori_empty.png,Yakitori,dome,empty,384x384,todo
+3,buffet,art8,art8/food5/yakitori_portion.png,Yakitori,dome,portion,384x384,todo
+3,buffet,art8,art8/food5/sausage_sealed.png,Sausage,dome,sealed,384x384,todo
+3,buffet,art8,art8/food5/sausage_open.png,Sausage,dome,open,384x384,todo
+3,buffet,art8,art8/food5/sausage_p1.png,Sausage,dome,p1,384x384,todo
+3,buffet,art8,art8/food5/sausage_p2.png,Sausage,dome,p2,384x384,todo
+3,buffet,art8,art8/food5/sausage_empty.png,Sausage,dome,empty,384x384,todo
+3,buffet,art8,art8/food5/sausage_portion.png,Sausage,dome,portion,384x384,todo
+3,buffet,art8,art8/food5/garlic_bread_sealed.png,Garlic Bread,dome,sealed,384x384,todo
+3,buffet,art8,art8/food5/garlic_bread_open.png,Garlic Bread,dome,open,384x384,todo
+3,buffet,art8,art8/food5/garlic_bread_p1.png,Garlic Bread,dome,p1,384x384,todo
+3,buffet,art8,art8/food5/garlic_bread_p2.png,Garlic Bread,dome,p2,384x384,todo
+3,buffet,art8,art8/food5/garlic_bread_empty.png,Garlic Bread,dome,empty,384x384,todo
+3,buffet,art8,art8/food5/garlic_bread_portion.png,Garlic Bread,dome,portion,384x384,todo
+3,buffet,art8,art8/food5/grilled_squid_sealed.png,Grilled Squid,dome,sealed,384x384,todo
+3,buffet,art8,art8/food5/grilled_squid_open.png,Grilled Squid,dome,open,384x384,todo
+3,buffet,art8,art8/food5/grilled_squid_p1.png,Grilled Squid,dome,p1,384x384,todo
+3,buffet,art8,art8/food5/grilled_squid_p2.png,Grilled Squid,dome,p2,384x384,todo
+3,buffet,art8,art8/food5/grilled_squid_empty.png,Grilled Squid,dome,empty,384x384,todo
+3,buffet,art8,art8/food5/grilled_squid_portion.png,Grilled Squid,dome,portion,384x384,todo
+3,buffet,art8,art8/food5/sparkling_soda_sealed.png,Sparkling Soda,dome,sealed,384x384,todo
+3,buffet,art8,art8/food5/sparkling_soda_open.png,Sparkling Soda,dome,open,384x384,todo
+3,buffet,art8,art8/food5/sparkling_soda_p1.png,Sparkling Soda,dome,p1,384x384,todo
+3,buffet,art8,art8/food5/sparkling_soda_p2.png,Sparkling Soda,dome,p2,384x384,todo
+3,buffet,art8,art8/food5/sparkling_soda_empty.png,Sparkling Soda,dome,empty,384x384,todo
+3,buffet,art8,art8/food5/sparkling_soda_portion.png,Sparkling Soda,dome,portion,384x384,todo
+3,buffet,art8,art8/food5/ghost_wings_sealed.png,Ghost Pepper Wings,dome,sealed,384x384,todo
+3,buffet,art8,art8/food5/ghost_wings_open.png,Ghost Pepper Wings,dome,open,384x384,todo
+3,buffet,art8,art8/food5/ghost_wings_p1.png,Ghost Pepper Wings,dome,p1,384x384,todo
+3,buffet,art8,art8/food5/ghost_wings_p2.png,Ghost Pepper Wings,dome,p2,384x384,todo
+3,buffet,art8,art8/food5/ghost_wings_empty.png,Ghost Pepper Wings,dome,empty,384x384,todo
+3,buffet,art8,art8/food5/ghost_wings_portion.png,Ghost Pepper Wings,dome,portion,384x384,todo
+3,buffet,art8,art8/food5/fire_noodles_sealed.png,Fire Noodles,dome,sealed,384x384,todo
+3,buffet,art8,art8/food5/fire_noodles_open.png,Fire Noodles,dome,open,384x384,todo
+3,buffet,art8,art8/food5/fire_noodles_p1.png,Fire Noodles,dome,p1,384x384,todo
+3,buffet,art8,art8/food5/fire_noodles_p2.png,Fire Noodles,dome,p2,384x384,todo
+3,buffet,art8,art8/food5/fire_noodles_empty.png,Fire Noodles,dome,empty,384x384,todo
+3,buffet,art8,art8/food5/fire_noodles_portion.png,Fire Noodles,dome,portion,384x384,todo
+3,buffet,art8,art8/food5/lava_ricecake_sealed.png,Lava Rice Cake,dome,sealed,384x384,todo
+3,buffet,art8,art8/food5/lava_ricecake_open.png,Lava Rice Cake,dome,open,384x384,todo
+3,buffet,art8,art8/food5/lava_ricecake_p1.png,Lava Rice Cake,dome,p1,384x384,todo
+3,buffet,art8,art8/food5/lava_ricecake_p2.png,Lava Rice Cake,dome,p2,384x384,todo
+3,buffet,art8,art8/food5/lava_ricecake_empty.png,Lava Rice Cake,dome,empty,384x384,todo
+3,buffet,art8,art8/food5/lava_ricecake_portion.png,Lava Rice Cake,dome,portion,384x384,todo
+3,buffet,art8,art8/food5/chili_dumplings_sealed.png,Chili Dumplings,dome,sealed,384x384,todo
+3,buffet,art8,art8/food5/chili_dumplings_open.png,Chili Dumplings,dome,open,384x384,todo
+3,buffet,art8,art8/food5/chili_dumplings_p1.png,Chili Dumplings,dome,p1,384x384,todo
+3,buffet,art8,art8/food5/chili_dumplings_p2.png,Chili Dumplings,dome,p2,384x384,todo
+3,buffet,art8,art8/food5/chili_dumplings_empty.png,Chili Dumplings,dome,empty,384x384,todo
+3,buffet,art8,art8/food5/chili_dumplings_portion.png,Chili Dumplings,dome,portion,384x384,todo
+3,buffet,art8,art8/food5/volcano_curry_sealed.png,Volcano Curry,dome,sealed,384x384,todo
+3,buffet,art8,art8/food5/volcano_curry_open.png,Volcano Curry,dome,open,384x384,todo
+3,buffet,art8,art8/food5/volcano_curry_p1.png,Volcano Curry,dome,p1,384x384,todo
+3,buffet,art8,art8/food5/volcano_curry_p2.png,Volcano Curry,dome,p2,384x384,todo
+3,buffet,art8,art8/food5/volcano_curry_empty.png,Volcano Curry,dome,empty,384x384,todo
+3,buffet,art8,art8/food5/volcano_curry_portion.png,Volcano Curry,dome,portion,384x384,todo
+3,buffet,art8,art8/food5/milk_cooler_sealed.png,Milk Cooler,dome,sealed,384x384,todo
+3,buffet,art8,art8/food5/milk_cooler_open.png,Milk Cooler,dome,open,384x384,todo
+3,buffet,art8,art8/food5/milk_cooler_p1.png,Milk Cooler,dome,p1,384x384,todo
+3,buffet,art8,art8/food5/milk_cooler_p2.png,Milk Cooler,dome,p2,384x384,todo
+3,buffet,art8,art8/food5/milk_cooler_empty.png,Milk Cooler,dome,empty,384x384,todo
+3,buffet,art8,art8/food5/milk_cooler_portion.png,Milk Cooler,dome,portion,384x384,todo
+1,kitchen,main,assets/cook/opt_ramen_deco_sesame.png,ramen seasoning sesame,,icon,160x160,todo (carried over)
+1,kitchen,main,assets/cook/deco_sesame.png,ramen seasoning sesame,,scatter,256x256,todo (carried over)
+1,kitchen,main,assets/cook/opt_ramen_deco_chili_flakes.png,ramen seasoning chili_flakes,,icon,160x160,todo (carried over)
+1,kitchen,main,assets/cook/deco_chili_flakes.png,ramen seasoning chili_flakes,,scatter,256x256,todo (carried over)
+1,kitchen,main,assets/cook/opt_ramen_deco_nori_flakes.png,ramen seasoning nori_flakes,,icon,160x160,todo (carried over)
+1,kitchen,main,assets/cook/deco_nori_flakes.png,ramen seasoning nori_flakes,,scatter,256x256,todo (carried over)
+1,kitchen,main,assets/cook/opt_ramen_deco_pepper.png,ramen seasoning pepper,,icon,160x160,todo (carried over)
+1,kitchen,main,assets/cook/deco_pepper.png,ramen seasoning pepper,,scatter,256x256,todo (carried over)
+1,kitchen,main,assets/cook/opt_ramen_deco_fried_garlic.png,ramen seasoning fried_garlic,,icon,160x160,todo (carried over)
+1,kitchen,main,assets/cook/deco_fried_garlic.png,ramen seasoning fried_garlic,,scatter,256x256,todo (carried over)

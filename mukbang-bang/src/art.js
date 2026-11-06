@@ -569,6 +569,20 @@ function food(ctx, f, x, y, size, e, t) {
   if (f.shape && f.shape !== 'market') dishVec(ctx, f, x, y, size, e, t); else foodVec(ctx, f, x, y, size, e, t);
 }
 
+// Stand a food on a surface: the sprite's lowest opaque row lands on yFloor (art has uneven bottom padding).
+const FOOT = {};
+function footOf(im) {
+  if (!im) return 0.92; const key = im.src || im; if (FOOT[key] !== undefined) return FOOT[key];
+  let v = 0.92;
+  try { const w = 64, c = S.canvas ? S.canvas(w, w) : null; if (c) { const g = c.getContext('2d'); g.drawImage(im, 0, 0, w, w); const a = g.getImageData(0, 0, w, w).data; for (let y = w - 1; y >= 0; y--) { let hit = 0; for (let x = 0; x < w; x++) if (a[(y * w + x) * 4 + 3] > 40) { hit = 1; break; } if (hit) { v = (y + 1) / w; break; } } } } catch (e) { /* tainted or no canvas: keep default */ }
+  FOOT[key] = v; return v;
+}
+function foodOn(ctx, f, x, yFloor, size, t) {
+  let foot = 0.92;
+  if (S.enabled() && f.art !== false) { const im = S.get(S.foodPath(f.sprite || f.id, 0)); if (im) foot = footOf(im); }
+  const d = size * FOOD_DRAW; food(ctx, f, x, yFloor - (foot - 0.5) * d, size, 0, t);
+}
+
 // streamer: body + head layers, eyes and mouth from the shared face atlas
 function streamerParts(ch) {
   const sp = S.STREAMERS[ch.id]; if (!sp) return null;
@@ -935,4 +949,4 @@ function portion(ctx, f, x, y, size, t) {
   ctx.restore();
 }
 
-module.exports = { pack, portion, dishVec, mysteryBox, takeoutBox, homeRoom, restaurantBg, kitchenBg, tongs, buffetPan, scooter, flames, rr, circle, ellipse, shade, text, coin, star, uiStar, heart, eyeIcon, sparkle, lock, reaction, avatar, food, streamer, mouthPos, background, backgroundLive, table, phoneStick, livePill, profileBadge, coinPill, storeBackground, shelfBoard, priceTag, basket, machine, conveyor, cashier, cloud, logo };
+module.exports = { foodOn, pack, portion, dishVec, mysteryBox, takeoutBox, homeRoom, restaurantBg, kitchenBg, tongs, buffetPan, scooter, flames, rr, circle, ellipse, shade, text, coin, star, uiStar, heart, eyeIcon, sparkle, lock, reaction, avatar, food, streamer, mouthPos, background, backgroundLive, table, phoneStick, livePill, profileBadge, coinPill, storeBackground, shelfBoard, priceTag, basket, machine, conveyor, cashier, cloud, logo };

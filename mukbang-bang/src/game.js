@@ -495,8 +495,8 @@ class Game {
   }
   // ── MARKET ──
   // Shelf rows: two food rows, plus a locked preview row when a shelf is still to unlock. Spread over the free height.
-  shelfGap() { const top = this.top(), bottom = this.bottom(); const rows = this.nextLockedCat() ? 3 : 2; const free = (bottom - 200) - (top + 270) - 110; return U.clamp(free / (rows - 1 || 1), 180, 230); }
-  shelfPos(i) { const top = this.top(); const W = this.W; return { x: W * [0.2, 0.5, 0.8][i % 3], y: top + 270 + Math.floor(i / 3) * this.shelfGap() }; }
+  shelfGap() { const top = this.top(), bottom = this.bottom(); const rows = this.nextLockedCat() ? 3 : 2; const free = (bottom - 200) - (top + 322) - 110; return U.clamp(free / (rows - 1 || 1), 200, 270); }
+  shelfPos(i) { const top = this.top(); const W = this.W; return { x: W * [0.2, 0.5, 0.8][i % 3], y: top + 322 + Math.floor(i / 3) * this.shelfGap() }; }
   nextLockedCat() { return null; } // V2: each level lists its own shelves
   basketRect() { const W = this.W, bottom = this.bottom(); return { x: W * 0.27, y: bottom - 150, w: W * 0.42, h: 92 }; }
   drawMarket() {
@@ -519,7 +519,7 @@ class Game {
     const locked = this.nextLockedCat();
     if (locked) { // preview of the next shelf to unlock
       const sp = this.shelfPos(6); A.shelfBoard(ctx, 18, sp.y + 52, W - 36, 30, '#d9cfcf');
-      const lf = D.foodsOf(locked.id); ctx.globalAlpha = 0.35; for (let i = 0; i < 3; i++) A.food(ctx, lf[i], this.shelfPos(6 + i).x, sp.y - 14, 136, 0, 0); ctx.globalAlpha = 1;
+      const lf = D.foodsOf(locked.id); ctx.globalAlpha = 0.35; for (let i = 0; i < 3; i++) A.foodOn(ctx, lf[i], this.shelfPos(6 + i).x, sp.y + 62, 170, 0); ctx.globalAlpha = 1;
       A.lock(ctx, W / 2, sp.y - 10, 44);
       ui.panel(W / 2 - 120, sp.y + 70, 240, 30, '#fff', C.outline, 15, 3); ui.label(locked.name + '  ·  UNLOCKS AT LEVEL ' + locked.unlock, W / 2, sp.y + 85, 13, C.text);
     }
@@ -528,10 +528,10 @@ class Game {
       const f = foods[i]; const sp = this.shelfPos(i); const price = D.priceOf(f);
       const afford = coins >= total + price && m.basket.length < 12;
       ctx.globalAlpha = afford ? 1 : 0.55;
-      A.food(ctx, f, sp.x + (afford ? 0 : shake), sp.y - 26, 176, 0, this.time);
+      A.foodOn(ctx, f, sp.x + (afford ? 0 : shake), sp.y + 62, 206, this.time);
       ctx.globalAlpha = 1;
       A.priceTag(ctx, sp.x, sp.y + 92, price, !afford);
-      ui.hotspot('item' + i, sp.x - 86, sp.y - 112, 172, 200);
+      ui.hotspot('item' + i, sp.x - 84, sp.y - 130, 168, 224);
     }
     // bottom: portrait, basket, count + total
     const b = this.basketRect(); const bottom = this.bottom();
