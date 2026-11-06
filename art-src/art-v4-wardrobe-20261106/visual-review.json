@@ -1,0 +1,338 @@
+{
+  "assets": [
+    {
+      "path": "art5/wardrobe/outfit_mint_luna.png",
+      "sha256": "c72460ef9e97f88d49ce2d6b5fced6ebb97383bca8c7cd6aad9a2d161cd57b27"
+    },
+    {
+      "path": "art5/wardrobe/outfit_mint_kiko.png",
+      "sha256": "975bb987d259e724a50dda2217c502508f63c3bdf880a815212a8bca267aaf26"
+    },
+    {
+      "path": "art5/wardrobe/outfit_mint_momo.png",
+      "sha256": "724c349cf28544c3f81c1ee376ae71a5fa2380f31b718e6deabcc01f9b23e322"
+    },
+    {
+      "path": "art5/wardrobe/outfit_bib_luna.png",
+      "sha256": "1ddb464ae39fd723817ebaba29cd54e73a630355e9a7cf8cad17f40cd7346ad6"
+    },
+    {
+      "path": "art5/wardrobe/outfit_bib_kiko.png",
+      "sha256": "76c03fd59819be675b82c0795e979a6caeac7794b468c1ee3d18a4d700b32fe4"
+    },
+    {
+      "path": "art5/wardrobe/outfit_bib_momo.png",
+      "sha256": "ea04541bae60ea06eaaa962aebf31bf04825f4e9397a3c0c7486d32811f82210"
+    },
+    {
+      "path": "art5/wardrobe/outfit_sunny_luna.png",
+      "sha256": "969e2e6ccd65de28679fab4e1cfe1018f95ac67bfd44fb73d042c1ed840620fd"
+    },
+    {
+      "path": "art5/wardrobe/outfit_sunny_kiko.png",
+      "sha256": "41e9debf61e08b85bce37bdae48b907dd416ca0174f96fb7ac70102e4a55cb44"
+    },
+    {
+      "path": "art5/wardrobe/outfit_sunny_momo.png",
+      "sha256": "68cd15d6ac386263e0771214d9d830d0729800ba09fdc4d965196c6d8a19b725"
+    },
+    {
+      "path": "art5/wardrobe/outfit_sakura_luna.png",
+      "sha256": "3e08f315bf55fe912c9f4d51c975540d44947ea5ae85df4ee31d0d7929c492ab"
+    },
+    {
+      "path": "art5/wardrobe/outfit_sakura_kiko.png",
+      "sha256": "342494ef96d8f11351c02cdb95712fc4ed161701686ee21347daef17f4415463"
+    },
+    {
+      "path": "art5/wardrobe/outfit_sakura_momo.png",
+      "sha256": "d8b3ddc065a5934a224e806ddc281d8374a393cc0454994bbb539441b62a0795"
+    },
+    {
+      "path": "art5/wardrobe/outfit_chef_luna.png",
+      "sha256": "0da2de95b05840e5bd6b09403bc0684dcafc70b59cfa122c7688111817bf253b"
+    },
+    {
+      "path": "art5/wardrobe/outfit_chef_kiko.png",
+      "sha256": "7f954ccf9165102b599599d3658bf40fa21241d68fa8278e2fa8dee9887b8873"
+    },
+    {
+      "path": "art5/wardrobe/outfit_chef_momo.png",
+      "sha256": "72250fe726365875a9402f70b468b39ff5e9567907ac1daa05093fdca09e8d32"
+    },
+    {
+      "path": "art5/wardrobe/outfit_star_luna.png",
+      "sha256": "bd58acdb21af8e316340a5dfaaa2483b54dd654bdb9c1dc4ef8e4185a0ab3bbc"
+    },
+    {
+      "path": "art5/wardrobe/outfit_star_kiko.png",
+      "sha256": "f14507fe4275a198795760361806144d2c26171f3e114cf95800bc4aa12e45c6"
+    },
+    {
+      "path": "art5/wardrobe/outfit_star_momo.png",
+      "sha256": "6f92672df6df11723f66fff79c2e9108003717b367a9204eddaf6b5510c49109"
+    },
+    {
+      "path": "art5/wardrobe/hair_bow_luna.png",
+      "sha256": "af7b067e2ca6396b617985c5fbf28699c7c44ef0ac90c0d19930ef3d8ef74695"
+    },
+    {
+      "path": "art5/wardrobe/hair_bow_kiko.png",
+      "sha256": "f3558275fdc3b8ffb20954f799586cde12e555f2c9a014cc16e9e9818b9d720d"
+    },
+    {
+      "path": "art5/wardrobe/hair_bow_momo.png",
+      "sha256": "ea1fbc96dd546391bd679d90604b1b9cfcdb49c71c2fba66f2420b660e8d346f"
+    },
+    {
+      "path": "art5/wardrobe/hair_star_luna.png",
+      "sha256": "b8fa56d3429afa02bb358fa0b7d9d5c1325520fe21a639f2d014a55ecda2de99"
+    },
+    {
+      "path": "art5/wardrobe/hair_star_kiko.png",
+      "sha256": "d00a0e9ca4017176261be983677ae12961ca21416661f601bb47bc7d3d3292b6"
+    },
+    {
+      "path": "art5/wardrobe/hair_star_momo.png",
+      "sha256": "a8942193aa2557cd322c9e1900594ad33a99e63a4f3e6b0c36f467e1ea11df27"
+    },
+    {
+      "path": "art5/wardrobe/hair_cat_ears_luna.png",
+      "sha256": "e0260c86b6292b0d30829ddfdfc038da9f6bdaf6223c7500529d9c9fd5790264"
+    },
+    {
+      "path": "art5/wardrobe/hair_cat_ears_kiko.png",
+      "sha256": "777e7af947479ffba984c506509ea3f66d51f4a0bb2d57639219df93edc6b0c4"
+    },
+    {
+      "path": "art5/wardrobe/hair_cat_ears_momo.png",
+      "sha256": "2d332e1de21b48066e60ac6b3b4982fe0da9253707d4b90d56d0c91173f92772"
+    },
+    {
+      "path": "art5/wardrobe/hair_beret_luna.png",
+      "sha256": "5f1533b62965b8796e095eba29c8f8b770b9d3aafc32920cd07dbb202d58ec5a"
+    },
+    {
+      "path": "art5/wardrobe/hair_beret_kiko.png",
+      "sha256": "d84a13cc6ace0dbc80b741b525411805cec648808346f55241e4bf6ddc7c43ce"
+    },
+    {
+      "path": "art5/wardrobe/hair_beret_momo.png",
+      "sha256": "7f609d3f3c5968f334be47a0b8cbb25dc2105e7e7833a64b0106bb67737ad145"
+    },
+    {
+      "path": "art5/wardrobe/hair_flowers_luna.png",
+      "sha256": "594961f2e23329f7270c216226fc5009e9f0d2b13c96d9a1daf4624a782d3004"
+    },
+    {
+      "path": "art5/wardrobe/hair_flowers_kiko.png",
+      "sha256": "cf6f47c21d7741e288f7c58298f3334e604ae02b838177e7b2254ffbe66c7a0c"
+    },
+    {
+      "path": "art5/wardrobe/hair_flowers_momo.png",
+      "sha256": "261315fbba494d5e7ab3c5bef09700870a2b4650063ba48a86307bc09c719329"
+    },
+    {
+      "path": "art5/wardrobe/hair_bunny_ears_luna.png",
+      "sha256": "ac3f823ff2dc787137a84341795f137b6c0e75cc7edd017bf92134755dfb460b"
+    },
+    {
+      "path": "art5/wardrobe/hair_bunny_ears_kiko.png",
+      "sha256": "2f2321eb8d92a8b0dca798ca3ad2765eb72088021d0ad8a8e94b4bf16d0afd60"
+    },
+    {
+      "path": "art5/wardrobe/hair_bunny_ears_momo.png",
+      "sha256": "3c11c32348c3dabf1642ac6165d755a5a9e837cbb53312e4610a5658c1133f1b"
+    },
+    {
+      "path": "art5/wardrobe/hair_crown_luna.png",
+      "sha256": "582dcd0e4ca77cd4b6f829a88b697e0739281a95fd69a7584595090cb4b93caf"
+    },
+    {
+      "path": "art5/wardrobe/hair_crown_kiko.png",
+      "sha256": "1600abf5b911a467fa553fc9e6eced1f2badc46f079e2b510c1aaa3ab056a39b"
+    },
+    {
+      "path": "art5/wardrobe/hair_crown_momo.png",
+      "sha256": "15da60a04392f2bd4cafc4f97f2aa080f3f5fbf432e28227cce1f50336ec525d"
+    },
+    {
+      "path": "art5/wardrobe/acc_blush_luna.png",
+      "sha256": "497ee7b8dfd39495ea3cb8a012956363fd26d5c71eac9133fd1015fa25487735"
+    },
+    {
+      "path": "art5/wardrobe/acc_blush_kiko.png",
+      "sha256": "a07f72e2f2a46ecbc21adfd1199b4409877f61d9cd26dc1cb7749f9594f12594"
+    },
+    {
+      "path": "art5/wardrobe/acc_blush_momo.png",
+      "sha256": "eb88b9aef0a18572524be8d7a1ef8a16670722e67dda14566af86622f4c0f08c"
+    },
+    {
+      "path": "art5/wardrobe/acc_glasses_round_luna.png",
+      "sha256": "f5400a4ffc22b77588f4d8c346d22581c9cf447e61a2f5dbf7bbcb8ac0d07d50"
+    },
+    {
+      "path": "art5/wardrobe/acc_glasses_round_kiko.png",
+      "sha256": "36153992209d3aa510680971f983d1488c7f86aefd8b62720c10aad21fddbf58"
+    },
+    {
+      "path": "art5/wardrobe/acc_glasses_round_momo.png",
+      "sha256": "46ce63ec3a7d34531016c161d393bbbc04ee18aa46757b5e52466616f5ab091c"
+    },
+    {
+      "path": "art5/wardrobe/acc_headphones_luna.png",
+      "sha256": "e164b1780aefe15b03f217122b1fcb220a133d3edcd22b60d576e560bbd89fd8"
+    },
+    {
+      "path": "art5/wardrobe/acc_headphones_kiko.png",
+      "sha256": "98d48b1708dc5e1b5fd23d384c6c8b510b45bc17586e81241946a80f65fc192f"
+    },
+    {
+      "path": "art5/wardrobe/acc_headphones_momo.png",
+      "sha256": "041aef7c3a0f351d17746ebbd97ad675b07a33285899533cd2d4c301859803eb"
+    },
+    {
+      "path": "art5/wardrobe/acc_heart_glasses_luna.png",
+      "sha256": "b87874100807cfbc56d276c75a549a4f13c6d1af331a23b38e0a2b3a0169bd79"
+    },
+    {
+      "path": "art5/wardrobe/acc_heart_glasses_kiko.png",
+      "sha256": "ef27fc9e6ea51c182fdf2631a395d7b737e4fba76d35dadc48a146129899a58c"
+    },
+    {
+      "path": "art5/wardrobe/acc_heart_glasses_momo.png",
+      "sha256": "ebfd2fcb5ff183a781f916623c2c5a0a0975e2f05245bf48b4afd045d533bb78"
+    },
+    {
+      "path": "art5/wardrobe/acc_scarf_luna.png",
+      "sha256": "9e1d48242d01cbd2cbcfb7441cc298d1bb0cdf713fe241cb2d10f1f2c303244a"
+    },
+    {
+      "path": "art5/wardrobe/acc_scarf_kiko.png",
+      "sha256": "e82734c03ebb461426884d10f880550c55b0f8042648b0731b4c0b810c908d5d"
+    },
+    {
+      "path": "art5/wardrobe/acc_scarf_momo.png",
+      "sha256": "37bfc2a7763a35e44173dd6d6a005b97786105106680ea262e743570195a98d6"
+    },
+    {
+      "path": "assets/wardrobe/icon_outfit_default.png",
+      "sha256": "883f163758366f4d6778692f11517a60bc2d908aea79b186191a9d675cf7c5f7"
+    },
+    {
+      "path": "assets/wardrobe/icon_outfit_mint.png",
+      "sha256": "3c1f2e9fd637053ef1fa40b6b7b36ba496a7666c1aaf8d7f45dfcfcce407f2b5"
+    },
+    {
+      "path": "assets/wardrobe/icon_outfit_bib.png",
+      "sha256": "22a56acb7acd0dd1ae62ac55f87afc734c23214b7d3f354e33e1e51eb20ee539"
+    },
+    {
+      "path": "assets/wardrobe/icon_outfit_sunny.png",
+      "sha256": "2cef4d2aa4f337708faa197a0b701c1765689b28e23169834650898cef2ea5e6"
+    },
+    {
+      "path": "assets/wardrobe/icon_outfit_sakura.png",
+      "sha256": "e9decaf801ec3756a9099badbf9fce18c22f161c196a3d25af9478dcf8529d9f"
+    },
+    {
+      "path": "assets/wardrobe/icon_outfit_chef.png",
+      "sha256": "3fb9d491667f4e7cd74b41939c0a00d151ffc736073e892f8ae2ecde583bf9c4"
+    },
+    {
+      "path": "assets/wardrobe/icon_outfit_star.png",
+      "sha256": "32e4c35905fe922846aca293afc177bbd457a39711c0b3a7b6a7774b951161e6"
+    },
+    {
+      "path": "assets/wardrobe/icon_hair_bow.png",
+      "sha256": "f52415aaa13cdbef564afb9fedc3b7bcd6aa695c0fc93da329b1ec72c12e9971"
+    },
+    {
+      "path": "assets/wardrobe/icon_hair_star.png",
+      "sha256": "9c4fdfd15cbbf3d78adc37b4051da9ef2a31a2129c7629e578da222af9762a87"
+    },
+    {
+      "path": "assets/wardrobe/icon_hair_cat_ears.png",
+      "sha256": "56b0badd350a756f4ee1e60be3f3df9a4610a12539894234102b169bc9f7c156"
+    },
+    {
+      "path": "assets/wardrobe/icon_hair_beret.png",
+      "sha256": "188370e34d915701c47cace71d72d2719781a4f40d3d8e8bccab26cd13c5c5cd"
+    },
+    {
+      "path": "assets/wardrobe/icon_hair_flowers.png",
+      "sha256": "92850b737cf5f52fc43c1e6be4e477b9209e812ed6d939c3029f8d314638ef78"
+    },
+    {
+      "path": "assets/wardrobe/icon_hair_bunny_ears.png",
+      "sha256": "a8b202262c597df442fc6c011cb2f44f0dfbe5ecee1ea3640c300d23a6f6d0e2"
+    },
+    {
+      "path": "assets/wardrobe/icon_hair_crown.png",
+      "sha256": "b2188503c52323c7a73c3a16b00d31852addda4b79a36494ed8c237cdb5bed42"
+    },
+    {
+      "path": "assets/wardrobe/icon_acc_blush.png",
+      "sha256": "8070aa0febb40a0c1a7ffeb6f13e32c107398b54b4b4eeb9852083b7a86e8fe3"
+    },
+    {
+      "path": "assets/wardrobe/icon_acc_glasses_round.png",
+      "sha256": "a0b6d11b0a5c2424b4fceccf9e3228028eaf3b93d9805fa1fd28e131072463dc"
+    },
+    {
+      "path": "assets/wardrobe/icon_acc_headphones.png",
+      "sha256": "202ce8043273966f6df09f1384cc65c00213c890be271a7286937037ae5c54f7"
+    },
+    {
+      "path": "assets/wardrobe/icon_acc_heart_glasses.png",
+      "sha256": "2b16dd54cd0f459db8b29ab39ddfafee4c8dfb67a31417f4982f8d3de54ca5b1"
+    },
+    {
+      "path": "assets/wardrobe/icon_acc_scarf.png",
+      "sha256": "0fc65aa791001b20b68a90a3cb6aa2ba5c785a04f7257b53b95cec33eb087a1d"
+    },
+    {
+      "path": "assets/wardrobe/tab_outfit.png",
+      "sha256": "3eedc89bf6b3aabbacd68c90861288560052273e1f83810df01a09e5edc90a23"
+    },
+    {
+      "path": "assets/wardrobe/tab_hair.png",
+      "sha256": "2b9ea60f9e9c8c963a64d6048a14805f1ca569cfd12b431ef8e7d88de5c9177b"
+    },
+    {
+      "path": "assets/wardrobe/tab_extras.png",
+      "sha256": "fb98c8219cdf2366390176684b8704054a21847bd9e812eb5def091d4710e1b7"
+    },
+    {
+      "path": "assets/wardrobe/badge_ad.png",
+      "sha256": "aefde6b0cfaddbde807579f414c74face9ca182ab54f1c6500cd57f1b8b020fb"
+    },
+    {
+      "path": "assets/wardrobe/badge_gift.png",
+      "sha256": "6873f569d1c0739b6ea65f47fec3f4f32f8d5bc5a6a35ef5f18f7831f5988b36"
+    }
+  ],
+  "checks": [
+    "3x3 themed looks with V3 body/head/idle eyes/mouth",
+    "All6 outfits on all3 streamers, hands visible",
+    "All7 hair accessories attached to each hairstyle",
+    "All5 extras on all3 heads; eyes and mouth readable",
+    "Headphones ear cups reduced and checked after correction",
+    "Round lenses clear, heart lens pigment translucent",
+    "19 standalone inventory icons without character pixels",
+    "Native120x40 UNLOCK and gift badges checked",
+    "Only bib has YUM text; chef and sakura text removed"
+  ],
+  "reviewer": "Codex agent visual QA",
+  "reviewedAt": "2026-11-06T21:17:45.3518520+07:00",
+  "scope": "78 files",
+  "status": "passed",
+  "evidence": [
+    "preview-looks.png",
+    "previews/preview-outfits.png",
+    "previews/preview-hair.png",
+    "previews/preview-extras.png",
+    "previews/preview-main.png"
+  ]
+}

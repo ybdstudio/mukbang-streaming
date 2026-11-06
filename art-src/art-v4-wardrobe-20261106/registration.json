@@ -1,0 +1,1460 @@
+[
+  {
+    "source": "sources/outfit_mint_luna.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      61,
+      48,
+      390,
+      338
+    ],
+    "canvas": [
+      512,
+      420
+    ],
+    "person": "luna",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_body.png",
+    "sourceBounds": [
+      161,
+      128,
+      1063,
+      914
+    ],
+    "anchor": [
+      256,
+      49
+    ],
+    "path": "art5/wardrobe/outfit_mint_luna.png"
+  },
+  {
+    "source": "sources/outfit_mint_kiko.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      56,
+      41,
+      397,
+      337
+    ],
+    "canvas": [
+      512,
+      420
+    ],
+    "person": "kiko",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_body.png",
+    "sourceBounds": [
+      148,
+      106,
+      1084,
+      918
+    ],
+    "anchor": [
+      256,
+      46
+    ],
+    "path": "art5/wardrobe/outfit_mint_kiko.png"
+  },
+  {
+    "source": "sources/outfit_mint_momo.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      47,
+      31,
+      417,
+      362
+    ],
+    "canvas": [
+      512,
+      420
+    ],
+    "person": "momo",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_body.png",
+    "sourceBounds": [
+      126,
+      81,
+      1133,
+      986
+    ],
+    "anchor": [
+      256,
+      36
+    ],
+    "path": "art5/wardrobe/outfit_mint_momo.png"
+  },
+  {
+    "source": "sources/outfit_bib_luna.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      61,
+      48,
+      390,
+      338
+    ],
+    "canvas": [
+      512,
+      420
+    ],
+    "person": "luna",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_body.png",
+    "sourceBounds": [
+      160,
+      125,
+      1065,
+      915
+    ],
+    "anchor": [
+      256,
+      49
+    ],
+    "path": "art5/wardrobe/outfit_bib_luna.png"
+  },
+  {
+    "source": "sources/outfit_bib_kiko.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      56,
+      41,
+      397,
+      337
+    ],
+    "canvas": [
+      512,
+      420
+    ],
+    "person": "kiko",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_body.png",
+    "sourceBounds": [
+      149,
+      106,
+      1080,
+      918
+    ],
+    "anchor": [
+      256,
+      46
+    ],
+    "path": "art5/wardrobe/outfit_bib_kiko.png"
+  },
+  {
+    "source": "sources/outfit_bib_momo.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      47,
+      31,
+      417,
+      362
+    ],
+    "canvas": [
+      512,
+      420
+    ],
+    "person": "momo",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_body.png",
+    "sourceBounds": [
+      128,
+      82,
+      1128,
+      979
+    ],
+    "anchor": [
+      256,
+      36
+    ],
+    "path": "art5/wardrobe/outfit_bib_momo.png"
+  },
+  {
+    "source": "sources/outfit_sunny_luna.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      61,
+      48,
+      390,
+      338
+    ],
+    "canvas": [
+      512,
+      420
+    ],
+    "person": "luna",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_body.png",
+    "sourceBounds": [
+      162,
+      128,
+      1060,
+      913
+    ],
+    "anchor": [
+      256,
+      49
+    ],
+    "path": "art5/wardrobe/outfit_sunny_luna.png"
+  },
+  {
+    "source": "sources/outfit_sunny_kiko.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      56,
+      41,
+      397,
+      337
+    ],
+    "canvas": [
+      512,
+      420
+    ],
+    "person": "kiko",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_body.png",
+    "sourceBounds": [
+      148,
+      107,
+      1081,
+      918
+    ],
+    "anchor": [
+      256,
+      46
+    ],
+    "path": "art5/wardrobe/outfit_sunny_kiko.png"
+  },
+  {
+    "source": "sources/outfit_sunny_momo.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      47,
+      31,
+      417,
+      362
+    ],
+    "canvas": [
+      512,
+      420
+    ],
+    "person": "momo",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_body.png",
+    "sourceBounds": [
+      125,
+      81,
+      1134,
+      979
+    ],
+    "anchor": [
+      256,
+      36
+    ],
+    "path": "art5/wardrobe/outfit_sunny_momo.png"
+  },
+  {
+    "source": "sources/outfit_sakura_luna.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      61,
+      48,
+      390,
+      338
+    ],
+    "canvas": [
+      512,
+      420
+    ],
+    "person": "luna",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_body.png",
+    "sourceBounds": [
+      160,
+      128,
+      1062,
+      913
+    ],
+    "anchor": [
+      256,
+      49
+    ],
+    "path": "art5/wardrobe/outfit_sakura_luna.png"
+  },
+  {
+    "source": "sources/outfit_sakura_kiko.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      56,
+      41,
+      397,
+      337
+    ],
+    "canvas": [
+      512,
+      420
+    ],
+    "person": "kiko",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_body.png",
+    "sourceBounds": [
+      150,
+      106,
+      1080,
+      920
+    ],
+    "anchor": [
+      256,
+      46
+    ],
+    "path": "art5/wardrobe/outfit_sakura_kiko.png"
+  },
+  {
+    "source": "sources/outfit_sakura_momo.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      47,
+      31,
+      417,
+      362
+    ],
+    "canvas": [
+      512,
+      420
+    ],
+    "person": "momo",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_body.png",
+    "sourceBounds": [
+      125,
+      79,
+      1134,
+      984
+    ],
+    "anchor": [
+      256,
+      36
+    ],
+    "path": "art5/wardrobe/outfit_sakura_momo.png"
+  },
+  {
+    "source": "sources/outfit_chef_luna.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      61,
+      48,
+      390,
+      338
+    ],
+    "canvas": [
+      512,
+      420
+    ],
+    "person": "luna",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_body.png",
+    "sourceBounds": [
+      163,
+      128,
+      1058,
+      913
+    ],
+    "anchor": [
+      256,
+      49
+    ],
+    "path": "art5/wardrobe/outfit_chef_luna.png"
+  },
+  {
+    "source": "sources/outfit_chef_kiko.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      56,
+      41,
+      397,
+      337
+    ],
+    "canvas": [
+      512,
+      420
+    ],
+    "person": "kiko",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_body.png",
+    "sourceBounds": [
+      150,
+      107,
+      1085,
+      914
+    ],
+    "anchor": [
+      256,
+      46
+    ],
+    "path": "art5/wardrobe/outfit_chef_kiko.png"
+  },
+  {
+    "source": "sources/outfit_chef_momo.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      47,
+      31,
+      417,
+      362
+    ],
+    "canvas": [
+      512,
+      420
+    ],
+    "person": "momo",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_body.png",
+    "sourceBounds": [
+      129,
+      81,
+      1129,
+      981
+    ],
+    "anchor": [
+      256,
+      36
+    ],
+    "path": "art5/wardrobe/outfit_chef_momo.png"
+  },
+  {
+    "source": "sources/outfit_star_luna.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      61,
+      48,
+      390,
+      338
+    ],
+    "canvas": [
+      512,
+      420
+    ],
+    "person": "luna",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_body.png",
+    "sourceBounds": [
+      161,
+      130,
+      1062,
+      913
+    ],
+    "anchor": [
+      256,
+      49
+    ],
+    "path": "art5/wardrobe/outfit_star_luna.png"
+  },
+  {
+    "source": "sources/outfit_star_kiko.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      56,
+      41,
+      397,
+      337
+    ],
+    "canvas": [
+      512,
+      420
+    ],
+    "person": "kiko",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_body.png",
+    "sourceBounds": [
+      148,
+      106,
+      1082,
+      917
+    ],
+    "anchor": [
+      256,
+      46
+    ],
+    "path": "art5/wardrobe/outfit_star_kiko.png"
+  },
+  {
+    "source": "sources/outfit_star_momo.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      47,
+      31,
+      417,
+      362
+    ],
+    "canvas": [
+      512,
+      420
+    ],
+    "person": "momo",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_body.png",
+    "sourceBounds": [
+      127,
+      82,
+      1129,
+      980
+    ],
+    "anchor": [
+      256,
+      36
+    ],
+    "path": "art5/wardrobe/outfit_star_momo.png"
+  },
+  {
+    "source": "sources/hair_bow.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      320,
+      55,
+      125,
+      98
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "luna",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_head.png",
+    "sourceBounds": [
+      333,
+      169,
+      789,
+      731
+    ],
+    "anchor": [
+      256,
+      352
+    ],
+    "path": "art5/wardrobe/hair_bow_luna.png"
+  },
+  {
+    "source": "sources/hair_bow.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      318,
+      80,
+      125,
+      100
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "kiko",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_head.png",
+    "sourceBounds": [
+      333,
+      169,
+      789,
+      731
+    ],
+    "anchor": [
+      256,
+      365
+    ],
+    "path": "art5/wardrobe/hair_bow_kiko.png"
+  },
+  {
+    "source": "sources/hair_bow.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      318,
+      45,
+      115,
+      90
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "momo",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_head.png",
+    "sourceBounds": [
+      333,
+      169,
+      789,
+      731
+    ],
+    "anchor": [
+      256,
+      334
+    ],
+    "path": "art5/wardrobe/hair_bow_momo.png"
+  },
+  {
+    "source": "sources/hair_star.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      139,
+      185,
+      48,
+      48
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "luna",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_head.png",
+    "sourceBounds": [
+      205,
+      431,
+      836,
+      447
+    ],
+    "anchor": [
+      256,
+      352
+    ],
+    "path": "art5/wardrobe/hair_star_luna.png"
+  },
+  {
+    "source": "sources/hair_star.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      145,
+      198,
+      48,
+      48
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "kiko",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_head.png",
+    "sourceBounds": [
+      205,
+      431,
+      836,
+      447
+    ],
+    "anchor": [
+      256,
+      365
+    ],
+    "path": "art5/wardrobe/hair_star_kiko.png"
+  },
+  {
+    "source": "sources/hair_star.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      134,
+      170,
+      45,
+      45
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "momo",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_head.png",
+    "sourceBounds": [
+      205,
+      431,
+      836,
+      447
+    ],
+    "anchor": [
+      256,
+      334
+    ],
+    "path": "art5/wardrobe/hair_star_momo.png"
+  },
+  {
+    "source": "sources/hair_cat_ears.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      75,
+      4,
+      362,
+      296
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "luna",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_head.png",
+    "sourceBounds": [
+      77,
+      178,
+      1098,
+      864
+    ],
+    "anchor": [
+      256,
+      352
+    ],
+    "path": "art5/wardrobe/hair_cat_ears_luna.png"
+  },
+  {
+    "source": "sources/hair_cat_ears.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      65,
+      20,
+      370,
+      300
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "kiko",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_head.png",
+    "sourceBounds": [
+      77,
+      178,
+      1098,
+      864
+    ],
+    "anchor": [
+      256,
+      365
+    ],
+    "path": "art5/wardrobe/hair_cat_ears_kiko.png"
+  },
+  {
+    "source": "sources/hair_cat_ears.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      92,
+      4,
+      329,
+      246
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "momo",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_head.png",
+    "sourceBounds": [
+      77,
+      178,
+      1098,
+      864
+    ],
+    "anchor": [
+      256,
+      334
+    ],
+    "path": "art5/wardrobe/hair_cat_ears_momo.png"
+  },
+  {
+    "source": "sources/hair_beret.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      112,
+      49,
+      300,
+      142
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "luna",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_head.png",
+    "sourceBounds": [
+      114,
+      241,
+      1026,
+      646
+    ],
+    "anchor": [
+      256,
+      352
+    ],
+    "path": "art5/wardrobe/hair_beret_luna.png"
+  },
+  {
+    "source": "sources/hair_beret.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      110,
+      45,
+      305,
+      145
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "kiko",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_head.png",
+    "sourceBounds": [
+      114,
+      241,
+      1026,
+      646
+    ],
+    "anchor": [
+      256,
+      365
+    ],
+    "path": "art5/wardrobe/hair_beret_kiko.png"
+  },
+  {
+    "source": "sources/hair_beret.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      113,
+      8,
+      285,
+      135
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "momo",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_head.png",
+    "sourceBounds": [
+      114,
+      241,
+      1026,
+      646
+    ],
+    "anchor": [
+      256,
+      334
+    ],
+    "path": "art5/wardrobe/hair_beret_momo.png"
+  },
+  {
+    "source": "sources/hair_flowers.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      83,
+      89,
+      345,
+      97
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "luna",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_head.png",
+    "sourceBounds": [
+      86,
+      362,
+      1082,
+      434
+    ],
+    "anchor": [
+      256,
+      352
+    ],
+    "path": "art5/wardrobe/hair_flowers_luna.png"
+  },
+  {
+    "source": "sources/hair_flowers.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      90,
+      107,
+      330,
+      95
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "kiko",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_head.png",
+    "sourceBounds": [
+      86,
+      362,
+      1082,
+      434
+    ],
+    "anchor": [
+      256,
+      365
+    ],
+    "path": "art5/wardrobe/hair_flowers_kiko.png"
+  },
+  {
+    "source": "sources/hair_flowers.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      101,
+      62,
+      310,
+      95
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "momo",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_head.png",
+    "sourceBounds": [
+      86,
+      362,
+      1082,
+      434
+    ],
+    "anchor": [
+      256,
+      334
+    ],
+    "path": "art5/wardrobe/hair_flowers_momo.png"
+  },
+  {
+    "source": "sources/hair_bunny_ears.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      84,
+      4,
+      345,
+      281
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "luna",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_head.png",
+    "sourceBounds": [
+      190,
+      68,
+      886,
+      1068
+    ],
+    "anchor": [
+      256,
+      352
+    ],
+    "path": "art5/wardrobe/hair_bunny_ears_luna.png"
+  },
+  {
+    "source": "sources/hair_bunny_ears.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      88,
+      4,
+      333,
+      296
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "kiko",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_head.png",
+    "sourceBounds": [
+      190,
+      68,
+      886,
+      1068
+    ],
+    "anchor": [
+      256,
+      365
+    ],
+    "path": "art5/wardrobe/hair_bunny_ears_kiko.png"
+  },
+  {
+    "source": "sources/hair_bunny_ears.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      106,
+      4,
+      307,
+      244
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "momo",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_head.png",
+    "sourceBounds": [
+      190,
+      68,
+      886,
+      1068
+    ],
+    "anchor": [
+      256,
+      334
+    ],
+    "path": "art5/wardrobe/hair_bunny_ears_momo.png"
+  },
+  {
+    "source": "sources/hair_crown.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      171,
+      8,
+      172,
+      112
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "luna",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_head.png",
+    "sourceBounds": [
+      86,
+      247,
+      1082,
+      651
+    ],
+    "anchor": [
+      256,
+      352
+    ],
+    "path": "art5/wardrobe/hair_crown_luna.png"
+  },
+  {
+    "source": "sources/hair_crown.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      200,
+      48,
+      160,
+      108
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "kiko",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_head.png",
+    "sourceBounds": [
+      86,
+      247,
+      1082,
+      651
+    ],
+    "anchor": [
+      256,
+      365
+    ],
+    "path": "art5/wardrobe/hair_crown_kiko.png"
+  },
+  {
+    "source": "sources/hair_crown.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      176,
+      4,
+      162,
+      106
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "momo",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_head.png",
+    "sourceBounds": [
+      86,
+      247,
+      1082,
+      651
+    ],
+    "anchor": [
+      256,
+      334
+    ],
+    "path": "art5/wardrobe/hair_crown_momo.png"
+  },
+  {
+    "source": "sources/acc_blush.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      146,
+      351,
+      220,
+      33
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "luna",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_head.png",
+    "sourceBounds": [
+      148,
+      589,
+      960,
+      178
+    ],
+    "anchor": [
+      256,
+      352
+    ],
+    "path": "art5/wardrobe/acc_blush_luna.png"
+  },
+  {
+    "source": "sources/acc_blush.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      146,
+      369,
+      220,
+      33
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "kiko",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_head.png",
+    "sourceBounds": [
+      148,
+      589,
+      960,
+      178
+    ],
+    "anchor": [
+      256,
+      365
+    ],
+    "path": "art5/wardrobe/acc_blush_kiko.png"
+  },
+  {
+    "source": "sources/acc_blush.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      146,
+      341,
+      220,
+      33
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "momo",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_head.png",
+    "sourceBounds": [
+      148,
+      589,
+      960,
+      178
+    ],
+    "anchor": [
+      256,
+      334
+    ],
+    "path": "art5/wardrobe/acc_blush_momo.png"
+  },
+  {
+    "source": "sources/acc_glasses_round.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      146,
+      283,
+      220,
+      91
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "luna",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_head.png",
+    "sourceBounds": [
+      100,
+      436,
+      1054,
+      446
+    ],
+    "anchor": [
+      256,
+      352
+    ],
+    "path": "art5/wardrobe/acc_glasses_round_luna.png"
+  },
+  {
+    "source": "sources/acc_glasses_round.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      146,
+      301,
+      220,
+      91
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "kiko",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_head.png",
+    "sourceBounds": [
+      100,
+      436,
+      1054,
+      446
+    ],
+    "anchor": [
+      256,
+      365
+    ],
+    "path": "art5/wardrobe/acc_glasses_round_kiko.png"
+  },
+  {
+    "source": "sources/acc_glasses_round.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      146,
+      273,
+      220,
+      91
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "momo",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_head.png",
+    "sourceBounds": [
+      100,
+      436,
+      1054,
+      446
+    ],
+    "anchor": [
+      256,
+      334
+    ],
+    "path": "art5/wardrobe/acc_glasses_round_momo.png"
+  },
+  {
+    "source": "sources/acc_headphones.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      46,
+      67,
+      414,
+      343
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "luna",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_head.png",
+    "sourceBounds": [
+      84,
+      130,
+      1087,
+      779
+    ],
+    "anchor": [
+      256,
+      352
+    ],
+    "path": "art5/wardrobe/acc_headphones_luna.png"
+  },
+  {
+    "source": "sources/acc_headphones.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      48,
+      15,
+      402,
+      414
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "kiko",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_head.png",
+    "sourceBounds": [
+      84,
+      130,
+      1087,
+      779
+    ],
+    "anchor": [
+      256,
+      365
+    ],
+    "path": "art5/wardrobe/acc_headphones_kiko.png"
+  },
+  {
+    "source": "sources/acc_headphones.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      64,
+      22,
+      379,
+      343
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "momo",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_head.png",
+    "sourceBounds": [
+      84,
+      130,
+      1087,
+      779
+    ],
+    "anchor": [
+      256,
+      334
+    ],
+    "path": "art5/wardrobe/acc_headphones_momo.png"
+  },
+  {
+    "source": "sources/acc_heart_glasses.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      141,
+      277,
+      230,
+      100
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "luna",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_head.png",
+    "sourceBounds": [
+      57,
+      434,
+      1139,
+      429
+    ],
+    "anchor": [
+      256,
+      352
+    ],
+    "path": "art5/wardrobe/acc_heart_glasses_luna.png"
+  },
+  {
+    "source": "sources/acc_heart_glasses.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      141,
+      295,
+      230,
+      100
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "kiko",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_head.png",
+    "sourceBounds": [
+      57,
+      434,
+      1139,
+      429
+    ],
+    "anchor": [
+      256,
+      365
+    ],
+    "path": "art5/wardrobe/acc_heart_glasses_kiko.png"
+  },
+  {
+    "source": "sources/acc_heart_glasses.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      141,
+      267,
+      230,
+      100
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "momo",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_head.png",
+    "sourceBounds": [
+      57,
+      434,
+      1139,
+      429
+    ],
+    "anchor": [
+      256,
+      334
+    ],
+    "path": "art5/wardrobe/acc_heart_glasses_momo.png"
+  },
+  {
+    "source": "sources/acc_scarf.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      148,
+      422,
+      216,
+      82
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "luna",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_head.png",
+    "sourceBounds": [
+      157,
+      235,
+      940,
+      852
+    ],
+    "anchor": [
+      256,
+      352
+    ],
+    "path": "art5/wardrobe/acc_scarf_luna.png"
+  },
+  {
+    "source": "sources/acc_scarf.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      148,
+      434,
+      216,
+      70
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "kiko",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_head.png",
+    "sourceBounds": [
+      157,
+      235,
+      940,
+      852
+    ],
+    "anchor": [
+      256,
+      365
+    ],
+    "path": "art5/wardrobe/acc_scarf_kiko.png"
+  },
+  {
+    "source": "sources/acc_scarf.png",
+    "operation": "Technical resample to per-streamer canvas and anchor",
+    "targetBounds": [
+      148,
+      386,
+      216,
+      95
+    ],
+    "canvas": [
+      512,
+      512
+    ],
+    "person": "momo",
+    "reference": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_head.png",
+    "sourceBounds": [
+      157,
+      235,
+      940,
+      852
+    ],
+    "anchor": [
+      256,
+      334
+    ],
+    "path": "art5/wardrobe/acc_scarf_momo.png"
+  }
+]

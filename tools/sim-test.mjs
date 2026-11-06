@@ -328,14 +328,14 @@ for (const mode of ['null', 'reject']) {
   const p2 = fakePlatform(); p2.devTools = true; const prof2 = fakeProfile(Object.assign({}, INIT, { level: 3, levels_done: 2, streams: 2 })); const g2 = new Game(p2, fakeHs(prof2, 'ok')); g2.hsReady = true; run(g2, 0.1);
   await tap(g2, p2, 'settings'); await tap(g2, p2, 'unlock_all'); check('web build: unlock all → every level open, levels_done untouched', prof2.get('level') === L.LEVEL_COUNT && prof2.get('levels_done') === 2); }
 { let bytes = 0; let sub4 = 0; const subs = {}; (function walk(d) { for (const e of readdirSync(d, { withFileTypes: true })) { const q = join(d, e.name); if (e.isDirectory()) walk(q); else if (/[\\/]art[0-9][\\/]/.test(q)) { const m = /[\\/](art[0-9])[\\/]/.exec(q)[1]; subs[m] = (subs[m] || 0) + statSync(q).size; if (m === 'art4') sub4 += statSync(q).size; } else bytes += statSync(q).size; } })(join(here, '..', 'mukbang-bang'));
-  { const gj = JSON.parse(readFileSync(join(here, '..', 'mukbang-bang', 'game.json'), 'utf8')); for (const n of ['art1', 'art3', 'art4']) check('subpackage ' + n + ' ≤ 4 MB (' + ((subs[n] || 0) / 1048576).toFixed(2) + ' MB) and declared in game.json', (subs[n] || 0) > 0 && subs[n] <= 4 * 1048576 && gj.subpackages.some(x => x.name === n && x.root === n + '/')); }
+  { const gj = JSON.parse(readFileSync(join(here, '..', 'mukbang-bang', 'game.json'), 'utf8')); for (const n of ['art1', 'art3', 'art4', 'art5']) check('subpackage ' + n + ' ≤ 4 MB (' + ((subs[n] || 0) / 1048576).toFixed(2) + ' MB) and declared in game.json', (subs[n] || 0) > 0 && subs[n] <= 4 * 1048576 && gj.subpackages.some(x => x.name === n && x.root === n + '/')); }
   check('TikTok main package ≤ 4 MB (' + (bytes / 1048576).toFixed(2) + ' MB)', bytes <= 4 * 1024 * 1024);
   const dash = JSON.parse(readFileSync(join(here, '..', 'mukbang-bang.hs-dashboard.json'), 'utf8')); const pl = dash.iaa_config.placements;
   check('dashboard: 13 ad places, every cooldown 30 s, fan_gift has a reward', pl.length === 13 && ['rare_choice', 'cook_step', 'serve_bonus', 'extra_hype', 'unlock_level', 'unlock_look'].every(l => pl.some(x => x.label === l)) && pl.every(x => x.ads[0].config.cooldown === 30) && !!dash.iaa_config.rewards.fan_gift, pl.map(x => x.label + ':' + x.ads[0].config.cooldown));
   const gameDir = join(here, '..', 'mukbang-bang'); const p = fakePlatform(); const miss = []; let asked = 0;
   p.loadImage = (path, done) => { asked++; if (!existsSync(join(gameDir, path))) { miss.push(path); done(null); } else done({ width: 256, height: 256 }); };
   const prof = fakeProfile(INIT), g = new Game(p, fakeHs(prof, 'ok')); g.hsReady = true; run(g, 0.2);
-  { const miss4 = Object.keys(S.V4).filter(q => !existsSync(join(gameDir, S.V4[q] === 'art4' ? 'art4' : 'assets', q))); check('art V4: every registered V4 sprite is in the package', miss4.length === 0, miss4); }
+  { const miss4 = Object.keys(S.V4).filter(q => !existsSync(join(gameDir, S.V4[q] === 'main' ? 'assets' : S.V4[q], q))); check('art V4: every registered V4 sprite is in the package', miss4.length === 0, miss4); }
   await eatAll(g, p, 'mix'); check('sprite path: level 1 plays with bitmap art, nothing missing requested', g.state === 'result' && asked > 10 && !miss.length, miss); }
 
 // ═════════ 5 personas × 40 streams: play time + measured ad impressions ═════════

@@ -1,0 +1,380 @@
+[
+  {
+    "source": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe\\sources\\icon_outfit_bib.png",
+    "bounds": [
+      8,
+      17,
+      112,
+      94
+    ],
+    "path": "assets/wardrobe/icon_outfit_bib.png",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      64
+    ]
+  },
+  {
+    "source": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe\\sources\\icon_outfit_chef.png",
+    "bounds": [
+      25,
+      8,
+      78,
+      112
+    ],
+    "path": "assets/wardrobe/icon_outfit_chef.png",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      64
+    ]
+  },
+  {
+    "source": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe\\sources\\icon_outfit_default.png",
+    "bounds": [
+      8,
+      18,
+      112,
+      92
+    ],
+    "path": "assets/wardrobe/icon_outfit_default.png",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      64
+    ]
+  },
+  {
+    "source": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe\\sources\\icon_outfit_mint.png",
+    "bounds": [
+      8,
+      20,
+      112,
+      88
+    ],
+    "path": "assets/wardrobe/icon_outfit_mint.png",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      64
+    ]
+  },
+  {
+    "source": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe\\sources\\icon_outfit_sakura.png",
+    "bounds": [
+      8,
+      20,
+      112,
+      88
+    ],
+    "path": "assets/wardrobe/icon_outfit_sakura.png",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      64
+    ]
+  },
+  {
+    "source": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe\\sources\\icon_outfit_star.png",
+    "bounds": [
+      19,
+      8,
+      90,
+      112
+    ],
+    "path": "assets/wardrobe/icon_outfit_star.png",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      64
+    ]
+  },
+  {
+    "source": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe\\sources\\icon_outfit_sunny.png",
+    "bounds": [
+      8,
+      20,
+      112,
+      88
+    ],
+    "path": "assets/wardrobe/icon_outfit_sunny.png",
+    "canvas": [
+      128,
+      128
+    ],
+    "anchor": [
+      64,
+      64
+    ]
+  },
+  {
+    "operation": "Thumbnail of selected accessory artwork; no new artwork drawn",
+    "canvas": [
+      128,
+      128
+    ],
+    "path": "assets/wardrobe/icon_hair_bow.png",
+    "anchor": [
+      64,
+      64
+    ],
+    "bounds": [
+      8,
+      12,
+      112,
+      104
+    ],
+    "source": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe/sources/hair_bow.png"
+  },
+  {
+    "operation": "Thumbnail of selected accessory artwork; no new artwork drawn",
+    "canvas": [
+      128,
+      128
+    ],
+    "path": "assets/wardrobe/icon_hair_star.png",
+    "anchor": [
+      64,
+      64
+    ],
+    "bounds": [
+      8,
+      34,
+      112,
+      60
+    ],
+    "source": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe/sources/hair_star.png"
+  },
+  {
+    "operation": "Thumbnail of selected accessory artwork; no new artwork drawn",
+    "canvas": [
+      128,
+      128
+    ],
+    "path": "assets/wardrobe/icon_hair_cat_ears.png",
+    "anchor": [
+      64,
+      64
+    ],
+    "bounds": [
+      8,
+      20,
+      112,
+      88
+    ],
+    "source": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe/sources/hair_cat_ears.png"
+  },
+  {
+    "operation": "Thumbnail of selected accessory artwork; no new artwork drawn",
+    "canvas": [
+      128,
+      128
+    ],
+    "path": "assets/wardrobe/icon_hair_beret.png",
+    "anchor": [
+      64,
+      64
+    ],
+    "bounds": [
+      8,
+      28,
+      112,
+      71
+    ],
+    "source": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe/sources/hair_beret.png"
+  },
+  {
+    "operation": "Thumbnail of selected accessory artwork; no new artwork drawn",
+    "canvas": [
+      128,
+      128
+    ],
+    "path": "assets/wardrobe/icon_hair_flowers.png",
+    "anchor": [
+      64,
+      64
+    ],
+    "bounds": [
+      8,
+      42,
+      112,
+      45
+    ],
+    "source": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe/sources/hair_flowers.png"
+  },
+  {
+    "operation": "Thumbnail of selected accessory artwork; no new artwork drawn",
+    "canvas": [
+      128,
+      128
+    ],
+    "path": "assets/wardrobe/icon_hair_bunny_ears.png",
+    "anchor": [
+      64,
+      64
+    ],
+    "bounds": [
+      18,
+      8,
+      93,
+      112
+    ],
+    "source": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe/sources/hair_bunny_ears.png"
+  },
+  {
+    "operation": "Thumbnail of selected accessory artwork; no new artwork drawn",
+    "canvas": [
+      128,
+      128
+    ],
+    "path": "assets/wardrobe/icon_hair_crown.png",
+    "anchor": [
+      64,
+      64
+    ],
+    "bounds": [
+      8,
+      30,
+      112,
+      67
+    ],
+    "source": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe/sources/hair_crown.png"
+  },
+  {
+    "operation": "Thumbnail of selected accessory artwork; no new artwork drawn",
+    "canvas": [
+      128,
+      128
+    ],
+    "path": "assets/wardrobe/icon_acc_blush.png",
+    "anchor": [
+      64,
+      64
+    ],
+    "bounds": [
+      8,
+      54,
+      112,
+      21
+    ],
+    "source": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe/sources/acc_blush.png"
+  },
+  {
+    "operation": "Thumbnail of selected accessory artwork; no new artwork drawn",
+    "canvas": [
+      128,
+      128
+    ],
+    "path": "assets/wardrobe/icon_acc_glasses_round.png",
+    "anchor": [
+      64,
+      64
+    ],
+    "bounds": [
+      8,
+      41,
+      112,
+      46
+    ],
+    "source": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe/sources/acc_glasses_round_luna.lens-alpha.png"
+  },
+  {
+    "operation": "Thumbnail of selected accessory artwork; no new artwork drawn",
+    "canvas": [
+      128,
+      128
+    ],
+    "path": "assets/wardrobe/icon_acc_headphones.png",
+    "anchor": [
+      64,
+      64
+    ],
+    "bounds": [
+      8,
+      24,
+      112,
+      80
+    ],
+    "source": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe/sources/acc_headphones.png"
+  },
+  {
+    "operation": "Thumbnail of selected accessory artwork; no new artwork drawn",
+    "canvas": [
+      128,
+      128
+    ],
+    "path": "assets/wardrobe/icon_acc_heart_glasses.png",
+    "anchor": [
+      64,
+      64
+    ],
+    "bounds": [
+      8,
+      40,
+      112,
+      49
+    ],
+    "source": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe/sources/acc_heart_glasses_luna.lens-alpha.png"
+  },
+  {
+    "operation": "Thumbnail of selected accessory artwork; no new artwork drawn",
+    "canvas": [
+      128,
+      128
+    ],
+    "path": "assets/wardrobe/icon_acc_scarf.png",
+    "anchor": [
+      64,
+      64
+    ],
+    "bounds": [
+      8,
+      13,
+      112,
+      102
+    ],
+    "source": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe/sources/acc_scarf.png"
+  },
+  {
+    "source": "sources/badge_ad.png",
+    "path": "assets/wardrobe/badge_ad.png",
+    "canvas": [
+      120,
+      40
+    ],
+    "anchor": [
+      60,
+      20
+    ]
+  },
+  {
+    "source": "sources/badge_gift.png",
+    "path": "assets/wardrobe/badge_gift.png",
+    "canvas": [
+      120,
+      40
+    ],
+    "anchor": [
+      60,
+      20
+    ]
+  }
+]

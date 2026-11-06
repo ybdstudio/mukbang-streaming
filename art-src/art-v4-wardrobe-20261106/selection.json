@@ -1,0 +1,708 @@
+{
+  "assets": [
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/outfit_mint_luna.png",
+      "generationLogIndex": 8,
+      "directSource": "sources/outfit_mint_luna.png",
+      "sourceSha256": "3130dcc097df7d6b421b6463ef0963114569237be4d1436cebbce3a4a225417d",
+      "generationId": "outfit_mint_luna",
+      "finalSha256": "c72460ef9e97f88d49ce2d6b5fced6ebb97383bca8c7cd6aad9a2d161cd57b27"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/outfit_mint_kiko.png",
+      "generationLogIndex": 9,
+      "directSource": "sources/outfit_mint_kiko.png",
+      "sourceSha256": "dd570fa0d75677523fc72c5f3c6d9d4ff1f9d3793037d62d7b4c77cec66c5407",
+      "generationId": "outfit_mint_kiko",
+      "finalSha256": "975bb987d259e724a50dda2217c502508f63c3bdf880a815212a8bca267aaf26"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/outfit_mint_momo.png",
+      "generationLogIndex": 10,
+      "directSource": "sources/outfit_mint_momo.png",
+      "sourceSha256": "5dbfd9f563bf4a13e7f37a10ea52a391dc3e829ddf19d9da12bc8d7b803097ab",
+      "generationId": "outfit_mint_momo",
+      "finalSha256": "724c349cf28544c3f81c1ee376ae71a5fa2380f31b718e6deabcc01f9b23e322"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/outfit_bib_luna.png",
+      "generationLogIndex": 34,
+      "directSource": "sources/outfit_bib_luna.png",
+      "sourceSha256": "55cf99c5bcab44d268845424644d3bf5d660f63eb1f8fc1f5b9f69fd3c1808b6",
+      "generationId": "outfit_bib_luna",
+      "finalSha256": "1ddb464ae39fd723817ebaba29cd54e73a630355e9a7cf8cad17f40cd7346ad6"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/outfit_bib_kiko.png",
+      "generationLogIndex": 12,
+      "directSource": "sources/outfit_bib_kiko.png",
+      "sourceSha256": "8090d0c984f2bfdead51cecc7c1652e43efa2eb7b22f8713b7ec148028ca26ea",
+      "generationId": "outfit_bib_kiko",
+      "finalSha256": "76c03fd59819be675b82c0795e979a6caeac7794b468c1ee3d18a4d700b32fe4"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/outfit_bib_momo.png",
+      "generationLogIndex": 13,
+      "directSource": "sources/outfit_bib_momo.png",
+      "sourceSha256": "b6c1ea1bf93df9f84c1603488ffed25681c90bb45d57abfefdc7470876f6395e",
+      "generationId": "outfit_bib_momo",
+      "finalSha256": "ea04541bae60ea06eaaa962aebf31bf04825f4e9397a3c0c7486d32811f82210"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/outfit_sunny_luna.png",
+      "generationLogIndex": 14,
+      "directSource": "sources/outfit_sunny_luna.png",
+      "sourceSha256": "2e785ead5d29fe149286879c217bc43205508a5f17e62c82c450d88b751a7321",
+      "generationId": "outfit_sunny_luna",
+      "finalSha256": "969e2e6ccd65de28679fab4e1cfe1018f95ac67bfd44fb73d042c1ed840620fd"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/outfit_sunny_kiko.png",
+      "generationLogIndex": 15,
+      "directSource": "sources/outfit_sunny_kiko.png",
+      "sourceSha256": "894d917fa0d030930ea7f4ea57cac59b7a14de9e9c7a3a0dd2de7f575b55fc27",
+      "generationId": "outfit_sunny_kiko",
+      "finalSha256": "41e9debf61e08b85bce37bdae48b907dd416ca0174f96fb7ac70102e4a55cb44"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/outfit_sunny_momo.png",
+      "generationLogIndex": 16,
+      "directSource": "sources/outfit_sunny_momo.png",
+      "sourceSha256": "4867d655876e66a74b19f0632a69b1e3638755a1ad1889adb860cf640c2aac0a",
+      "generationId": "outfit_sunny_momo",
+      "finalSha256": "68cd15d6ac386263e0771214d9d830d0729800ba09fdc4d965196c6d8a19b725"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/outfit_sakura_luna.png",
+      "generationLogIndex": 0,
+      "directSource": "sources/outfit_sakura_luna.png",
+      "sourceSha256": "afd3e8b7edd37ffb2bd6c1065345cdc0e842d78db4a317ac3cd702d25a7e0601",
+      "generationId": "outfit_sakura_luna",
+      "finalSha256": "3e08f315bf55fe912c9f4d51c975540d44947ea5ae85df4ee31d0d7929c492ab"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/outfit_sakura_kiko.png",
+      "generationLogIndex": 33,
+      "directSource": "sources/outfit_sakura_kiko.png",
+      "sourceSha256": "881902498f8bfe229f33fe4e1d3eaafa19ae54a1ac9bcb710c9773dcec8a7ac4",
+      "generationId": "outfit_sakura_kiko",
+      "finalSha256": "342494ef96d8f11351c02cdb95712fc4ed161701686ee21347daef17f4415463"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/outfit_sakura_momo.png",
+      "generationLogIndex": 18,
+      "directSource": "sources/outfit_sakura_momo.png",
+      "sourceSha256": "14ffeb9d064b2d602b3c867eb4eed07e9585b0fecf23ea564d8004779caa1593",
+      "generationId": "outfit_sakura_momo",
+      "finalSha256": "d8b3ddc065a5934a224e806ddc281d8374a393cc0454994bbb539441b62a0795"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/outfit_chef_luna.png",
+      "generationLogIndex": 30,
+      "directSource": "sources/outfit_chef_luna.png",
+      "sourceSha256": "efd95cc2335420a6ffbcf087756cd2f433a9e764bfdd7054fc4c6fe76e352248",
+      "generationId": "outfit_chef_luna",
+      "finalSha256": "0da2de95b05840e5bd6b09403bc0684dcafc70b59cfa122c7688111817bf253b"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/outfit_chef_kiko.png",
+      "generationLogIndex": 31,
+      "directSource": "sources/outfit_chef_kiko.png",
+      "sourceSha256": "a640e25c1148e881afff8c85b6fe1594b5d5569ce3657ace501e62b1f728c29d",
+      "generationId": "outfit_chef_kiko",
+      "finalSha256": "7f954ccf9165102b599599d3658bf40fa21241d68fa8278e2fa8dee9887b8873"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/outfit_chef_momo.png",
+      "generationLogIndex": 32,
+      "directSource": "sources/outfit_chef_momo.png",
+      "sourceSha256": "deb8aeeaa559c7f65d4af274d466f4b1bab65ad207708ebcbd4adfe10d6a3444",
+      "generationId": "outfit_chef_momo",
+      "finalSha256": "72250fe726365875a9402f70b468b39ff5e9567907ac1daa05093fdca09e8d32"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/outfit_star_luna.png",
+      "generationLogIndex": 2,
+      "directSource": "sources/outfit_star_luna.png",
+      "sourceSha256": "eb3ea657e21696ed1974375bf59c995fb932884e2b3d0a410dd4c1f4f2296249",
+      "generationId": "outfit_star_luna",
+      "finalSha256": "bd58acdb21af8e316340a5dfaaa2483b54dd654bdb9c1dc4ef8e4185a0ab3bbc"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/outfit_star_kiko.png",
+      "generationLogIndex": 21,
+      "directSource": "sources/outfit_star_kiko.png",
+      "sourceSha256": "6fc0826c8b555127070223e9ad8def999204c43d816b2c38883c621a34ff2d48",
+      "generationId": "outfit_star_kiko",
+      "finalSha256": "f14507fe4275a198795760361806144d2c26171f3e114cf95800bc4aa12e45c6"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/outfit_star_momo.png",
+      "generationLogIndex": 22,
+      "directSource": "sources/outfit_star_momo.png",
+      "sourceSha256": "c342cefea905e37d7dea446bf2267c98983e60eaf2514cee00350f25c0f6438e",
+      "generationId": "outfit_star_momo",
+      "finalSha256": "6f92672df6df11723f66fff79c2e9108003717b367a9204eddaf6b5510c49109"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/hair_bow_luna.png",
+      "generationLogIndex": 23,
+      "directSource": "sources/hair_bow.png",
+      "sourceSha256": "d5e25a273099e1f949e0d48a8fb4e5c231f2582e3b38049370857350edd304f0",
+      "generationId": "hair_bow",
+      "finalSha256": "af7b067e2ca6396b617985c5fbf28699c7c44ef0ac90c0d19930ef3d8ef74695"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/hair_bow_kiko.png",
+      "generationLogIndex": 23,
+      "directSource": "sources/hair_bow.png",
+      "sourceSha256": "d5e25a273099e1f949e0d48a8fb4e5c231f2582e3b38049370857350edd304f0",
+      "generationId": "hair_bow",
+      "finalSha256": "f3558275fdc3b8ffb20954f799586cde12e555f2c9a014cc16e9e9818b9d720d"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/hair_bow_momo.png",
+      "generationLogIndex": 23,
+      "directSource": "sources/hair_bow.png",
+      "sourceSha256": "d5e25a273099e1f949e0d48a8fb4e5c231f2582e3b38049370857350edd304f0",
+      "generationId": "hair_bow",
+      "finalSha256": "ea1fbc96dd546391bd679d90604b1b9cfcdb49c71c2fba66f2420b660e8d346f"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/hair_star_luna.png",
+      "generationLogIndex": 24,
+      "directSource": "sources/hair_star.png",
+      "sourceSha256": "ce715971c76b272828b16e3f6fe4c565007117b23b0919cf0fb9e884cfbcfc51",
+      "generationId": "hair_star",
+      "finalSha256": "b8fa56d3429afa02bb358fa0b7d9d5c1325520fe21a639f2d014a55ecda2de99"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/hair_star_kiko.png",
+      "generationLogIndex": 24,
+      "directSource": "sources/hair_star.png",
+      "sourceSha256": "ce715971c76b272828b16e3f6fe4c565007117b23b0919cf0fb9e884cfbcfc51",
+      "generationId": "hair_star",
+      "finalSha256": "d00a0e9ca4017176261be983677ae12961ca21416661f601bb47bc7d3d3292b6"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/hair_star_momo.png",
+      "generationLogIndex": 24,
+      "directSource": "sources/hair_star.png",
+      "sourceSha256": "ce715971c76b272828b16e3f6fe4c565007117b23b0919cf0fb9e884cfbcfc51",
+      "generationId": "hair_star",
+      "finalSha256": "a8942193aa2557cd322c9e1900594ad33a99e63a4f3e6b0c36f467e1ea11df27"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/hair_cat_ears_luna.png",
+      "generationLogIndex": 3,
+      "directSource": "sources/hair_cat_ears.png",
+      "sourceSha256": "45ac9cb0daa3a89f3d7f4882e10d06fb9e4c70f8ddf10cc34764ce1861d4e39e",
+      "generationId": "hair_cat_ears",
+      "finalSha256": "e0260c86b6292b0d30829ddfdfc038da9f6bdaf6223c7500529d9c9fd5790264"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/hair_cat_ears_kiko.png",
+      "generationLogIndex": 3,
+      "directSource": "sources/hair_cat_ears.png",
+      "sourceSha256": "45ac9cb0daa3a89f3d7f4882e10d06fb9e4c70f8ddf10cc34764ce1861d4e39e",
+      "generationId": "hair_cat_ears",
+      "finalSha256": "777e7af947479ffba984c506509ea3f66d51f4a0bb2d57639219df93edc6b0c4"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/hair_cat_ears_momo.png",
+      "generationLogIndex": 3,
+      "directSource": "sources/hair_cat_ears.png",
+      "sourceSha256": "45ac9cb0daa3a89f3d7f4882e10d06fb9e4c70f8ddf10cc34764ce1861d4e39e",
+      "generationId": "hair_cat_ears",
+      "finalSha256": "2d332e1de21b48066e60ac6b3b4982fe0da9253707d4b90d56d0c91173f92772"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/hair_beret_luna.png",
+      "generationLogIndex": 25,
+      "directSource": "sources/hair_beret.png",
+      "sourceSha256": "0164acf05c8c472a11f28f8658a35d93b2a06982c19feaf616c891dfd02779ed",
+      "generationId": "hair_beret",
+      "finalSha256": "5f1533b62965b8796e095eba29c8f8b770b9d3aafc32920cd07dbb202d58ec5a"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/hair_beret_kiko.png",
+      "generationLogIndex": 25,
+      "directSource": "sources/hair_beret.png",
+      "sourceSha256": "0164acf05c8c472a11f28f8658a35d93b2a06982c19feaf616c891dfd02779ed",
+      "generationId": "hair_beret",
+      "finalSha256": "d84a13cc6ace0dbc80b741b525411805cec648808346f55241e4bf6ddc7c43ce"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/hair_beret_momo.png",
+      "generationLogIndex": 25,
+      "directSource": "sources/hair_beret.png",
+      "sourceSha256": "0164acf05c8c472a11f28f8658a35d93b2a06982c19feaf616c891dfd02779ed",
+      "generationId": "hair_beret",
+      "finalSha256": "7f609d3f3c5968f334be47a0b8cbb25dc2105e7e7833a64b0106bb67737ad145"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/hair_flowers_luna.png",
+      "generationLogIndex": 26,
+      "directSource": "sources/hair_flowers.png",
+      "sourceSha256": "8df22174723af056de09301dcea24fba3c5f7985b50f236d6a6688439e9c6880",
+      "generationId": "hair_flowers",
+      "finalSha256": "594961f2e23329f7270c216226fc5009e9f0d2b13c96d9a1daf4624a782d3004"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/hair_flowers_kiko.png",
+      "generationLogIndex": 26,
+      "directSource": "sources/hair_flowers.png",
+      "sourceSha256": "8df22174723af056de09301dcea24fba3c5f7985b50f236d6a6688439e9c6880",
+      "generationId": "hair_flowers",
+      "finalSha256": "cf6f47c21d7741e288f7c58298f3334e604ae02b838177e7b2254ffbe66c7a0c"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/hair_flowers_momo.png",
+      "generationLogIndex": 26,
+      "directSource": "sources/hair_flowers.png",
+      "sourceSha256": "8df22174723af056de09301dcea24fba3c5f7985b50f236d6a6688439e9c6880",
+      "generationId": "hair_flowers",
+      "finalSha256": "261315fbba494d5e7ab3c5bef09700870a2b4650063ba48a86307bc09c719329"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/hair_bunny_ears_luna.png",
+      "generationLogIndex": 27,
+      "directSource": "sources/hair_bunny_ears.png",
+      "sourceSha256": "7156859a33822c1c9746c2fceb4a7e04caab43092f696cff5dfb471b8ea59107",
+      "generationId": "hair_bunny_ears",
+      "finalSha256": "ac3f823ff2dc787137a84341795f137b6c0e75cc7edd017bf92134755dfb460b"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/hair_bunny_ears_kiko.png",
+      "generationLogIndex": 27,
+      "directSource": "sources/hair_bunny_ears.png",
+      "sourceSha256": "7156859a33822c1c9746c2fceb4a7e04caab43092f696cff5dfb471b8ea59107",
+      "generationId": "hair_bunny_ears",
+      "finalSha256": "2f2321eb8d92a8b0dca798ca3ad2765eb72088021d0ad8a8e94b4bf16d0afd60"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/hair_bunny_ears_momo.png",
+      "generationLogIndex": 27,
+      "directSource": "sources/hair_bunny_ears.png",
+      "sourceSha256": "7156859a33822c1c9746c2fceb4a7e04caab43092f696cff5dfb471b8ea59107",
+      "generationId": "hair_bunny_ears",
+      "finalSha256": "3c11c32348c3dabf1642ac6165d755a5a9e837cbb53312e4610a5658c1133f1b"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/hair_crown_luna.png",
+      "generationLogIndex": 4,
+      "directSource": "sources/hair_crown.png",
+      "sourceSha256": "79a770f6fa892f749151abbe51bd76a7eb961d26ebbb9727c9a1a33b75e5af52",
+      "generationId": "hair_crown",
+      "finalSha256": "582dcd0e4ca77cd4b6f829a88b697e0739281a95fd69a7584595090cb4b93caf"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/hair_crown_kiko.png",
+      "generationLogIndex": 4,
+      "directSource": "sources/hair_crown.png",
+      "sourceSha256": "79a770f6fa892f749151abbe51bd76a7eb961d26ebbb9727c9a1a33b75e5af52",
+      "generationId": "hair_crown",
+      "finalSha256": "1600abf5b911a467fa553fc9e6eced1f2badc46f079e2b510c1aaa3ab056a39b"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/hair_crown_momo.png",
+      "generationLogIndex": 4,
+      "directSource": "sources/hair_crown.png",
+      "sourceSha256": "79a770f6fa892f749151abbe51bd76a7eb961d26ebbb9727c9a1a33b75e5af52",
+      "generationId": "hair_crown",
+      "finalSha256": "15da60a04392f2bd4cafc4f97f2aa080f3f5fbf432e28227cce1f50336ec525d"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/acc_blush_luna.png",
+      "generationLogIndex": 5,
+      "directSource": "sources/acc_blush.png",
+      "sourceSha256": "50360c235513ceab0ad145f375e008136538e9b4b3b8c75a21ba738a8103e2cf",
+      "generationId": "acc_blush",
+      "finalSha256": "497ee7b8dfd39495ea3cb8a012956363fd26d5c71eac9133fd1015fa25487735"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/acc_blush_kiko.png",
+      "generationLogIndex": 5,
+      "directSource": "sources/acc_blush.png",
+      "sourceSha256": "50360c235513ceab0ad145f375e008136538e9b4b3b8c75a21ba738a8103e2cf",
+      "generationId": "acc_blush",
+      "finalSha256": "a07f72e2f2a46ecbc21adfd1199b4409877f61d9cd26dc1cb7749f9594f12594"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/acc_blush_momo.png",
+      "generationLogIndex": 5,
+      "directSource": "sources/acc_blush.png",
+      "sourceSha256": "50360c235513ceab0ad145f375e008136538e9b4b3b8c75a21ba738a8103e2cf",
+      "generationId": "acc_blush",
+      "finalSha256": "eb88b9aef0a18572524be8d7a1ef8a16670722e67dda14566af86622f4c0f08c"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/acc_glasses_round_luna.png",
+      "generationLogIndex": 6,
+      "directSource": "sources/acc_glasses_round.png",
+      "sourceSha256": "f61124c857168b0a4e88dfaf73b1c5d76892b422c1fd13afc84a97b42767e2b0",
+      "generationId": "acc_glasses_round",
+      "finalSha256": "f5400a4ffc22b77588f4d8c346d22581c9cf447e61a2f5dbf7bbcb8ac0d07d50"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/acc_glasses_round_kiko.png",
+      "generationLogIndex": 6,
+      "directSource": "sources/acc_glasses_round.png",
+      "sourceSha256": "f61124c857168b0a4e88dfaf73b1c5d76892b422c1fd13afc84a97b42767e2b0",
+      "generationId": "acc_glasses_round",
+      "finalSha256": "36153992209d3aa510680971f983d1488c7f86aefd8b62720c10aad21fddbf58"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/acc_glasses_round_momo.png",
+      "generationLogIndex": 6,
+      "directSource": "sources/acc_glasses_round.png",
+      "sourceSha256": "f61124c857168b0a4e88dfaf73b1c5d76892b422c1fd13afc84a97b42767e2b0",
+      "generationId": "acc_glasses_round",
+      "finalSha256": "46ce63ec3a7d34531016c161d393bbbc04ee18aa46757b5e52466616f5ab091c"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/acc_headphones_luna.png",
+      "generationLogIndex": 44,
+      "directSource": "sources/acc_headphones.png",
+      "sourceSha256": "ab5fc0d5567018a9ec0c946a11d53f518e21da59bdba7631720b02899bb22c94",
+      "generationId": "acc_headphones",
+      "finalSha256": "e164b1780aefe15b03f217122b1fcb220a133d3edcd22b60d576e560bbd89fd8"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/acc_headphones_kiko.png",
+      "generationLogIndex": 44,
+      "directSource": "sources/acc_headphones.png",
+      "sourceSha256": "ab5fc0d5567018a9ec0c946a11d53f518e21da59bdba7631720b02899bb22c94",
+      "generationId": "acc_headphones",
+      "finalSha256": "98d48b1708dc5e1b5fd23d384c6c8b510b45bc17586e81241946a80f65fc192f"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/acc_headphones_momo.png",
+      "generationLogIndex": 44,
+      "directSource": "sources/acc_headphones.png",
+      "sourceSha256": "ab5fc0d5567018a9ec0c946a11d53f518e21da59bdba7631720b02899bb22c94",
+      "generationId": "acc_headphones",
+      "finalSha256": "041aef7c3a0f351d17746ebbd97ad675b07a33285899533cd2d4c301859803eb"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/acc_heart_glasses_luna.png",
+      "generationLogIndex": 7,
+      "directSource": "sources/acc_heart_glasses.png",
+      "sourceSha256": "682fa5643254f3a2b5624f9ab9259bf066197d15cb38c6f71aebcaa2d786ad99",
+      "generationId": "acc_heart_glasses",
+      "finalSha256": "b87874100807cfbc56d276c75a549a4f13c6d1af331a23b38e0a2b3a0169bd79"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/acc_heart_glasses_kiko.png",
+      "generationLogIndex": 7,
+      "directSource": "sources/acc_heart_glasses.png",
+      "sourceSha256": "682fa5643254f3a2b5624f9ab9259bf066197d15cb38c6f71aebcaa2d786ad99",
+      "generationId": "acc_heart_glasses",
+      "finalSha256": "ef27fc9e6ea51c182fdf2631a395d7b737e4fba76d35dadc48a146129899a58c"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/acc_heart_glasses_momo.png",
+      "generationLogIndex": 7,
+      "directSource": "sources/acc_heart_glasses.png",
+      "sourceSha256": "682fa5643254f3a2b5624f9ab9259bf066197d15cb38c6f71aebcaa2d786ad99",
+      "generationId": "acc_heart_glasses",
+      "finalSha256": "ebfd2fcb5ff183a781f916623c2c5a0a0975e2f05245bf48b4afd045d533bb78"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/acc_scarf_luna.png",
+      "generationLogIndex": 29,
+      "directSource": "sources/acc_scarf.png",
+      "sourceSha256": "f33323b2bda7a82af627a9ec98b9cbcdc9509e7aa71f28c7e5d4d00d3987cfb8",
+      "generationId": "acc_scarf",
+      "finalSha256": "9e1d48242d01cbd2cbcfb7441cc298d1bb0cdf713fe241cb2d10f1f2c303244a"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/acc_scarf_kiko.png",
+      "generationLogIndex": 29,
+      "directSource": "sources/acc_scarf.png",
+      "sourceSha256": "f33323b2bda7a82af627a9ec98b9cbcdc9509e7aa71f28c7e5d4d00d3987cfb8",
+      "generationId": "acc_scarf",
+      "finalSha256": "e82734c03ebb461426884d10f880550c55b0f8042648b0731b4c0b810c908d5d"
+    },
+    {
+      "operation": "Per-streamer registration and indexed alpha export",
+      "path": "art5/wardrobe/acc_scarf_momo.png",
+      "generationLogIndex": 29,
+      "directSource": "sources/acc_scarf.png",
+      "sourceSha256": "f33323b2bda7a82af627a9ec98b9cbcdc9509e7aa71f28c7e5d4d00d3987cfb8",
+      "generationId": "acc_scarf",
+      "finalSha256": "37bfc2a7763a35e44173dd6d6a005b97786105106680ea262e743570195a98d6"
+    },
+    {
+      "operation": "Inventory/icon registration and indexed alpha export",
+      "path": "assets/wardrobe/icon_outfit_default.png",
+      "generationLogIndex": 35,
+      "directSource": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe\\sources\\icon_outfit_default.png",
+      "sourceSha256": "d7dd787bdaa3ea403571356e6e7ad753319bf53a9c9145805d954d2e14ef5d60",
+      "generationId": "icon_outfit_default",
+      "finalSha256": "883f163758366f4d6778692f11517a60bc2d908aea79b186191a9d675cf7c5f7"
+    },
+    {
+      "operation": "Inventory/icon registration and indexed alpha export",
+      "path": "assets/wardrobe/icon_outfit_mint.png",
+      "generationLogIndex": 36,
+      "directSource": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe\\sources\\icon_outfit_mint.png",
+      "sourceSha256": "958ac6cc4cb4f71cba871f5ef6b3aaff08addd3f5acd7cfd4725a785e6eb2f63",
+      "generationId": "icon_outfit_mint",
+      "finalSha256": "3c1f2e9fd637053ef1fa40b6b7b36ba496a7666c1aaf8d7f45dfcfcce407f2b5"
+    },
+    {
+      "operation": "Inventory/icon registration and indexed alpha export",
+      "path": "assets/wardrobe/icon_outfit_bib.png",
+      "generationLogIndex": 45,
+      "directSource": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe\\sources\\icon_outfit_bib.png",
+      "sourceSha256": "a02b048282b7545eb8434f4bac2d1d13fa706ea305495c4f9bab6407b6e70f99",
+      "generationId": "icon_outfit_bib",
+      "finalSha256": "22a56acb7acd0dd1ae62ac55f87afc734c23214b7d3f354e33e1e51eb20ee539"
+    },
+    {
+      "operation": "Inventory/icon registration and indexed alpha export",
+      "path": "assets/wardrobe/icon_outfit_sunny.png",
+      "generationLogIndex": 38,
+      "directSource": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe\\sources\\icon_outfit_sunny.png",
+      "sourceSha256": "6fe466aa3013e1a31154914c521c5d7093a6a37819274dc5f020a9197b6fd2d7",
+      "generationId": "icon_outfit_sunny",
+      "finalSha256": "2cef4d2aa4f337708faa197a0b701c1765689b28e23169834650898cef2ea5e6"
+    },
+    {
+      "operation": "Inventory/icon registration and indexed alpha export",
+      "path": "assets/wardrobe/icon_outfit_sakura.png",
+      "generationLogIndex": 39,
+      "directSource": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe\\sources\\icon_outfit_sakura.png",
+      "sourceSha256": "6640da48e66cc7894d7363d2225d0dc3b9fb8c9fc376cdd47881c9d06e29f10d",
+      "generationId": "icon_outfit_sakura",
+      "finalSha256": "e9decaf801ec3756a9099badbf9fce18c22f161c196a3d25af9478dcf8529d9f"
+    },
+    {
+      "operation": "Inventory/icon registration and indexed alpha export",
+      "path": "assets/wardrobe/icon_outfit_chef.png",
+      "generationLogIndex": 40,
+      "directSource": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe\\sources\\icon_outfit_chef.png",
+      "sourceSha256": "a7d04ed4a0d7e5cf4d21da77587b760b322caf52a7a951737e46b389a5697092",
+      "generationId": "icon_outfit_chef",
+      "finalSha256": "3fb9d491667f4e7cd74b41939c0a00d151ffc736073e892f8ae2ecde583bf9c4"
+    },
+    {
+      "operation": "Inventory/icon registration and indexed alpha export",
+      "path": "assets/wardrobe/icon_outfit_star.png",
+      "generationLogIndex": 41,
+      "directSource": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe\\sources\\icon_outfit_star.png",
+      "sourceSha256": "08894f24bf793513f2dd570a57693b50d3b87e595eee5d412508bdd0f48755a2",
+      "generationId": "icon_outfit_star",
+      "finalSha256": "32e4c35905fe922846aca293afc177bbd457a39711c0b3a7b6a7774b951161e6"
+    },
+    {
+      "operation": "Inventory/icon registration and indexed alpha export",
+      "path": "assets/wardrobe/icon_hair_bow.png",
+      "generationLogIndex": 23,
+      "directSource": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe/sources/hair_bow.png",
+      "sourceSha256": "d5e25a273099e1f949e0d48a8fb4e5c231f2582e3b38049370857350edd304f0",
+      "generationId": "hair_bow",
+      "finalSha256": "f52415aaa13cdbef564afb9fedc3b7bcd6aa695c0fc93da329b1ec72c12e9971"
+    },
+    {
+      "operation": "Inventory/icon registration and indexed alpha export",
+      "path": "assets/wardrobe/icon_hair_star.png",
+      "generationLogIndex": 24,
+      "directSource": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe/sources/hair_star.png",
+      "sourceSha256": "ce715971c76b272828b16e3f6fe4c565007117b23b0919cf0fb9e884cfbcfc51",
+      "generationId": "hair_star",
+      "finalSha256": "9c4fdfd15cbbf3d78adc37b4051da9ef2a31a2129c7629e578da222af9762a87"
+    },
+    {
+      "operation": "Inventory/icon registration and indexed alpha export",
+      "path": "assets/wardrobe/icon_hair_cat_ears.png",
+      "generationLogIndex": 3,
+      "directSource": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe/sources/hair_cat_ears.png",
+      "sourceSha256": "45ac9cb0daa3a89f3d7f4882e10d06fb9e4c70f8ddf10cc34764ce1861d4e39e",
+      "generationId": "hair_cat_ears",
+      "finalSha256": "56b0badd350a756f4ee1e60be3f3df9a4610a12539894234102b169bc9f7c156"
+    },
+    {
+      "operation": "Inventory/icon registration and indexed alpha export",
+      "path": "assets/wardrobe/icon_hair_beret.png",
+      "generationLogIndex": 25,
+      "directSource": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe/sources/hair_beret.png",
+      "sourceSha256": "0164acf05c8c472a11f28f8658a35d93b2a06982c19feaf616c891dfd02779ed",
+      "generationId": "hair_beret",
+      "finalSha256": "188370e34d915701c47cace71d72d2719781a4f40d3d8e8bccab26cd13c5c5cd"
+    },
+    {
+      "operation": "Inventory/icon registration and indexed alpha export",
+      "path": "assets/wardrobe/icon_hair_flowers.png",
+      "generationLogIndex": 26,
+      "directSource": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe/sources/hair_flowers.png",
+      "sourceSha256": "8df22174723af056de09301dcea24fba3c5f7985b50f236d6a6688439e9c6880",
+      "generationId": "hair_flowers",
+      "finalSha256": "92850b737cf5f52fc43c1e6be4e477b9209e812ed6d939c3029f8d314638ef78"
+    },
+    {
+      "operation": "Inventory/icon registration and indexed alpha export",
+      "path": "assets/wardrobe/icon_hair_bunny_ears.png",
+      "generationLogIndex": 27,
+      "directSource": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe/sources/hair_bunny_ears.png",
+      "sourceSha256": "7156859a33822c1c9746c2fceb4a7e04caab43092f696cff5dfb471b8ea59107",
+      "generationId": "hair_bunny_ears",
+      "finalSha256": "a8b202262c597df442fc6c011cb2f44f0dfbe5ecee1ea3640c300d23a6f6d0e2"
+    },
+    {
+      "operation": "Inventory/icon registration and indexed alpha export",
+      "path": "assets/wardrobe/icon_hair_crown.png",
+      "generationLogIndex": 4,
+      "directSource": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe/sources/hair_crown.png",
+      "sourceSha256": "79a770f6fa892f749151abbe51bd76a7eb961d26ebbb9727c9a1a33b75e5af52",
+      "generationId": "hair_crown",
+      "finalSha256": "b2188503c52323c7a73c3a16b00d31852addda4b79a36494ed8c237cdb5bed42"
+    },
+    {
+      "operation": "Inventory/icon registration and indexed alpha export",
+      "path": "assets/wardrobe/icon_acc_blush.png",
+      "generationLogIndex": 5,
+      "directSource": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe/sources/acc_blush.png",
+      "sourceSha256": "50360c235513ceab0ad145f375e008136538e9b4b3b8c75a21ba738a8103e2cf",
+      "generationId": "acc_blush",
+      "finalSha256": "8070aa0febb40a0c1a7ffeb6f13e32c107398b54b4b4eeb9852083b7a86e8fe3"
+    },
+    {
+      "operation": "Inventory/icon registration and indexed alpha export",
+      "path": "assets/wardrobe/icon_acc_glasses_round.png",
+      "generationLogIndex": 6,
+      "directSource": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe/sources/acc_glasses_round_luna.lens-alpha.png",
+      "sourceSha256": "c515eb1803bd97563d196d2750ccf1f417a8cb4faadd2b007cea7c73a4be53df",
+      "generationId": "acc_glasses_round",
+      "finalSha256": "a0b6d11b0a5c2424b4fceccf9e3228028eaf3b93d9805fa1fd28e131072463dc"
+    },
+    {
+      "operation": "Inventory/icon registration and indexed alpha export",
+      "path": "assets/wardrobe/icon_acc_headphones.png",
+      "generationLogIndex": 44,
+      "directSource": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe/sources/acc_headphones.png",
+      "sourceSha256": "ab5fc0d5567018a9ec0c946a11d53f518e21da59bdba7631720b02899bb22c94",
+      "generationId": "acc_headphones",
+      "finalSha256": "202ce8043273966f6df09f1384cc65c00213c890be271a7286937037ae5c54f7"
+    },
+    {
+      "operation": "Inventory/icon registration and indexed alpha export",
+      "path": "assets/wardrobe/icon_acc_heart_glasses.png",
+      "generationLogIndex": 7,
+      "directSource": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe/sources/acc_heart_glasses_luna.lens-alpha.png",
+      "sourceSha256": "42036f62fd5875bc136a521c2cbacaa8d93dcf7a553a7147fadb3dc97de17195",
+      "generationId": "acc_heart_glasses",
+      "finalSha256": "2b16dd54cd0f459db8b29ab39ddfafee4c8dfb67a31417f4982f8d3de54ca5b1"
+    },
+    {
+      "operation": "Inventory/icon registration and indexed alpha export",
+      "path": "assets/wardrobe/icon_acc_scarf.png",
+      "generationLogIndex": 29,
+      "directSource": "E:\\h5 game\\mukbang streaming\\mukbang-bang-v4\\art-src\\v4\\production-wardrobe/sources/acc_scarf.png",
+      "sourceSha256": "f33323b2bda7a82af627a9ec98b9cbcdc9509e7aa71f28c7e5d4d00d3987cfb8",
+      "generationId": "acc_scarf",
+      "finalSha256": "0fc65aa791001b20b68a90a3cb6aa2ba5c785a04f7257b53b95cec33eb087a1d"
+    },
+    {
+      "operation": "Resampled selected inventory icon",
+      "path": "assets/wardrobe/tab_outfit.png",
+      "generationLogIndex": null,
+      "directSource": "delivery/assets/wardrobe/icon_outfit_default.png",
+      "sourceSha256": "883f163758366f4d6778692f11517a60bc2d908aea79b186191a9d675cf7c5f7",
+      "generationId": null,
+      "finalSha256": "3eedc89bf6b3aabbacd68c90861288560052273e1f83810df01a09e5edc90a23"
+    },
+    {
+      "operation": "Resampled selected inventory icon",
+      "path": "assets/wardrobe/tab_hair.png",
+      "generationLogIndex": null,
+      "directSource": "delivery/assets/wardrobe/icon_hair_bow.png",
+      "sourceSha256": "f52415aaa13cdbef564afb9fedc3b7bcd6aa695c0fc93da329b1ec72c12e9971",
+      "generationId": null,
+      "finalSha256": "2b9ea60f9e9c8c963a64d6048a14805f1ca569cfd12b431ef8e7d88de5c9177b"
+    },
+    {
+      "operation": "Resampled selected inventory icon",
+      "path": "assets/wardrobe/tab_extras.png",
+      "generationLogIndex": null,
+      "directSource": "delivery/assets/wardrobe/icon_acc_glasses_round.png",
+      "sourceSha256": "a0b6d11b0a5c2424b4fceccf9e3228028eaf3b93d9805fa1fd28e131072463dc",
+      "generationId": null,
+      "finalSha256": "fb98c8219cdf2366390176684b8704054a21847bd9e812eb5def091d4710e1b7"
+    },
+    {
+      "operation": "Inventory/icon registration and indexed alpha export",
+      "path": "assets/wardrobe/badge_ad.png",
+      "generationLogIndex": 42,
+      "directSource": "sources/badge_ad.png",
+      "sourceSha256": "16cbfee36e0426b1f69f8a800126ee0a653c027c3207a68a8d5fa551b8e8cfdc",
+      "generationId": "badge_ad",
+      "finalSha256": "aefde6b0cfaddbde807579f414c74face9ca182ab54f1c6500cd57f1b8b020fb"
+    },
+    {
+      "operation": "Inventory/icon registration and indexed alpha export",
+      "path": "assets/wardrobe/badge_gift.png",
+      "generationLogIndex": 43,
+      "directSource": "sources/badge_gift.png",
+      "sourceSha256": "1b7006a49be4b4dc1b4f6f154b72f238cb6b4bfec4494cb0ee72f1e8b833be8b",
+      "generationId": "badge_gift",
+      "finalSha256": "6873f569d1c0739b6ea65f47fec3f4f32f8d5bc5a6a35ef5f18f7831f5988b36"
+    }
+  ],
+  "note": "Final source hashes measured at packaging; prompts and reference paths remain as recorded. Shared accessory artwork is registered separately for each streamer.",
+  "count": 78
+}

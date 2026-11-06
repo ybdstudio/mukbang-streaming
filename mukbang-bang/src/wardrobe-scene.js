@@ -1,4 +1,5 @@
 'use strict';
+const S = require('./sprites.js');
 // V3 Wardrobe screen (installed onto Game.prototype): preview the current
 // streamer, tabs Outfits / Hair / Extras, buy with coins, equip, themed looks,
 // and an optional "free look" rewarded ad.
@@ -55,7 +56,9 @@ function install(Game) {
       ui.panel(x, yy, cw, chh, on ? '#eafff0' : owned ? '#fff' : '#f4eef0', on ? C.greenDark : C.outline, 16, on ? 5 : 2);
       this.wardIcon(it, x + cw / 2, yy + 40, sd);
       ui.label(it.name, x + cw / 2, yy + 76, 11, C.text);
-      ui.label(on ? 'WEARING' : owned ? 'TAP TO WEAR' : it.gift ? (this.canUnlockLook() ? '▶ UNLOCK · LV ' + it.gift : 'GIFT · LV ' + it.gift) : '', x + cw / 2, yy + 93, 10, on ? C.greenDark : owned ? C.textLight : C.pinkDark);
+      const badge = !owned && it.gift ? (this.canUnlockLook() ? 'wardrobe/badge_ad.png' : 'wardrobe/badge_gift.png') : null;
+      if (badge && S.v4draw(ctx, badge, x + cw / 2 - (this.canUnlockLook() ? 0 : 14), yy + 92, Math.min(cw - 30, 72))) { if (!this.canUnlockLook()) ui.label('LV ' + it.gift, x + cw / 2 + 30, yy + 93, 11, C.pinkDark); }
+      else ui.label(on ? 'WEARING' : owned ? 'TAP TO WEAR' : it.gift ? (this.canUnlockLook() ? '▶ UNLOCK · LV ' + it.gift : 'GIFT · LV ' + it.gift) : '', x + cw / 2, yy + 93, 10, on ? C.greenDark : owned ? C.textLight : C.pinkDark);
       if (!owned && it.price) { A.coin(ctx, x + cw / 2 - 18, yy + 93, 7); ui.label(U.fmtCoins(it.price), x + cw / 2 + 4, yy + 94, 12, C.text, 'left'); }
       ui.hotspot('witem_' + it.id, x, yy, cw, chh);
     }
@@ -70,6 +73,7 @@ function install(Game) {
   // small preview of an item
   P.wardIcon = function (it, x, y, sd) {
     const ctx = this.ctx;
+    if (S.v4draw(ctx, 'wardrobe/icon_' + it.id + '.png', x, y + 2, 64)) return; // Codex icon (main)
     if (it.slot === 'outfit') { const col = it.color || (it.overlay === 'apron' ? '#ffffff' : it.overlay === 'bib' ? '#fff3f7' : it.overlay === 'overalls' ? '#cdb0ff' : sd.top); A.rr(ctx, x - 26, y - 20, 52, 44, 14); ctx.fillStyle = col; ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = C.outline; ctx.stroke(); if (it.overlay === 'overalls') A.star(ctx, x, y + 6, 8, C.gold, 2); if (it.overlay === 'bib') A.text(ctx, 'YUM', x, y + 2, 10, C.pinkDark, 0); if (it.overlay === 'apron') A.rr(ctx, x - 8, y + 2, 16, 10, 3); return; }
     if (it.id === 'hair_none' || it.id === 'acc_none') { ctx.strokeStyle = '#cfc2c2'; ctx.lineWidth = 4; ctx.beginPath(); ctx.arc(x, y, 16, 0, Math.PI * 2); ctx.moveTo(x - 11, y + 11); ctx.lineTo(x + 11, y - 11); ctx.stroke(); return; }
     // draw the accessory on a little face

@@ -344,7 +344,13 @@ const V4 = {};
   'bite/ramen_chopsticks_1.png',
   'bite/ramen_chopsticks_2.png'
 ].forEach(function (p) { V4[p] = 'art4'; });
-const SUB_ROOT = { art4: 'art4/', art3: 'art3/', art1: 'art1/' };
+// Wardrobe (Codex 06/11): per-streamer overlays in art5 (outfit = body canvas, hair/acc = head canvas); icons + UI in main
+['outfit_mint', 'outfit_bib', 'outfit_sunny', 'outfit_sakura', 'outfit_chef', 'outfit_star', 'hair_bow', 'hair_star', 'hair_cat_ears', 'hair_beret', 'hair_flowers', 'hair_bunny_ears', 'hair_crown', 'acc_blush', 'acc_glasses_round', 'acc_headphones', 'acc_heart_glasses', 'acc_scarf'].forEach(function (id) {
+  ['luna', 'kiko', 'momo'].forEach(function (sid) { V4['wardrobe/' + id + '_' + sid + '.png'] = 'art5'; });
+  V4['wardrobe/icon_' + id + '.png'] = 'main';
+});
+['icon_outfit_default', 'tab_outfit', 'tab_hair', 'tab_extras', 'badge_ad', 'badge_gift'].forEach(function (n) { V4['wardrobe/' + n + '.png'] = 'main'; });
+const SUB_ROOT = { art4: 'art4/', art3: 'art3/', art1: 'art1/', art5: 'art5/' };
 const sub = {};     // name → 'loading' | 'ok' | 'fail'
 function subReady(name) {
   if (sub[name] === 'ok') return true;

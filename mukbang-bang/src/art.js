@@ -604,10 +604,14 @@ function streamer(ctx, ch, x, y, s, st) {
   ctx.save(); ctx.translate(x, y + (st.bob || 0)); ctx.scale(k, k); ctx.translate(-sp.headAnchor[0], -sp.headAnchor[1]);
   // now in head-image pixels
   // outfit: another streamer's sweater layer (same pose) or a vector overlay on top of our own
+  // Codex wardrobe art: per-streamer layers on the same canvases as body / head (art5); vector fallback while it loads
+  const wear = function (id) { return id && id !== 'hair_none' && id !== 'acc_none' && id !== 'outfit_default' ? S.v4('wardrobe/' + id + '_' + ch.id + '.png') : null; };
+  const oIm = lk ? wear(lk.outfit) : null, hIm = lk ? wear(lk.hair) : null, aIm = lk ? wear(lk.acc) : null;
   let body = P.body, bodyAnchor = sp.bodyAnchor;
-  if (outfit && outfit.body && S.STREAMERS[outfit.body]) { const ob = S.get(S.STREAMERS[outfit.body].body); if (ob) { body = ob; bodyAnchor = S.STREAMERS[outfit.body].bodyAnchor; } }
+  if (!oIm && outfit && outfit.body && S.STREAMERS[outfit.body]) { const ob = S.get(S.STREAMERS[outfit.body].body); if (ob) { body = ob; bodyAnchor = S.STREAMERS[outfit.body].bodyAnchor; } }
   ctx.drawImage(body, sp.neckOnHead[0] - bodyAnchor[0], sp.neckOnHead[1] - bodyAnchor[1]);
-  if (lk) WR.drawBody(ctx, module.exports, lk, { nx: sp.neckOnHead[0], ny: sp.neckOnHead[1], bw: 343 });
+  if (oIm) ctx.drawImage(oIm, sp.neckOnHead[0] - sp.bodyAnchor[0], sp.neckOnHead[1] - sp.bodyAnchor[1]);
+  else if (lk) WR.drawBody(ctx, module.exports, lk, { nx: sp.neckOnHead[0], ny: sp.neckOnHead[1], bw: 343 });
   ctx.drawImage(P.head, 0, 0);
   const ex = S.EXPR[expr]; let eyes = ex[0], mouth = ex[1];
   if ((expr === 'idle' || expr === 'open' || expr === 'chew') && st.blink) eyes = 'eyes_blink';
@@ -626,7 +630,9 @@ function streamer(ctx, ch, x, y, s, st) {
   if (S.FACE[mouth]) S.cell(ctx, P.face, S.FACE[mouth], sp.mouth[0], sp.mouth[1], 240, 120);
   if (ex[2] && P.fx && S.FX[ex[2]]) { const fa = S.fxAt(ex[2], sp); S.cell(ctx, P.fx, S.FX[ex[2]], fa[0], fa[1] + Math.sin(t * 6) * 4, 240, 120); }
   if (expr === 'fizzy') for (let i = 0; i < 3; i++) sparkle(ctx, ey[0] + [-180, 185, 140][i], ey[1] + [-70, -40, 120][i], 18 + Math.sin(t * 12 + i) * 6, '#fff');
-  if (lk) WR.drawHead(ctx, module.exports, lk, { cx: sp.headAnchor[0], cy: sp.headAnchor[1] - (sp.headAnchor[1] - ey[1]) * 0.2, r: sp.faceRadius, ey: ey[1], ny: sp.neckOnHead[1] }, ch, t);
+  if (aIm) ctx.drawImage(aIm, 0, 0);
+  if (hIm) ctx.drawImage(hIm, 0, 0);
+  if (lk && (!aIm || !hIm)) { const vl = { outfit: 'outfit_default', hair: hIm ? 'hair_none' : lk.hair, acc: aIm ? 'acc_none' : lk.acc }; WR.drawHead(ctx, module.exports, vl, { cx: sp.headAnchor[0], cy: sp.headAnchor[1] - (sp.headAnchor[1] - ey[1]) * 0.2, r: sp.faceRadius, ey: ey[1], ny: sp.neckOnHead[1] }, ch, t); }
   ctx.restore();
 }
 function mouthPos(x, y, s, bob, ch) {

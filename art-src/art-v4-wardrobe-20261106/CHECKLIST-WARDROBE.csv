@@ -1,0 +1,79 @@
+path,size,package,layer,priority,status
+art5/wardrobe/outfit_mint_luna.png,512x420 (body canvas),art5,overlay,2,pending
+art5/wardrobe/outfit_mint_kiko.png,512x420 (body canvas),art5,overlay,2,pending
+art5/wardrobe/outfit_mint_momo.png,512x420 (body canvas),art5,overlay,2,pending
+art5/wardrobe/outfit_bib_luna.png,512x420 (body canvas),art5,overlay,2,pending
+art5/wardrobe/outfit_bib_kiko.png,512x420 (body canvas),art5,overlay,2,pending
+art5/wardrobe/outfit_bib_momo.png,512x420 (body canvas),art5,overlay,2,pending
+art5/wardrobe/outfit_sunny_luna.png,512x420 (body canvas),art5,overlay,2,pending
+art5/wardrobe/outfit_sunny_kiko.png,512x420 (body canvas),art5,overlay,2,pending
+art5/wardrobe/outfit_sunny_momo.png,512x420 (body canvas),art5,overlay,2,pending
+art5/wardrobe/outfit_sakura_luna.png,512x420 (body canvas),art5,overlay,2,pending
+art5/wardrobe/outfit_sakura_kiko.png,512x420 (body canvas),art5,overlay,2,pending
+art5/wardrobe/outfit_sakura_momo.png,512x420 (body canvas),art5,overlay,2,pending
+art5/wardrobe/outfit_chef_luna.png,512x420 (body canvas),art5,overlay,2,pending
+art5/wardrobe/outfit_chef_kiko.png,512x420 (body canvas),art5,overlay,2,pending
+art5/wardrobe/outfit_chef_momo.png,512x420 (body canvas),art5,overlay,2,pending
+art5/wardrobe/outfit_star_luna.png,512x420 (body canvas),art5,overlay,2,pending
+art5/wardrobe/outfit_star_kiko.png,512x420 (body canvas),art5,overlay,2,pending
+art5/wardrobe/outfit_star_momo.png,512x420 (body canvas),art5,overlay,2,pending
+art5/wardrobe/hair_bow_luna.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/hair_bow_kiko.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/hair_bow_momo.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/hair_star_luna.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/hair_star_kiko.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/hair_star_momo.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/hair_cat_ears_luna.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/hair_cat_ears_kiko.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/hair_cat_ears_momo.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/hair_beret_luna.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/hair_beret_kiko.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/hair_beret_momo.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/hair_flowers_luna.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/hair_flowers_kiko.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/hair_flowers_momo.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/hair_bunny_ears_luna.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/hair_bunny_ears_kiko.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/hair_bunny_ears_momo.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/hair_crown_luna.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/hair_crown_kiko.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/hair_crown_momo.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/acc_blush_luna.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/acc_blush_kiko.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/acc_blush_momo.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/acc_glasses_round_luna.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/acc_glasses_round_kiko.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/acc_glasses_round_momo.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/acc_headphones_luna.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/acc_headphones_kiko.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/acc_headphones_momo.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/acc_heart_glasses_luna.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/acc_heart_glasses_kiko.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/acc_heart_glasses_momo.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/acc_scarf_luna.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/acc_scarf_kiko.png,512x512 (head canvas),art5,overlay,2,pending
+art5/wardrobe/acc_scarf_momo.png,512x512 (head canvas),art5,overlay,2,pending
+assets/wardrobe/icon_outfit_default.png,128x128,main,icon,2,pending
+assets/wardrobe/icon_outfit_mint.png,128x128,main,icon,2,pending
+assets/wardrobe/icon_outfit_bib.png,128x128,main,icon,2,pending
+assets/wardrobe/icon_outfit_sunny.png,128x128,main,icon,2,pending
+assets/wardrobe/icon_outfit_sakura.png,128x128,main,icon,2,pending
+assets/wardrobe/icon_outfit_chef.png,128x128,main,icon,2,pending
+assets/wardrobe/icon_outfit_star.png,128x128,main,icon,2,pending
+assets/wardrobe/icon_hair_bow.png,128x128,main,icon,2,pending
+assets/wardrobe/icon_hair_star.png,128x128,main,icon,2,pending
+assets/wardrobe/icon_hair_cat_ears.png,128x128,main,icon,2,pending
+assets/wardrobe/icon_hair_beret.png,128x128,main,icon,2,pending
+assets/wardrobe/icon_hair_flowers.png,128x128,main,icon,2,pending
+assets/wardrobe/icon_hair_bunny_ears.png,128x128,main,icon,2,pending
+assets/wardrobe/icon_hair_crown.png,128x128,main,icon,2,pending
+assets/wardrobe/icon_acc_blush.png,128x128,main,icon,2,pending
+assets/wardrobe/icon_acc_glasses_round.png,128x128,main,icon,2,pending
+assets/wardrobe/icon_acc_headphones.png,128x128,main,icon,2,pending
+assets/wardrobe/icon_acc_heart_glasses.png,128x128,main,icon,2,pending
+assets/wardrobe/icon_acc_scarf.png,128x128,main,icon,2,pending
+assets/wardrobe/tab_outfit.png,96x96,main,ui,3,pending
+assets/wardrobe/tab_hair.png,96x96,main,ui,3,pending
+assets/wardrobe/tab_extras.png,96x96,main,ui,3,pending
+assets/wardrobe/badge_ad.png,120x40,main,ui,3,pending
+assets/wardrobe/badge_gift.png,120x40,main,ui,3,pending

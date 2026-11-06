@@ -1,0 +1,587 @@
+[
+  {
+    "id": "outfit_sakura_luna",
+    "item": "outfit_sakura",
+    "person": "luna",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_body.png"
+    ],
+    "prompt": "Precise clothing edit of approved Luna kawaii game body sprite. Change ONLY sweater to pink #ffb3c7 shadows #e8759a with scattered delicate sakura petals. Preserve EXACT original seated front-facing pose, sleeve silhouette, neckline, both original uncovered fists, skin color, finger placement, canvas registration and padding. Match warm brown outline and soft pastel painterly shading. Complete edited body patch, no head, no face, no hair, no props, no words. Transparent alpha background. Intended512x420 same aspect as reference. No zoom, shift or rotation.",
+    "tool": "built-in ImageGen",
+    "source": "sources/outfit_sakura_luna.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "outfit_chef_luna",
+    "item": "outfit_chef",
+    "person": "luna",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_body.png"
+    ],
+    "prompt": "Precise clothing edit for an approved 2D kawaii game body sprite. Target luna body reference. Change only clothing to white chef apron with front pocket, straps around neck, worn over original sweater. Preserve EXACT original front-facing seated pose, body and sleeve silhouette, neckline location, both fists resting at bottom, skin color, finger placement and canvas registration. No head, no face, no hair. Show both original hands uncovered exactly as reference; redraw them only if necessary to keep visible. Premium soft pastel shading and warm brown contours identical to original bitmap. Output the edited complete body patch on transparent alpha background, no framing, no props, no text except requested YUM. Intended512x420 canvas, same reference aspect and padding; no zoom, shift or rotation. Full sweater variants must cover original sweater entirely.",
+    "tool": "built-in ImageGen",
+    "source": "sources/outfit_chef_luna.png",
+    "selectionStatus": "superseded"
+  },
+  {
+    "id": "outfit_star_luna",
+    "item": "outfit_star",
+    "person": "luna",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_body.png"
+    ],
+    "prompt": "Precise clothing edit for an approved 2D kawaii game body sprite. Target luna body reference. Change only clothing to lavender overalls #cdb0ff, two gold star buttons and one large gold star on bib, worn over original sweater. Preserve EXACT original front-facing seated pose, body and sleeve silhouette, neckline location, both fists resting at bottom, skin color, finger placement and canvas registration. No head, no face, no hair. Show both original hands uncovered exactly as reference; redraw them only if necessary to keep visible. Premium soft pastel shading and warm brown contours identical to original bitmap. Output the edited complete body patch on transparent alpha background, no framing, no props, no text except requested YUM. Intended512x420 canvas, same reference aspect and padding; no zoom, shift or rotation. Full sweater variants must cover original sweater entirely.",
+    "tool": "built-in ImageGen",
+    "source": "sources/outfit_star_luna.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "hair_cat_ears",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_head.png",
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_head.png",
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_head.png"
+    ],
+    "prompt": "Transparent isolated wardrobe accessory sprite: arched headband with two kawaii cat ears, pale outer ears and pink inner ears. Three attached approved streamer heads are STYLE and FIT references only. Output ONLY the accessory, no character pixels, no face, no eyes, no mouth, no ears, no hair, no skin. Front view, shaped to hug rounded chibi head/neck, symmetric where appropriate. Warm brown outline, pastel colors, soft shaded painted highlights, same premium kawaii style as approved bitmap heads. Entire object centered in transparent square with padding, no drop shadows, no UI, no watermark. Will be registered separately onto each head canvas at exact anchors. ",
+    "tool": "built-in ImageGen",
+    "source": "sources/hair_cat_ears.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "hair_crown",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_head.png",
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_head.png",
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_head.png"
+    ],
+    "prompt": "Transparent isolated wardrobe accessory sprite: gold #ffd23f three-point crown, middle peak star-shaped, a few tiny sparkle highlights. Three attached approved streamer heads are STYLE and FIT references only. Output ONLY the accessory, no character pixels, no face, no eyes, no mouth, no ears, no hair, no skin. Front view, shaped to hug rounded chibi head/neck, symmetric where appropriate. Warm brown outline, pastel colors, soft shaded painted highlights, same premium kawaii style as approved bitmap heads. Entire object centered in transparent square with padding, no drop shadows, no UI, no watermark. Will be registered separately onto each head canvas at exact anchors. ",
+    "tool": "built-in ImageGen",
+    "source": "sources/hair_crown.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "acc_blush",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_head.png",
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_head.png",
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_head.png"
+    ],
+    "prompt": "Transparent isolated wardrobe accessory sprite: exactly two small pink heart cheek stickers, horizontal pair with wide empty transparent gap between them. Three attached approved streamer heads are STYLE and FIT references only. Output ONLY the accessory, no character pixels, no face, no eyes, no mouth, no ears, no hair, no skin. Front view, shaped to hug rounded chibi head/neck, symmetric where appropriate. Warm brown outline, pastel colors, soft shaded painted highlights, same premium kawaii style as approved bitmap heads. Entire object centered in transparent square with padding, no drop shadows, no UI, no watermark. Will be registered separately onto each head canvas at exact anchors. ",
+    "tool": "built-in ImageGen",
+    "source": "sources/acc_blush.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "acc_glasses_round",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_head.png",
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_head.png",
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_head.png"
+    ],
+    "prompt": "Transparent isolated wardrobe accessory sprite: round warm brown glasses, two lenses with transparent25 percent pale tint, slim bridge, NO eyes. Three attached approved streamer heads are STYLE and FIT references only. Output ONLY the accessory, no character pixels, no face, no eyes, no mouth, no ears, no hair, no skin. Front view, shaped to hug rounded chibi head/neck, symmetric where appropriate. Warm brown outline, pastel colors, soft shaded painted highlights, same premium kawaii style as approved bitmap heads. Entire object centered in transparent square with padding, no drop shadows, no UI, no watermark. Will be registered separately onto each head canvas at exact anchors. Lens interiors must be genuinely alpha transparent, leave eyes readable.",
+    "tool": "built-in ImageGen",
+    "source": "sources/acc_glasses_round.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "acc_heart_glasses",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_head.png",
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_head.png",
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_head.png"
+    ],
+    "prompt": "Transparent isolated wardrobe accessory sprite: pink heart-shaped glasses, two lenses transparent25 percent pale pink tint, slender bridge, NO eyes. Three attached approved streamer heads are STYLE and FIT references only. Output ONLY the accessory, no character pixels, no face, no eyes, no mouth, no ears, no hair, no skin. Front view, shaped to hug rounded chibi head/neck, symmetric where appropriate. Warm brown outline, pastel colors, soft shaded painted highlights, same premium kawaii style as approved bitmap heads. Entire object centered in transparent square with padding, no drop shadows, no UI, no watermark. Will be registered separately onto each head canvas at exact anchors. Lens interiors must be genuinely alpha transparent, leave eyes readable.",
+    "tool": "built-in ImageGen",
+    "source": "sources/acc_heart_glasses.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "outfit_mint_luna",
+    "item": "outfit_mint",
+    "person": "luna",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_body.png"
+    ],
+    "prompt": "Precise clothing edit for an approved 2D kawaii game body sprite. Target luna body reference. Change only clothing to mint sweater #9fe3c9 shadows #5fbf9f, ribbed round collar, one small white heart on chest. Preserve EXACT original front-facing seated pose, body and sleeve silhouette, neckline location, both fists resting at bottom, skin color, finger placement and canvas registration. No head, no face, no hair. Show both original hands uncovered exactly as reference; redraw them only if necessary to keep visible. Premium soft pastel shading and warm brown contours identical to original bitmap. Output the edited complete body patch on transparent alpha background, no framing, no props, no text except requested YUM. Intended512x420 canvas, same reference aspect and padding; no zoom, shift or rotation. Full sweater variants must cover original sweater entirely.",
+    "tool": "built-in ImageGen",
+    "source": "sources/outfit_mint_luna.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "outfit_mint_kiko",
+    "item": "outfit_mint",
+    "person": "kiko",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_body.png"
+    ],
+    "prompt": "Precise clothing edit for an approved 2D kawaii game body sprite. Target kiko body reference. Change only clothing to mint sweater #9fe3c9 shadows #5fbf9f, ribbed round collar, one small white heart on chest. Preserve EXACT original front-facing seated pose, body and sleeve silhouette, neckline location, both fists resting at bottom, skin color, finger placement and canvas registration. No head, no face, no hair. Show both original hands uncovered exactly as reference; redraw them only if necessary to keep visible. Premium soft pastel shading and warm brown contours identical to original bitmap. Output the edited complete body patch on transparent alpha background, no framing, no props, no text except requested YUM. Intended512x420 canvas, same reference aspect and padding; no zoom, shift or rotation. Full sweater variants must cover original sweater entirely.",
+    "tool": "built-in ImageGen",
+    "source": "sources/outfit_mint_kiko.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "outfit_mint_momo",
+    "item": "outfit_mint",
+    "person": "momo",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_body.png"
+    ],
+    "prompt": "Precise clothing edit for an approved 2D kawaii game body sprite. Target momo body reference. Change only clothing to mint sweater #9fe3c9 shadows #5fbf9f, ribbed round collar, one small white heart on chest. Preserve EXACT original front-facing seated pose, body and sleeve silhouette, neckline location, both fists resting at bottom, skin color, finger placement and canvas registration. No head, no face, no hair. Show both original hands uncovered exactly as reference; redraw them only if necessary to keep visible. Premium soft pastel shading and warm brown contours identical to original bitmap. Output the edited complete body patch on transparent alpha background, no framing, no props, no text except requested YUM. Intended512x420 canvas, same reference aspect and padding; no zoom, shift or rotation. Full sweater variants must cover original sweater entirely.",
+    "tool": "built-in ImageGen",
+    "source": "sources/outfit_mint_momo.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "outfit_bib_luna",
+    "item": "outfit_bib",
+    "person": "luna",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_body.png"
+    ],
+    "prompt": "Precise clothing edit for an approved 2D kawaii game body sprite. Target luna body reference. Change only clothing to white pink eating bib #fff3f7, delicate ruffled hem, small embroidered text YUM, worn over original sweater. Preserve EXACT original front-facing seated pose, body and sleeve silhouette, neckline location, both fists resting at bottom, skin color, finger placement and canvas registration. No head, no face, no hair. Show both original hands uncovered exactly as reference; redraw them only if necessary to keep visible. Premium soft pastel shading and warm brown contours identical to original bitmap. Output the edited complete body patch on transparent alpha background, no framing, no props, no text except requested YUM. Intended512x420 canvas, same reference aspect and padding; no zoom, shift or rotation. Full sweater variants must cover original sweater entirely.",
+    "tool": "built-in ImageGen",
+    "source": "sources/outfit_bib_luna.png",
+    "selectionStatus": "superseded"
+  },
+  {
+    "id": "outfit_bib_kiko",
+    "item": "outfit_bib",
+    "person": "kiko",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_body.png"
+    ],
+    "prompt": "Precise clothing edit for an approved 2D kawaii game body sprite. Target kiko body reference. Change only clothing to white pink eating bib #fff3f7, delicate ruffled hem, small embroidered text YUM, worn over original sweater. Preserve EXACT original front-facing seated pose, body and sleeve silhouette, neckline location, both fists resting at bottom, skin color, finger placement and canvas registration. No head, no face, no hair. Show both original hands uncovered exactly as reference; redraw them only if necessary to keep visible. Premium soft pastel shading and warm brown contours identical to original bitmap. Output the edited complete body patch on transparent alpha background, no framing, no props, no text except requested YUM. Intended512x420 canvas, same reference aspect and padding; no zoom, shift or rotation. Full sweater variants must cover original sweater entirely.",
+    "tool": "built-in ImageGen",
+    "source": "sources/outfit_bib_kiko.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "outfit_bib_momo",
+    "item": "outfit_bib",
+    "person": "momo",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_body.png"
+    ],
+    "prompt": "Precise clothing edit for an approved 2D kawaii game body sprite. Target momo body reference. Change only clothing to white pink eating bib #fff3f7, delicate ruffled hem, small embroidered text YUM, worn over original sweater. Preserve EXACT original front-facing seated pose, body and sleeve silhouette, neckline location, both fists resting at bottom, skin color, finger placement and canvas registration. No head, no face, no hair. Show both original hands uncovered exactly as reference; redraw them only if necessary to keep visible. Premium soft pastel shading and warm brown contours identical to original bitmap. Output the edited complete body patch on transparent alpha background, no framing, no props, no text except requested YUM. Intended512x420 canvas, same reference aspect and padding; no zoom, shift or rotation. Full sweater variants must cover original sweater entirely.",
+    "tool": "built-in ImageGen",
+    "source": "sources/outfit_bib_momo.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "outfit_sunny_luna",
+    "item": "outfit_sunny",
+    "person": "luna",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_body.png"
+    ],
+    "prompt": "Precise clothing edit for an approved 2D kawaii game body sprite. Target luna body reference. Change only clothing to sunny yellow sweater #ffd95e shadows #e0b52a, one small cheerful sun motif on chest. Preserve EXACT original front-facing seated pose, body and sleeve silhouette, neckline location, both fists resting at bottom, skin color, finger placement and canvas registration. No head, no face, no hair. Show both original hands uncovered exactly as reference; redraw them only if necessary to keep visible. Premium soft pastel shading and warm brown contours identical to original bitmap. Output the edited complete body patch on transparent alpha background, no framing, no props, no text except requested YUM. Intended512x420 canvas, same reference aspect and padding; no zoom, shift or rotation. Full sweater variants must cover original sweater entirely.",
+    "tool": "built-in ImageGen",
+    "source": "sources/outfit_sunny_luna.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "outfit_sunny_kiko",
+    "item": "outfit_sunny",
+    "person": "kiko",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_body.png"
+    ],
+    "prompt": "Precise clothing edit for an approved 2D kawaii game body sprite. Target kiko body reference. Change only clothing to sunny yellow sweater #ffd95e shadows #e0b52a, one small cheerful sun motif on chest. Preserve EXACT original front-facing seated pose, body and sleeve silhouette, neckline location, both fists resting at bottom, skin color, finger placement and canvas registration. No head, no face, no hair. Show both original hands uncovered exactly as reference; redraw them only if necessary to keep visible. Premium soft pastel shading and warm brown contours identical to original bitmap. Output the edited complete body patch on transparent alpha background, no framing, no props, no text except requested YUM. Intended512x420 canvas, same reference aspect and padding; no zoom, shift or rotation. Full sweater variants must cover original sweater entirely.",
+    "tool": "built-in ImageGen",
+    "source": "sources/outfit_sunny_kiko.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "outfit_sunny_momo",
+    "item": "outfit_sunny",
+    "person": "momo",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_body.png"
+    ],
+    "prompt": "Precise clothing edit for an approved 2D kawaii game body sprite. Target momo body reference. Change only clothing to sunny yellow sweater #ffd95e shadows #e0b52a, one small cheerful sun motif on chest. Preserve EXACT original front-facing seated pose, body and sleeve silhouette, neckline location, both fists resting at bottom, skin color, finger placement and canvas registration. No head, no face, no hair. Show both original hands uncovered exactly as reference; redraw them only if necessary to keep visible. Premium soft pastel shading and warm brown contours identical to original bitmap. Output the edited complete body patch on transparent alpha background, no framing, no props, no text except requested YUM. Intended512x420 canvas, same reference aspect and padding; no zoom, shift or rotation. Full sweater variants must cover original sweater entirely.",
+    "tool": "built-in ImageGen",
+    "source": "sources/outfit_sunny_momo.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "outfit_sakura_kiko",
+    "item": "outfit_sakura",
+    "person": "kiko",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_body.png"
+    ],
+    "prompt": "Precise clothing edit for an approved 2D kawaii game body sprite. Target kiko body reference. Change only clothing to pink sweater #ffb3c7 shadows #e8759a, scattered delicate sakura petals. Preserve EXACT original front-facing seated pose, body and sleeve silhouette, neckline location, both fists resting at bottom, skin color, finger placement and canvas registration. No head, no face, no hair. Show both original hands uncovered exactly as reference; redraw them only if necessary to keep visible. Premium soft pastel shading and warm brown contours identical to original bitmap. Output the edited complete body patch on transparent alpha background, no framing, no props, no text except requested YUM. Intended512x420 canvas, same reference aspect and padding; no zoom, shift or rotation. Full sweater variants must cover original sweater entirely.",
+    "tool": "built-in ImageGen",
+    "source": "sources/outfit_sakura_kiko.png",
+    "selectionStatus": "superseded"
+  },
+  {
+    "id": "outfit_sakura_momo",
+    "item": "outfit_sakura",
+    "person": "momo",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_body.png"
+    ],
+    "prompt": "Precise clothing edit for an approved 2D kawaii game body sprite. Target momo body reference. Change only clothing to pink sweater #ffb3c7 shadows #e8759a, scattered delicate sakura petals. Preserve EXACT original front-facing seated pose, body and sleeve silhouette, neckline location, both fists resting at bottom, skin color, finger placement and canvas registration. No head, no face, no hair. Show both original hands uncovered exactly as reference; redraw them only if necessary to keep visible. Premium soft pastel shading and warm brown contours identical to original bitmap. Output the edited complete body patch on transparent alpha background, no framing, no props, no text except requested YUM. Intended512x420 canvas, same reference aspect and padding; no zoom, shift or rotation. Full sweater variants must cover original sweater entirely.",
+    "tool": "built-in ImageGen",
+    "source": "sources/outfit_sakura_momo.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "outfit_chef_kiko",
+    "item": "outfit_chef",
+    "person": "kiko",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_body.png"
+    ],
+    "prompt": "Precise clothing edit for an approved 2D kawaii game body sprite. Target kiko body reference. Change only clothing to white chef apron with front pocket, straps around neck, worn over original sweater. Preserve EXACT original front-facing seated pose, body and sleeve silhouette, neckline location, both fists resting at bottom, skin color, finger placement and canvas registration. No head, no face, no hair. Show both original hands uncovered exactly as reference; redraw them only if necessary to keep visible. Premium soft pastel shading and warm brown contours identical to original bitmap. Output the edited complete body patch on transparent alpha background, no framing, no props, no text except requested YUM. Intended512x420 canvas, same reference aspect and padding; no zoom, shift or rotation. Full sweater variants must cover original sweater entirely.",
+    "tool": "built-in ImageGen",
+    "source": "sources/outfit_chef_kiko.png",
+    "selectionStatus": "superseded"
+  },
+  {
+    "id": "outfit_chef_momo",
+    "item": "outfit_chef",
+    "person": "momo",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_body.png"
+    ],
+    "prompt": "Precise clothing edit for an approved 2D kawaii game body sprite. Target momo body reference. Change only clothing to white chef apron with front pocket, straps around neck, worn over original sweater. Preserve EXACT original front-facing seated pose, body and sleeve silhouette, neckline location, both fists resting at bottom, skin color, finger placement and canvas registration. No head, no face, no hair. Show both original hands uncovered exactly as reference; redraw them only if necessary to keep visible. Premium soft pastel shading and warm brown contours identical to original bitmap. Output the edited complete body patch on transparent alpha background, no framing, no props, no text except requested YUM. Intended512x420 canvas, same reference aspect and padding; no zoom, shift or rotation. Full sweater variants must cover original sweater entirely.",
+    "tool": "built-in ImageGen",
+    "source": "sources/outfit_chef_momo.png",
+    "selectionStatus": "superseded"
+  },
+  {
+    "id": "outfit_star_kiko",
+    "item": "outfit_star",
+    "person": "kiko",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_body.png"
+    ],
+    "prompt": "Precise clothing edit for an approved 2D kawaii game body sprite. Target kiko body reference. Change only clothing to lavender overalls #cdb0ff, two gold star buttons and one large gold star on bib, worn over original sweater. Preserve EXACT original front-facing seated pose, body and sleeve silhouette, neckline location, both fists resting at bottom, skin color, finger placement and canvas registration. No head, no face, no hair. Show both original hands uncovered exactly as reference; redraw them only if necessary to keep visible. Premium soft pastel shading and warm brown contours identical to original bitmap. Output the edited complete body patch on transparent alpha background, no framing, no props, no text except requested YUM. Intended512x420 canvas, same reference aspect and padding; no zoom, shift or rotation. Full sweater variants must cover original sweater entirely.",
+    "tool": "built-in ImageGen",
+    "source": "sources/outfit_star_kiko.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "outfit_star_momo",
+    "item": "outfit_star",
+    "person": "momo",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_body.png"
+    ],
+    "prompt": "Precise clothing edit for an approved 2D kawaii game body sprite. Target momo body reference. Change only clothing to lavender overalls #cdb0ff, two gold star buttons and one large gold star on bib, worn over original sweater. Preserve EXACT original front-facing seated pose, body and sleeve silhouette, neckline location, both fists resting at bottom, skin color, finger placement and canvas registration. No head, no face, no hair. Show both original hands uncovered exactly as reference; redraw them only if necessary to keep visible. Premium soft pastel shading and warm brown contours identical to original bitmap. Output the edited complete body patch on transparent alpha background, no framing, no props, no text except requested YUM. Intended512x420 canvas, same reference aspect and padding; no zoom, shift or rotation. Full sweater variants must cover original sweater entirely.",
+    "tool": "built-in ImageGen",
+    "source": "sources/outfit_star_momo.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "hair_bow",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_head.png",
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_head.png",
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_head.png"
+    ],
+    "prompt": "Transparent isolated wardrobe accessory sprite: one big pink bow #ff7fa8, softly puffed fabric, side-mounted on upper right hair. Three attached approved streamer heads are STYLE and FIT references only. Output ONLY the accessory, no character pixels, no face, no eyes, no mouth, no ears, no hair, no skin. Front view, shaped to hug rounded chibi head/neck, symmetric where appropriate. Warm brown outline, pastel colors, soft shaded painted highlights, same premium kawaii style as approved bitmap heads. Entire object centered in transparent square with padding, no drop shadows, no UI, no watermark. Will be registered separately onto each head canvas at exact anchors. ",
+    "tool": "built-in ImageGen",
+    "source": "sources/hair_bow.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "hair_star",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_head.png",
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_head.png",
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_head.png"
+    ],
+    "prompt": "Transparent isolated wardrobe accessory sprite: one small gold star hair clip for left fringe. Three attached approved streamer heads are STYLE and FIT references only. Output ONLY the accessory, no character pixels, no face, no eyes, no mouth, no ears, no hair, no skin. Front view, shaped to hug rounded chibi head/neck, symmetric where appropriate. Warm brown outline, pastel colors, soft shaded painted highlights, same premium kawaii style as approved bitmap heads. Entire object centered in transparent square with padding, no drop shadows, no UI, no watermark. Will be registered separately onto each head canvas at exact anchors. ",
+    "tool": "built-in ImageGen",
+    "source": "sources/hair_star.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "hair_beret",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_head.png",
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_head.png",
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_head.png"
+    ],
+    "prompt": "Transparent isolated wardrobe accessory sprite: red beret #e8403a, softly tilted, small top nub, curved fitted head opening. Three attached approved streamer heads are STYLE and FIT references only. Output ONLY the accessory, no character pixels, no face, no eyes, no mouth, no ears, no hair, no skin. Front view, shaped to hug rounded chibi head/neck, symmetric where appropriate. Warm brown outline, pastel colors, soft shaded painted highlights, same premium kawaii style as approved bitmap heads. Entire object centered in transparent square with padding, no drop shadows, no UI, no watermark. Will be registered separately onto each head canvas at exact anchors. ",
+    "tool": "built-in ImageGen",
+    "source": "sources/hair_beret.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "hair_flowers",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_head.png",
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_head.png",
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_head.png"
+    ],
+    "prompt": "Transparent isolated wardrobe accessory sprite: shallow curved crown of small pink yellow white flowers and green leaves. Three attached approved streamer heads are STYLE and FIT references only. Output ONLY the accessory, no character pixels, no face, no eyes, no mouth, no ears, no hair, no skin. Front view, shaped to hug rounded chibi head/neck, symmetric where appropriate. Warm brown outline, pastel colors, soft shaded painted highlights, same premium kawaii style as approved bitmap heads. Entire object centered in transparent square with padding, no drop shadows, no UI, no watermark. Will be registered separately onto each head canvas at exact anchors. ",
+    "tool": "built-in ImageGen",
+    "source": "sources/hair_flowers.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "hair_bunny_ears",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_head.png",
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_head.png",
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_head.png"
+    ],
+    "prompt": "Transparent isolated wardrobe accessory sprite: white bunny ear headband, two upright ears with pink insides, one folded tip. Three attached approved streamer heads are STYLE and FIT references only. Output ONLY the accessory, no character pixels, no face, no eyes, no mouth, no ears, no hair, no skin. Front view, shaped to hug rounded chibi head/neck, symmetric where appropriate. Warm brown outline, pastel colors, soft shaded painted highlights, same premium kawaii style as approved bitmap heads. Entire object centered in transparent square with padding, no drop shadows, no UI, no watermark. Will be registered separately onto each head canvas at exact anchors. ",
+    "tool": "built-in ImageGen",
+    "source": "sources/hair_bunny_ears.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "acc_headphones",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_head.png",
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_head.png",
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_head.png"
+    ],
+    "prompt": "Transparent isolated wardrobe accessory sprite: pastel pink mint over-ear headphones, curved padded arch and two ear cups, transparent open center, NO head. Three attached approved streamer heads are STYLE and FIT references only. Output ONLY the accessory, no character pixels, no face, no eyes, no mouth, no ears, no hair, no skin. Front view, shaped to hug rounded chibi head/neck, symmetric where appropriate. Warm brown outline, pastel colors, soft shaded painted highlights, same premium kawaii style as approved bitmap heads. Entire object centered in transparent square with padding, no drop shadows, no UI, no watermark. Will be registered separately onto each head canvas at exact anchors. ",
+    "tool": "built-in ImageGen",
+    "source": "sources/acc_headphones.png",
+    "selectionStatus": "superseded"
+  },
+  {
+    "id": "acc_scarf",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_head.png",
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/kiko_head.png",
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/momo_head.png"
+    ],
+    "prompt": "Transparent isolated wardrobe accessory sprite: cozy pastel striped knitted scarf wrapped around neck, short dangling tail on right, transparent neck opening. Three attached approved streamer heads are STYLE and FIT references only. Output ONLY the accessory, no character pixels, no face, no eyes, no mouth, no ears, no hair, no skin. Front view, shaped to hug rounded chibi head/neck, symmetric where appropriate. Warm brown outline, pastel colors, soft shaded painted highlights, same premium kawaii style as approved bitmap heads. Entire object centered in transparent square with padding, no drop shadows, no UI, no watermark. Will be registered separately onto each head canvas at exact anchors. ",
+    "tool": "built-in ImageGen",
+    "source": "sources/acc_scarf.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "outfit_chef_luna",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe/sources/outfit_chef_luna.png"
+    ],
+    "transparent": true,
+    "prompt": "Precise tiny edit to this existing transparent wardrobe sprite. REMOVE all lettering, the word YUM, chef hat logo and any typography from the garment. Restore plain fabric in those small areas. Preserve everything else EXACTLY: same garment design, colors, folds, motifs, shape, pose, neckline, hands, fingers, position, scale, canvas and transparent alpha. No new objects, no other changes.",
+    "tool": "built-in ImageGen",
+    "source": "sources/outfit_chef_luna.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "outfit_chef_kiko",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe/sources/outfit_chef_kiko.png"
+    ],
+    "transparent": true,
+    "prompt": "Precise tiny edit to this existing transparent wardrobe sprite. REMOVE all lettering, the word YUM, chef hat logo and any typography from the garment. Restore plain fabric in those small areas. Preserve everything else EXACTLY: same garment design, colors, folds, motifs, shape, pose, neckline, hands, fingers, position, scale, canvas and transparent alpha. No new objects, no other changes.",
+    "tool": "built-in ImageGen",
+    "source": "sources/outfit_chef_kiko.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "outfit_chef_momo",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe/sources/outfit_chef_momo.png"
+    ],
+    "transparent": true,
+    "prompt": "Precise tiny edit to this existing transparent wardrobe sprite. REMOVE all lettering, the word YUM, chef hat logo and any typography from the garment. Restore plain fabric in those small areas. Preserve everything else EXACTLY: same garment design, colors, folds, motifs, shape, pose, neckline, hands, fingers, position, scale, canvas and transparent alpha. No new objects, no other changes.",
+    "tool": "built-in ImageGen",
+    "source": "sources/outfit_chef_momo.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "outfit_sakura_kiko",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe/sources/outfit_sakura_kiko.png"
+    ],
+    "transparent": true,
+    "prompt": "Precise tiny edit to this existing transparent wardrobe sprite. REMOVE all lettering, the word YUM, chef hat logo and any typography from the garment. Restore plain fabric in those small areas. Preserve everything else EXACTLY: same garment design, colors, folds, motifs, shape, pose, neckline, hands, fingers, position, scale, canvas and transparent alpha. No new objects, no other changes.",
+    "tool": "built-in ImageGen",
+    "source": "sources/outfit_sakura_kiko.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "outfit_bib_luna",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe/sources/outfit_bib_luna.png"
+    ],
+    "transparent": true,
+    "prompt": "Precise tiny edit to this existing transparent wardrobe sprite. Remove the repeated tiny YUM texts. Replace with exactly ONE small embroidered word YUM on the lower right of the bib. Preserve everything else EXACTLY: same garment design, colors, folds, motifs, shape, pose, neckline, hands, fingers, position, scale, canvas and transparent alpha. No new objects, no other changes.",
+    "tool": "built-in ImageGen",
+    "source": "sources/outfit_bib_luna.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "icon_outfit_default",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/requests/20261105-wardrobe/codex-request-wardrobe/refs/streamer/luna_body.png"
+    ],
+    "prompt": "Transparent isolated inventory icon: ONLY a plain mint cozy round-neck sweater matching the approved reference garment. Empty sleeves/cuffs and empty collar, no skin, no hands, no neck, no person, no mannequin, no text or motif. Front view centered whole garment, soft pastel shading, warm brown kawaii contours. Square padded composition, readable at128x128.",
+    "transparent": true,
+    "tool": "built-in ImageGen",
+    "source": "sources/icon_outfit_default.png",
+    "generatedPath": "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1a3c8-43de-7ac0-a262-649140da5fb6\\exec-3dc06fe6-0e2f-46e3-8123-0f37f2d3e05e.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "icon_outfit_mint",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe/sources/outfit_mint_luna.png"
+    ],
+    "transparent": true,
+    "prompt": "Transparent inventory icon of mint #9fe3c9 sweater with one small WHITE HEART at chest. Reference supplies garment design and style only. Output ONLY empty standalone garment, no body, no neck, no skin, no hands, no arms except empty garment sleeves, no person, no head, no mannequin, no props. Warm brown kawaii outlines, soft pastel highlights exactly matching reference. Centered padded square, whole garment readable at128px.",
+    "tool": "built-in ImageGen",
+    "source": "sources/icon_outfit_mint.png",
+    "generatedPath": "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1a3c8-43de-7ac0-a262-649140da5fb6\\exec-f6a8e4d4-37a1-4b49-ae50-a8ceea43175a.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "icon_outfit_bib",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe/sources/outfit_bib_luna.png"
+    ],
+    "transparent": true,
+    "prompt": "Transparent inventory icon of only white pink ruffled eating BIB with small embroidered YUM, no sweater underneath. Reference supplies garment design and style only. Output ONLY empty standalone garment, no body, no neck, no skin, no hands, no arms except empty garment sleeves, no person, no head, no mannequin, no props. Warm brown kawaii outlines, soft pastel highlights exactly matching reference. Centered padded square, whole garment readable at128px.",
+    "tool": "built-in ImageGen",
+    "source": "sources/icon_outfit_bib.png",
+    "generatedPath": "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1a3c8-43de-7ac0-a262-649140da5fb6\\exec-9bb44ca7-8991-4ac8-ad5a-77e08ca6851b.png",
+    "selectionStatus": "superseded"
+  },
+  {
+    "id": "icon_outfit_sunny",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe/sources/outfit_sunny_luna.png"
+    ],
+    "transparent": true,
+    "prompt": "Transparent inventory icon of yellow #ffd95e sweater with one small SUN motif. Reference supplies garment design and style only. Output ONLY empty standalone garment, no body, no neck, no skin, no hands, no arms except empty garment sleeves, no person, no head, no mannequin, no props. Warm brown kawaii outlines, soft pastel highlights exactly matching reference. Centered padded square, whole garment readable at128px.",
+    "tool": "built-in ImageGen",
+    "source": "sources/icon_outfit_sunny.png",
+    "generatedPath": "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1a3c8-43de-7ac0-a262-649140da5fb6\\exec-5472d665-543a-4530-a860-8067b29d6539.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "icon_outfit_sakura",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe/sources/outfit_sakura_luna.png"
+    ],
+    "transparent": true,
+    "prompt": "Transparent inventory icon of pink #ffb3c7 sweater scattered with sakura petals. Reference supplies garment design and style only. Output ONLY empty standalone garment, no body, no neck, no skin, no hands, no arms except empty garment sleeves, no person, no head, no mannequin, no props. Warm brown kawaii outlines, soft pastel highlights exactly matching reference. Centered padded square, whole garment readable at128px.",
+    "tool": "built-in ImageGen",
+    "source": "sources/icon_outfit_sakura.png",
+    "generatedPath": "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1a3c8-43de-7ac0-a262-649140da5fb6\\exec-3bc6b86c-f66d-4c13-bba2-eb5906d6d2f3.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "icon_outfit_chef",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe/sources/outfit_chef_luna.png"
+    ],
+    "transparent": true,
+    "prompt": "Transparent inventory icon of only white chef APRON with neck strap and front pocket, no sweater, NO text. Reference supplies garment design and style only. Output ONLY empty standalone garment, no body, no neck, no skin, no hands, no arms except empty garment sleeves, no person, no head, no mannequin, no props. Warm brown kawaii outlines, soft pastel highlights exactly matching reference. Centered padded square, whole garment readable at128px.",
+    "tool": "built-in ImageGen",
+    "source": "sources/icon_outfit_chef.png",
+    "generatedPath": "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1a3c8-43de-7ac0-a262-649140da5fb6\\exec-8da81433-363a-4f8a-ab6b-8727fbf8d861.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "icon_outfit_star",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe/sources/outfit_star_luna.png"
+    ],
+    "transparent": true,
+    "prompt": "Transparent inventory icon of only lavender star OVERALLS with two gold star buttons and large gold star on bib, no sweater. Reference supplies garment design and style only. Output ONLY empty standalone garment, no body, no neck, no skin, no hands, no arms except empty garment sleeves, no person, no head, no mannequin, no props. Warm brown kawaii outlines, soft pastel highlights exactly matching reference. Centered padded square, whole garment readable at128px.",
+    "tool": "built-in ImageGen",
+    "source": "sources/icon_outfit_star.png",
+    "generatedPath": "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1a3c8-43de-7ac0-a262-649140da5fb6\\exec-5f31ebd6-044d-4f41-862f-640cf1b99435.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "badge_ad",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "transparent": true,
+    "prompt": "Kawaii pastel game badge, horizontal rounded blue pill #6fc3ef, warm brown thin outline and subtle glossy highlight. Exact text \"▶ UNLOCK\", dark warm brown bold rounded lettering, centered and legible at120x40. No other words, no extra icons, transparent padding outside pill. 3:1 horizontal aspect.",
+    "tool": "built-in ImageGen",
+    "source": "sources/badge_ad.png",
+    "generatedPath": "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1a3c8-43de-7ac0-a262-649140da5fb6\\exec-9575af81-f2ea-45d2-acb6-74db54fd72e7.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "badge_gift",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "transparent": true,
+    "prompt": "Kawaii game badge, horizontal pale cream and blush rounded pill with warm brown thin outline. Centered small pink wrapped GIFT BOX and tiny GOLD PADLOCK beside it, clean bold shapes readable at120x40. No text, no numbers, no person, transparent padding outside pill. Match premium pastel soft shaded wardrobe art.3:1 horizontal aspect.",
+    "tool": "built-in ImageGen",
+    "source": "sources/badge_gift.png",
+    "generatedPath": "C:\\Users\\ADMIN\\.codex\\generated_images\\01a1a3c8-43de-7ac0-a262-649140da5fb6\\exec-8ad6fa08-fa57-4a1a-9f38-eb73efa157ed.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "acc_headphones",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe/sources/acc_headphones.png"
+    ],
+    "transparent": true,
+    "prompt": "Precise accessory edit. Keep this exact pink mint headphone design, warm brown kawaii lines, soft shading, front view, entire curved headband width and height unchanged. Change ONLY ear cups: make BOTH cups much smaller and SLIMMER, about45 percent current WIDTH and70 percent current height, placed at the OUTER left/right tips of the headband. Very wide empty transparent central opening, so no headphone part can overlap eyes. Source will fit rounded head, ear cups centered at far sides, not in front of face. Keep two cups balanced, small heart motif retained. Output accessory ONLY, no head, no face, no eyes, no text. Transparent alpha background, same canvas registration.",
+    "tool": "built-in ImageGen",
+    "source": "sources/acc_headphones.png",
+    "selectionStatus": "selected-source"
+  },
+  {
+    "id": "icon_outfit_bib",
+    "base": "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe",
+    "refs": [
+      "E:/h5 game/mukbang streaming/mukbang-bang-v4/art-src/v4/production-wardrobe/sources/icon_outfit_bib.png"
+    ],
+    "transparent": true,
+    "prompt": "Precise inventory icon edit. Keep ONLY the white pink ruffled eating bib with its tiny YUM embroidery. Completely REMOVE the mint sweater, sleeves and all knit fabric beneath it, leaving transparent pixels. Output one detached standalone bib, no shirt, no arms, no body, no hands, no skin, no mannequin. Preserve original bib colors, ruffle shape, brown contours, painterly kawaii shading. Center bib in padded transparent square.",
+    "tool": "built-in ImageGen",
+    "source": "sources/icon_outfit_bib.png",
+    "selectionStatus": "selected-source"
+  }
+]
