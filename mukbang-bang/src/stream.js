@@ -375,17 +375,18 @@ function install(Game) {
   };
   // First time food is on the table: what the viewer goal is for (shown once, the stream waits behind it)
   P.goalTipOn = function () { const r = this.run; return !!(r && this.state === 'stream' && (r.phase === 'sealed' || r.phase === 'open') && !(r.pickups > 0) && !(this.profile.get('tip_goal') || 0) && (r.t || 0) > 0.6); };
-  P.drawGoalTip = function () {
+  P.drawGoalTip = function () { // point at the bar: goal = bonus coins + stars
     const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, r = this.run, top = this.top(); ui.dim(0.55); ui.hotspot('gtip_block', 0, 0, W, H);
-    // point at the goal bar
-    ctx.strokeStyle = '#ffd95e'; ctx.lineWidth = 4; A.rr(ctx, W / 2 - 112, top + 62, 224, 30, 15); ctx.stroke();
-    const pw = W - 60, ph = 430, px = 30, py = top + 130; ui.panel(px, py, pw, ph, '#fff7fb', C.pinkDark, 24, 4);
-    ui.label('▲ YOUR VIEWER GOAL', W / 2, py + 36, 22, C.pinkDark);
-    const g1 = this.milestone(0), b1 = r.cpb, b2 = r.cpb * 2;
-    const rows = [['EAT TO GET VIEWERS', 'Every bite, heart and gift brings fans'], ['HIT THE GOAL = BONUS', U.fmtViewers(g1) + ' viewers pays +' + b1 + ' coins'], ['THEN AN EVEN BIGGER GOAL', 'Next goal pays +' + b2 + ', and it keeps growing'], ['MORE GOALS = MORE STARS', '1 goal = 2★ · 2 goals = 3★ for the level']];
-    for (let i = 0; i < 4; i++) { const y = py + 90 + i * 70; A.circle(ctx, px + 44, y, 21, i === 1 ? C.gold : C.pink, 3); ui.label(String(i + 1), px + 44, y + 1, 19, C.white); ui.label(rows[i][0], px + 78, y - 11, 16, C.text, 'left'); ui.label(rows[i][1], px + 78, y + 13, 13, C.textLight, 'left'); }
-    ui.button('gtip_ok', W / 2 - 100, py + ph - 66, 200, 50, "LET'S GO LIVE!", { color: C.green, dark: C.greenDark, size: 20 });
+    const pulse = 1 + 0.06 * Math.sin(this.time * 6); ctx.save(); ctx.translate(W / 2, top + 77); ctx.scale(pulse, pulse); ctx.strokeStyle = '#ffd95e'; ctx.lineWidth = 5; A.rr(ctx, -116, -17, 232, 34, 17); ctx.stroke(); ctx.restore();
+    ui.label('▲', W / 2, top + 116, 30, '#ffd95e');
+    const pw = W - 80, ph = 250, px = 40, py = top + 140; ui.panel(px, py, pw, ph, '#fff7fb', C.pinkDark, 24, 4);
+    ui.label('HIT THE VIEWER GOAL', W / 2, py + 38, 22, C.pinkDark);
+    A.coin(ctx, W / 2 - 70, py + 92, 18); ui.label('+' + r.cpb, W / 2 - 44, py + 93, 26, '#2f9c55', 'left');
+    for (let k = 0; k < 3; k++) A.star(ctx, W / 2 + 46 + k * 30, py + 92, 13, C.gold, 2);
+    ui.label('then a bigger goal, bigger bonus!', W / 2, py + 140, 15, C.textLight);
+    ui.button('gtip_ok', W / 2 - 90, py + ph - 64, 180, 48, 'GO LIVE!', { color: C.green, dark: C.greenDark, size: 22 });
   };
+
   // the viewer's request (start of every level) and the big MAKE button
   P.drawRequest = function () {
     const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, r = this.run, req = r.request, lv = L.level(r.level), top = this.top();

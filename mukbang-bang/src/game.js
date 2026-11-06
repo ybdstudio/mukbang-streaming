@@ -574,16 +574,16 @@ class Game {
     if (!(this.profile.get('tip_market') || 0)) this.drawMarketTip();
   }
   // First visit: how the supermarket pays off (buy → eat live → every bite pays coins back).
-  drawMarketTip() {
+  drawMarketTip() { // buy → eat live → more coins back: three big steps, one number each
     const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H; ui.dim(0.55); ui.hotspot('mtip_block', 0, 0, W, H);
-    const pw = W - 60, ph = 420, px = 30, py = H * 0.5 - ph / 2; ui.panel(px, py, pw, ph, '#fff7fb', C.pinkDark, 24, 4);
-    ui.label('HOW SHOPPING PAYS', W / 2, py + 38, 24, C.pinkDark);
     const f = K.dish('chili_noodle'), price = f ? D.priceOf(f) : 200, earn = this.estimateEarn(['chili_noodle'], price);
-    const rows = [['1', 'BUY FOOD', 'Spend ' + price + ' coins on a snack'], ['2', 'EAT IT LIVE', 'Every bite pays coins + viewers'], ['3', 'GET MORE BACK', 'About ' + earn + ' coins back: +' + (earn - price) + ' profit!']];
-    for (let i = 0; i < 3; i++) { const y = py + 92 + i * 78; A.circle(ctx, px + 46, y, 22, i === 2 ? C.green : C.pink, 3); ui.label(rows[i][0], px + 46, y + 1, 20, C.white); ui.label(rows[i][1], px + 82, y - 12, 18, C.text, 'left'); ui.label(rows[i][2], px + 82, y + 14, 14, C.textLight, 'left'); }
-    ui.label('More food in the basket = a longer stream', W / 2, py + 330, 14, C.text); ui.label('and more profit. Watch the green box!', W / 2, py + 350, 14, C.text);
-    ui.button('mtip_ok', W / 2 - 90, py + ph - 62, 180, 48, 'GOT IT!', { color: C.green, dark: C.greenDark, size: 22 });
+    const pw = W - 60, ph = 300, px = 30, py = H * 0.5 - ph / 2; ui.panel(px, py, pw, ph, '#fff7fb', C.pinkDark, 24, 4);
+    const cols = [[px + pw * 0.17, 'BUY', '-' + price, '#d33'], [px + pw * 0.5, 'EAT LIVE', '♥', C.pink], [px + pw * 0.83, 'EARN', '+' + earn, '#2f9c55']];
+    for (let i = 0; i < 3; i++) { const c = cols[i], y = py + 92; A.circle(ctx, c[0], y, 42, '#fff', 3); if (i === 1) A.heart(ctx, c[0], y + 2, 20, C.pink, 3); else { A.coin(ctx, c[0], y - 8, 16); ui.label(c[2], c[0], y + 22, 18, c[3]); } ui.label(c[1], c[0], y + 62, 16, C.text); if (i < 2) ui.label('›', (c[0] + cols[i + 1][0]) / 2, y, 34, C.pinkDark); }
+    ui.title('+' + (earn - price) + ' PROFIT!', W / 2, py + 206, 34, C.white, '#2f9c55');
+    ui.button('mtip_ok', W / 2 - 80, py + ph - 58, 160, 46, 'OK!', { color: C.green, dark: C.greenDark, size: 22 });
   }
+
   // ── CHECKOUT ──
   drawCheckout() {
     const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, c = this.checkout;
