@@ -4243,7 +4243,7 @@ function install(Game) {
   };
   P.cookNext = function () {
     const k = this.ck; k.step++; k.fxT = this.time; this.audio.play('ding', { gain: 0.6 }); this.spawnSparkles(this.W / 2, this.H * 0.45, 10);
-    if (k.step >= k.rc.steps.length) { k.doneT = 0; const key = k.rc.taste === 'broth' ? 'broth' : 'flavor'; k.perfect = (k.dish[key] === k.req[key] || k.rareKey === key) && (k.dish.topping === k.req.topping || k.rareKey === 'topping') && (function () { const cs = L.containerSlot(k.req.recipe); return !cs || !k.req[cs] || k.dish[cs] === k.req[cs] || k.rareKey === cs; })(); this.audio.play(k.perfect ? 'levelup' : 'win'); this.spawnConfetti(this.W / 2, this.H * 0.35, 60); return; }
+    if (k.step >= k.rc.steps.length) { k.doneT = 0; k.doneAt = k.t; const key = k.rc.taste === 'broth' ? 'broth' : 'flavor'; k.perfect = (k.dish[key] === k.req[key] || k.rareKey === key) && (k.dish.topping === k.req.topping || k.rareKey === 'topping') && (function () { const cs = L.containerSlot(k.req.recipe); return !cs || !k.req[cs] || k.dish[cs] === k.req[cs] || k.rareKey === cs; })(); this.audio.play(k.perfect ? 'levelup' : 'win'); this.spawnConfetti(this.W / 2, this.H * 0.35, 60); return; }
     this.prepStep();
   };
   P.cookTap = function (id) {
@@ -4313,6 +4313,7 @@ function install(Game) {
   P.cookServed = function (hot) {
     const k = this.ck; const r = this.run; if (!k) return; this.ck = null;
     r.dish = Object.assign({}, k.dish); r.perfect = k.perfect; r.phase = 'open'; r.pt = 0;
+    if (r.quest && r.quest.id === 'fast' && (k.doneAt === undefined ? k.t : k.doneAt) <= r.quest.secs) r.quest.got = 1;
     if (hot) { r.hotStart = true; this.addViewers(Math.round(r.goal * 0.4)); for (let i = 0; i < 10; i++) this.spawnHeart(true); this.floatText('HOT START!  +' + U.fmtViewers(Math.round(r.goal * 0.4)), this.W / 2, this.H * 0.4, C.gold, 28, true); this.audio.play('levelup'); }
     this.trans = 0.4; this.saveRun(); this.setState('stream');
     this.floatText(k.perfect ? 'JUST LIKE THEY ASKED!' : 'SERVED!', this.W / 2, this.H * 0.47, C.gold, 26, true);
@@ -4343,6 +4344,8 @@ function install(Game) {
       ctx.restore();
       ui.label(text, W / 2, cy + 1, fs * pulse, C.white, 'center', { stroke: 4 });
     }
+    if (this.run && this.run.quest && this.run.quest.id === 'fast') { const q = this.run.quest, used = k.doneAt !== undefined ? k.doneAt : k.t, left = Math.max(0, Math.ceil(q.secs - used)), ok = used <= q.secs;
+      const txt = '★ ' + q.text + (k.doneAt !== undefined ? (ok ? '  ✓' : '  ✗') : '  ·  ' + left + ' s'); const w = ui.measure(txt, 13) + 30; ui.panel(W / 2 - w / 2, top + 206, w, 28, ok ? '#fff8d6' : '#f4eef0', ok ? C.goldDark : '#bfb0b0', 14, 2); ui.label(txt, W / 2, top + 220, 13, ok ? (left <= 5 && k.doneAt === undefined ? '#d33' : C.text) : C.textLight); }
     // the dish
     const a = this.cookArea(); const flipping = k.flipT >= 0;
     A.ellipse(ctx, a.x, a.y + a.r * 0.62, a.r * 0.95, a.r * 0.2, 'rgba(91,61,59,0.12)', 0);
@@ -5575,6 +5578,19 @@ function requestFor(recipe, n, i) {
   if (cslot) { const cs = R.options(cslot, n); const occ = (OCC[recipe] = (OCC[recipe] || 0) + 1) - 1; const c = fresh(cs) || cs[(occ * 3 + 1) % cs.length]; req[cslot] = c.id; }
   return req;
 }
+// side quest: one optional extra goal per level (from level 2), paid on the spot. The fan event decides when it can be part of it.
+//   hearts: tap N floating hearts · goals: reach N viewer goals · fast: cook within N s · duet: wave at the duet fan · gift: open the fan's gift
+function questFor(n, ev, recipe) {
+  if (n < 2) return null;
+  const pay = 40 + 12 * n;
+  if (ev === 'duet') return { id: 'duet', need: 1, text: 'Wave at the duet fan', pay: pay };
+  if (ev === 'gift' && n % 2 === 0) return { id: 'gift', need: 1, text: "Open the fan's gift", pay: pay };
+  const k = n % 3;
+  if (k === 0) return { id: 'hearts', need: n < 15 ? 4 : 6, text: 'Tap ' + (n < 15 ? 4 : 6) + ' floating hearts', pay: pay };
+  if (k === 1) return { id: 'goals', need: 2, text: 'Hit 2 viewer goals', pay: pay };
+  const secs = R.RECIPES[recipe].steps.length * 4 + 6;
+  return { id: 'fast', need: 1, secs: secs, text: 'Cook it in ' + secs + ' s', pay: pay };
+}
 const LEVELS = [];
 const seenRecipes = {};
 for (let i = 0; i < RAW.length; i++) {
@@ -5584,9 +5600,10 @@ for (let i = 0; i < RAW.length; i++) {
   if (!seenRecipes[r[0]]) { seenRecipes[r[0]] = 1; if (n > 1) news.push('NEW RECIPE: ' + rc.name.toUpperCase()); }
   for (const slot in R.OPT) for (let k = 0; k < R.OPT[slot].length; k++) { const o = R.OPT[slot][k]; if (o[3] === n && n > 1) news.push('NEW ' + SLOT_NAME[slot] + ': ' + o[1].toUpperCase()); }
   const req = requestFor(r[0], n, i);
+  const quest = questFor(n, r[1], r[0]);
   LEVELS.push({
     n: n, chapter: ch + 1, chapterName: CHAPTERS[ch].name, view: CHAPTERS[ch].view, bg: CHAPTERS[ch].view, loc: 'home',
-    recipe: r[0], request: req, title: R.dishName(req), event: r[1], unlocks: r[2], news: news,
+    recipe: r[0], request: req, quest: quest, title: R.dishName(req), event: r[1], unlocks: r[2], news: news,
     goal: goal, goal3: roundTo(goal * 1.3), startViewers: roundTo(goal * 0.3),
     cpb: 6 + 2 * n, reward: 100 + 20 * n // coins per bite · request reward (bigger when the dish matches the request)
   });
@@ -6648,7 +6665,8 @@ function install(Game) {
   P.newRun = function (o) {
     const lv = L.level(o.level || o.goalLevel || 1);
     const goal = o.level ? lv.goal : Math.round(lv.goal * 0.8), start = o.level ? lv.startViewers : Math.round(lv.startViewers * 0.8);
-    this.run = { v: o.recipe ? 4 : 3, level: o.level || 0, side: o.side || null, food: o.food, recipe: o.recipe || null, request: o.request || null, dish: o.dish || null, perfect: false, pack: o.pack, loc: o.loc, view: o.view, event: o.event, toppings: o.toppings || null,
+    const qd = o.level && lv.quest ? Object.assign({ got: 0, done: false }, lv.quest) : null;
+    this.run = { quest: qd, v: o.recipe ? 4 : 3, level: o.level || 0, side: o.side || null, food: o.food, recipe: o.recipe || null, request: o.request || null, dish: o.dish || null, perfect: false, pack: o.pack, loc: o.loc, view: o.view, event: o.event, toppings: o.toppings || null,
       cost: o.cost || 0, cpb: o.cpb, goal: goal, goal3: Math.round(goal * 1.3), start: start, hu: Math.max(1, (goal - start) * 1.0 / (PICKUPS * BITES)),
       viewers: start, peak: start, coins: 0, pickups: 0, bites: 0, phase: o.phase || 'sealed', pt: 0, hearts: 0, gift: null, giftTaken: false, eventDone: false, t: 0, finaleDone: false, queue: (o.queue || []).slice(), served: 1 };
     // bonus streams with several foods: viewer goal grows with the order
@@ -6679,7 +6697,7 @@ function install(Game) {
   // ── save / resume (run_json v3; older runs are dropped — the level itself is kept) ──
   P.saveRun = function () {
     const r = this.run; if (!r) { this.profile.set('run_json', ''); return; }
-    const o = {}; const keys = ['v', 'level', 'side', 'food', 'recipe', 'request', 'dish', 'perfect', 'giftAd', 'hyped', 'hotStart', 'pack', 'loc', 'view', 'event', 'toppings', 'cost', 'cpb', 'goal', 'goal3', 'start', 'hu', 'viewers', 'peak', 'coins', 'pickups', 'bites', 'phase', 'hearts', 'giftTaken', 'eventDone', 'goalLevel', 'ms', 'queue', 'served'];
+    const o = {}; const keys = ['v', 'level', 'side', 'food', 'recipe', 'request', 'dish', 'perfect', 'giftAd', 'hyped', 'hotStart', 'pack', 'loc', 'view', 'event', 'toppings', 'cost', 'cpb', 'goal', 'goal3', 'start', 'hu', 'viewers', 'peak', 'coins', 'pickups', 'bites', 'phase', 'hearts', 'giftTaken', 'eventDone', 'goalLevel', 'ms', 'queue', 'served', 'quest'];
     for (let i = 0; i < keys.length; i++) o[keys[i]] = r[keys[i]];
     o.viewers = Math.round(o.viewers); o.peak = Math.round(o.peak);
     this.profile.set('run_json', JSON.stringify(o));
@@ -6782,8 +6800,20 @@ function install(Game) {
   P.spawnHeart = function (burst) { const W = this.W, H = this.H; const left = Math.random() < 0.5; this.hearts.push({ x: left ? W * (0.07 + Math.random() * 0.14) : W * (0.79 + Math.random() * 0.14), y: H * (0.6 + Math.random() * 0.22) + (burst ? 0 : 40), vy: 34 + Math.random() * 22, life: 0, max: 4.2, sway: Math.random() * 6, taken: false }); };
 
   // ── update ──
+  // side quest progress (cheap, checked every frame)
+  P.questGot = function () { const r = this.run, q = r && r.quest; if (!q) return 0; if (q.id === 'hearts') return r.hearts || 0; if (q.id === 'goals') return r.ms || 0; if (q.id === 'duet') return r.duet && r.duet.waved || q.got ? 1 : 0; if (q.id === 'gift') return r.giftTaken ? 1 : 0; return q.got || 0; };
+  P.checkQuest = function () {
+    const r = this.run, q = r && r.quest; if (!q || q.done) return; const got = this.questGot(); if (q.id === 'duet' && got) q.got = 1;
+    if (got >= q.need) { q.done = true; r.coins += q.pay; this.profile.add('coins', q.pay); this.floatText('SIDE QUEST ✓  +' + q.pay, this.W / 2, this.H * 0.4, C.gold, 26, true); this.audio.play('cash'); this.spawnConfetti(this.W / 2, this.H * 0.3, 30); this.saveRun(); }
+  };
+  P.drawQuestChip = function (y, withPay) {
+    const r = this.run, q = r && r.quest; if (!q) return; const ui = this.ui, ctx = this.ctx, got = Math.min(q.need, this.questGot()), done = q.done;
+    const txt = (done ? '✓ ' : '★ ') + (withPay ? 'BONUS: ' : '') + q.text + (q.need > 1 && !done && !withPay ? '  ' + got + '/' + q.need : '') + (withPay ? '  +' + q.pay + ' coins' : '');
+    const w = Math.min(this.W - 40, ui.measure(txt, 13) + 30); ui.panel(this.W / 2 - w / 2, y, w, 28, done ? '#eafff0' : '#fff8d6', done ? C.greenDark : C.goldDark, 14, 2);
+    ui.label(txt, this.W / 2, y + 14, 13, done ? C.greenDark : C.text);
+  };
   P.updateStream = function (dt) {
-    const r = this.run; if (!r || this.goalTipOn() || r.giftAsk) return; r.t += dt; r.pt += dt;
+    const r = this.run; if (!r || this.goalTipOn() || r.giftAsk) return; this.checkQuest(); r.t += dt; r.pt += dt;
     if (r.zoom > 0) r.zoom = Math.max(0, r.zoom - dt);
     if (r.banner) { r.banner.t += dt; if (r.banner.t > 1.6) r.banner = null; }
     if (r.superchat) { r.superchat.t += dt; if (r.superchat.t > 3) r.superchat = null; }
@@ -6846,7 +6876,7 @@ function install(Game) {
     p.add('streams', 1);
     if (r.peak > (p.get('best_viewers') || 0)) p.set('best_viewers', Math.round(r.peak));
     const fid = r.recipe || r.food;
-    const res = { side: r.side, food: r.food, dish: r.dish, perfect: r.perfect, mission: r.mission || 0, stars: stars, peak: Math.round(r.peak), goal: r.goal, coins: r.coins, hearts: r.hearts, gift: r.giftTaken, unlocks: [], firstClear: false, bonusTaken: false, t: 0 };
+    const res = { quest: r.quest, side: r.side, food: r.food, dish: r.dish, perfect: r.perfect, mission: r.mission || 0, stars: stars, peak: Math.round(r.peak), goal: r.goal, coins: r.coins, hearts: r.hearts, gift: r.giftTaken, unlocks: [], firstClear: false, bonusTaken: false, t: 0 };
     // collection: every food eaten once is in the food book
     let book; try { book = JSON.parse(p.get('foods_json') || '[]'); } catch (e) { book = []; }
     if (book.indexOf(fid) < 0) { book.push(fid); p.set('foods_json', JSON.stringify(book)); res.unlocks.push('FOOD BOOK: ' + (r.recipe ? R.RECIPES[r.recipe].name : K.dish(r.food).name).toUpperCase()); }
@@ -6951,6 +6981,7 @@ function install(Game) {
       ui.bar(W / 2 - 92, top + 70, 184, 16, t, ms >= 2 ? C.gold : ms === 1 ? C.green : C.pink);
       ui.label((ms === 0 ? 'GOAL ' : ms === 1 ? '3★ GOAL ' : 'GOAL ' + (ms + 1) + ' · ') + U.fmtViewers(hi), W / 2 + 108, top + 79, 11, C.white, 'left', { stroke: 3 });
       for (let k = 0; k < Math.min(ms, 5); k++) A.star(ctx, W / 2 - 100 - k * 14, top + 78, 6, C.gold, 1.5); }
+    if (r.quest && r.phase !== 'request' && r.phase !== 'finale') this.drawQuestChip(top + 112);
     ui.label(r.level ? 'STREAM ' + r.level + ' · ' + this.streamLevel().title.toUpperCase() : L.modeOf(r.side) ? L.modeOf(r.side).name + ' STREAM' : 'BONUS STREAM', W / 2, top + 100, 12, C.white, 'center', { stroke: 4 });
     // superchat banner / duet bubble
     if (r.superchat) { const a = Math.min(1, r.superchat.t * 4, (3 - r.superchat.t) * 3); ctx.globalAlpha = Math.max(0, a); ui.panel(40, top + 120, W - 80, 52, '#ffd95e', C.goldDark, 20, 4); ui.label('SUPER CHAT  +' + r.superchat.coins + '  ·  "you are the best!!"', W / 2, top + 146, 16, C.text); ctx.globalAlpha = 1; }
@@ -7005,12 +7036,13 @@ function install(Game) {
   P.drawRequest = function () {
     const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, r = this.run, req = r.request, lv = L.level(r.level), top = this.top();
     const y = top + 116, a = Math.min(1, r.t * 3); ctx.globalAlpha = a;
-    ui.panel(18, y, W - 36, 150, '#ffffff', C.lavenderDark, 26, 5); A.rr(ctx, 18, y, W - 36, 40, 18); ctx.fillStyle = '#efe4ff'; ctx.fill();
+    ui.panel(18, y, W - 36, r.quest ? 184 : 150, '#ffffff', C.lavenderDark, 26, 5); A.rr(ctx, 18, y, W - 36, 40, 18); ctx.fillStyle = '#efe4ff'; ctx.fill();
     ui.label('VIEWER REQUEST', W / 2, y + 21, 20, C.lavenderDark);
     A.avatar(ctx, D.AVATARS[r.level % D.AVATARS.length], 62, y + 96, 28);
     R.draw(ctx, A, req, W * 0.33, y + 96, 100, { flipped: true, set: true, fill: 1, tops: 1, deco: 0 });
     ui.label(R.dishName(req), W * 0.66, y + 80, 24, C.text); const ts = R.opt(R.toppingSlot(req.recipe), req.topping); ui.label(R.containerText(req) + '+ ' + (ts ? ts.name : ''), W * 0.66, y + 110, 16, C.textLight);
     A.coin(ctx, W - 92, y + 130, 11); ui.label(String(lv.reward), W - 74, y + 131, 18, C.goldDark, 'left');
+    if (r.quest) this.drawQuestChip(y + 146, true);
     ctx.globalAlpha = 1;
     const by = this.bottom() - 262, pulse = 1 + Math.sin(this.time * 5) * 0.04;
     ctx.save(); ctx.translate(W / 2, by + 36); ctx.scale(pulse, pulse); ctx.translate(-W / 2, -(by + 36));
@@ -7105,7 +7137,8 @@ function install(Game) {
     let y = py + 258;
     if (res.firstClear) { const rb = hs.rewardsLevelBonus(); if (rb) { ui.label('LEVEL BONUS  ' + this.itemsText(rb), W / 2, y, 15, C.pinkDark); y += 24; } }
     for (let i = 0; i < res.unlocks.length; i++) { ui.label('★ ' + res.unlocks[i], W / 2, y, 15, C.greenDark); y += 26; }
-    if (res.stars < 3) ui.label('tip: tap the floating hearts for 3 stars', W / 2, py + ph - 14, 12, C.textLight);
+    if (res.quest) ui.label(res.quest.done ? 'SIDE QUEST ✓  ' + res.quest.text + '  +' + res.quest.pay : 'side quest missed: ' + res.quest.text, W / 2, py + ph - 14, 12, res.quest.done ? C.greenDark : C.textLight);
+    else if (res.stars < 3) ui.label('tip: tap the floating hearts for 3 stars', W / 2, py + ph - 14, 12, C.textLight);
     y = py + ph + 14;
     if (res.feature && !res.featureDone && res.t > 0.6) { this.drawFeature(res.feature); return; }
     const bonus = hs.rewardsBonusCoins();

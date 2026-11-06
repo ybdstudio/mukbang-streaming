@@ -46,7 +46,7 @@ function install(Game) {
   };
   P.cookNext = function () {
     const k = this.ck; k.step++; k.fxT = this.time; this.audio.play('ding', { gain: 0.6 }); this.spawnSparkles(this.W / 2, this.H * 0.45, 10);
-    if (k.step >= k.rc.steps.length) { k.doneT = 0; const key = k.rc.taste === 'broth' ? 'broth' : 'flavor'; k.perfect = (k.dish[key] === k.req[key] || k.rareKey === key) && (k.dish.topping === k.req.topping || k.rareKey === 'topping') && (function () { const cs = L.containerSlot(k.req.recipe); return !cs || !k.req[cs] || k.dish[cs] === k.req[cs] || k.rareKey === cs; })(); this.audio.play(k.perfect ? 'levelup' : 'win'); this.spawnConfetti(this.W / 2, this.H * 0.35, 60); return; }
+    if (k.step >= k.rc.steps.length) { k.doneT = 0; k.doneAt = k.t; const key = k.rc.taste === 'broth' ? 'broth' : 'flavor'; k.perfect = (k.dish[key] === k.req[key] || k.rareKey === key) && (k.dish.topping === k.req.topping || k.rareKey === 'topping') && (function () { const cs = L.containerSlot(k.req.recipe); return !cs || !k.req[cs] || k.dish[cs] === k.req[cs] || k.rareKey === cs; })(); this.audio.play(k.perfect ? 'levelup' : 'win'); this.spawnConfetti(this.W / 2, this.H * 0.35, 60); return; }
     this.prepStep();
   };
   P.cookTap = function (id) {
@@ -116,6 +116,7 @@ function install(Game) {
   P.cookServed = function (hot) {
     const k = this.ck; const r = this.run; if (!k) return; this.ck = null;
     r.dish = Object.assign({}, k.dish); r.perfect = k.perfect; r.phase = 'open'; r.pt = 0;
+    if (r.quest && r.quest.id === 'fast' && (k.doneAt === undefined ? k.t : k.doneAt) <= r.quest.secs) r.quest.got = 1;
     if (hot) { r.hotStart = true; this.addViewers(Math.round(r.goal * 0.4)); for (let i = 0; i < 10; i++) this.spawnHeart(true); this.floatText('HOT START!  +' + U.fmtViewers(Math.round(r.goal * 0.4)), this.W / 2, this.H * 0.4, C.gold, 28, true); this.audio.play('levelup'); }
     this.trans = 0.4; this.saveRun(); this.setState('stream');
     this.floatText(k.perfect ? 'JUST LIKE THEY ASKED!' : 'SERVED!', this.W / 2, this.H * 0.47, C.gold, 26, true);
@@ -146,6 +147,8 @@ function install(Game) {
       ctx.restore();
       ui.label(text, W / 2, cy + 1, fs * pulse, C.white, 'center', { stroke: 4 });
     }
+    if (this.run && this.run.quest && this.run.quest.id === 'fast') { const q = this.run.quest, used = k.doneAt !== undefined ? k.doneAt : k.t, left = Math.max(0, Math.ceil(q.secs - used)), ok = used <= q.secs;
+      const txt = '★ ' + q.text + (k.doneAt !== undefined ? (ok ? '  ✓' : '  ✗') : '  ·  ' + left + ' s'); const w = ui.measure(txt, 13) + 30; ui.panel(W / 2 - w / 2, top + 206, w, 28, ok ? '#fff8d6' : '#f4eef0', ok ? C.goldDark : '#bfb0b0', 14, 2); ui.label(txt, W / 2, top + 220, 13, ok ? (left <= 5 && k.doneAt === undefined ? '#d33' : C.text) : C.textLight); }
     // the dish
     const a = this.cookArea(); const flipping = k.flipT >= 0;
     A.ellipse(ctx, a.x, a.y + a.r * 0.62, a.r * 0.95, a.r * 0.2, 'rgba(91,61,59,0.12)', 0);

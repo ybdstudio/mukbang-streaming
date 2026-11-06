@@ -73,6 +73,19 @@ function requestFor(recipe, n, i) {
   if (cslot) { const cs = R.options(cslot, n); const occ = (OCC[recipe] = (OCC[recipe] || 0) + 1) - 1; const c = fresh(cs) || cs[(occ * 3 + 1) % cs.length]; req[cslot] = c.id; }
   return req;
 }
+// side quest: one optional extra goal per level (from level 2), paid on the spot. The fan event decides when it can be part of it.
+//   hearts: tap N floating hearts · goals: reach N viewer goals · fast: cook within N s · duet: wave at the duet fan · gift: open the fan's gift
+function questFor(n, ev, recipe) {
+  if (n < 2) return null;
+  const pay = 40 + 12 * n;
+  if (ev === 'duet') return { id: 'duet', need: 1, text: 'Wave at the duet fan', pay: pay };
+  if (ev === 'gift' && n % 2 === 0) return { id: 'gift', need: 1, text: "Open the fan's gift", pay: pay };
+  const k = n % 3;
+  if (k === 0) return { id: 'hearts', need: n < 15 ? 4 : 6, text: 'Tap ' + (n < 15 ? 4 : 6) + ' floating hearts', pay: pay };
+  if (k === 1) return { id: 'goals', need: 2, text: 'Hit 2 viewer goals', pay: pay };
+  const secs = R.RECIPES[recipe].steps.length * 4 + 6;
+  return { id: 'fast', need: 1, secs: secs, text: 'Cook it in ' + secs + ' s', pay: pay };
+}
 const LEVELS = [];
 const seenRecipes = {};
 for (let i = 0; i < RAW.length; i++) {
@@ -82,9 +95,10 @@ for (let i = 0; i < RAW.length; i++) {
   if (!seenRecipes[r[0]]) { seenRecipes[r[0]] = 1; if (n > 1) news.push('NEW RECIPE: ' + rc.name.toUpperCase()); }
   for (const slot in R.OPT) for (let k = 0; k < R.OPT[slot].length; k++) { const o = R.OPT[slot][k]; if (o[3] === n && n > 1) news.push('NEW ' + SLOT_NAME[slot] + ': ' + o[1].toUpperCase()); }
   const req = requestFor(r[0], n, i);
+  const quest = questFor(n, r[1], r[0]);
   LEVELS.push({
     n: n, chapter: ch + 1, chapterName: CHAPTERS[ch].name, view: CHAPTERS[ch].view, bg: CHAPTERS[ch].view, loc: 'home',
-    recipe: r[0], request: req, title: R.dishName(req), event: r[1], unlocks: r[2], news: news,
+    recipe: r[0], request: req, quest: quest, title: R.dishName(req), event: r[1], unlocks: r[2], news: news,
     goal: goal, goal3: roundTo(goal * 1.3), startViewers: roundTo(goal * 0.3),
     cpb: 6 + 2 * n, reward: 100 + 20 * n // coins per bite · request reward (bigger when the dish matches the request)
   });

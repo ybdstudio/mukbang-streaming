@@ -223,6 +223,16 @@ seed(7);
   check('checkout: profit estimate is positive', g.estimateEarn(g.checkout.items.map((it) => it.id), g.checkout.total) > g.checkout.total);
   const tot = g.checkout.total; g.payCheckout(); runUntil(g, () => g.state === 'stream', 4); check('checkout: PAY charges the reviewed total and starts the stream', g.state === 'stream' && prof.get('coins') <= 3000 - tot + 2000 && g.run.queue.length === 1, prof.get('coins'));
 }
+// ═════════ side quests ═════════
+{
+  check('side quest on every level from 2 (none on level 1)', !L.LEVELS[0].quest && L.LEVELS.slice(1).every(l => l.quest && l.quest.pay > 0 && l.quest.need >= 1));
+  check('side quests vary (≥ 4 kinds over the 40 levels)', new Set(L.LEVELS.slice(1).map(l => l.quest.id)).size >= 4);
+  const lvH = L.LEVELS.find(l => l.quest && l.quest.id === 'hearts');
+  const prof = fakeProfile(Object.assign({}, INIT, { level: lvH.n, levels_done: lvH.n - 1, streams: 5, coins: 1000 })); const p = fakePlatform(), g = new Game(p, fakeHs(prof, 'ok')); g.hsReady = true; run(g, 0.1);
+  g.startStream(lvH.n); check('the run carries the level side quest', g.run.quest && g.run.quest.id === 'hearts' && !g.run.quest.done);
+  const c0 = prof.get('coins'); g.run.hearts = lvH.quest.need; g.run.phase = 'open'; run(g, 0.05); check('side quest done → paid on the spot', g.run.quest.done && prof.get('coins') === c0 + lvH.quest.pay, prof.get('coins') - c0);
+  run(g, 0.05); check('paid once', prof.get('coins') === c0 + lvH.quest.pay);
+}
 // ═════════ optional activities: packaged / restaurant food, one item, never advance the level ═════════
 seed(3);
 for (const mode of ['market', 'delivery', 'buffet']) {
