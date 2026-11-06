@@ -613,6 +613,10 @@ function streamer(ctx, ch, x, y, s, st) {
   if (oIm) ctx.drawImage(oIm, sp.neckOnHead[0] - sp.bodyAnchor[0], sp.neckOnHead[1] - sp.bodyAnchor[1]);
   else if (lk) WR.drawBody(ctx, module.exports, lk, { nx: sp.neckOnHead[0], ny: sp.neckOnHead[1], bw: 343 });
   ctx.drawImage(P.head, 0, 0);
+  if (sp.neckClip) { // Momo's back hair hides the neck: repaint the body's neck (and outfit collar) in front of it
+    const nc = sp.neckClip, ox = sp.neckOnHead[0] - sp.bodyAnchor[0], oy = sp.neckOnHead[1] - sp.bodyAnchor[1], bd = oIm ? null : body;
+    ctx.save(); ctx.beginPath(); ctx.rect(nc[0], nc[2], nc[1] - nc[0], 600); ctx.clip();
+    ctx.drawImage(bd || P.body, bd ? sp.neckOnHead[0] - bodyAnchor[0] : ox, bd ? sp.neckOnHead[1] - bodyAnchor[1] : oy); if (oIm) ctx.drawImage(oIm, ox, oy); ctx.restore(); }
   const ex = S.EXPR[expr]; let eyes = ex[0], mouth = ex[1];
   if ((expr === 'idle' || expr === 'open' || expr === 'chew') && st.blink) eyes = 'eyes_blink';
   if (expr === 'chew' && Math.sin(t * 22) < 0) mouth = 'mouth_chew_b';

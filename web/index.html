@@ -3597,6 +3597,10 @@ function streamer(ctx, ch, x, y, s, st) {
   if (oIm) ctx.drawImage(oIm, sp.neckOnHead[0] - sp.bodyAnchor[0], sp.neckOnHead[1] - sp.bodyAnchor[1]);
   else if (lk) WR.drawBody(ctx, module.exports, lk, { nx: sp.neckOnHead[0], ny: sp.neckOnHead[1], bw: 343 });
   ctx.drawImage(P.head, 0, 0);
+  if (sp.neckClip) { // Momo's back hair hides the neck: repaint the body's neck (and outfit collar) in front of it
+    const nc = sp.neckClip, ox = sp.neckOnHead[0] - sp.bodyAnchor[0], oy = sp.neckOnHead[1] - sp.bodyAnchor[1], bd = oIm ? null : body;
+    ctx.save(); ctx.beginPath(); ctx.rect(nc[0], nc[2], nc[1] - nc[0], 600); ctx.clip();
+    ctx.drawImage(bd || P.body, bd ? sp.neckOnHead[0] - bodyAnchor[0] : ox, bd ? sp.neckOnHead[1] - bodyAnchor[1] : oy); if (oIm) ctx.drawImage(oIm, ox, oy); ctx.restore(); }
   const ex = S.EXPR[expr]; let eyes = ex[0], mouth = ex[1];
   if ((expr === 'idle' || expr === 'open' || expr === 'chew') && st.blink) eyes = 'eyes_blink';
   if (expr === 'chew' && Math.sin(t * 22) < 0) mouth = 'mouth_chew_b';
@@ -6207,8 +6211,8 @@ function foodPath(id, stage) { return 'food/' + id + '_' + stage + '.png'; }
 // art V3 (art-v3-production, stage 1): heads 512, bodies 512×420, per-streamer face anchors
 const STREAMERS = {
   luna: {head: 'streamer/luna_head.png', body: 'streamer/luna_body.png', headAnchor: [256, 352], neckOnHead: [256, 442], bodyAnchor: [256, 49], faceRadius: 137, mouth: [256, 393], eyes: [256, 320], hairTop: [256, 87], earL: [76, 365], earR: [430, 365]},
-  kiko: {head: 'streamer/kiko_head.png', body: 'streamer/kiko_body.png', headAnchor: [256, 365], neckOnHead: [256, 454], bodyAnchor: [256, 46], faceRadius: 137, mouth: [256, 409], eyes: [256, 338], hairTop: [266, 35], earL: [78, 381], earR: [420, 384]},
-  momo: {head: 'streamer/momo_head.png', body: 'streamer/momo_body.png', headAnchor: [256, 334], neckOnHead: [256, 406], bodyAnchor: [256, 36], faceRadius: 128, mouth: [256, 373], eyes: [256, 310], hairTop: [258, 42], earL: [94, 319], earR: [413, 320]}
+  kiko: {head: 'streamer/kiko_head.png', body: 'streamer/kiko_body.png', headAnchor: [256, 365], neckOnHead: [256, 440], bodyAnchor: [256, 46], faceRadius: 137, mouth: [256, 409], eyes: [256, 338], hairTop: [266, 35], earL: [78, 381], earR: [420, 384]},
+  momo: {head: 'streamer/momo_head.png', body: 'streamer/momo_body.png', headAnchor: [256, 334], neckOnHead: [256, 406], neckClip: [214, 298, 409], bodyAnchor: [256, 36], faceRadius: 128, mouth: [256, 373], eyes: [256, 310], hairTop: [258, 42], earL: [94, 319], earR: [413, 320]}
 };
 // face_parts.png / face_fx.png (V3): 240×120 cells; eyes / mouth cells are centred on each streamer's own `eyes` / `mouth`
 const FACE_IMG = 'streamer/face_parts.png', FX_IMG = 'streamer/face_fx.png';

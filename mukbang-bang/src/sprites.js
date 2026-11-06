@@ -59,8 +59,8 @@ function foodPath(id, stage) { return 'food/' + id + '_' + stage + '.png'; }
 // art V3 (art-v3-production, stage 1): heads 512, bodies 512×420, per-streamer face anchors
 const STREAMERS = {
   luna: {head: 'streamer/luna_head.png', body: 'streamer/luna_body.png', headAnchor: [256, 352], neckOnHead: [256, 442], bodyAnchor: [256, 49], faceRadius: 137, mouth: [256, 393], eyes: [256, 320], hairTop: [256, 87], earL: [76, 365], earR: [430, 365]},
-  kiko: {head: 'streamer/kiko_head.png', body: 'streamer/kiko_body.png', headAnchor: [256, 365], neckOnHead: [256, 454], bodyAnchor: [256, 46], faceRadius: 137, mouth: [256, 409], eyes: [256, 338], hairTop: [266, 35], earL: [78, 381], earR: [420, 384]},
-  momo: {head: 'streamer/momo_head.png', body: 'streamer/momo_body.png', headAnchor: [256, 334], neckOnHead: [256, 406], bodyAnchor: [256, 36], faceRadius: 128, mouth: [256, 373], eyes: [256, 310], hairTop: [258, 42], earL: [94, 319], earR: [413, 320]}
+  kiko: {head: 'streamer/kiko_head.png', body: 'streamer/kiko_body.png', headAnchor: [256, 365], neckOnHead: [256, 440], bodyAnchor: [256, 46], faceRadius: 137, mouth: [256, 409], eyes: [256, 338], hairTop: [266, 35], earL: [78, 381], earR: [420, 384]},
+  momo: {head: 'streamer/momo_head.png', body: 'streamer/momo_body.png', headAnchor: [256, 334], neckOnHead: [256, 406], neckClip: [214, 298, 409], bodyAnchor: [256, 36], faceRadius: 128, mouth: [256, 373], eyes: [256, 310], hairTop: [258, 42], earL: [94, 319], earR: [413, 320]}
 };
 // face_parts.png / face_fx.png (V3): 240×120 cells; eyes / mouth cells are centred on each streamer's own `eyes` / `mouth`
 const FACE_IMG = 'streamer/face_parts.png', FX_IMG = 'streamer/face_fx.png';
