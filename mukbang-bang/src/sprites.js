@@ -60,7 +60,7 @@ function foodPath(id, stage) { return 'food/' + id + '_' + stage + '.png'; }
 const STREAMERS = {
   luna: {head: 'streamer/luna_head.png', body: 'streamer/luna_body.png', headAnchor: [256, 352], neckOnHead: [256, 442], bodyAnchor: [256, 49], faceRadius: 137, mouth: [256, 393], eyes: [256, 320], hairTop: [256, 87], earL: [76, 365], earR: [430, 365]},
   kiko: {head: 'streamer/kiko_head.png', body: 'streamer/kiko_body.png', headAnchor: [256, 365], neckOnHead: [256, 440], bodyAnchor: [256, 46], faceRadius: 137, mouth: [256, 409], eyes: [256, 338], hairTop: [266, 35], earL: [78, 381], earR: [420, 384]},
-  momo: {head: 'streamer/momo_head.png', body: 'streamer/momo_body.png', headAnchor: [256, 334], neckOnHead: [256, 406], neckClip: [214, 298, 409], bodyAnchor: [256, 36], faceRadius: 128, mouth: [256, 373], eyes: [256, 310], hairTop: [258, 42], earL: [94, 319], earR: [413, 320]}
+  momo: {head: 'streamer/momo_head.png', body: 'streamer/momo_body.png', headAnchor: [256, 334], neckOnHead: [256, 406], neckPatch: ['streamer/momo_neck.png', 200, 384, 422], bodyAnchor: [256, 36], faceRadius: 128, mouth: [256, 373], eyes: [256, 310], hairTop: [258, 42], earL: [94, 319], earR: [413, 320]}
 };
 // face_parts.png / face_fx.png (V3): 240×120 cells; eyes / mouth cells are centred on each streamer's own `eyes` / `mouth`
 const FACE_IMG = 'streamer/face_parts.png', FX_IMG = 'streamer/face_fx.png';
@@ -352,9 +352,9 @@ const V4 = {};
 ['icon_outfit_default', 'tab_outfit', 'tab_hair', 'tab_extras', 'badge_ad', 'badge_gift'].forEach(function (n) { V4['wardrobe/' + n + '.png'] = 'main'; });
 // per-streamer fit for the Codex wardrobe layers (head canvas px): s = scale about c, dx/dy = shift, under = draw before the head (scarf)
 const WEAR_FIT = {
-  luna: { acc_headphones: { s: 0.82, c: [256, 270] }, hair_cat_ears: { dy: 26 }, hair_bunny_ears: { dy: 26 }, hair_flowers: { dy: 10 }, acc_scarf: { under: 1, s: 1.2, c: [256, 463], dy: 22 } },
-  kiko: { acc_headphones: { s: 0.78, c: [256, 260], dy: 10 }, hair_cat_ears: { dy: 14 }, hair_bunny_ears: { dy: 12 }, acc_scarf: { under: 1, s: 1.2, c: [256, 469], dy: 10 } },
-  momo: { acc_headphones: { s: 0.84, c: [256, 220], dy: 6 }, hair_cat_ears: { dy: 24 }, hair_bunny_ears: { dy: 22 }, hair_flowers: { dy: 6 }, acc_scarf: { s: 1.15, c: [256, 433], dy: 26 } }
+  luna: { acc_headphones: { sx: 0.84, sy: 0.92, c: [256, 250] }, hair_cat_ears: { sy: 1.08, c: [256, 150], dy: 12 }, hair_bunny_ears: { sy: 1.06, c: [256, 150], dy: 12 }, hair_flowers: { dy: 8 }, acc_scarf: { under: 1, s: 1.2, c: [256, 463], dy: 22 } },
+  kiko: { acc_headphones: { sx: 0.8, sy: 0.9, c: [256, 240], dy: 6 }, hair_cat_ears: { sy: 1.06, c: [256, 160], dy: 6 }, hair_bunny_ears: { dy: 6 }, acc_scarf: { under: 1, s: 1.2, c: [256, 469], dy: 10 } },
+  momo: { acc_headphones: { sx: 0.86, sy: 0.96, c: [256, 200], dy: 6 }, hair_cat_ears: { sy: 1.08, c: [256, 130], dy: 2 }, hair_bunny_ears: { sx: 1.04, sy: 1.06, c: [256, 130], dy: -4 }, hair_flowers: { dy: 4 }, acc_scarf: { s: 1.15, c: [256, 433], dy: 20 } }
 };
 const SUB_ROOT = { art4: 'art4/', art3: 'art3/', art1: 'art1/', art5: 'art5/' };
 const sub = {};     // name → 'loading' | 'ok' | 'fail'

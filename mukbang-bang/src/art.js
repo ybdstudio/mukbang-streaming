@@ -613,14 +613,14 @@ function streamer(ctx, ch, x, y, s, st) {
   if (oIm) ctx.drawImage(oIm, sp.neckOnHead[0] - sp.bodyAnchor[0], sp.neckOnHead[1] - sp.bodyAnchor[1]);
   else if (lk) WR.drawBody(ctx, module.exports, lk, { nx: sp.neckOnHead[0], ny: sp.neckOnHead[1], bw: 343 });
   const fit = S.WEAR_FIT[ch.id] || {};
-  const wearAt = function (im, id) { const a = fit[id] || {}, sc = a.s || 1, c = a.c || [256, 256]; ctx.save(); ctx.translate(c[0] + (a.dx || 0), c[1] + (a.dy || 0)); ctx.scale(sc, sc); ctx.translate(-c[0], -c[1]); ctx.drawImage(im, 0, 0); ctx.restore(); };
+  const wearAt = function (im, id) { const a = fit[id] || {}, sx = a.sx || a.s || 1, sy = a.sy || a.s || 1, c = a.c || [256, 256]; ctx.save(); ctx.translate(c[0] + (a.dx || 0), c[1] + (a.dy || 0)); ctx.scale(sx, sy); ctx.translate(-c[0], -c[1]); ctx.drawImage(im, 0, 0); ctx.restore(); };
   const under = function (id) { return !!(fit[id] && fit[id].under); };
   if (aIm && under(lk.acc)) wearAt(aIm, lk.acc);
   ctx.drawImage(P.head, 0, 0);
-  if (sp.neckClip) { // Momo's back hair hides the neck: repaint the body's neck (and outfit collar) in front of it
-    const nc = sp.neckClip, ox = sp.neckOnHead[0] - sp.bodyAnchor[0], oy = sp.neckOnHead[1] - sp.bodyAnchor[1], bd = oIm ? null : body;
-    ctx.save(); ctx.beginPath(); ctx.rect(nc[0], nc[2], nc[1] - nc[0], 600); ctx.clip();
-    ctx.drawImage(bd || P.body, bd ? sp.neckOnHead[0] - bodyAnchor[0] : ox, bd ? sp.neckOnHead[1] - bodyAnchor[1] : oy); if (oIm) ctx.drawImage(oIm, ox, oy); ctx.restore(); }
+  if (sp.neckPatch) { // Momo's back hair hides her neck: a pre-made neck (body neck joined to the chin) goes in front of it
+    const np = sp.neckPatch, nim = S.get(np[0]);
+    if (nim) { ctx.drawImage(nim, np[1], np[2]);
+      if (oIm) { const ox = sp.neckOnHead[0] - sp.bodyAnchor[0], oy = sp.neckOnHead[1] - sp.bodyAnchor[1]; ctx.save(); ctx.beginPath(); ctx.rect(np[1], np[3], nim.width, np[2] + nim.height - np[3]); ctx.clip(); ctx.drawImage(oIm, ox, oy); ctx.restore(); } } }
   const ex = S.EXPR[expr]; let eyes = ex[0], mouth = ex[1];
   if ((expr === 'idle' || expr === 'open' || expr === 'chew') && st.blink) eyes = 'eyes_blink';
   if (expr === 'chew' && Math.sin(t * 22) < 0) mouth = 'mouth_chew_b';
