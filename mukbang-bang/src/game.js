@@ -95,16 +95,27 @@ class Game {
   scanItem(it) {
     const c = this.checkout; if (it.scanned) return;
     it.scanned = true; const f = K.dish(it.id); const price = f.price;
-    c.receipt.push({ name: f.name, price: price }); c.total += price; c.flash = 1;
+    c.receipt.push({ name: f.name, price: price, it: it }); c.total += price; c.flash = 1;
     this.audio.play('beep'); this.vibrate('short');
     const r = this.machineRect(); this.spawnSparkles(r.x + r.w / 2, r.y + r.h * 0.84, 10);
     let left = 0; for (let i = 0; i < c.items.length; i++) if (!c.items[i].scanned) left++;
-    if (!left) {
-      c.done = true; c.thankT = 0; this.audio.play('cash');
-      this.profile.add('coins', -c.total);
-      c.food = c.items[0].id; c.queue = c.items.slice(1).map(function (it) { return it.id; });
-    }
+    if (!left) c.review = true; // everything is on the receipt: the player checks it, can put things back, then pays
   }
+  payCheckout() {
+    const c = this.checkout; if (!c || c.done || !c.review || !c.items.length) return;
+    c.done = true; c.thankT = 0; this.audio.play('cash');
+    this.profile.add('coins', -c.total);
+    c.food = c.items[0].id; c.queue = c.items.slice(1).map(function (it) { return it.id; });
+  }
+  // put one receipt line back on the shelf (the basket shrinks too); an empty receipt returns to the shop
+  removeCheckoutLine(i) {
+    const c = this.checkout; if (!c || c.done) return; const line = c.receipt[i]; if (!line) return;
+    c.receipt.splice(i, 1); c.total -= line.price; const k = c.items.indexOf(line.it); if (k >= 0) c.items.splice(k, 1);
+    const m = this.market; if (m) { const b = m.basket.indexOf(line.it.id); if (b >= 0) m.basket.splice(b, 1); }
+    this.audio.play('drop');
+    if (!c.items.length) { this.setState('market'); this.showToast('Basket is empty', 'Pick something to stream!'); }
+  }
+  backToShop() { const c = this.checkout; if (!c || c.done) return; this.audio.play('whoosh', { gain: 0.5 }); this.setState('market'); }
   headPos() { return { x: this.W / 2, y: this.H * 0.305, s: Math.min(1, this.H / 1000) }; }
   mouth() { const h = this.headPos(); return A.mouthPos(h.x, h.y, h.s, this.face.bob || 0, this.streamerDef()); }
   setFace(expr, dur) { this.face.expr = expr; this.face.until = this.time + dur; this.face.t = 0; }
@@ -154,6 +165,7 @@ class Game {
     const c = this.checkout; c.flash = Math.max(0, c.flash - dt * 3);
     if (c.auto && !c.done) { c.autoT -= dt; if (c.autoT <= 0) { c.autoT = 0.32; for (let i = 0; i < c.items.length; i++) { const it = c.items[i]; if (!it.scanned && !it.fly && !(this.drag && this.drag.item === it)) { this.flyToScanner(it); break; } } } }
     for (let i = 0; i < c.items.length; i++) { const it = c.items[i]; if (it.fly) { it.fly.t += dt * 2.5; const k = U.easeInOut(it.fly.t); it.x = U.lerp(it.fly.x0, it.fly.x1, k); it.y = U.lerp(it.fly.y0, it.fly.y1, k) - Math.sin(k * Math.PI) * 60; if (it.fly.t >= 1) { it.fly = null; this.scanItem(it); } } else if (this.drag && this.drag.item === it) { /* follows the finger */ } else if (!it.scanned) { it.x = U.damp(it.x, it.hx, 12, dt); it.y = U.damp(it.y, it.hy, 12, dt); } }
+    if (c.review && c.autoPay && !c.done) this.payCheckout(); // auto-fill (preview links, tests) pays straight away
     if (c.done) { c.thankT += dt; if (c.thankT > 1.0 && this.state === 'checkout') this.startFoodStream(c.food, { side: 'market', cost: c.total, queue: c.queue }); }
   }
   // ── input ──
@@ -209,6 +221,12 @@ class Game {
       case 'cat_prev': this.market.cat = (this.market.cat + this.market.cats.length - 1) % this.market.cats.length; this.audio.play('whoosh', { gain: 0.5 }); break;
       case 'cat_next': this.market.cat = (this.market.cat + 1) % this.market.cats.length; this.audio.play('whoosh', { gain: 0.5 }); break;
       case 'confirm': if (this.market.basket.length >= 1) this.beginCheckout(); break;
+      case 'pay': this.payCheckout(); break;
+      case 'to_shop': this.backToShop(); break;
+      case 'gtip_ok': this.profile.set('tip_goal', 1); this.audio.play('pop'); break;
+      case 'gtip_block': break;
+      case 'mtip_ok': this.profile.set('tip_market', 1); this.audio.play('pop'); break;
+      case 'mtip_block': break;
       case 'pause': if (this.state === 'stream') this.setState('pause'); break;
       case 'resume': this.setState('stream'); break;
       case 'leave': this.saveRun(); this.setState('home'); break;
@@ -243,6 +261,7 @@ class Game {
         else if (this.wardrobeTap(id)) { /* wardrobe */ }
         else if (id.indexOf('item') === 0) this.pickItem(+id.slice(4));
         else if (id.indexOf('bk') === 0) this.removeBasket(+id.slice(2));
+        else if (id.indexOf('rml') === 0) this.removeCheckoutLine(+id.slice(3));
         else if (id.indexOf('lvl') === 0) this.startLevel(+id.slice(3));
         else if (id.indexOf('str') === 0) this.pickStreamer(+id.slice(3));
         else if (id.indexOf('buy') === 0) this.buy(id.slice(3));
@@ -531,6 +550,7 @@ class Game {
       A.foodOn(ctx, f, sp.x + (afford ? 0 : shake), sp.y + 62, 206, this.time);
       ctx.globalAlpha = 1;
       A.priceTag(ctx, sp.x, sp.y + 92, price, !afford);
+      if (afford) ui.label('earns ~' + this.estimateEarn([f.id], price), sp.x, sp.y + 117, 12, C.greenDark || '#2f9c55', 'center', { stroke: 3, strokeColor: '#fff' });
       ui.hotspot('item' + i, sp.x - 84, sp.y - 130, 168, 224);
     }
     // bottom: portrait, basket, count + total
@@ -545,6 +565,24 @@ class Game {
     ui.panel(W - 150, bottom - 98, 130, 44, '#fff', C.outline, 14); ui.label('Total', W - 126, bottom - 76, 15, C.text, 'left'); A.coin(ctx, W - 66, bottom - 76, 9); ui.label(String(total), W - 52, bottom - 76, 18, C.text, 'left');
     if (m.basket.length >= 1) { const pulse = 1 + Math.sin(this.time * 6) * 0.05; ctx.save(); ctx.translate(W - 85, bottom - 24); ctx.scale(pulse, pulse); ctx.translate(-(W - 85), -(bottom - 24)); ui.button('confirm', W - 150, bottom - 48, 130, 48, 'GO  ›', { color: C.green, dark: C.greenDark, size: 24 }); ctx.restore(); }
     else ui.label('pick anything!', W - 85, bottom - 24, 14, C.text);
+    if (m.basket.length >= 1) { // what this order earns back on the stream
+      const earn = this.estimateEarn(m.basket, total), prof = earn - total;
+      ui.panel(W - 150, bottom - 214, 130, 58, '#e9fbe9', '#2f9c55', 14, 3);
+      ui.label('STREAM EARNS', W - 85, bottom - 200, 11, '#2f9c55'); A.coin(ctx, W - 120, bottom - 178, 8); ui.label('~' + earn, W - 106, bottom - 178, 16, C.text, 'left');
+      ui.label((prof >= 0 ? '+' : '') + prof, W - 28, bottom - 178, 14, prof >= 0 ? '#2f9c55' : '#d33', 'right');
+    }
+    if (!(this.profile.get('tip_market') || 0)) this.drawMarketTip();
+  }
+  // First visit: how the supermarket pays off (buy → eat live → every bite pays coins back).
+  drawMarketTip() {
+    const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H; ui.dim(0.55); ui.hotspot('mtip_block', 0, 0, W, H);
+    const pw = W - 60, ph = 420, px = 30, py = H * 0.5 - ph / 2; ui.panel(px, py, pw, ph, '#fff7fb', C.pinkDark, 24, 4);
+    ui.label('HOW SHOPPING PAYS', W / 2, py + 38, 24, C.pinkDark);
+    const f = K.dish('chili_noodle'), price = f ? D.priceOf(f) : 200, earn = this.estimateEarn(['chili_noodle'], price);
+    const rows = [['1', 'BUY FOOD', 'Spend ' + price + ' coins on a snack'], ['2', 'EAT IT LIVE', 'Every bite pays coins + viewers'], ['3', 'GET MORE BACK', 'About ' + earn + ' coins back: +' + (earn - price) + ' profit!']];
+    for (let i = 0; i < 3; i++) { const y = py + 92 + i * 78; A.circle(ctx, px + 46, y, 22, i === 2 ? C.green : C.pink, 3); ui.label(rows[i][0], px + 46, y + 1, 20, C.white); ui.label(rows[i][1], px + 82, y - 12, 18, C.text, 'left'); ui.label(rows[i][2], px + 82, y + 14, 14, C.textLight, 'left'); }
+    ui.label('More food in the basket = a longer stream', W / 2, py + 330, 14, C.text); ui.label('and more profit. Watch the green box!', W / 2, py + 350, 14, C.text);
+    ui.button('mtip_ok', W / 2 - 90, py + ph - 62, 180, 48, 'GOT IT!', { color: C.green, dark: C.greenDark, size: 22 });
   }
   // ── CHECKOUT ──
   drawCheckout() {
@@ -563,7 +601,10 @@ class Game {
     } else {
       ui.label('Total', m.sx + m.sw / 2, m.sy + 26, 22, C.pinkDark);
       const lh = Math.max(16, Math.min(24, (m.sh - 100) / Math.max(1, c.items.length))); let y = m.sy + 52;
-      for (let i = 0; i < c.receipt.length; i++) { const line = c.receipt[i]; if (y > m.sy + m.sh - 50) break; ui.label(line.name + ' x1', m.sx + 18, y, 14, C.text, 'left'); A.coin(ctx, m.sx + m.sw - 56, y, 7); ui.label(String(line.price), m.sx + m.sw - 16, y, 14, C.text, 'right'); y += lh; }
+      const rv = !!c.review, lx = m.sx + (rv ? 40 : 18);
+      for (let i = 0; i < c.receipt.length; i++) { const line = c.receipt[i]; if (y > m.sy + m.sh - 50) break;
+        if (rv) { const bs = Math.min(22, lh - 2); ui.button('rml' + i, m.sx + 12, y - bs / 2, bs, bs, '✕', { color: C.red, dark: '#c93b55', size: 12, radius: bs / 2 }); }
+        ui.label(line.name + ' x1', lx, y, 14, C.text, 'left'); A.coin(ctx, m.sx + m.sw - 56, y, 7); ui.label(String(line.price), m.sx + m.sw - 16, y, 14, C.text, 'right'); y += lh; }
       ctx.strokeStyle = '#c9c0e8'; ctx.lineWidth = 2; ctx.beginPath(); ctx.moveTo(m.sx + 14, m.sy + m.sh - 44); ctx.lineTo(m.sx + m.sw - 14, m.sy + m.sh - 44); ctx.stroke();
       ui.label('Total', m.sx + 18, m.sy + m.sh - 22, 16, C.text, 'left'); A.coin(ctx, m.sx + m.sw - 62, m.sy + m.sh - 22, 8); ui.label(String(c.total), m.sx + m.sw - 16, m.sy + m.sh - 22, 18, C.text, 'right');
       if (c.flash > 0) { ctx.fillStyle = 'rgba(255,255,255,' + c.flash * 0.6 + ')'; A.rr(ctx, m.px, m.py, m.pw, m.ph, 10); ctx.fill(); }
@@ -571,7 +612,16 @@ class Game {
     // conveyor + items
     const cy = r.y + r.h + 20; A.conveyor(ctx, 20, cy, W - 40, Math.min(120, this.bottom() - cy - 60));
     for (let i = 0; i < c.items.length; i++) { const it = c.items[i]; if (it.scanned) continue; const held = this.drag && this.drag.item === it; A.food(ctx, K.dish(it.id), it.x, it.y, held ? 100 : 86, 0, this.time); }
-    if (!c.done) { let left = 0; for (let i = 0; i < c.items.length; i++) if (!c.items[i].scanned) left++; ui.label(left ? (c.auto ? 'Scanning…  (drag to scan yourself)' : 'Drag each item onto the scanner  (' + left + ' left)') : '', W / 2, cy + Math.min(120, this.bottom() - cy - 60) + 30, 15, C.text); }
+    if (!c.done && !c.review) { let left = 0; for (let i = 0; i < c.items.length; i++) if (!c.items[i].scanned) left++; ui.label(left ? (c.auto ? 'Scanning…  (drag to scan yourself)' : 'Drag each item onto the scanner  (' + left + ' left)') : '', W / 2, cy + Math.min(120, this.bottom() - cy - 60) + 30, 15, C.text); }
+    if (!c.done && c.review) { // check the receipt: ✕ puts an item back, PAY starts the stream
+      const ids = c.items.map(function (it) { return it.id; }), earn = this.estimateEarn(ids, c.total), prof = earn - c.total, coins = this.profile.get('coins') || 0;
+      ui.panel(30, cy + 4, W - 60, 56, '#e9fbe9', '#2f9c55', 16, 3);
+      ui.label('Tap ✕ to put an item back', W / 2, cy + 20, 13, C.textLight);
+      ui.label('Stream earns ~' + earn + '   ·   profit ' + (prof >= 0 ? '+' : '') + prof, W / 2, cy + 42, 16, '#2f9c55');
+      const by = cy + 74; ui.button('to_shop', 30, by, (W - 80) * 0.4, 56, '‹ SHOP', { color: '#8fd1ff', dark: '#4a9fd8', size: 20 });
+      if (coins >= c.total) { const pulse = 1 + Math.sin(this.time * 6) * 0.04, bx = 50 + (W - 80) * 0.4, bw = (W - 80) * 0.6; ctx.save(); ctx.translate(bx + bw / 2, by + 28); ctx.scale(pulse, pulse); ctx.translate(-(bx + bw / 2), -(by + 28)); ui.button('pay', bx, by, bw, 56, 'PAY ' + c.total, { color: C.green, dark: C.greenDark, size: 22 }); ctx.restore(); }
+      else ui.label('Not enough coins: put something back', 50 + (W - 80) * 0.7, by + 28, 13, '#d33');
+    }
   }
   drawPause() {
     const ui = this.ui, W = this.W, H = this.H;

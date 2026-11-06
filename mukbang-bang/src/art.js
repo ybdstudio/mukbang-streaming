@@ -888,13 +888,17 @@ const FOOD3 = { cat_chips: 1, honey_puffs: 1, cheese_noodle: 1, straw_cake: 1, p
 function food3(ctx, id, state, x, y, size) { const im = S.get('food3/' + id + '_' + state + '.png'); if (!im) return false; ctx.drawImage(im, x - size / 2, y - size / 2, size, size); return true; }
 function pack3(ctx, f, kind, x, y, size, state, k, e) {
   if (!FOOD3[f.id]) return false; const z = size * (kind === 'bag' ? 0.92 : 1.05); // the V3 packages are drawn edge to edge: bags read too big at 1:1
-  if (state === 'opening' && k < 0.5) { const strip = S.get('food3/open_' + kind + '.png'); if (strip) { const fr = Math.min(3, Math.floor(k * 8)), cw = strip.width / 4; ctx.drawImage(strip, fr * cw, 0, cw, strip.height, x - z / 2, y - z / 2, z, z); return true; } return food3(ctx, f.id, 'sealed', x, y, z); }
+  if (state === 'opening') { // the item's own art (never a generic package): a wobble while sealed, a pop as it opens; pack() adds the flying seal
+    const open = k >= 0.35, w = open ? 0 : Math.sin(k * 46) * (1 - k / 0.35) * 0.07, pop = open ? 1 + 0.08 * Math.max(0, 1 - (k - 0.35) * 5) : 1 - 0.04 * Math.sin(k / 0.35 * Math.PI);
+    ctx.save(); ctx.translate(x, y + z * 0.4); ctx.rotate(w); ctx.scale(pop, 1 / pop); ctx.translate(-x, -(y + z * 0.4));
+    const ok = food3(ctx, f.id, open ? 'open' : 'sealed', x, y, z) || food3(ctx, f.id, 'sealed', x, y, z); ctx.restore(); return ok ? 'seal' : false; }
   const st = state === 'sealed' ? 'sealed' : state === 'empty' || e >= 1 ? 'empty' : e >= 0.66 ? 'p2' : e >= 0.33 ? 'p1' : 'open';
   return food3(ctx, f.id, st, x, y, z);
 }
 function pack(ctx, f, kind, x, y, size, state, k, e, t, toppings) {
-  if (pack3(ctx, f, kind, x, y, size, state, k || 0, e || 0)) return;
+  const p3 = pack3(ctx, f, kind, x, y, size, state, k || 0, e || 0); if (p3 === true) return;
   const s = size / 100;
+  if (p3 === 'seal') { if (kind === 'bag' || kind === 'bottle') packSeal(ctx, f, kind, x, y, size, state, k); return; }
   if (state === 'empty') { ctx.globalAlpha = 0.85; food(ctx, f, x, y, size, 1, t); ctx.globalAlpha = 1; for (let i = 0; i < 5; i++) circle(ctx, x - size * 0.25 + i * size * 0.12, y + size * 0.36 + (i % 2) * 4, size * 0.018, f.c3 || OUT, 0); return; }
   const showFood = state === 'open' || (state === 'opening' && (kind === 'bag' || kind === 'cup' || kind === 'bottle' || k > 0.4));
   if (kind === 'box' || kind === 'dome') {
@@ -908,7 +912,10 @@ function pack(ctx, f, kind, x, y, size, state, k, e, t, toppings) {
   // bag / cup / bottle: the package itself is the food art; a seal sits on top
   food(ctx, f, x, y, size, state === 'open' ? e : 0, t); toppingDots(ctx, toppings, x, y, size, state === 'open' ? e : 0);
   if (state === 'open') return;
-  const g = state === 'sealed' ? 0 : U.easeInOut(k);
+  packSeal(ctx, f, kind, x, y, size, state, k);
+}
+function packSeal(ctx, f, kind, x, y, size, state, k) {
+  const s = size / 100, g = state === 'sealed' ? 0 : U.easeInOut(k);
   ctx.save(); ctx.translate(x, y); ctx.scale(s, s);
   if (kind === 'bag') { ctx.translate(g * 40, -38 - g * 60); ctx.rotate(g * 0.9); ctx.globalAlpha = 1 - g; rr(ctx, -40, -6, 80, 14, 4); fillStroke(ctx, '#ffffff', 3); ctx.strokeStyle = 'rgba(91,61,59,0.5)'; ctx.lineWidth = 2; ctx.setLineDash([4, 4]); ctx.beginPath(); ctx.moveTo(-36, 1); ctx.lineTo(36, 1); ctx.stroke(); ctx.setLineDash([]); }
   else if (kind === 'cup') { /* the cup art already shows its own lid: no extra vector seal on top */ }

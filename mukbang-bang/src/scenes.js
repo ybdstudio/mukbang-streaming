@@ -51,7 +51,7 @@ function install(Game) {
   };
   // QA / tests: complete the current food-source scene without input
   P.sceneAutoFill = function () {
-    if (this.state === 'market') { const m = this.market; const foods = D.foodsOf(m.cats[0]); const foods2 = D.foodsOf(m.cats[Math.min(1, m.cats.length - 1)]); while (m.basket.length < (this.autoItems || 1)) m.basket.push((m.basket.length % 2 ? foods2 : foods)[m.basket.length % 6].id); this.beginCheckout(); return; }
+    if (this.state === 'market') { const m = this.market; const foods = D.foodsOf(m.cats[0]); const foods2 = D.foodsOf(m.cats[Math.min(1, m.cats.length - 1)]); while (m.basket.length < (this.autoItems || 1)) m.basket.push((m.basket.length % 2 ? foods2 : foods)[m.basket.length % 6].id); this.beginCheckout(); this.checkout.autoPay = true; return; }
     if (this.state === 'delivery') { const d = this.deliv; const mains = this.deliveryMains(); for (let i = 0; d.mains.length < (this.autoItems || 1) && i < 20; i++) d.mains.push(mains[i % mains.length].id); this.placeOrder(); return; }
     if (this.state === 'buffet') { const b = this.buf; const items = this.buffetItems(); for (let i = 0; b.plate.length < (this.autoItems || 1) && i < 20; i++) b.plate.push(items[i % items.length].id); this.buffetGo(); return; }
     if (this.state === 'kitchen') { if (this.kit.phase === 'choose') this.kitStart(); const k = this.kit; while (k.phase === 'cook') { k.prog = 1; this.stepCheck(); } this.kitFinish(); }

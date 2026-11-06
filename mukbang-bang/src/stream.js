@@ -54,6 +54,12 @@ function install(Game) {
     r.banner = { text: 'NEXT UP!', sub: d.name.toUpperCase() + (r.queue.length ? '  ·  ' + r.queue.length + ' MORE' : '  ·  LAST ONE'), t: 0 };
     this.audio.play('whoosh'); this.setFace('open', 0.8); this.pushChat('idle'); this.saveRun();
   };
+  // Coins a side stream pays for a list of foods (same formula as startFoodStream; events and gifts not counted).
+  P.estimateEarn = function (ids, cost) {
+    const n = ids.length; if (!n) return 0; const reached = this.curLevel();
+    const cpb = Math.max(4, Math.round(Math.max((cost || 0) / n, 60 + 10 * reached) * 1.35 / (PICKUPS * BITES)));
+    return cpb * PICKUPS * BITES * n + cpb * 3;
+  };
   P.startFoodStream = function (foodId, o) {
     o = o || {}; const d = K.dish(foodId) || K.dish('cat_chips'); const reached = this.curLevel(); const lv = L.level(reached);
     const nItems = 1 + ((o.queue && o.queue.length) || 0);
@@ -113,7 +119,7 @@ function install(Game) {
 
   // ── input ──
   P.streamTouch = function (kind, id, x, y) {
-    const r = this.run; if (!r || this.state !== 'stream') return false;
+    const r = this.run; if (!r || this.state !== 'stream' || this.goalTipOn()) return false;
     if (kind === 'start') {
       // optional extras first: hearts, the fan gift
       for (let i = this.hearts.length - 1; i >= 0; i--) { const h = this.hearts[i]; if (!h.taken && U.dist(x, y, h.x, h.y) < 40) { this.tapHeart(h); return true; } }
@@ -195,7 +201,7 @@ function install(Game) {
 
   // ── update ──
   P.updateStream = function (dt) {
-    const r = this.run; if (!r) return; r.t += dt; r.pt += dt;
+    const r = this.run; if (!r || this.goalTipOn()) return; r.t += dt; r.pt += dt;
     if (r.zoom > 0) r.zoom = Math.max(0, r.zoom - dt);
     if (r.banner) { r.banner.t += dt; if (r.banner.t > 1.6) r.banner = null; }
     if (r.superchat) { r.superchat.t += dt; if (r.superchat.t > 3) r.superchat = null; }
@@ -365,6 +371,20 @@ function install(Game) {
     if (r.duet) { const a = Math.min(1, r.duet.t * 3, (4 - r.duet.t) * 2); ctx.globalAlpha = Math.max(0, a); ui.panel(W - 140, top + 130, 120, 120, '#fff', C.outline, 18, 4); A.avatar(ctx, r.duet.avatar, W - 80, top + 182, 38); ui.label('FAN DUET', W - 80, top + 236, 12, C.pinkDark); ctx.globalAlpha = 1; }
     // beat banner
     if (r.banner && !still) { const b = r.banner; const k = U.easeOutBack(Math.min(1, b.t * 3)); const a = b.big ? 1 : Math.min(1, (1.6 - b.t) * 3); ctx.globalAlpha = Math.max(0, a); ctx.save(); ctx.translate(W / 2, H * 0.47); ctx.scale(k, k); ui.title(b.text, 0, 0, b.big ? 64 : 36, b.big ? C.yellow : C.white, C.pinkDark, (W - 36) / Math.max(0.01, k)); if (b.sub) ui.label(b.sub, 0, b.big ? 48 : 34, b.big ? 20 : 18, C.white, 'center', { stroke: 5 }); ctx.restore(); ctx.globalAlpha = 1; }
+    if (!still && this.goalTipOn()) this.drawGoalTip();
+  };
+  // First time food is on the table: what the viewer goal is for (shown once, the stream waits behind it)
+  P.goalTipOn = function () { const r = this.run; return !!(r && this.state === 'stream' && (r.phase === 'sealed' || r.phase === 'open') && !(r.pickups > 0) && !(this.profile.get('tip_goal') || 0) && (r.t || 0) > 0.6); };
+  P.drawGoalTip = function () {
+    const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, r = this.run, top = this.top(); ui.dim(0.55); ui.hotspot('gtip_block', 0, 0, W, H);
+    // point at the goal bar
+    ctx.strokeStyle = '#ffd95e'; ctx.lineWidth = 4; A.rr(ctx, W / 2 - 112, top + 62, 224, 30, 15); ctx.stroke();
+    const pw = W - 60, ph = 430, px = 30, py = top + 130; ui.panel(px, py, pw, ph, '#fff7fb', C.pinkDark, 24, 4);
+    ui.label('▲ YOUR VIEWER GOAL', W / 2, py + 36, 22, C.pinkDark);
+    const g1 = this.milestone(0), b1 = r.cpb, b2 = r.cpb * 2;
+    const rows = [['EAT TO GET VIEWERS', 'Every bite, heart and gift brings fans'], ['HIT THE GOAL = BONUS', U.fmtViewers(g1) + ' viewers pays +' + b1 + ' coins'], ['THEN AN EVEN BIGGER GOAL', 'Next goal pays +' + b2 + ', and it keeps growing'], ['MORE GOALS = MORE STARS', '1 goal = 2★ · 2 goals = 3★ for the level']];
+    for (let i = 0; i < 4; i++) { const y = py + 90 + i * 70; A.circle(ctx, px + 44, y, 21, i === 1 ? C.gold : C.pink, 3); ui.label(String(i + 1), px + 44, y + 1, 19, C.white); ui.label(rows[i][0], px + 78, y - 11, 16, C.text, 'left'); ui.label(rows[i][1], px + 78, y + 13, 13, C.textLight, 'left'); }
+    ui.button('gtip_ok', W / 2 - 100, py + ph - 66, 200, 50, "LET'S GO LIVE!", { color: C.green, dark: C.greenDark, size: 20 });
   };
   // the viewer's request (start of every level) and the big MAKE button
   P.drawRequest = function () {

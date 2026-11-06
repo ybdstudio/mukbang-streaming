@@ -79,7 +79,7 @@ function fakeHs(profile, mode, opts) {
     canShare: () => true, share: () => Promise.resolve({}), shop: () => Promise.resolve([]), buy: () => Promise.resolve({ ok: true, delivered: true }), on() {}
   };
 }
-const INIT = { level: 1, levels_done: 0, coins: 500, streamer: 0, stars_json: '{}', run_json: '', streams: 0, best_viewers: 0, combo_best: 0, foods_json: '[]', wardrobe_json: '{}', ad_stats: '{}', no_ads: 0, sound: true };
+const INIT = { level: 1, levels_done: 0, coins: 500, streamer: 0, stars_json: '{}', run_json: '', streams: 0, best_viewers: 0, combo_best: 0, foods_json: '[]', wardrobe_json: '{}', ad_stats: '{}', no_ads: 0, sound: true, tip_market: 1, tip_goal: 1 };
 
 // ── input helpers (logical coordinates; the fake screen is 390 px wide) ──
 function run(g, seconds) { const steps = Math.round(seconds * 60); for (let i = 0; i < steps; i++) { g.lastT = g.lastT || 1000; g.frame(g.lastT + 1000 / 60); } }
@@ -213,6 +213,15 @@ seed(7);
   check('activities unlock at 3 / 7 / 11', L.MODES.every(m => L.unlockLevel('mode:' + m.id) === m.unlock) && L.MODES.length === 3, L.MODES.map(m => [m.id, L.unlockLevel('mode:' + m.id)]));
   const gifts = WR.ITEMS.filter(i => i.gift); check('every wardrobe gift is granted by its level', gifts.every(i => L.unlockLevel('look:' + i.id) === i.gift), gifts.filter(i => L.unlockLevel('look:' + i.id) !== i.gift).map(i => i.id));
   check('goals rise every level', L.LEVELS.every((l, i) => i === 0 || l.goal > L.LEVELS[i - 1].goal));
+}
+// ═════════ supermarket checkout review: put items back, then pay ═════════
+{
+  const prof = fakeProfile(Object.assign({}, INIT, { level: 20, levels_done: 19, streams: 19, coins: 3000 })); const p = fakePlatform(), hs = fakeHs(prof, 'ok'), g = new Game(p, hs); g.hsReady = true; run(g, 0.1);
+  await tap(g, p, 'side_market'); g.autoItems = 3; const m = g.market; const fs = D.foodsOf(m.cats[0]); m.basket.push(fs[0].id, fs[1].id, fs[2].id); g.beginCheckout();
+  runUntil(g, () => g.checkout.review, 6); check('checkout: scanning everything waits for PAY (no auto charge)', g.checkout.review && !g.checkout.done && prof.get('coins') === 3000);
+  const before = g.checkout.total; g.removeCheckoutLine(0); check('checkout: ✕ puts one item back', g.checkout.items.length === 2 && g.checkout.total < before && g.market.basket.length === 2);
+  check('checkout: profit estimate is positive', g.estimateEarn(g.checkout.items.map((it) => it.id), g.checkout.total) > g.checkout.total);
+  const tot = g.checkout.total; g.payCheckout(); runUntil(g, () => g.state === 'stream', 4); check('checkout: PAY charges the reviewed total and starts the stream', g.state === 'stream' && prof.get('coins') <= 3000 - tot + 2000 && g.run.queue.length === 1, prof.get('coins'));
 }
 // ═════════ optional activities: packaged / restaurant food, one item, never advance the level ═════════
 seed(3);
