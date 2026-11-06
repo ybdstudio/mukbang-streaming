@@ -125,7 +125,7 @@ seed(1);
   const steps = g.ck.rc.steps.map(s => s.t);
   check('jelly = pick mould → pick flavour → pour → cool → flip → topping → place → deco → shake (as in the video)', steps.join() === 'pick,pick,pour,hold,flip,pick,place,pick,shake', steps);
   check('a pick step shows 4 choices incl. the requested one', g.ck.opts.length === 4);
-  const want = g.ck.req.flavor; await tap(g, p, 'cko_' + g.ck.opts[0].id); check('choosing does not advance until ✓', g.ck.step === 0 && g.ck.sel === g.ck.opts[0].id); await tap(g, p, 'ck_ok'); check('✓ confirms the choice', g.ck.step === 1);
+  const want = g.ck.req.flavor; check('the request names a mould, and the tray has it', !!g.ck.req.mold && g.ck.opts.some(o => o.id === g.ck.req.mold)); await tap(g, p, 'cko_' + g.ck.req.mold); check('choosing does not advance until ✓', g.ck.step === 0 && g.ck.sel === g.ck.req.mold); await tap(g, p, 'ck_ok'); check('✓ confirms the choice', g.ck.step === 1);
   check('the flavour tray contains the requested flavour', g.ck.opts.some(o => o.id === want));
   await cookAll(g, p, { match: true });
   check('cooked dish matches the request → PERFECT, back on the stream', g.state === 'stream' && g.run.perfect === true && g.run.dish.flavor === want);

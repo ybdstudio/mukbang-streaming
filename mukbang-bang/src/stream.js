@@ -124,6 +124,8 @@ function install(Game) {
     if (r.giftAsk) return false; // the gift card is open: its buttons handle the tap
     if (kind === 'start' && r.bal) { const b = this.balloonPos(); if (Math.abs(x - b.x) < 44 && y > b.y - 136 && y < b.y + 52) { r.giftAsk = true; r.bal = null; this.audio.play('pop'); return true; } }
     if (kind === 'start') {
+      // fan duet: wave back for a viewer burst (optional, no ad)
+      if (r.duet && !r.duet.waved && x > this.W - 140 && x < this.W - 20 && y > this.top() + 130 && y < this.top() + 262) { const d = r.duet; d.waved = true; d.t = Math.min(d.t, 3); const v = Math.round(r.goal * EVENT_BOOST * 1.5); this.addViewers(v); this.floatText('+' + U.fmtViewers(v) + '  DUET!', this.W - 80, this.top() + 120, C.pink, 20, true); for (let i = 0; i < 6; i++) this.spawnHeart(true); this.setFace('yum', 1.2); this.audio.play('sweet'); return true; }
       // optional extras first: hearts, the fan gift
       for (let i = this.hearts.length - 1; i >= 0; i--) { const h = this.hearts[i]; if (!h.taken && U.dist(x, y, h.x, h.y) < 40) { this.tapHeart(h); return true; } }
       if (r.gift && !r.giftTaken && U.dist(x, y, r.gift.x, r.gift.y) < 60) { this.tapGift(); return true; }
@@ -208,7 +210,7 @@ function install(Game) {
     if (r.zoom > 0) r.zoom = Math.max(0, r.zoom - dt);
     if (r.banner) { r.banner.t += dt; if (r.banner.t > 1.6) r.banner = null; }
     if (r.superchat) { r.superchat.t += dt; if (r.superchat.t > 3) r.superchat = null; }
-    if (r.duet) { r.duet.t += dt; if (r.duet.t > 4) r.duet = null; }
+    if (r.duet) { r.duet.t += dt; if (r.duet.t > (r.duet.waved ? 5.5 : 6)) r.duet = null; }
     if (r.gift) r.gift.t += dt;
     // fan-gift balloons: cross the table every BAL_EVERY seconds while the rewarded ad is available
     r.balT = (r.balT || 0) + dt;
@@ -375,7 +377,11 @@ function install(Game) {
     ui.label(r.level ? 'STREAM ' + r.level + ' · ' + this.streamLevel().title.toUpperCase() : L.modeOf(r.side) ? L.modeOf(r.side).name + ' STREAM' : 'BONUS STREAM', W / 2, top + 100, 12, C.white, 'center', { stroke: 4 });
     // superchat banner / duet bubble
     if (r.superchat) { const a = Math.min(1, r.superchat.t * 4, (3 - r.superchat.t) * 3); ctx.globalAlpha = Math.max(0, a); ui.panel(40, top + 120, W - 80, 52, '#ffd95e', C.goldDark, 20, 4); ui.label('SUPER CHAT  +' + r.superchat.coins + '  ·  "you are the best!!"', W / 2, top + 146, 16, C.text); ctx.globalAlpha = 1; }
-    if (r.duet) { const a = Math.min(1, r.duet.t * 3, (4 - r.duet.t) * 2); ctx.globalAlpha = Math.max(0, a); ui.panel(W - 140, top + 130, 120, 120, '#fff', C.outline, 18, 4); A.avatar(ctx, r.duet.avatar, W - 80, top + 182, 38); ui.label('FAN DUET', W - 80, top + 236, 12, C.pinkDark); ctx.globalAlpha = 1; }
+    if (r.duet) { const d = r.duet, end = d.waved ? 5.5 : 6, a = Math.min(1, d.t * 3, (end - d.t) * 2), pulse = d.waved ? 1 : 1 + 0.06 * Math.sin(this.time * 8); ctx.globalAlpha = Math.max(0, a);
+      ctx.save(); ctx.translate(W - 80, top + 190); ctx.scale(pulse, pulse); ctx.translate(-(W - 80), -(top + 190));
+      ui.panel(W - 140, top + 130, 120, 132, d.waved ? '#eafff0' : '#fff', d.waved ? C.greenDark : C.pinkDark, 18, 4); A.avatar(ctx, d.avatar, W - 80, top + 180, 36);
+      ui.label('FAN DUET', W - 80, top + 228, 12, C.pinkDark); ui.label(d.waved ? 'BESTIES!' : 'TAP TO WAVE!', W - 80, top + 247, 12, d.waved ? C.greenDark : C.text);
+      ctx.restore(); ctx.globalAlpha = 1; }
     // beat banner
     if (r.banner && !still) { const b = r.banner; const k = U.easeOutBack(Math.min(1, b.t * 3)); const a = b.big ? 1 : Math.min(1, (1.6 - b.t) * 3); ctx.globalAlpha = Math.max(0, a); ctx.save(); ctx.translate(W / 2, H * 0.47); ctx.scale(k, k); ui.title(b.text, 0, 0, b.big ? 64 : 36, b.big ? C.yellow : C.white, C.pinkDark, (W - 36) / Math.max(0.01, k)); if (b.sub) ui.label(b.sub, 0, b.big ? 48 : 34, b.big ? 20 : 18, C.white, 'center', { stroke: 5 }); ctx.restore(); ctx.globalAlpha = 1; }
     if (r.bal && !still) this.drawGiftBalloons();
@@ -426,7 +432,7 @@ function install(Game) {
     ui.label('VIEWER REQUEST', W / 2, y + 21, 20, C.lavenderDark);
     A.avatar(ctx, D.AVATARS[r.level % D.AVATARS.length], 62, y + 96, 28);
     R.draw(ctx, A, req, W * 0.33, y + 96, 100, { flipped: true, set: true, fill: 1, tops: 1, deco: 0 });
-    ui.label(R.dishName(req), W * 0.66, y + 80, 24, C.text); const ts = R.opt(R.toppingSlot(req.recipe), req.topping); ui.label('+ ' + (ts ? ts.name : ''), W * 0.66, y + 110, 18, C.textLight);
+    ui.label(R.dishName(req), W * 0.66, y + 80, 24, C.text); const ts = R.opt(R.toppingSlot(req.recipe), req.topping); ui.label(R.containerText(req) + '+ ' + (ts ? ts.name : ''), W * 0.66, y + 110, 16, C.textLight);
     A.coin(ctx, W - 92, y + 130, 11); ui.label(String(lv.reward), W - 74, y + 131, 18, C.goldDark, 'left');
     ctx.globalAlpha = 1;
     const by = this.bottom() - 262, pulse = 1 + Math.sin(this.time * 5) * 0.04;

@@ -46,7 +46,7 @@ function install(Game) {
   };
   P.cookNext = function () {
     const k = this.ck; k.step++; k.fxT = this.time; this.audio.play('ding', { gain: 0.6 }); this.spawnSparkles(this.W / 2, this.H * 0.45, 10);
-    if (k.step >= k.rc.steps.length) { k.doneT = 0; const key = k.rc.taste === 'broth' ? 'broth' : 'flavor'; k.perfect = (k.dish[key] === k.req[key] || k.rareKey === key) && (k.dish.topping === k.req.topping || k.rareKey === 'topping'); this.audio.play(k.perfect ? 'levelup' : 'win'); this.spawnConfetti(this.W / 2, this.H * 0.35, 60); return; }
+    if (k.step >= k.rc.steps.length) { k.doneT = 0; const key = k.rc.taste === 'broth' ? 'broth' : 'flavor'; k.perfect = (k.dish[key] === k.req[key] || k.rareKey === key) && (k.dish.topping === k.req.topping || k.rareKey === 'topping') && (function () { const cs = L.containerSlot(k.req.recipe); return !cs || !k.req[cs] || k.dish[cs] === k.req[cs] || k.rareKey === cs; })(); this.audio.play(k.perfect ? 'levelup' : 'win'); this.spawnConfetti(this.W / 2, this.H * 0.35, 60); return; }
     this.prepStep();
   };
   P.cookTap = function (id) {
@@ -134,7 +134,7 @@ function install(Game) {
     // request reminder
     const req = k.req; if (!CA.panel(ctx, 'cook/request_card.png', W / 2 - 200, top + 68, 400, 78)) ui.panel(W / 2 - 200, top + 68, 400, 78, '#fff7fb', C.pinkDark, 18, 3);
     R.draw(ctx, A, req, W / 2 - 152, top + 107, 62, { flipped: true, set: true, fill: 1, tops: 1, deco: 0 });
-    ui.label('VIEWER WANTS: ' + R.dishName(req).toUpperCase(), W / 2 + 30, top + 94, 16, C.text); const ts = R.opt(R.toppingSlot(req.recipe), req.topping); ui.label('with ' + (ts ? ts.name : ''), W / 2 + 30, top + 122, 16, C.textLight);
+    ui.label('VIEWER WANTS: ' + R.dishName(req).toUpperCase(), W / 2 + 30, top + 94, 16, C.text); const ts = R.opt(R.toppingSlot(req.recipe), req.topping); ui.label(R.containerText(req) + 'with ' + (ts ? ts.name : ''), W / 2 + 30, top + 122, 15, C.textLight);
     // instruction
     const text = k.doneT >= 0 ? '' : !st ? '' : st.t === 'pick' ? PICK_TEXT[st.slot] : st.t === 'pour' ? (st.text || 'HOLD TO POUR') : st.t === 'hold' ? st.text + ' · HOLD!' : st.t === 'flip' ? 'TAP TO FLIP IT OUT!' : st.t === 'place' ? (st.text || 'TAP TO ADD TOPPINGS') + ' (' + k.st.tops + '/' + st.n + ')' : 'RUB TO SPRINKLE!';
     if (text) { // a solid pill so the step stands out over the jars / tray behind it

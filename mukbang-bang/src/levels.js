@@ -59,6 +59,8 @@ function goalOf(n) { const g = 500 * Math.pow(2000, (n - 1) / (LEVEL_COUNT - 1))
 function roundTo(v) { const m = Math.pow(10, Math.max(1, Math.floor(Math.log10(v)) - 1)); return Math.round(v / m) * m; }
 const SLOT_NAME = { mold: 'MOULD', flavor: 'FLAVOUR', broth: 'BROTH', topping: 'TOPPING', ramen_top: 'RAMEN TOPPING', boba_top: 'BOBA TOPPING', deco: 'DECORATION', ramen_deco: 'SEASONING', cup: 'CUP', shape: 'DONUT SHAPE' };
 // the request: the newest flavour + topping the player can pick at this level (shows off what just unlocked)
+const OCC = {}; // how many times each recipe was requested so far (rotates the container)
+function containerSlot(recipe) { const st = R.RECIPES[recipe].steps; for (let k = 0; k < st.length; k++) if (st[k].t === 'pick' && (st[k].slot === 'mold' || st[k].slot === 'cup' || st[k].slot === 'shape')) return st[k].slot; return null; }
 function requestFor(recipe, n, i) {
   const rc = R.RECIPES[recipe], fslot = rc.taste === 'broth' ? 'broth' : 'flavor', tslot = R.toppingSlot(recipe);
   const fs = R.options(fslot, n), ts = R.options(tslot, n);
@@ -66,6 +68,9 @@ function requestFor(recipe, n, i) {
   const fresh = function (list) { for (let k = 0; k < list.length; k++) if (list[k].unlock === n && n > 1) return list[k]; return null; };
   const f = fresh(fs) || fs[(i * 3) % fs.length], t = fresh(ts) || ts[(i * 5) % ts.length];
   const req = { recipe: recipe }; req[fslot] = f.id; req.topping = t.id;
+  // the container (mould / cup / donut shape) is part of the request too, so it is not always the first one in the tray
+  const cslot = containerSlot(recipe);
+  if (cslot) { const cs = R.options(cslot, n); const occ = (OCC[recipe] = (OCC[recipe] || 0) + 1) - 1; const c = fresh(cs) || cs[(occ * 3 + 1) % cs.length]; req[cslot] = c.id; }
   return req;
 }
 const LEVELS = [];
@@ -106,4 +111,4 @@ function sideConfig(mode, reached) {
   return base;
 }
 
-module.exports = { LEVELS, LEVEL_COUNT, CHAPTERS, PER_CHAPTER, EVENTS, PACK_INFO, MODES, modeOf, level, goalOf, packOf, sideConfig, unlockLevel, SLOT_NAME };
+module.exports = { containerSlot, LEVELS, LEVEL_COUNT, CHAPTERS, PER_CHAPTER, EVENTS, PACK_INFO, MODES, modeOf, level, goalOf, packOf, sideConfig, unlockLevel, SLOT_NAME };

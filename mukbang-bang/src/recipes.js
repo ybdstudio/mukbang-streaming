@@ -204,4 +204,6 @@ function drawTopOnly(ctx, A, slot, o) {
   else A.circle(ctx, 0, 0, 6.5, c, 1.5);
 }
 
-module.exports = { decoSlot, setArt, noodleBite, shade, OPT, OPT_BY, opt, options, RECIPES, tasteOf, colorOf, toppingSlot, dishName, draw, drawOption };
+// "Star mould · " / "Pink cup · " / "Heart donut · " for request cards (empty when the request names no container)
+function containerText(req) { const m = { mold: ' mould', cup: ' cup', shape: ' donut' }; for (const k in m) if (req[k]) { const o = opt(k, req[k]); if (o) return o.name + m[k] + ' · '; } return ''; }
+module.exports = { containerText, decoSlot, setArt, noodleBite, shade, OPT, OPT_BY, opt, options, RECIPES, tasteOf, colorOf, toppingSlot, dishName, draw, drawOption };
