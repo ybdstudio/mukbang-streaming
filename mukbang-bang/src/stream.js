@@ -443,7 +443,7 @@ function install(Game) {
   // the viewer's request (start of every level) and the big MAKE button
   P.drawRequest = function () {
     const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, r = this.run, req = r.request, lv = L.level(r.level), top = this.top();
-    const y = top + 116, a = Math.min(1, r.t * 3); ctx.globalAlpha = a;
+    const y = Math.max(top + 116, this.mouth().y + 78), a = Math.min(1, r.t * 3); ctx.globalAlpha = a; // below her chin: the card never hides her face
     ui.panel(18, y, W - 36, r.quest ? 184 : 150, '#ffffff', C.lavenderDark, 26, 5); A.rr(ctx, 18, y, W - 36, 40, 18); ctx.fillStyle = '#efe4ff'; ctx.fill();
     ui.label('VIEWER REQUEST', W / 2, y + 21, 20, C.lavenderDark);
     A.avatar(ctx, D.AVATARS[r.level % D.AVATARS.length], 62, y + 96, 28);

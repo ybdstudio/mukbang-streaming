@@ -1,5 +1,5 @@
 'use strict';
-// Mukbang Bang — native TikTok mini game entry (also runs in the HS Android
+// Mukbang ASMR (repo: mukbang-bang) — native TikTok mini game entry (also runs in the HS Android
 // app and, through the kit's web shim, in a browser). Wires the HS kit to the
 // game. Every HSGame key / place / feature is written as a literal HERE so
 // hs-check and the dashboard JSON can read them; src/game.js only calls these
@@ -28,9 +28,12 @@ var DEFAULTS = {
   },
   items: {
     coins:  { category: 'currency', name: 'Coins' },
-    no_ads: { category: 'unlock',   name: 'No Ads' }
+    no_ads: { category: 'iap',      name: 'No Ads', type: 'no_ads', consumable: false }
   }
 };
+
+// HS game id + SDK key: in hs-keys.js next to this file (not in git; GitHub's scanner mistakes the public sk_live_ key for a payment key)
+var HS_KEYS = (function () { try { return require('./hs-keys.js'); } catch (e) { return {}; } })();
 
 // ── HS: the profile — ALL progress lives here ──
 var profile = HSGame.profile({
@@ -173,7 +176,7 @@ var hs = {
   startProfileMission: function () { return HSGame.tiktokMission.start('profile'); },
   startShortcutMission: function () { return HSGame.tiktokMission.start('shortcut'); },
   canShare: function () { return HSGame.canShare(); },
-  share: function () { return HSGame.share({ title: 'Mukbang Bang', subtitle: 'Shop, scan and eat on a live stream. Come watch my mukbang!' }); },
+  share: function () { return HSGame.share({ title: 'Mukbang ASMR', subtitle: 'Cook it, serve it, eat it live! Come watch my mukbang stream.' }); },
   // shop & account
   shop: function () { return HSGame.shop(); },
   buy: function (id) { return HSGame.buy(id); },
@@ -192,7 +195,7 @@ HSGame.on('otherDevice', function () {
 });
 
 // The game plays at once from the profile; claims work after start() resolves.
-HSGame.start({ gameId: '', sdkKey: '', defaults: DEFAULTS }).then(function () { game.hsReady = true; });
+HSGame.start({ gameId: HS_KEYS.gameId || '', sdkKey: HS_KEYS.sdkKey || '', defaults: DEFAULTS }).then(function () { game.hsReady = true; });
 
 var raf = (typeof requestAnimationFrame === 'function') ? requestAnimationFrame : (tt.requestAnimationFrame ? tt.requestAnimationFrame : function (f) { setTimeout(function () { f(Date.now()); }, 16); });
 function loop(now) { game.frame(typeof now === 'number' ? now : Date.now()); raf(loop); }

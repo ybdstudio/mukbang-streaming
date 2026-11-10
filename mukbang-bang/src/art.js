@@ -566,6 +566,7 @@ function food(ctx, f, x, y, size, e, t) {
     for (let i = 0; i < bites; i++) if (i !== stage) S.get(S.foodPath(sid, i)); // warm the next frames
     if (im) { const d = size * FOOD_DRAW; ctx.drawImage(im, x - d / 2, y - d / 2, d, d); return; }
   }
+  if (FOOD3[f.id] || S.FOOD5[f.id]) { const st = e >= 1 ? 'empty' : e >= 0.66 ? 'p2' : e >= 0.33 ? 'p1' : 'open'; if (food3(ctx, f.id, st, x, y, size * 1.05)) return; }
   if (f.shape && f.shape !== 'market') dishVec(ctx, f, x, y, size, e, t); else foodVec(ctx, f, x, y, size, e, t);
 }
 
@@ -589,6 +590,7 @@ function streamerParts(ch) {
   const head = S.get(sp.head), body = S.get(sp.body), face = S.get(S.FACE_IMG), fx = S.get(S.FX_IMG);
   return head && body && face ? { sp: sp, head: head, body: body, face: face, fx: fx } : null;
 }
+const BIG_MOUTH = { mouth_open_wide: 0.72, mouth_laugh: 0.8, mouth_fire: 0.85, mouth_o: 0.85 }; // wide-open mouths read too big on the small faces
 function streamer(ctx, ch, x, y, s, st) {
   const lk = st && st.look; const outfit = lk ? WR.BY_ID[lk.outfit] : null;
   const P = streamerParts(ch);
@@ -635,7 +637,7 @@ function streamer(ctx, ch, x, y, s, st) {
     ctx.globalAlpha = 1;
   }
   if (S.FACE[eyes]) S.cell(ctx, P.face, S.FACE[eyes], ey[0], ey[1], 240, 120);
-  if (S.FACE[mouth]) { const ms = sp.mouthScale || 1; S.cell(ctx, P.face, S.FACE[mouth], sp.mouth[0], sp.mouth[1] - (1 - ms) * 20, 240 * ms, 120 * ms); } // Momo's face is smaller
+  if (S.FACE[mouth]) { const ms = (sp.mouthScale || 1) * (BIG_MOUTH[mouth] || 1); S.cell(ctx, P.face, S.FACE[mouth], sp.mouth[0], sp.mouth[1] - (1 - ms) * 20, 240 * ms, 120 * ms); } // Momo's face is smaller
   if (ex[2] && P.fx && S.FX[ex[2]]) { const fa = S.fxAt(ex[2], sp); S.cell(ctx, P.fx, S.FX[ex[2]], fa[0], fa[1] + Math.sin(t * 6) * 4, 240, 120); }
   if (expr === 'fizzy') for (let i = 0; i < 3; i++) sparkle(ctx, ey[0] + [-180, 185, 140][i], ey[1] + [-70, -40, 120][i], 18 + Math.sin(t * 12 + i) * 6, '#fff');
   if (aIm && !under(lk.acc)) wearAt(aIm, lk.acc);
@@ -899,9 +901,9 @@ function flames(ctx, x, y, r, t) {
 // state: 'sealed' · 'opening' (k 0..1) · 'open' (e = pickups / 3) · 'empty'
 // art V3 packaged food (subpackage art3): 6 states per food + an opening strip per package type
 const FOOD3 = { cat_chips: 1, honey_puffs: 1, cheese_noodle: 1, straw_cake: 1, peach_milk: 1, chili_noodle: 1, kfc_chicken: 1, mint_choc: 1, soda_pop: 1, rainbow_candy: 1 };
-function food3(ctx, id, state, x, y, size) { const im = S.get('food3/' + id + '_' + state + '.png'); if (!im) return false; ctx.drawImage(im, x - size / 2, y - size / 2, size, size); return true; }
+function food3(ctx, id, state, x, y, size) { const im = S.get((S.FOOD5[id] ? 'food5/' : 'food3/') + id + '_' + state + '.png'); if (!im) return false; ctx.drawImage(im, x - size / 2, y - size / 2, size, size); return true; }
 function pack3(ctx, f, kind, x, y, size, state, k, e) {
-  if (!FOOD3[f.id]) return false; const z = size * (kind === 'bag' ? 0.92 : 1.05); // the V3 packages are drawn edge to edge: bags read too big at 1:1
+  if (!FOOD3[f.id] && !S.FOOD5[f.id]) return false; const z = size * (kind === 'bag' ? 0.92 : 1.05); // the V3 packages are drawn edge to edge: bags read too big at 1:1
   if (state === 'opening') { // the item's own art (never a generic package): a wobble while sealed, a pop as it opens; pack() adds the flying seal
     const open = k >= 0.35, w = open ? 0 : Math.sin(k * 46) * (1 - k / 0.35) * 0.07, pop = open ? 1 + 0.08 * Math.max(0, 1 - (k - 0.35) * 5) : 1 - 0.04 * Math.sin(k / 0.35 * Math.PI);
     ctx.save(); ctx.translate(x, y + z * 0.4); ctx.rotate(w); ctx.scale(pop, 1 / pop); ctx.translate(-x, -(y + z * 0.4));
@@ -943,7 +945,7 @@ function toppingDots(ctx, toppings, x, y, size, e) {
 }
 // one bite-sized portion (on chopsticks, fork, spoon or a sip) at (x, y)
 function portion(ctx, f, x, y, size, t) {
-  if (FOOD3[f.id]) { ctx.save(); ctx.translate(x, y); ctx.rotate(Math.sin((t || 0) * 6) * 0.05); const ok = food3(ctx, f.id, 'portion', 0, 0, size * 1.3); ctx.restore(); if (ok) return; }
+  if (FOOD3[f.id] || S.FOOD5[f.id]) { ctx.save(); ctx.translate(x, y); ctx.rotate(Math.sin((t || 0) * 6) * 0.05); const ok = food3(ctx, f.id, 'portion', 0, 0, size * 1.3); ctx.restore(); if (ok) return; }
   const s = size / 100; ctx.save(); ctx.translate(x, y); ctx.scale(s, s); ctx.rotate(Math.sin((t || 0) * 6) * 0.05);
   const tags = f.tags || [], cat = f.cat;
   const kind = tags.indexOf('drink') >= 0 || cat === 'drinks' ? 'sip' : tags.indexOf('noodle') >= 0 || cat === 'noodles' ? 'noodle' : cat === 'icecream' || (tags.indexOf('cold') >= 0 && tags.indexOf('dessert') >= 0) ? 'scoop' : tags.indexOf('dessert') >= 0 || cat === 'cakes' ? 'cake' : cat === 'snacks' || tags.indexOf('crunchy') >= 0 ? 'chip' : cat === 'fruit' || tags.indexOf('fruit') >= 0 ? 'fruit' : 'chunk';

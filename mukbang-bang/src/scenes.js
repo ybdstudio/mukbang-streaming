@@ -107,8 +107,12 @@ function install(Game) {
     ui.label('YUMGO', sx + 24, sy + 30, 26, C.white, 'left', { stroke: 5 }); ui.label('delivery to: HOME  ·  LV ' + lv.n, sx + sw - 18, sy + 31, 13, C.white, 'right', { stroke: 3 });
     // restaurant tabs
     const rs = this.deliveryRests(); const tw = (sw - 20 - (rs.length - 1) * 6) / rs.length; let y = sy + 68;
-    for (let i = 0; i < rs.length; i++) ui.button('drest' + i, sx + 10 + i * (tw + 6), y, tw, 44, rs.length > 3 ? rs[i].icon : rs[i].name, { color: d.rest === i ? rs[i].color : '#efe6e6', dark: d.rest === i ? rs[i].dark : '#cfc2c2', size: rs.length > 3 ? 16 : 14, radius: 14 });
-    y += 54;
+    // tabs: the restaurant's signature dish + what it serves (the logo letters alone meant nothing)
+    for (let i = 0; i < rs.length; i++) { const tx = sx + 10 + i * (tw + 6), on = d.rest === i;
+      ui.button('drest' + i, tx, y, tw, 62, '', { color: on ? rs[i].color : '#efe6e6', dark: on ? rs[i].dark : '#cfc2c2', radius: 14 });
+      const dd = K.dish(rs[i].dish); if (dd) A.food(ctx, dd, tx + tw / 2, y + 24, Math.min(42, tw * 0.6), 0, 0);
+      ui.label(rs[i].tab || rs[i].icon, tx + tw / 2, y + 51, rs.length > 4 ? 11 : 12, on ? C.white : C.text, 'center', on ? { stroke: 3 } : null); }
+    y += 72;
     // mains of the selected restaurant
     const r = rs[Math.min(d.rest, rs.length - 1)]; const mains = K.mainsOf(r.id); const coins = this.profile.get('coins') || 0;
     ui.label(r.name.toUpperCase() + '  ·  ORDER AS MUCH AS YOU LIKE', sx + 16, y + 8, 14, C.textLight, 'left'); y += 20;

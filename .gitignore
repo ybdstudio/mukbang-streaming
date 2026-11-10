@@ -28,3 +28,5 @@ handoff/
 # handoff-only copies (kit lives outside the game folder; ref video/images are large)
 _kit/
 _ref/
+tools/.cache-webp/
+mukbang-bang/hs-keys.js

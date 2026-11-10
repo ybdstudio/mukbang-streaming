@@ -1,0 +1,5291 @@
+{
+  "scope": "ART-REQUEST-FOODS-V4",
+  "group": "all",
+  "total": 304,
+  "exported": 276,
+  "complete": false,
+  "missing": [
+    "art8/food5/ghost_wings_p2.png",
+    "art8/food5/ghost_wings_empty.png",
+    "art8/food5/ghost_wings_portion.png",
+    "art8/food5/fire_noodles_sealed.png",
+    "art8/food5/fire_noodles_p1.png",
+    "art8/food5/fire_noodles_p2.png",
+    "art8/food5/fire_noodles_empty.png",
+    "art8/food5/fire_noodles_portion.png",
+    "art8/food5/lava_ricecake_sealed.png",
+    "art8/food5/lava_ricecake_p1.png",
+    "art8/food5/lava_ricecake_p2.png",
+    "art8/food5/lava_ricecake_empty.png",
+    "art8/food5/lava_ricecake_portion.png",
+    "art8/food5/chili_dumplings_sealed.png",
+    "art8/food5/chili_dumplings_p1.png",
+    "art8/food5/chili_dumplings_p2.png",
+    "art8/food5/chili_dumplings_empty.png",
+    "art8/food5/chili_dumplings_portion.png",
+    "art8/food5/volcano_curry_sealed.png",
+    "art8/food5/volcano_curry_p1.png",
+    "art8/food5/volcano_curry_p2.png",
+    "art8/food5/volcano_curry_empty.png",
+    "art8/food5/volcano_curry_portion.png",
+    "art8/food5/milk_cooler_sealed.png",
+    "art8/food5/milk_cooler_p1.png",
+    "art8/food5/milk_cooler_p2.png",
+    "art8/food5/milk_cooler_empty.png",
+    "art8/food5/milk_cooler_portion.png"
+  ],
+  "failures": [],
+  "overTarget": [],
+  "packageTotals": {
+    "main": 56648,
+    "art6": 2271681,
+    "art7": 1989627,
+    "art8": 900250
+  },
+  "checks": [
+    {
+      "path": "art6/food5/cheese_burger_sealed.png",
+      "key": "food5/cheese_burger_sealed.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Cheese Burger",
+      "state": "sealed",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 19709,
+      "sha256": "e341c663bb7b279a142477250ee65b80d3ab8ae1f961297426d18709a0c82fa4",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/cheese_burger_open.png",
+      "key": "food5/cheese_burger_open.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Cheese Burger",
+      "state": "open",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 27274,
+      "sha256": "a173f3d3814bdfa5786fe64249865aaedd499929ac477fc567ebb876d2cbd6ba",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/cheese_burger_p1.png",
+      "key": "food5/cheese_burger_p1.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Cheese Burger",
+      "state": "p1",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 28705,
+      "sha256": "80cdd4e725b5a021e93c1afd6fe7ac718ec1b0432acaf03dd53dd9cdfd817e0d",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/cheese_burger_p2.png",
+      "key": "food5/cheese_burger_p2.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Cheese Burger",
+      "state": "p2",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 27209,
+      "sha256": "aacf245acbd81f5a64bc8bef2e0c80d2cfa4b21821d0145fc192886e0c6c420c",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/cheese_burger_empty.png",
+      "key": "food5/cheese_burger_empty.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Cheese Burger",
+      "state": "empty",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 14688,
+      "sha256": "998d151d93122a9800b6746d8fa706ac4bc9e475939998c57dcdd5d528afdb63",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/cheese_burger_portion.png",
+      "key": "food5/cheese_burger_portion.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Cheese Burger",
+      "state": "portion",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 18223,
+      "sha256": "35dbeac645cc4f355850692ec12eadb3231bb8937b5230f9bc6b5e644efaa7f1",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/pizza_sealed.png",
+      "key": "food5/pizza_sealed.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Pepperoni Pizza",
+      "state": "sealed",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 15029,
+      "sha256": "6812d79ea7975c7683a579c1807948c1d4786d318367530955bdae15cb12cf85",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/pizza_open.png",
+      "key": "food5/pizza_open.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Pepperoni Pizza",
+      "state": "open",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 29272,
+      "sha256": "8dd3c53a360c88dcce90f2d29e743382ae5b3a5123ebbe7e4cef57c8dd0e42b7",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/pizza_p1.png",
+      "key": "food5/pizza_p1.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Pepperoni Pizza",
+      "state": "p1",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 26430,
+      "sha256": "3d8413119d1587a01d7713b9f3d34a272bc9e2daa6d65a15de443adc0934a562",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/pizza_p2.png",
+      "key": "food5/pizza_p2.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Pepperoni Pizza",
+      "state": "p2",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 26858,
+      "sha256": "06f60d68085939b9e0f41b56372dbbbb00d15d6ed42629fde1d9e0248a12d044",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/pizza_empty.png",
+      "key": "food5/pizza_empty.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Pepperoni Pizza",
+      "state": "empty",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 18819,
+      "sha256": "1341d0ad482509ca52f4109dd8d91a2d3ecfd2c7af93668f9f44e794c6f5e0fa",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/pizza_portion.png",
+      "key": "food5/pizza_portion.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Pepperoni Pizza",
+      "state": "portion",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 14736,
+      "sha256": "0acad11dcef6cc5b570f1b187a1d94157c972f5b3bf60f2bba30b9af6615346d",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/pasta_sealed.png",
+      "key": "food5/pasta_sealed.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Creamy Pasta",
+      "state": "sealed",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 15961,
+      "sha256": "a651a36248fb8ea26b50cfefd00d38b61141fc2ce021af95c0743d6c6f5b0880",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/pasta_open.png",
+      "key": "food5/pasta_open.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Creamy Pasta",
+      "state": "open",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 27227,
+      "sha256": "bdabf6f744903e64ea9dda979d0fd5ac396449312823f6d4a0c208935d8cae32",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/pasta_p1.png",
+      "key": "food5/pasta_p1.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Creamy Pasta",
+      "state": "p1",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 26509,
+      "sha256": "178f84d4f7f8dbe3a347239ff526b1b78f7a92f7b07c325f04d43de13dccad7f",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/pasta_p2.png",
+      "key": "food5/pasta_p2.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Creamy Pasta",
+      "state": "p2",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 27286,
+      "sha256": "b4588048e0946118249c443b38d1c93d7a51d08a65e2de7b9f525d5ba9ab2a25",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/pasta_empty.png",
+      "key": "food5/pasta_empty.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Creamy Pasta",
+      "state": "empty",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 15003,
+      "sha256": "53c87f8b6f25b9ec9e4f204747f812857a323f2b44eb3773f727b90bc789a6a4",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/pasta_portion.png",
+      "key": "food5/pasta_portion.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Creamy Pasta",
+      "state": "portion",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 8441,
+      "sha256": "0b933716aef10cec0a0bab02c3b6d07f83915f2ca2c909f3465333ee9f33683e",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/tteokbokki_sealed.png",
+      "key": "food5/tteokbokki_sealed.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Tteokbokki",
+      "state": "sealed",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 14538,
+      "sha256": "a0557fa80183b285ead02fae85e9461eee7f253973a754a9f0c9debffb3a23bb",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/tteokbokki_open.png",
+      "key": "food5/tteokbokki_open.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Tteokbokki",
+      "state": "open",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 29297,
+      "sha256": "da68dad71af8094f6459754985d00f0822213c515f9d8223ce9fa24408923d79",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/tteokbokki_p1.png",
+      "key": "food5/tteokbokki_p1.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Tteokbokki",
+      "state": "p1",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 28879,
+      "sha256": "2368c34876204fc336fe7327aea985b077f38dbf17c603b3a13539e57b378408",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/tteokbokki_p2.png",
+      "key": "food5/tteokbokki_p2.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Tteokbokki",
+      "state": "p2",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 27971,
+      "sha256": "a4649a83d680d92ddd19daf4324da665e02d7df64e6ac0d0a84f6082307d364f",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/tteokbokki_empty.png",
+      "key": "food5/tteokbokki_empty.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Tteokbokki",
+      "state": "empty",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 17118,
+      "sha256": "8daab9d82b525fed6161b14e1c426cb7294af20975b46e4cd99e27a090accc00",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/tteokbokki_portion.png",
+      "key": "food5/tteokbokki_portion.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Tteokbokki",
+      "state": "portion",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 11447,
+      "sha256": "348032b141eacf48fc4aeb4061b85909d83763d21e58dc8843db5f4c7cc2212a",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/dumplings_sealed.png",
+      "key": "food5/dumplings_sealed.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Dumplings",
+      "state": "sealed",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 13611,
+      "sha256": "d678535b66e4cf00ff95bf9502bd0b0d90020e91474724e80ab5565feba9b6fe",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/dumplings_open.png",
+      "key": "food5/dumplings_open.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Dumplings",
+      "state": "open",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 27618,
+      "sha256": "96dd2b7054ddc13c56153fe15c01032161276032b8007bc5ddba5b2ebb1bb4e5",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/dumplings_p1.png",
+      "key": "food5/dumplings_p1.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Dumplings",
+      "state": "p1",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 29642,
+      "sha256": "c57aaf6f1c32ad9d84e728e36b4747f68033de1749202efa14ab09047db4a1a2",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/dumplings_p2.png",
+      "key": "food5/dumplings_p2.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Dumplings",
+      "state": "p2",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 27559,
+      "sha256": "163d3c76d434ab9439ff69167fa3e56e37d2d633bef470031bb47ccf6b404f13",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/dumplings_empty.png",
+      "key": "food5/dumplings_empty.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Dumplings",
+      "state": "empty",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 16330,
+      "sha256": "e5c0dab8cfb2470f0544219ef5485b93c02acacaa4523d4a2b0569ad8f776115",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/dumplings_portion.png",
+      "key": "food5/dumplings_portion.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Dumplings",
+      "state": "portion",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 14249,
+      "sha256": "f285ac12f53bc10f935b6db352833fdfea0652fc2675181c7701c1e454dc983b",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/sushi_set_sealed.png",
+      "key": "food5/sushi_set_sealed.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Sushi Set",
+      "state": "sealed",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 11929,
+      "sha256": "20e365cc9da404e0fe92d8d40a1b208195a10abd69e5fa6d195ae8fc80ba5678",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/sushi_set_open.png",
+      "key": "food5/sushi_set_open.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Sushi Set",
+      "state": "open",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 27459,
+      "sha256": "91d52d110b5e9be722c1f3bffece3c618bad6f193f4277e9cb739a9916b4bd68",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/sushi_set_p1.png",
+      "key": "food5/sushi_set_p1.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Sushi Set",
+      "state": "p1",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 29955,
+      "sha256": "b784a28ba62111d4b7e038c1e0813bbc1ced947ca6419c66f82cb0c81be2e427",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/sushi_set_p2.png",
+      "key": "food5/sushi_set_p2.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Sushi Set",
+      "state": "p2",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 27415,
+      "sha256": "bed2425aa0f45ca94487e8ea535bf7f2b61870a8f06dd43eb910092eb6fe3bee",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/sushi_set_empty.png",
+      "key": "food5/sushi_set_empty.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Sushi Set",
+      "state": "empty",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 16287,
+      "sha256": "e8e3a92fef48358488cf41e5e09a7dc610eb9eaf75f37ccc9fb2417d36cbd217",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/sushi_set_portion.png",
+      "key": "food5/sushi_set_portion.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Sushi Set",
+      "state": "portion",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 9465,
+      "sha256": "b4bec6346878dcc4f65fd8366a3c9e44b4feb7d15b47961a97b5c39743caf11a",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/curry_rice_sealed.png",
+      "key": "food5/curry_rice_sealed.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Curry Rice",
+      "state": "sealed",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 13700,
+      "sha256": "b273ff8245aaf26412ad9306d19dc535ddc246f61cfae978191bace481634802",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/curry_rice_open.png",
+      "key": "food5/curry_rice_open.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Curry Rice",
+      "state": "open",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 25467,
+      "sha256": "2028e40873a32fc3ebd0f8144fb9a2ac097ce35bc98c2d90f24180ceda9847ca",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/curry_rice_p1.png",
+      "key": "food5/curry_rice_p1.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Curry Rice",
+      "state": "p1",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 25541,
+      "sha256": "8a580966aa6100f92e7cd874b44c5e972830d3cc8c263e92aec4233e3811e5b7",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/curry_rice_p2.png",
+      "key": "food5/curry_rice_p2.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Curry Rice",
+      "state": "p2",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 25734,
+      "sha256": "e802698d71c8e2ac012118f6acaae4086e704d1d1f6ef7fde04feb321b278c1b",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/curry_rice_empty.png",
+      "key": "food5/curry_rice_empty.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Curry Rice",
+      "state": "empty",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 14702,
+      "sha256": "b2052b9a17a404df0bc0626d54076e04b14a361afaa2872762e906c3720f98c4",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/curry_rice_portion.png",
+      "key": "food5/curry_rice_portion.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Curry Rice",
+      "state": "portion",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 10254,
+      "sha256": "311032c982e1eb6a1281f707c1180b08fe5e619f6a6f1795796e315f65902a8a",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/mini_hotpot_sealed.png",
+      "key": "food5/mini_hotpot_sealed.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Mini Hotpot",
+      "state": "sealed",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 15297,
+      "sha256": "bcdb0b035daf3be909e7be39816da1dc3ee817a4ad0679c9dd900b1761e18889",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/mini_hotpot_open.png",
+      "key": "food5/mini_hotpot_open.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Mini Hotpot",
+      "state": "open",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 27409,
+      "sha256": "6dd61af976b4ece3a9f21a8c3fca45c83a3b0c5f2c2ba1815ca31634cff77b50",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/mini_hotpot_p1.png",
+      "key": "food5/mini_hotpot_p1.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Mini Hotpot",
+      "state": "p1",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 26753,
+      "sha256": "1d0a6fcfe1273c01c23c3207de2785654f04dbabfb6f2e5bcfbc2bcb9486f4dc",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/mini_hotpot_p2.png",
+      "key": "food5/mini_hotpot_p2.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Mini Hotpot",
+      "state": "p2",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 27744,
+      "sha256": "c98c51f385767da605a26775b85c6f9dadef80d35cfe9a6ba6077b05644347d9",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/mini_hotpot_empty.png",
+      "key": "food5/mini_hotpot_empty.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Mini Hotpot",
+      "state": "empty",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 18310,
+      "sha256": "d8beee10821d3900276c63b85e8149f6aa9a9544a6a09c988778ec6761be27d5",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/mini_hotpot_portion.png",
+      "key": "food5/mini_hotpot_portion.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Mini Hotpot",
+      "state": "portion",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 13415,
+      "sha256": "737fdce4ee09c0f30a7ab38bb6360b04adb5fd53517f1ba32ca3dd1088ffb297",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/seafood_boil_sealed.png",
+      "key": "food5/seafood_boil_sealed.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Seafood Boil",
+      "state": "sealed",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 19518,
+      "sha256": "c93385195372e6d581bb0f2f29af53d6dec8239c1a5ab192ec06fb491a5d5d3c",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/seafood_boil_open.png",
+      "key": "food5/seafood_boil_open.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Seafood Boil",
+      "state": "open",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 28540,
+      "sha256": "ef32f4783f682112a7e294a6f2789cc489fa96d5b4a17dcbed2f0ac3da1299f0",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/seafood_boil_p1.png",
+      "key": "food5/seafood_boil_p1.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Seafood Boil",
+      "state": "p1",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 29996,
+      "sha256": "5d8530f06f8c3e4e85a0e8e13811d6e50745c43dcfeb87f495b20ae996eaf3ea",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/seafood_boil_p2.png",
+      "key": "food5/seafood_boil_p2.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Seafood Boil",
+      "state": "p2",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 29176,
+      "sha256": "df2acf02072957c1423b13b9dfa0dc69622fbc0e06ae8c4be170d5b78e96376d",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/seafood_boil_empty.png",
+      "key": "food5/seafood_boil_empty.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Seafood Boil",
+      "state": "empty",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 15998,
+      "sha256": "0769d0c879142e09e08348b68834569fb588a588e2dcd6a03313328ef135b8bb",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/seafood_boil_portion.png",
+      "key": "food5/seafood_boil_portion.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Seafood Boil",
+      "state": "portion",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 13155,
+      "sha256": "8c7f8d8bcb60d87b7b73869c257a3d499ea2082239c483c3d270cb09e0ac5082",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/fries_sealed.png",
+      "key": "food5/fries_sealed.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Fries",
+      "state": "sealed",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 15080,
+      "sha256": "e0f118e660a530e72cda7b58ad21fdde177c72c647e9153f474762879946da5e",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/fries_open.png",
+      "key": "food5/fries_open.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Fries",
+      "state": "open",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 29750,
+      "sha256": "dcf905367493b771e2674a28fbe4bd02b357e4f3da7208f3801eb2e157a1bcf9",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/fries_p1.png",
+      "key": "food5/fries_p1.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Fries",
+      "state": "p1",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 27927,
+      "sha256": "bf1db20c5d15bc4609263fec6c8a7ceeab8b355445e114b115ba67b2d5934664",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/fries_p2.png",
+      "key": "food5/fries_p2.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Fries",
+      "state": "p2",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 26706,
+      "sha256": "f5c6e94cff872cc0d8775ed09788f0819bbf283b10474d06dd37dc435cf4841a",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/fries_empty.png",
+      "key": "food5/fries_empty.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Fries",
+      "state": "empty",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 16086,
+      "sha256": "26301a02d4efb431c5b4fe7c31509d0291d6dc0b57c04f948e0dbab1949304bd",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/fries_portion.png",
+      "key": "food5/fries_portion.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Fries",
+      "state": "portion",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 8889,
+      "sha256": "c1db4f0083d7f9ab39626acc48eef62262ff4d3a5359cf51a64a4a5e6ee35744",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/cheese_sticks_sealed.png",
+      "key": "food5/cheese_sticks_sealed.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Cheese Sticks",
+      "state": "sealed",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 14858,
+      "sha256": "46cf3e95489103906b8687b4b5a39fe1f9c93f015b42b451abc29898ddb4a591",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/cheese_sticks_open.png",
+      "key": "food5/cheese_sticks_open.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Cheese Sticks",
+      "state": "open",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 29164,
+      "sha256": "104dba0c8d144e7e270a4bced2c7a5f2cb8f1e9a4f5f348dfd7e5b650af06785",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/cheese_sticks_p1.png",
+      "key": "food5/cheese_sticks_p1.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Cheese Sticks",
+      "state": "p1",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 28629,
+      "sha256": "172f2d43dbf1cb8b70f1f1d1bb2672f082857c75ce68b944cecde79db5b6d71a",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/cheese_sticks_p2.png",
+      "key": "food5/cheese_sticks_p2.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Cheese Sticks",
+      "state": "p2",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 26620,
+      "sha256": "7e5f48f53e86ae555da251878ac731466bca47a7f9be3a5cc602abfd04243827",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/cheese_sticks_empty.png",
+      "key": "food5/cheese_sticks_empty.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Cheese Sticks",
+      "state": "empty",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 13998,
+      "sha256": "8512156335013a1f05d378307da5e1253fa7cd455f3e470ed9b28882c80cdc74",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/cheese_sticks_portion.png",
+      "key": "food5/cheese_sticks_portion.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Cheese Sticks",
+      "state": "portion",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 16433,
+      "sha256": "b7ef35627c55cc85af31e8d8a53e0d13bb18350c66c4283522ac6a506d827f06",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/pickled_radish_sealed.png",
+      "key": "food5/pickled_radish_sealed.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Pickled Radish",
+      "state": "sealed",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 12233,
+      "sha256": "9c3544a793ce225863d78b43ea3b71a4adfe585c24e6ea4933f256ece6467e30",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/pickled_radish_open.png",
+      "key": "food5/pickled_radish_open.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Pickled Radish",
+      "state": "open",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 25742,
+      "sha256": "c742fd3fe0e53f5fb06695b5812ad1c35491d2b0a567f11cb3f80f111b17c55a",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/pickled_radish_p1.png",
+      "key": "food5/pickled_radish_p1.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Pickled Radish",
+      "state": "p1",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 25109,
+      "sha256": "760035b00a8e38e6ce6ba707d26b5798e67f62727b969408916d942b59ae83e1",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/pickled_radish_p2.png",
+      "key": "food5/pickled_radish_p2.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Pickled Radish",
+      "state": "p2",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 25740,
+      "sha256": "1747e3a9de2cdf1e4e5d210449b5040e8483c6ec111371d866dccf5919c35181",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/pickled_radish_empty.png",
+      "key": "food5/pickled_radish_empty.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Pickled Radish",
+      "state": "empty",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 15757,
+      "sha256": "e18c91f3ce48268a300eb1ef6b6ac483b7632f48d8e558aa76fa531dd3b9a5ea",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/pickled_radish_portion.png",
+      "key": "food5/pickled_radish_portion.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Pickled Radish",
+      "state": "portion",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 11854,
+      "sha256": "a86289336f24987d32d3071c56cca37b89c8ec62435e0e48a5ffcf4105386019",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/miso_soup_sealed.png",
+      "key": "food5/miso_soup_sealed.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Miso Soup",
+      "state": "sealed",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 12787,
+      "sha256": "f1d9eb7fa068dc8fe166bd7af65e6c4f9268e61958aa3d76a8d030f64043e6ba",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/miso_soup_open.png",
+      "key": "food5/miso_soup_open.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Miso Soup",
+      "state": "open",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 26958,
+      "sha256": "164976cc16ae31c21f0e2d9829fee49b61b6412169b1bae354be8c4e3497f103",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/miso_soup_p1.png",
+      "key": "food5/miso_soup_p1.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Miso Soup",
+      "state": "p1",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 25767,
+      "sha256": "0eba7fd98d846f47d6c3ac623f2a8881e6009c5f7fbaf2a1021a5de10a70fcae",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/miso_soup_p2.png",
+      "key": "food5/miso_soup_p2.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Miso Soup",
+      "state": "p2",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 24023,
+      "sha256": "258942153f1c2da276f0b31114805b08df44d365fe3a45cb052ca4033c0f26db",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/miso_soup_empty.png",
+      "key": "food5/miso_soup_empty.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Miso Soup",
+      "state": "empty",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 13204,
+      "sha256": "6f2e6e46801183f201f20e0dbc6c8f721f2ae22f51c7e4697e8408dfe2541381",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/miso_soup_portion.png",
+      "key": "food5/miso_soup_portion.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Miso Soup",
+      "state": "portion",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 9324,
+      "sha256": "e95c30188322498212b84ad8f44e943d4afe3272511b57c97c0d641ff1a3e618",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/mochi_sealed.png",
+      "key": "food5/mochi_sealed.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Mochi",
+      "state": "sealed",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 11066,
+      "sha256": "994a4db360b4a5fbccf7c8bad0b9a6176576ce2d43c39a3bdcd4a061b3c30431",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/mochi_open.png",
+      "key": "food5/mochi_open.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Mochi",
+      "state": "open",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 27800,
+      "sha256": "2469ca10bbb137297469ed22c7e0b86edef42efda66ef18fd0be7bdc0782fc8f",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/mochi_p1.png",
+      "key": "food5/mochi_p1.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Mochi",
+      "state": "p1",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 28877,
+      "sha256": "02ca402cb4d1264fd0244d2e797cfa3efcf1fb008fd5515723f4771e56223388",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/mochi_p2.png",
+      "key": "food5/mochi_p2.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Mochi",
+      "state": "p2",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 27855,
+      "sha256": "721a92de0e31dbe7c9202ef2ccb5d98f8cca6e5d8ca0c3c3569552d87d5a4a5d",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/mochi_empty.png",
+      "key": "food5/mochi_empty.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Mochi",
+      "state": "empty",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 15514,
+      "sha256": "70caf2a8e692fef30827667313229987f397a7ad8630417d99bd01631d5d2e28",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/mochi_portion.png",
+      "key": "food5/mochi_portion.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Mochi",
+      "state": "portion",
+      "openKind": "box",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 19628,
+      "sha256": "2ff3e5f0b09a7b90f87328a5bf9cdeefedb96105b3391e856e7a509799140c45",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/cola_sealed.png",
+      "key": "food5/cola_sealed.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Cola",
+      "state": "sealed",
+      "openKind": "bottle",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 19470,
+      "sha256": "32d229cce7c8a2fff769da7a3f63e483fdd5c0e090168bdd94b36c7ad7c90600",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/cola_open.png",
+      "key": "food5/cola_open.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Cola",
+      "state": "open",
+      "openKind": "bottle",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 19930,
+      "sha256": "a4249785f1a8ca33c8f03e0db4ad1625ca45b03b74a8e41486dfdc556d2c19a7",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/cola_p1.png",
+      "key": "food5/cola_p1.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Cola",
+      "state": "p1",
+      "openKind": "bottle",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 17088,
+      "sha256": "ce668d820071c762102b19a75218fbeb1f2948f1bb0ea13bbcefa12697fa71cd",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/cola_p2.png",
+      "key": "food5/cola_p2.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Cola",
+      "state": "p2",
+      "openKind": "bottle",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 16093,
+      "sha256": "6352231ce773cd68678c3c2e5194287267604d098f64f31fa25109244bd299b3",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/cola_empty.png",
+      "key": "food5/cola_empty.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Cola",
+      "state": "empty",
+      "openKind": "bottle",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 10968,
+      "sha256": "4b7185f6fccb4bb1c47f6c5afbf5f874f94ccb633edff916a657478a7335c2cb",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/cola_portion.png",
+      "key": "food5/cola_portion.png",
+      "package": "art6",
+      "group": "delivery",
+      "food": "Cola",
+      "state": "portion",
+      "openKind": "bottle",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 14936,
+      "sha256": "cd0a2e571045b9739aa139dc3f494332f7b5824f153dd4e2236a729418fae699",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/choco_ramen_sealed.png",
+      "key": "food5/choco_ramen_sealed.png",
+      "package": "art6",
+      "group": "mystery",
+      "food": "Chocolate Ramen",
+      "state": "sealed",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 19661,
+      "sha256": "5e675648ac0932330c5634921ca9869ef001fe4cc92630ad7c0bb0b561147bd8",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/choco_ramen_open.png",
+      "key": "food5/choco_ramen_open.png",
+      "package": "art6",
+      "group": "mystery",
+      "food": "Chocolate Ramen",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 23658,
+      "sha256": "401fcb8a0f7745a360025d68eebb9e79eb3ff0b26370b49a51a6305ec77141fd",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/choco_ramen_p1.png",
+      "key": "food5/choco_ramen_p1.png",
+      "package": "art6",
+      "group": "mystery",
+      "food": "Chocolate Ramen",
+      "state": "p1",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 21912,
+      "sha256": "3a6571a95a110ae9158b37c43ca63b49186080d1189b5ab418eaea4392093422",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/choco_ramen_p2.png",
+      "key": "food5/choco_ramen_p2.png",
+      "package": "art6",
+      "group": "mystery",
+      "food": "Chocolate Ramen",
+      "state": "p2",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 18049,
+      "sha256": "77f33fcd3060bdd1bc16b8af74f0f4267e85fe69a497a9f3065c338fc1baed24",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/choco_ramen_empty.png",
+      "key": "food5/choco_ramen_empty.png",
+      "package": "art6",
+      "group": "mystery",
+      "food": "Chocolate Ramen",
+      "state": "empty",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 10828,
+      "sha256": "a9dadb1150b57e6c88bf521e6027a3c6fc1e2cafff69c940ea9a468c1902eede",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/choco_ramen_portion.png",
+      "key": "food5/choco_ramen_portion.png",
+      "package": "art6",
+      "group": "mystery",
+      "food": "Chocolate Ramen",
+      "state": "portion",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 13125,
+      "sha256": "b6f98d5a640f3a8331507d81b0af0cbdf97bba966f0038617aec6075b5a7ae4c",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/pickle_icecream_sealed.png",
+      "key": "food5/pickle_icecream_sealed.png",
+      "package": "art6",
+      "group": "mystery",
+      "food": "Pickle Ice Cream",
+      "state": "sealed",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 16556,
+      "sha256": "6393c60dc3749dae2be47eb1a427b20cb636790d22681e562c519a0e2394d8de",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/pickle_icecream_open.png",
+      "key": "food5/pickle_icecream_open.png",
+      "package": "art6",
+      "group": "mystery",
+      "food": "Pickle Ice Cream",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 25120,
+      "sha256": "51e8df69ecebca35b488c14af592f8ec709860cec74b1818104724fe797a0579",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/pickle_icecream_p1.png",
+      "key": "food5/pickle_icecream_p1.png",
+      "package": "art6",
+      "group": "mystery",
+      "food": "Pickle Ice Cream",
+      "state": "p1",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 21443,
+      "sha256": "de7f77860c3c3197f30cc7ea1f117948c4127ffef4cc5b459ceb3651ff3d92c9",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/pickle_icecream_p2.png",
+      "key": "food5/pickle_icecream_p2.png",
+      "package": "art6",
+      "group": "mystery",
+      "food": "Pickle Ice Cream",
+      "state": "p2",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 14627,
+      "sha256": "8cfb4ac2dac677b0c09109cd047fb7c210d2601900a1009714f45e75e14493ea",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/pickle_icecream_empty.png",
+      "key": "food5/pickle_icecream_empty.png",
+      "package": "art6",
+      "group": "mystery",
+      "food": "Pickle Ice Cream",
+      "state": "empty",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 4716,
+      "sha256": "60113bb954113d44ad5d70d85913dcebb2ec0263b35e24ff088f6c271442d3bc",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/pickle_icecream_portion.png",
+      "key": "food5/pickle_icecream_portion.png",
+      "package": "art6",
+      "group": "mystery",
+      "food": "Pickle Ice Cream",
+      "state": "portion",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 9841,
+      "sha256": "17594f63c2a8067a2afcc1432ef38cc9ce392f2ad87bbb819e02fce56becdae4",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/wasabi_cake_sealed.png",
+      "key": "food5/wasabi_cake_sealed.png",
+      "package": "art6",
+      "group": "mystery",
+      "food": "Wasabi Cake",
+      "state": "sealed",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 19029,
+      "sha256": "314455e0c920c1bef7df786e11d0fbf68f5d75d941b6cbc3c9a4dc09cd1e5b79",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/wasabi_cake_open.png",
+      "key": "food5/wasabi_cake_open.png",
+      "package": "art6",
+      "group": "mystery",
+      "food": "Wasabi Cake",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 23561,
+      "sha256": "1e372f5aac45e2a17de99a6550523486acd44b42ac715503bf03e86607bfcb55",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/wasabi_cake_p1.png",
+      "key": "food5/wasabi_cake_p1.png",
+      "package": "art6",
+      "group": "mystery",
+      "food": "Wasabi Cake",
+      "state": "p1",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 20789,
+      "sha256": "fdef08e5343a62ad388902a2493c561919bff118f005db39317ce197f41b2482",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/wasabi_cake_p2.png",
+      "key": "food5/wasabi_cake_p2.png",
+      "package": "art6",
+      "group": "mystery",
+      "food": "Wasabi Cake",
+      "state": "p2",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 18959,
+      "sha256": "744d5c15a8567b524c98c8654b8dd065862c2054079c223f66aa3d2a844c5813",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/wasabi_cake_empty.png",
+      "key": "food5/wasabi_cake_empty.png",
+      "package": "art6",
+      "group": "mystery",
+      "food": "Wasabi Cake",
+      "state": "empty",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 6863,
+      "sha256": "71bf702aa38b5d90a0224d45d61196fc68ae3d193d06e748ac0e0a6ad599dc46",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/wasabi_cake_portion.png",
+      "key": "food5/wasabi_cake_portion.png",
+      "package": "art6",
+      "group": "mystery",
+      "food": "Wasabi Cake",
+      "state": "portion",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 9424,
+      "sha256": "cb19cf8f54b94b8d25892cae85c9757712a51e02b01504eaed919f53d5ab858b",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/golden_parfait_sealed.png",
+      "key": "food5/golden_parfait_sealed.png",
+      "package": "art6",
+      "group": "mystery",
+      "food": "Golden Parfait",
+      "state": "sealed",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 17562,
+      "sha256": "e06c5119c5ec7a34596d3a7c62f8c9c90b82b63d03350b2becd79ec4f4b78eb4",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/golden_parfait_open.png",
+      "key": "food5/golden_parfait_open.png",
+      "package": "art6",
+      "group": "mystery",
+      "food": "Golden Parfait",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 22707,
+      "sha256": "7bf5563debd07c89980419c1050be7600f53eb935474c30c23b6787338493cce",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/golden_parfait_p1.png",
+      "key": "food5/golden_parfait_p1.png",
+      "package": "art6",
+      "group": "mystery",
+      "food": "Golden Parfait",
+      "state": "p1",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 24327,
+      "sha256": "04c7f75c7f579873153962a30109f4533ba346ca951ab0f6f1dd6802eceff6b9",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/golden_parfait_p2.png",
+      "key": "food5/golden_parfait_p2.png",
+      "package": "art6",
+      "group": "mystery",
+      "food": "Golden Parfait",
+      "state": "p2",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 22915,
+      "sha256": "4cc744eb28fc2c78cd0067d4dc02ce042545aa70410d6195edbc1c1009b97056",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/golden_parfait_empty.png",
+      "key": "food5/golden_parfait_empty.png",
+      "package": "art6",
+      "group": "mystery",
+      "food": "Golden Parfait",
+      "state": "empty",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 15826,
+      "sha256": "48978049c053b33a250993966b9d5bae64cb439ab3f7dac6b1cb878555ce7c3f",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art6/food5/golden_parfait_portion.png",
+      "key": "food5/golden_parfait_portion.png",
+      "package": "art6",
+      "group": "mystery",
+      "food": "Golden Parfait",
+      "state": "portion",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 9463,
+      "sha256": "0c846446b1086de579a344bcffe674c11795be134aa75b2916af67201fabd488",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/spicy_wings_sealed.png",
+      "key": "food5/spicy_wings_sealed.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Spicy Wings",
+      "state": "sealed",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 17743,
+      "sha256": "3b22d51345c6998af5135a70ecf8f75b06cec897c741ce711e4f3d844f823169",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/spicy_wings_open.png",
+      "key": "food5/spicy_wings_open.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Spicy Wings",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 28543,
+      "sha256": "6c3a8c2272fb7d7f4b153046c3a98278f3a8feefe920139f6764f0b61769bc44",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/spicy_wings_p1.png",
+      "key": "food5/spicy_wings_p1.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Spicy Wings",
+      "state": "p1",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 25009,
+      "sha256": "ea81343ee1cac5400d8f16ae262390d6adb66b3c2362a5a87010eb0b4eabeb05",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/spicy_wings_p2.png",
+      "key": "food5/spicy_wings_p2.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Spicy Wings",
+      "state": "p2",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 21811,
+      "sha256": "bd19b661fa07608996e1b3e6204ae11c1a3650f8cc7c43b0f38680bd145ac5ae",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/spicy_wings_empty.png",
+      "key": "food5/spicy_wings_empty.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Spicy Wings",
+      "state": "empty",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 10415,
+      "sha256": "5c1b2df8a8f4165956a087750811e0a66705f6d7aa46fe8e6acb271716977c67",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/spicy_wings_portion.png",
+      "key": "food5/spicy_wings_portion.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Spicy Wings",
+      "state": "portion",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 17111,
+      "sha256": "defb75cfee5b303116451c478471fb25bf13837682ba619b669facd9d8f5b1fb",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/kimchi_rice_sealed.png",
+      "key": "food5/kimchi_rice_sealed.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Kimchi Fried Rice",
+      "state": "sealed",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 18986,
+      "sha256": "520aa7a38754123e5543132b60f7a13990fdb5a7ade9a9ac05cd92e9e8c47337",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/kimchi_rice_open.png",
+      "key": "food5/kimchi_rice_open.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Kimchi Fried Rice",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 28717,
+      "sha256": "fb68edd027b0f5676ceb4a54f5175c3f6318a13706f2763cee0b1f26f9542eee",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/kimchi_rice_p1.png",
+      "key": "food5/kimchi_rice_p1.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Kimchi Fried Rice",
+      "state": "p1",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 24905,
+      "sha256": "a1caf00043aa21a02399c9922cfa27a527a25e1c35c6975d75d755bc221564d8",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/kimchi_rice_p2.png",
+      "key": "food5/kimchi_rice_p2.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Kimchi Fried Rice",
+      "state": "p2",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 23777,
+      "sha256": "219ec9defb9cb5775fbbe63245ec0b83621325d12f89b99321ea53f26afe61d5",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/kimchi_rice_empty.png",
+      "key": "food5/kimchi_rice_empty.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Kimchi Fried Rice",
+      "state": "empty",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 11383,
+      "sha256": "aa4517db22ad1937f54dda389880b5b7fb12283cb9ee29426d82629ad272dfdf",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/kimchi_rice_portion.png",
+      "key": "food5/kimchi_rice_portion.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Kimchi Fried Rice",
+      "state": "portion",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 15170,
+      "sha256": "4a0c651201a9fe546a97edc84426bb76198b129b801a973c9d0df8cacc668bfc",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/mapo_tofu_sealed.png",
+      "key": "food5/mapo_tofu_sealed.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Mapo Tofu",
+      "state": "sealed",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 17484,
+      "sha256": "c7fc30ae8b70e32e2640eb2e1984df35cc9e097885d19e1e0e51c2a0ab196309",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/mapo_tofu_open.png",
+      "key": "food5/mapo_tofu_open.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Mapo Tofu",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 29595,
+      "sha256": "9c44caf5e269a250a2d71e2294f343a61caf0481af7105498949ef1bd3103cf2",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/mapo_tofu_p1.png",
+      "key": "food5/mapo_tofu_p1.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Mapo Tofu",
+      "state": "p1",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 26446,
+      "sha256": "1c84664cb5970749a0cff3b012d5dc0d202517e2c55cd6f96f19c4404647b3d9",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/mapo_tofu_p2.png",
+      "key": "food5/mapo_tofu_p2.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Mapo Tofu",
+      "state": "p2",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 21241,
+      "sha256": "54fff7a837b1d36be25b48cb27a5b7c4e866eaf8a3a70b5351aac59965de2c24",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/mapo_tofu_empty.png",
+      "key": "food5/mapo_tofu_empty.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Mapo Tofu",
+      "state": "empty",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 13087,
+      "sha256": "7bac23c58d4ff395bf1a5850e6439af08e6eb06f7cb851c4ba2cf53f22a72b24",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/mapo_tofu_portion.png",
+      "key": "food5/mapo_tofu_portion.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Mapo Tofu",
+      "state": "portion",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 14577,
+      "sha256": "e15ee8d3518bd291a65e2c224bfde1ab013cd7a99700f434668ea84cadf8b316",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/fried_shrimp_sealed.png",
+      "key": "food5/fried_shrimp_sealed.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Fried Shrimp",
+      "state": "sealed",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 19117,
+      "sha256": "feea30d6628dd4e9405eaa6e13254d67b5c6ce6b5fa5a79f6b8f6ead792e1511",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/fried_shrimp_open.png",
+      "key": "food5/fried_shrimp_open.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Fried Shrimp",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 28061,
+      "sha256": "0c10a14437b76f37455462dbd3eff577bc4b2abe2b6142fda1a0bacb10d9bb0a",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/fried_shrimp_p1.png",
+      "key": "food5/fried_shrimp_p1.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Fried Shrimp",
+      "state": "p1",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 24785,
+      "sha256": "5d06986bac41c83cbe52245deb8d14aa57497014a6db0355c500d136a5629187",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/fried_shrimp_p2.png",
+      "key": "food5/fried_shrimp_p2.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Fried Shrimp",
+      "state": "p2",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 14054,
+      "sha256": "f230befdb961151ac3956831b3e7830262063efca4c280edd53098e7e850ed89",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/fried_shrimp_empty.png",
+      "key": "food5/fried_shrimp_empty.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Fried Shrimp",
+      "state": "empty",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 7593,
+      "sha256": "a54f3c6945e3ae0b39f44ff51f74881bbf8372fceb86c3e708a8f295b48313fc",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/fried_shrimp_portion.png",
+      "key": "food5/fried_shrimp_portion.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Fried Shrimp",
+      "state": "portion",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 14656,
+      "sha256": "cb32055ded9b4e7910177a9c66fe41616e17ea9e547bc93b03aba120813855c0",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/spring_rolls_sealed.png",
+      "key": "food5/spring_rolls_sealed.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Spring Rolls",
+      "state": "sealed",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 19643,
+      "sha256": "2d27c16b5feba703a448c2a3ef579cf2ab97e3cf26ce5e7bf87b6396363358a1",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/spring_rolls_open.png",
+      "key": "food5/spring_rolls_open.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Spring Rolls",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 26679,
+      "sha256": "abea6d0a96999465674d8b93f763b64f57c58b274e992c47ea1db19768571bcf",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/spring_rolls_p1.png",
+      "key": "food5/spring_rolls_p1.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Spring Rolls",
+      "state": "p1",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 24265,
+      "sha256": "869b19cf4268a9e6550387e412a7120a95a2c895b8d6d3a9734950830812e948",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/spring_rolls_p2.png",
+      "key": "food5/spring_rolls_p2.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Spring Rolls",
+      "state": "p2",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 21169,
+      "sha256": "e683b8dad997f693b3de3ab7c7261219263af51613c1e2968ee8e76f91d6881d",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/spring_rolls_empty.png",
+      "key": "food5/spring_rolls_empty.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Spring Rolls",
+      "state": "empty",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 8389,
+      "sha256": "0353300a13a16e5ea2383638ba21b4da8d6c3e0e7ee54e5a3b05237fa308cfa1",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/spring_rolls_portion.png",
+      "key": "food5/spring_rolls_portion.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Spring Rolls",
+      "state": "portion",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 14505,
+      "sha256": "95c359a87d70174e4f752347cd1ca587680eb7cc72303f6106c366beb154fa7b",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/iced_lemon_tea_sealed.png",
+      "key": "food5/iced_lemon_tea_sealed.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Iced Lemon Tea",
+      "state": "sealed",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 18090,
+      "sha256": "12c5ab2c7c34ad4f782d26ddd6872f0d43a411cebc759cc9280b9d860ef276a7",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/iced_lemon_tea_open.png",
+      "key": "food5/iced_lemon_tea_open.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Iced Lemon Tea",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 23669,
+      "sha256": "17f93305ae9267a046e12d31d20bc82dfb8192ceed86c1f3fb592eb6414b631d",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/iced_lemon_tea_p1.png",
+      "key": "food5/iced_lemon_tea_p1.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Iced Lemon Tea",
+      "state": "p1",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 21124,
+      "sha256": "3deeba5e70769b99a2c6ec5d633d8ee4f105dffe3fce59bfbc9f96152bc09058",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/iced_lemon_tea_p2.png",
+      "key": "food5/iced_lemon_tea_p2.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Iced Lemon Tea",
+      "state": "p2",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 19658,
+      "sha256": "56c063f749c6c5373b6c719612cd4add111ae9ac59e62fa72fa6144c4c14caeb",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/iced_lemon_tea_empty.png",
+      "key": "food5/iced_lemon_tea_empty.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Iced Lemon Tea",
+      "state": "empty",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 15009,
+      "sha256": "dee5b2ff471ec669f68221594688333b5dd6a4e062d5d148eb80772ab00a7d15",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/iced_lemon_tea_portion.png",
+      "key": "food5/iced_lemon_tea_portion.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Iced Lemon Tea",
+      "state": "portion",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 18546,
+      "sha256": "2ae6e82bb81bb90f5b8f779ed2d98797e5e47069c4f0d19f1b99fbcab89cd1d2",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/salmon_nigiri_sealed.png",
+      "key": "food5/salmon_nigiri_sealed.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Salmon Nigiri",
+      "state": "sealed",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 19481,
+      "sha256": "4bc8e0d228970fcf0939bdf1d513a7ee9a085a1c8f1ef6479f9d28143e3910c2",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/salmon_nigiri_open.png",
+      "key": "food5/salmon_nigiri_open.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Salmon Nigiri",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 23617,
+      "sha256": "38fad1d5e081dc5fdad91b8f726dc9104391d438eceab4677ba06640b7db602f",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/salmon_nigiri_p1.png",
+      "key": "food5/salmon_nigiri_p1.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Salmon Nigiri",
+      "state": "p1",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 19729,
+      "sha256": "053405116e6212ef64eade80a7d42bb52084eee468402f2aca8c9e7c709d7478",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/salmon_nigiri_p2.png",
+      "key": "food5/salmon_nigiri_p2.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Salmon Nigiri",
+      "state": "p2",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 14903,
+      "sha256": "9357cece06b10591f46296e25ba30a524e2e89e25eaef31cedc554c362138a70",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/salmon_nigiri_empty.png",
+      "key": "food5/salmon_nigiri_empty.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Salmon Nigiri",
+      "state": "empty",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 8058,
+      "sha256": "d0d09c58ae78894ea963ef461495d1349b5a6ce95952e4f8f0ff4ac608dbad03",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/salmon_nigiri_portion.png",
+      "key": "food5/salmon_nigiri_portion.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Salmon Nigiri",
+      "state": "portion",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 16753,
+      "sha256": "c0776c651efbefbf13c72bd77168fc97ccb229d3b157994ff98528717ca40a51",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/cold_soba_sealed.png",
+      "key": "food5/cold_soba_sealed.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Cold Soba",
+      "state": "sealed",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 17913,
+      "sha256": "67aba7a2cf1346365f4ac1bf0c4edc7351d31ea3478c205392299896d3e6c054",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/cold_soba_open.png",
+      "key": "food5/cold_soba_open.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Cold Soba",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 27930,
+      "sha256": "96ad71ba124935ce5b7ad3ca6d2cc2392af261348905e89696d21d0e555b9a46",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/cold_soba_p1.png",
+      "key": "food5/cold_soba_p1.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Cold Soba",
+      "state": "p1",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 25440,
+      "sha256": "308bc1c13f360dfc6efb516ad6e921d84ed7c5e429ede1adbc8a2560051bd809",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/cold_soba_p2.png",
+      "key": "food5/cold_soba_p2.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Cold Soba",
+      "state": "p2",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 20218,
+      "sha256": "b6a43375473f76fc87291a06ffab89933e55bb7c0f25f3199542b00508d778e7",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/cold_soba_empty.png",
+      "key": "food5/cold_soba_empty.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Cold Soba",
+      "state": "empty",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 8759,
+      "sha256": "64d45fbf9940716d3d2309310f67a06a21e99d95c57b181310c60eb4d6f6495b",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/cold_soba_portion.png",
+      "key": "food5/cold_soba_portion.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Cold Soba",
+      "state": "portion",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 15563,
+      "sha256": "d342df2bc25cd7f17a54c1f8c0a7a61c77044118bd56c214c2a2be4df66614f7",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/tamago_sealed.png",
+      "key": "food5/tamago_sealed.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Tamago",
+      "state": "sealed",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 19402,
+      "sha256": "a401e6c3fdb2341ba0ebb97d0a2c9450e66579d6adea242c034a073bc5a507cb",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/tamago_open.png",
+      "key": "food5/tamago_open.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Tamago",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 27085,
+      "sha256": "38d19f5de71f87c3628d381f0048cbe952a7a4536e14c8a7dcd9f8f6aa54d82e",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/tamago_p1.png",
+      "key": "food5/tamago_p1.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Tamago",
+      "state": "p1",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 23205,
+      "sha256": "f7b5d4100d2e7075b5b5e3e30b4c51bc0692576f64d2da1026a95fc7dc4f915a",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/tamago_p2.png",
+      "key": "food5/tamago_p2.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Tamago",
+      "state": "p2",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 15223,
+      "sha256": "6ac05f1020d69fb2387a8c2994e78149b36418625685ae3b952bb54ca943f81d",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/tamago_empty.png",
+      "key": "food5/tamago_empty.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Tamago",
+      "state": "empty",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 7512,
+      "sha256": "d28a2921eb50823f56a7c0b170c764699a4160e80b9fde409b1ac130b9b8297e",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/tamago_portion.png",
+      "key": "food5/tamago_portion.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Tamago",
+      "state": "portion",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 14549,
+      "sha256": "23b382b5fe5b9ccacf146d441cde0614ab495a3c61e6adcab3628b4be2e1e52f",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/seaweed_salad_sealed.png",
+      "key": "food5/seaweed_salad_sealed.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Seaweed Salad",
+      "state": "sealed",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 17259,
+      "sha256": "be57bda511c40d3db06b892b21367880f4916fef62eec12e1a3fb0e96230cd7e",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/seaweed_salad_open.png",
+      "key": "food5/seaweed_salad_open.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Seaweed Salad",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 28604,
+      "sha256": "15186cf8b2d90a35d14db3503e7f6b3e1887ac1b16d70e769bc4b1222874f971",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/seaweed_salad_p1.png",
+      "key": "food5/seaweed_salad_p1.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Seaweed Salad",
+      "state": "p1",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 23886,
+      "sha256": "96efbe476bf2ab0c06ad0d53064a530f35a9553ea958f8f5720381f314032274",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/seaweed_salad_p2.png",
+      "key": "food5/seaweed_salad_p2.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Seaweed Salad",
+      "state": "p2",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 17869,
+      "sha256": "2905dd0b27602b396b51d5cf10376eafb5423903571179ddcfedffa0a285e240",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/seaweed_salad_empty.png",
+      "key": "food5/seaweed_salad_empty.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Seaweed Salad",
+      "state": "empty",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 8828,
+      "sha256": "e047539611074f784dde3758b4c8b2d9bbcb977934c82ca0685f0822903e2c67",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/seaweed_salad_portion.png",
+      "key": "food5/seaweed_salad_portion.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Seaweed Salad",
+      "state": "portion",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 16364,
+      "sha256": "281b160c4ad7d15ad65d9add65ee771feeeb3343938bbf451d03e50235700dd5",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/ice_jelly_sealed.png",
+      "key": "food5/ice_jelly_sealed.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Ice Jelly",
+      "state": "sealed",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 19475,
+      "sha256": "4308c4e7587645a72e51dcd4a06eb9b72b5f65e05e9e7e6744f0a1c0b58420ee",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/ice_jelly_open.png",
+      "key": "food5/ice_jelly_open.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Ice Jelly",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 24882,
+      "sha256": "d5292093e2dd72938c72f022d3bc9f0421b17151787bf01321577b3d71d2b747",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/ice_jelly_p1.png",
+      "key": "food5/ice_jelly_p1.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Ice Jelly",
+      "state": "p1",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 23159,
+      "sha256": "a418d7c231f53a153fe2e5908cc776ede9626d9e4aa3c06c029909cfd01588fc",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/ice_jelly_p2.png",
+      "key": "food5/ice_jelly_p2.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Ice Jelly",
+      "state": "p2",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 18433,
+      "sha256": "ba30db3f90df69bf3034db9b55725db79ab18b5252085195a3365ee34cd893b4",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/ice_jelly_empty.png",
+      "key": "food5/ice_jelly_empty.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Ice Jelly",
+      "state": "empty",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 8018,
+      "sha256": "311baa208fcca56cc30d0605f8f5f550193b1d14f13dd8264e826aa4a5acdbde",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/ice_jelly_portion.png",
+      "key": "food5/ice_jelly_portion.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Ice Jelly",
+      "state": "portion",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 9282,
+      "sha256": "8c1513f626e8cdc9b2a6d4ea49c2577965b4c6950d2a2df0ad057190997ca979",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/melon_slice_sealed.png",
+      "key": "food5/melon_slice_sealed.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Melon Slice",
+      "state": "sealed",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 17575,
+      "sha256": "43e32d3135bee670153e3520e0b2e5ed4d699e0cd7f21c7916e4320cec031d01",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/melon_slice_open.png",
+      "key": "food5/melon_slice_open.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Melon Slice",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 24941,
+      "sha256": "fea06c319754ce2fb43fd159e7f01a96a5e9faeac54da173dcd70f125b19c035",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/melon_slice_p1.png",
+      "key": "food5/melon_slice_p1.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Melon Slice",
+      "state": "p1",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 20393,
+      "sha256": "324a9c7dfd2d01dd979e4c7cda4615c93ad60766e056041ab5aa3a3f57e2eab6",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/melon_slice_p2.png",
+      "key": "food5/melon_slice_p2.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Melon Slice",
+      "state": "p2",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 16122,
+      "sha256": "27a310cad723bde3f97bad16eb34e7ab860a39f825ad8db80fe34c76c4a035f1",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/melon_slice_empty.png",
+      "key": "food5/melon_slice_empty.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Melon Slice",
+      "state": "empty",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 7979,
+      "sha256": "fe26dd6b0122d836ba0f154741bbc045dfaa1cb396a7b75eeebc83974e67cc5b",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/melon_slice_portion.png",
+      "key": "food5/melon_slice_portion.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Melon Slice",
+      "state": "portion",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 14029,
+      "sha256": "f48a6d5b59c1735cc672f9166a89dcf0b4ffa57de1e298f68a9702fa0353beb3",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/beef_slices_sealed.png",
+      "key": "food5/beef_slices_sealed.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Beef Slices",
+      "state": "sealed",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 18586,
+      "sha256": "a20482f1d8862aa512d26af9623a6cd3a82ce8070b39cbb01533a2a3bd5cb364",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/beef_slices_open.png",
+      "key": "food5/beef_slices_open.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Beef Slices",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 28668,
+      "sha256": "b29f185d2410354e959744b4e4dd7fe8f5583d086157c8120bcc061619077e64",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/beef_slices_p1.png",
+      "key": "food5/beef_slices_p1.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Beef Slices",
+      "state": "p1",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 24347,
+      "sha256": "4ac9ec54c54d78401dc37de98c19243ceb54cf695abeccf34a350cc17d68f688",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/beef_slices_p2.png",
+      "key": "food5/beef_slices_p2.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Beef Slices",
+      "state": "p2",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 19956,
+      "sha256": "d1020f3dc9508363feb747daea5be62ad9c246ebdf4e1d1b727c5d48c2750035",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/beef_slices_empty.png",
+      "key": "food5/beef_slices_empty.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Beef Slices",
+      "state": "empty",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 9551,
+      "sha256": "ec3595962be32b6ddb3809e58fd1c2cba89fb25f08d8f0882c57083de84e92fa",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/beef_slices_portion.png",
+      "key": "food5/beef_slices_portion.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Beef Slices",
+      "state": "portion",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 14371,
+      "sha256": "89cc41865667c84e5182fbfd032c5057df3a705b13eb84ddf520a25ce26dec07",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/mushroom_mix_sealed.png",
+      "key": "food5/mushroom_mix_sealed.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Mushroom Mix",
+      "state": "sealed",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 17604,
+      "sha256": "722675024e8ab41d17aa273480502346c171510a33d2f77502b3dd4f6dbc6e1b",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/mushroom_mix_open.png",
+      "key": "food5/mushroom_mix_open.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Mushroom Mix",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 26563,
+      "sha256": "9abe2b55276bc60a7376bfe0b4b8626d5b54a1cdfd3993680aba85c616327d3c",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/mushroom_mix_p1.png",
+      "key": "food5/mushroom_mix_p1.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Mushroom Mix",
+      "state": "p1",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 25105,
+      "sha256": "30d612d6893a01faf6a451a4da10c79515463a5d7ec6d45ef479b2b5a52d6c54",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/mushroom_mix_p2.png",
+      "key": "food5/mushroom_mix_p2.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Mushroom Mix",
+      "state": "p2",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 20700,
+      "sha256": "acffe3f3245e3cb61734584d7a1ab515bd88213f018851e8b49736f775c35da1",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/mushroom_mix_empty.png",
+      "key": "food5/mushroom_mix_empty.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Mushroom Mix",
+      "state": "empty",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 8278,
+      "sha256": "9c3adbcad7ad3857c1cfbc00891693f5c49478ba65453e70b00b52b98eccacfc",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/mushroom_mix_portion.png",
+      "key": "food5/mushroom_mix_portion.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Mushroom Mix",
+      "state": "portion",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 16070,
+      "sha256": "f1415c36d6d2042da3a3e36db5c0f80bce3da0f44bf9bae04ea4ebe449454ad6",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/fish_balls_sealed.png",
+      "key": "food5/fish_balls_sealed.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Fish Balls",
+      "state": "sealed",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 19211,
+      "sha256": "67af0bae132ca558a6b3794ef71247414c4d9d85d9160001e320e361bec06335",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/fish_balls_open.png",
+      "key": "food5/fish_balls_open.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Fish Balls",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 23905,
+      "sha256": "e865d25ded2ba428d1509c9bea06281af1a52d5f1ec2b880ec682f9ee6c5f75c",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/fish_balls_p1.png",
+      "key": "food5/fish_balls_p1.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Fish Balls",
+      "state": "p1",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 20200,
+      "sha256": "65344b72ad192515e5ec4119640f2cf20d7d8875a26c1c57af4e777886f571be",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/fish_balls_p2.png",
+      "key": "food5/fish_balls_p2.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Fish Balls",
+      "state": "p2",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 15450,
+      "sha256": "d473c1cab1e70336251298195dbc18b77ef540043370c98bcb2cdf69ad44a21b",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/fish_balls_empty.png",
+      "key": "food5/fish_balls_empty.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Fish Balls",
+      "state": "empty",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 7192,
+      "sha256": "bc5ac7f528632e01c79c942cf26bab5a8a44b2a34cd8c25d2c850839fe7669cb",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/fish_balls_portion.png",
+      "key": "food5/fish_balls_portion.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Fish Balls",
+      "state": "portion",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 8887,
+      "sha256": "a0926859e8b288b9d10dbfd57f450fd70fad55747e498a9995a03ef33784bfbe",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/corn_cob_sealed.png",
+      "key": "food5/corn_cob_sealed.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Corn Cob",
+      "state": "sealed",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 19482,
+      "sha256": "72259b966654452013d7e469742fb39ff92a00183ac7b66910132ca2d5d1c2e2",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/corn_cob_open.png",
+      "key": "food5/corn_cob_open.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Corn Cob",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 25681,
+      "sha256": "dec68d54ceeddca1918b99e4f0f68234b70339f8afd35f2e92ad28b1823546e7",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/corn_cob_p1.png",
+      "key": "food5/corn_cob_p1.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Corn Cob",
+      "state": "p1",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 24169,
+      "sha256": "b8ed00481c29181a6a6b157a1905ccc090e924f27c9dbd7aa50f9adf2cc02ed6",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/corn_cob_p2.png",
+      "key": "food5/corn_cob_p2.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Corn Cob",
+      "state": "p2",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 14628,
+      "sha256": "9198c6a2bbcc8c06ded126b0a1adf78ea350a19f884b2083df30d312981dd49b",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/corn_cob_empty.png",
+      "key": "food5/corn_cob_empty.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Corn Cob",
+      "state": "empty",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 6803,
+      "sha256": "b8c814e32e781f6fdd2840634af627a0e6ebb3099526795d7b8886ab2b4b14bf",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/corn_cob_portion.png",
+      "key": "food5/corn_cob_portion.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Corn Cob",
+      "state": "portion",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 15693,
+      "sha256": "ddaa9e8a14dea4a80cc96682ad234060bf6aa1cea7d6f4c22033ea62c396ea5a",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/udon_bowl_sealed.png",
+      "key": "food5/udon_bowl_sealed.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Udon Bowl",
+      "state": "sealed",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 16650,
+      "sha256": "26f6d5d11cbcea9b77615ce058e4e43a1b0d6f1603828157c45fd4e97f73ec34",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/udon_bowl_open.png",
+      "key": "food5/udon_bowl_open.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Udon Bowl",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 21150,
+      "sha256": "40e5378f0424f1efbd9c3eaa9efea60b474646302597ef4f114d0c7a35293247",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/udon_bowl_p1.png",
+      "key": "food5/udon_bowl_p1.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Udon Bowl",
+      "state": "p1",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 21214,
+      "sha256": "3923b38b416b0c01356c4f4228655a9b34fdbc0dd00bd4e57b528ea0fb15eae2",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/udon_bowl_p2.png",
+      "key": "food5/udon_bowl_p2.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Udon Bowl",
+      "state": "p2",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 19620,
+      "sha256": "0b01d3216a2bdbb9551071745ed4c3d102c082318bcb2f56032f310d1cb7a804",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/udon_bowl_empty.png",
+      "key": "food5/udon_bowl_empty.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Udon Bowl",
+      "state": "empty",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 11723,
+      "sha256": "8b996169f4c82f51a7b9d3f14882c103db2aae3cfaa2cdd7d47bebd0a5daab12",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/udon_bowl_portion.png",
+      "key": "food5/udon_bowl_portion.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Udon Bowl",
+      "state": "portion",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 15505,
+      "sha256": "490be2975e1f602270830c65086da6b07bedaeb8e1d7f53c1bdc7a7ca3a4f7d0",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/spicy_broth_sealed.png",
+      "key": "food5/spicy_broth_sealed.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Spicy Broth",
+      "state": "sealed",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 18017,
+      "sha256": "1db30088630eec01de64737112c1e271a63f72a45a2f2f6081d915c5c7cef415",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/spicy_broth_open.png",
+      "key": "food5/spicy_broth_open.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Spicy Broth",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 23899,
+      "sha256": "274011b9535990230e4b435ad0ef9096a87b9ccb534c099b4d34e218c0998105",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/spicy_broth_p1.png",
+      "key": "food5/spicy_broth_p1.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Spicy Broth",
+      "state": "p1",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 20856,
+      "sha256": "c4e25329f2e375b34fac624e149a27e362c438704f98efcb4a650c6bf658d2c2",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/spicy_broth_p2.png",
+      "key": "food5/spicy_broth_p2.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Spicy Broth",
+      "state": "p2",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 18754,
+      "sha256": "dc0e964516167a50b2aa02d1ba3ab5b65eaf720e25ae8aef8bbb74ab9efa61b9",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/spicy_broth_empty.png",
+      "key": "food5/spicy_broth_empty.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Spicy Broth",
+      "state": "empty",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 14273,
+      "sha256": "5470c178459f0e1b41ae06d290fceb9cffcac33bb90a81849bb91bed3fb1fd51",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art7/food5/spicy_broth_portion.png",
+      "key": "food5/spicy_broth_portion.png",
+      "package": "art7",
+      "group": "buffet",
+      "food": "Spicy Broth",
+      "state": "portion",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 9416,
+      "sha256": "2756f07f6c4f64fa16efbeb4f9df5cf63935fc0b511bb9af9ddbf378db450633",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/mini_steak_sealed.png",
+      "key": "food5/mini_steak_sealed.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Mini Steak",
+      "state": "sealed",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 17774,
+      "sha256": "6207d3f659c82e67ae380932851b154b04aa757984803f48e7943081dd720499",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/mini_steak_open.png",
+      "key": "food5/mini_steak_open.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Mini Steak",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 29899,
+      "sha256": "d750eb8ede2b39d390f09ab00de7e303bef83b9e08d313178e0c461bff746e59",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/mini_steak_p1.png",
+      "key": "food5/mini_steak_p1.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Mini Steak",
+      "state": "p1",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 25303,
+      "sha256": "5a2ffb00cf5bbd28aa6d18e1ff9d18dc0d778ccb927bf1bdd2e48ac548002d4a",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/mini_steak_p2.png",
+      "key": "food5/mini_steak_p2.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Mini Steak",
+      "state": "p2",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 21452,
+      "sha256": "d09e4108a81cb13efff4227df911971e58f560babb2a575fe74be570da8858b4",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/mini_steak_empty.png",
+      "key": "food5/mini_steak_empty.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Mini Steak",
+      "state": "empty",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 8255,
+      "sha256": "ed5ccbcb5df31e523c2f59c5506ef771d3bfbf2d6e5db8b9fdc805d341fff0eb",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/mini_steak_portion.png",
+      "key": "food5/mini_steak_portion.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Mini Steak",
+      "state": "portion",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 10282,
+      "sha256": "dbfee2a2c7eb0fa1e311716ec43ae48af54523f7edb71ed59a8971ff7cb43bd9",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/yakitori_sealed.png",
+      "key": "food5/yakitori_sealed.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Yakitori",
+      "state": "sealed",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 15364,
+      "sha256": "c3a6cd5d08b9b06cbd324b44b9e26348e38699cb93aee376a297e8e103d08320",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/yakitori_open.png",
+      "key": "food5/yakitori_open.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Yakitori",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 27345,
+      "sha256": "f111e90a9b246717cf831b54797da3cdf55d7608c860fc07709d77574dd02975",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/yakitori_p1.png",
+      "key": "food5/yakitori_p1.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Yakitori",
+      "state": "p1",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 27781,
+      "sha256": "94067fce46fbd3dbf87c5786f745cb49d4b7edf1c6ee7917648be854ab85d09d",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/yakitori_p2.png",
+      "key": "food5/yakitori_p2.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Yakitori",
+      "state": "p2",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 25285,
+      "sha256": "55665c531d5b5f511b27c597eab3fc6358c22566ddb0980a392e749885cec2be",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/yakitori_empty.png",
+      "key": "food5/yakitori_empty.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Yakitori",
+      "state": "empty",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 10205,
+      "sha256": "3363b75196e033c1bf2bac90903ffdc119924f859cfe72d5fcb1b6cc3a241b33",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/yakitori_portion.png",
+      "key": "food5/yakitori_portion.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Yakitori",
+      "state": "portion",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 10336,
+      "sha256": "fdda30a16ef53d9178983ba6ab050f91d15d4edd1f55c669085343ce39555f0d",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/sausage_sealed.png",
+      "key": "food5/sausage_sealed.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Sausage",
+      "state": "sealed",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 14557,
+      "sha256": "167abbf9339491d17712ab443d9be2f3f8ce1044f34fdf2cdd5e08100263e164",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/sausage_open.png",
+      "key": "food5/sausage_open.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Sausage",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 26308,
+      "sha256": "5e56899688faa6eee154ff80440d7a31dd90ff8744a98315b6c571829dd8599f",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/sausage_p1.png",
+      "key": "food5/sausage_p1.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Sausage",
+      "state": "p1",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 24456,
+      "sha256": "17f1c0e89f8bd6479701d6f69b88728d3ca2baefec6da97ac64e6c587bbab47a",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/sausage_p2.png",
+      "key": "food5/sausage_p2.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Sausage",
+      "state": "p2",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 20156,
+      "sha256": "9c876ec281be99137cf8d8059a0507abdf094ffedd2790c46acd16d373091ee6",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/sausage_empty.png",
+      "key": "food5/sausage_empty.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Sausage",
+      "state": "empty",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 7940,
+      "sha256": "2d243c7be2acac2dcfe65b583504a52b842c46f76706379ee4ba4f453ba013c8",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/sausage_portion.png",
+      "key": "food5/sausage_portion.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Sausage",
+      "state": "portion",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 9457,
+      "sha256": "780ae1358b29e86ac44ae466a01b20ae40e83c38b8448918bbc5e50654a955ce",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/garlic_bread_sealed.png",
+      "key": "food5/garlic_bread_sealed.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Garlic Bread",
+      "state": "sealed",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 17883,
+      "sha256": "3adc5a723b265d671a637fd7de01cdd29064da09c5dd05e1ef5752f7233f4bc6",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/garlic_bread_open.png",
+      "key": "food5/garlic_bread_open.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Garlic Bread",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 27483,
+      "sha256": "6a6226f22ae963331f536b8ad5dc7b20e3d772ff209b57ad416a7d570433e1a2",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/garlic_bread_p1.png",
+      "key": "food5/garlic_bread_p1.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Garlic Bread",
+      "state": "p1",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 25917,
+      "sha256": "07e55550346ee34b37fa5fb841f8839cfd826c4d3380f1e1e3e8bcd4439d276a",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/garlic_bread_p2.png",
+      "key": "food5/garlic_bread_p2.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Garlic Bread",
+      "state": "p2",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 19040,
+      "sha256": "9b2d84f1570de4c6fa641eb3151b48b7ec21407265e788cde0d168eef61cd06c",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/garlic_bread_empty.png",
+      "key": "food5/garlic_bread_empty.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Garlic Bread",
+      "state": "empty",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 8474,
+      "sha256": "a8f76b986aba557e2d58421a82436196cb3d1fa6f4d5bc571020f1a37e689c86",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/garlic_bread_portion.png",
+      "key": "food5/garlic_bread_portion.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Garlic Bread",
+      "state": "portion",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 17511,
+      "sha256": "d4e26b7a91c79a3050c1bdc9b6f205fc2281666549d59a0e522b60e5e9c7ed7c",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/grilled_squid_sealed.png",
+      "key": "food5/grilled_squid_sealed.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Grilled Squid",
+      "state": "sealed",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 18016,
+      "sha256": "1ee2f35651d4997ef6b6b12016723ae74e2203c330c288489c474aa3529898d8",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/grilled_squid_open.png",
+      "key": "food5/grilled_squid_open.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Grilled Squid",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 28313,
+      "sha256": "d773f9b2c479f7ee08db68eb98cf7a26151a89a54f57c5788ba747ef54e2e489",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/grilled_squid_p1.png",
+      "key": "food5/grilled_squid_p1.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Grilled Squid",
+      "state": "p1",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 28181,
+      "sha256": "46798cb9de4f815714f76e1a7d14f8cd3cec2f49299681595aaf77cffa0cbcc5",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/grilled_squid_p2.png",
+      "key": "food5/grilled_squid_p2.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Grilled Squid",
+      "state": "p2",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 23657,
+      "sha256": "36ffd10aabd3566df8e960e538b4e8a3abc19742a74b8264a89b9b487c565043",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/grilled_squid_empty.png",
+      "key": "food5/grilled_squid_empty.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Grilled Squid",
+      "state": "empty",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 12198,
+      "sha256": "3c9156d4f4c00df6ad5c47ad5f4e7ab40b05a0a4fb0b2e53468f41c2e11e1a06",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/grilled_squid_portion.png",
+      "key": "food5/grilled_squid_portion.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Grilled Squid",
+      "state": "portion",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 10304,
+      "sha256": "8b6f742bdf91671d3a73b066bd7934ffcbdb8e7ea9f4ab022a842dada1d581ce",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/sparkling_soda_sealed.png",
+      "key": "food5/sparkling_soda_sealed.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Sparkling Soda",
+      "state": "sealed",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 19086,
+      "sha256": "81d711f522c9749f62aed9ac3c9cc0868e485f43dac0728d02a4c8c2ca7d098e",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/sparkling_soda_open.png",
+      "key": "food5/sparkling_soda_open.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Sparkling Soda",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 27372,
+      "sha256": "cec8fe195d850928aff970a590c3aeb98f7cf3e9ccf9b9c7ec31af77e10c2539",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/sparkling_soda_p1.png",
+      "key": "food5/sparkling_soda_p1.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Sparkling Soda",
+      "state": "p1",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 23000,
+      "sha256": "6591934a2d5fc8a73ea5fd93186242f173c0437dcfdcc4821ac34e52b1aee6a0",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/sparkling_soda_p2.png",
+      "key": "food5/sparkling_soda_p2.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Sparkling Soda",
+      "state": "p2",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 21748,
+      "sha256": "35f29a7dc06b9b4c0dcbe374e05ace1863b28b3d0ffeb3bb57ac684a840ff963",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/sparkling_soda_empty.png",
+      "key": "food5/sparkling_soda_empty.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Sparkling Soda",
+      "state": "empty",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 16652,
+      "sha256": "674b20da0157784699647f97a715ab069c07442909a208f280b62f263c98a19f",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/sparkling_soda_portion.png",
+      "key": "food5/sparkling_soda_portion.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Sparkling Soda",
+      "state": "portion",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 15737,
+      "sha256": "e72eaf482520450c549434e33175d0dbf347af9956aa7f3676f35b07c94d4c33",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/ghost_wings_sealed.png",
+      "key": "food5/ghost_wings_sealed.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Ghost Pepper Wings",
+      "state": "sealed",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 18957,
+      "sha256": "e748caec4eb8067f542b3be5993456e9f33335b417b6ff68daa7754b706f3fce",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/ghost_wings_open.png",
+      "key": "food5/ghost_wings_open.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Ghost Pepper Wings",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 28590,
+      "sha256": "43b393bc2d1a55639427c7126601ccdd0ea685e6628d34bd873d3c0e852d7329",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/ghost_wings_p1.png",
+      "key": "food5/ghost_wings_p1.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Ghost Pepper Wings",
+      "state": "p1",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 26744,
+      "sha256": "d94f06a8ed90c092021344f6fbe1eb0b49263379e0cdbbfe29ba9f7a3327c1b2",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/fire_noodles_open.png",
+      "key": "food5/fire_noodles_open.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Fire Noodles",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 29721,
+      "sha256": "e094d2ed33a445f29eb9006e729526a462001ab69d4b63bece52ad25111ef0ba",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/lava_ricecake_open.png",
+      "key": "food5/lava_ricecake_open.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Lava Rice Cake",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 24850,
+      "sha256": "3a85e68e2e3ac06cabf9eb7f5e87de9a9e93ca76b9e2546c90d672672bf17093",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/chili_dumplings_open.png",
+      "key": "food5/chili_dumplings_open.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Chili Dumplings",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 29577,
+      "sha256": "fb302d23b0d4e6f8d4b1ac2d676b15b850c1156843afac375ec78ec11a814212",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/volcano_curry_open.png",
+      "key": "food5/volcano_curry_open.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Volcano Curry",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 26808,
+      "sha256": "26f891c11dcbecff9fc11d2675b0ce974452c889f32264927466d942bdbe16ac",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "art8/food5/milk_cooler_open.png",
+      "key": "food5/milk_cooler_open.png",
+      "package": "art8",
+      "group": "buffet",
+      "food": "Milk Cooler",
+      "state": "open",
+      "openKind": "dome",
+      "width": 384,
+      "height": 384,
+      "anchor": [
+        192,
+        192
+      ],
+      "groundY": 349,
+      "bytes": 22276,
+      "sha256": "010d3e482133b0890655246727cf5e702e2fafdc4e0e50c3f8f69a4b14d1e086",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "assets/cook/opt_ramen_deco_sesame.png",
+      "key": "cook/opt_ramen_deco_sesame.png",
+      "package": "main",
+      "group": "kitchen",
+      "food": "ramen seasoning sesame",
+      "state": "icon",
+      "openKind": "",
+      "width": 160,
+      "height": 160,
+      "anchor": [
+        80,
+        80
+      ],
+      "groundY": null,
+      "bytes": 5608,
+      "sha256": "5f0a2577d2d05b3adfbdd6d4ff639571220fe0f40e5f7661fe105a8b3d7ad4d8",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "assets/cook/deco_sesame.png",
+      "key": "cook/deco_sesame.png",
+      "package": "main",
+      "group": "kitchen",
+      "food": "ramen seasoning sesame",
+      "state": "scatter",
+      "openKind": "",
+      "width": 256,
+      "height": 256,
+      "anchor": [
+        128,
+        128
+      ],
+      "groundY": null,
+      "bytes": 5879,
+      "sha256": "e8e14796e7e2f4c065d09a3a084641be11652f1698cb5813d1ada8e6b4f90cf7",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "assets/cook/opt_ramen_deco_chili_flakes.png",
+      "key": "cook/opt_ramen_deco_chili_flakes.png",
+      "package": "main",
+      "group": "kitchen",
+      "food": "ramen seasoning chili_flakes",
+      "state": "icon",
+      "openKind": "",
+      "width": 160,
+      "height": 160,
+      "anchor": [
+        80,
+        80
+      ],
+      "groundY": null,
+      "bytes": 5032,
+      "sha256": "21daf0a8f9dd8c935b746e22564718946289f578de8ed812794b43d83392c6b7",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "assets/cook/deco_chili_flakes.png",
+      "key": "cook/deco_chili_flakes.png",
+      "package": "main",
+      "group": "kitchen",
+      "food": "ramen seasoning chili_flakes",
+      "state": "scatter",
+      "openKind": "",
+      "width": 256,
+      "height": 256,
+      "anchor": [
+        128,
+        128
+      ],
+      "groundY": null,
+      "bytes": 5779,
+      "sha256": "3d252c0ed1c11f5f56a950a7c6460aab418155331c1229f5f92ba669a44e0737",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "assets/cook/opt_ramen_deco_nori_flakes.png",
+      "key": "cook/opt_ramen_deco_nori_flakes.png",
+      "package": "main",
+      "group": "kitchen",
+      "food": "ramen seasoning nori_flakes",
+      "state": "icon",
+      "openKind": "",
+      "width": 160,
+      "height": 160,
+      "anchor": [
+        80,
+        80
+      ],
+      "groundY": null,
+      "bytes": 5341,
+      "sha256": "21c16bf666986a729010d35f8a40373bc943ab91bfcace549402ac812745194f",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "assets/cook/deco_nori_flakes.png",
+      "key": "cook/deco_nori_flakes.png",
+      "package": "main",
+      "group": "kitchen",
+      "food": "ramen seasoning nori_flakes",
+      "state": "scatter",
+      "openKind": "",
+      "width": 256,
+      "height": 256,
+      "anchor": [
+        128,
+        128
+      ],
+      "groundY": null,
+      "bytes": 5577,
+      "sha256": "fef7dca6377d8e42ce37b631dc0f6d508e937923299c221762def5d92be7e17f",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "assets/cook/opt_ramen_deco_pepper.png",
+      "key": "cook/opt_ramen_deco_pepper.png",
+      "package": "main",
+      "group": "kitchen",
+      "food": "ramen seasoning pepper",
+      "state": "icon",
+      "openKind": "",
+      "width": 160,
+      "height": 160,
+      "anchor": [
+        80,
+        80
+      ],
+      "groundY": null,
+      "bytes": 5637,
+      "sha256": "9481a310a71112796f599d7bbcbc4984ca4adf769b137b75e7f53f3511b1ebc9",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "assets/cook/deco_pepper.png",
+      "key": "cook/deco_pepper.png",
+      "package": "main",
+      "group": "kitchen",
+      "food": "ramen seasoning pepper",
+      "state": "scatter",
+      "openKind": "",
+      "width": 256,
+      "height": 256,
+      "anchor": [
+        128,
+        128
+      ],
+      "groundY": null,
+      "bytes": 5322,
+      "sha256": "f545955e9802f09d5783fedde953dafe90c02b29623f2d6192d67b9da97a4c08",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "assets/cook/opt_ramen_deco_fried_garlic.png",
+      "key": "cook/opt_ramen_deco_fried_garlic.png",
+      "package": "main",
+      "group": "kitchen",
+      "food": "ramen seasoning fried_garlic",
+      "state": "icon",
+      "openKind": "",
+      "width": 160,
+      "height": 160,
+      "anchor": [
+        80,
+        80
+      ],
+      "groundY": null,
+      "bytes": 5676,
+      "sha256": "b46179ec32a903fc7663f25acf180264432ca60b4bbb1d2c977afed7adc0c5b3",
+      "format": "PNG indexed palette alpha, no dither"
+    },
+    {
+      "path": "assets/cook/deco_fried_garlic.png",
+      "key": "cook/deco_fried_garlic.png",
+      "package": "main",
+      "group": "kitchen",
+      "food": "ramen seasoning fried_garlic",
+      "state": "scatter",
+      "openKind": "",
+      "width": 256,
+      "height": 256,
+      "anchor": [
+        128,
+        128
+      ],
+      "groundY": null,
+      "bytes": 6797,
+      "sha256": "d057354c63885509ca19bbc595807dfc74a8df5f6cc4e2f45770d13843d8b64e",
+      "format": "PNG indexed palette alpha, no dither"
+    }
+  ]
+}

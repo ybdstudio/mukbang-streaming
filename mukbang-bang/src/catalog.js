@@ -19,11 +19,11 @@ for (let i = 0; i < D.FOODS.length; i++) {
 
 // ── Food Delivery: 5 fictional restaurants, mains + sides (no supermarket item here) ──
 const RESTAURANTS = [
-  { id: 'chicken_joy',  name: 'Chicken Joy',  color: '#ffb84d', dark: '#d6841a', unlock: 2,  icon: 'CJ' },
-  { id: 'mamma_pizza',  name: 'Mamma Pizza',  color: '#ff7a6b', dark: '#c93b2d', unlock: 8,  icon: 'MP' },
-  { id: 'seoul_street', name: 'Seoul Street', color: '#ff8fb3', dark: '#d85e8e', unlock: 11, icon: 'SS' },
-  { id: 'tokyo_box',    name: 'Tokyo Box',    color: '#8fd1ff', dark: '#4a9fd8', unlock: 14, icon: 'TB' },
-  { id: 'hot_boil',     name: 'Hot & Boil',   color: '#ff6b4a', dark: '#c93b1d', unlock: 19, icon: 'HB' }
+  { id: 'chicken_joy',  name: 'Chicken Joy',  color: '#ffb84d', dark: '#d6841a', unlock: 2,  icon: 'CJ', tab: 'CHICKEN', dish: 'kfc_chicken' },
+  { id: 'mamma_pizza',  name: 'Mamma Pizza',  color: '#ff7a6b', dark: '#c93b2d', unlock: 8,  icon: 'MP', tab: 'PIZZA', dish: 'pizza' },
+  { id: 'seoul_street', name: 'Seoul Street', color: '#ff8fb3', dark: '#d85e8e', unlock: 11, icon: 'SS', tab: 'KOREAN', dish: 'tteokbokki' },
+  { id: 'tokyo_box',    name: 'Tokyo Box',    color: '#8fd1ff', dark: '#4a9fd8', unlock: 14, icon: 'TB', tab: 'SUSHI', dish: 'sushi_set' },
+  { id: 'hot_boil',     name: 'Hot & Boil',   color: '#ff6b4a', dark: '#c93b1d', unlock: 19, icon: 'HB', tab: 'HOTPOT', dish: 'mini_hotpot' }
 ];
 const MAINS = [
   ['kfc_chicken',  'chicken_joy',  'Korean Fried Chicken', 'savory', 0, ['crunchy', 'fried'], 5, 320, '#e8973a', '#ffd27a', '#b5651d', 'box'],
@@ -54,8 +54,8 @@ const STATIONS = [
   { id: 'dessert', name: 'Dessert & Ice Bar', color: '#ffd1e3', dark: '#e8759a', unlock: 6 },
   { id: 'cold',    name: 'Sushi & Cold Bar', color: '#bfe9ff', dark: '#4a9fd8', unlock: 10 },
   { id: 'hotpot',  name: 'Hotpot Corner',    color: '#ffd27a', dark: '#c99b1a', unlock: 13 },
-  { id: 'grill',   name: 'Grill Station',    color: '#f3c58b', dark: '#a67a4a', unlock: 17 },
-  { id: 'lava',    name: 'Lava Spicy',       color: '#ff8a6b', dark: '#a8231a', unlock: 22 }
+  { id: 'grill',   name: 'Grill Station',    color: '#f3c58b', dark: '#a67a4a', unlock: 17 }
+  // { id: 'lava', … } Lava Spicy station hidden: its art is not finished (Codex foods V4 stopped at 276/304). Dishes stay defined for old saves.
 ];
 const PORTIONS = {
   hot:    [['spicy_wings', 'Spicy Wings', 'spicy', 2, ['fried', 'crunchy'], '#ff5a3a', '#ffd27a', '#a8231a', 'plate'], ['kimchi_rice', 'Kimchi Fried Rice', 'spicy', 1, ['rice'], '#ff7a4a', '#fff0c2', '#c93b1d', 'bowl'], ['mapo_tofu', 'Mapo Tofu', 'spicy', 2, [], '#ff5a3a', '#fff4e0', '#a8231a', 'bowl'], ['fried_shrimp', 'Fried Shrimp', 'savory', 0, ['fried', 'crunchy'], '#ffb84d', '#ff8a65', '#d6841a', 'plate'], ['spring_rolls', 'Spring Rolls', 'savory', 0, ['crunchy'], '#f3c58b', '#9fd47a', '#c48a4a', 'plate'], ['iced_lemon_tea', 'Iced Lemon Tea', 'cold', 0, ['drink'], '#ffd95e', '#fff9d6', '#d6ad10', 'cup']],
@@ -114,7 +114,7 @@ add({ id: 'wasabi_cake',     src: 'mystery', group: 'funny', name: 'Wasabi Cake'
 add({ id: 'golden_parfait',  src: 'mystery', group: 'rare',  name: 'Golden Parfait',   taste: 'sweet', tags: ['dessert', 'rare'], bites: 3, price: 0, c1: '#ffd95e', c2: '#fff8ef', c3: '#d6940e', shape: 'parfait', art: false, sound: 'soft' });
 const MYSTERY = {
   // kind → candidate dish ids (Delicious draws from the level's own pool at run time)
-  spicy: ['fire_noodles', 'ghost_wings', 'chili_noodle', 'tteokbokki'],
+  spicy: ['spicy_wings', 'mapo_tofu', 'chili_noodle', 'tteokbokki'],
   frozen: ['blue_moon', 'mint_choc', 'ice_jelly', 'mango_sorbet'],
   rare: ['golden_parfait', 'rainbow_crepe', 'straw_cake'],
   funny: ['choco_ramen', 'pickle_icecream', 'wasabi_cake'],

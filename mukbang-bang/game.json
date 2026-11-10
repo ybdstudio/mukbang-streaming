@@ -20,6 +20,18 @@
     {
       "name": "art5",
       "root": "art5/"
+    },
+    {
+      "name": "art6",
+      "root": "art6/"
+    },
+    {
+      "name": "art7",
+      "root": "art7/"
+    },
+    {
+      "name": "art8",
+      "root": "art8/"
     }
   ]
 }

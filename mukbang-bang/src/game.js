@@ -252,15 +252,15 @@ class Game {
       case 'res_main': this.afterResultAd(function () { self.startStream(self.curLevel()); }); break;
       case 'next': this.afterResultAd(function () { self.startStream(Math.min(L.LEVEL_COUNT, self.result.lv.n + 1)); }); break;
       case 'replay': this.afterResultAd(function () { self.startStream(self.result.lv.n); }); break;
-      case 'share': this.popup = 'share'; this.setState('popup'); break;
-      case 'mission_profile': this.popup = 'profile'; this.setState('popup'); break;
-      case 'mission_shortcut': this.popup = 'shortcut'; this.setState('popup'); break;
-      case 'popup_close': this.popup = null; this.setState('home'); break;
+      case 'share': this.popupFrom = this.state; this.popup = 'share'; this.setState('popup'); break;
+      case 'mission_profile': this.popupFrom = this.state; this.popup = 'profile'; this.setState('popup'); break;
+      case 'mission_shortcut': this.popupFrom = this.state; this.popup = 'shortcut'; this.setState('popup'); break;
+      case 'popup_close': this.popup = null; this.setState(this.popupBack()); break;
       case 'popup_go':
-        if (this.popup === 'share') hs.share().then(function (r) { if (r === null) self.showToast('Not shared'); self.popup = null; self.setState('home'); });
+        if (this.popup === 'share') hs.share().then(function (r) { if (r === null) self.showToast('Not shared'); self.popup = null; self.setState(self.popupBack()); });
         else if (this.popup === 'profile') hs.startProfileMission();
         else if (this.popup === 'shortcut') hs.startShortcutMission();
-        if (this.popup !== 'share') { this.popup = null; this.setState('home'); }
+        if (this.popup !== 'share') { this.popup = null; this.setState(this.popupBack()); }
         break;
       default:
         if (id.indexOf('side_') === 0) { const mode = id.slice(5); if (this.state === 'result') this.afterResultAd(function () { self.enterActivity(mode); }); else this.enterActivity(mode); }
@@ -409,7 +409,7 @@ class Game {
       case 'result': this.drawStream(true); this.drawResult(); break;
       case 'coins': this.drawByName(this.popupFrom); this.drawCoinsPopup(); break;
       case 'hsshop': this.drawByName(this.popupFrom && this.popupFrom !== 'coins' ? this.popupFrom : 'home'); this.drawShop(); break;
-      case 'popup': this.drawHome(); this.drawPopup(); break;
+      case 'popup': if (this.popupBack() === 'levels') this.drawLevels(); else this.drawHome(); this.drawPopup(); break;
       case 'wardrobe': this.drawWardrobe(); break;
       case 'cook': this.drawCook(); break;
       case 'settings': if (this.settingsFrom === 'pause' && this.run) this.drawStream(true); else this.drawHome(); this.drawSettings(); break;
@@ -447,15 +447,10 @@ class Game {
     if (this.run && !this.run.recipe) A.pack(ctx, K.dish(this.run.food), this.run.pack, W * 0.8, H * 0.555, 96, 'sealed', 0, 0, this.time); else R.draw(ctx, A, this.run && this.run.dish ? this.run.dish : lv.request, W * 0.8, H * 0.555, 84, { flipped: true, set: true, fill: 1, tops: 2, deco: 1 });
     this.drawReactions();
     const top = this.hud({});
-    const hasLogo = A.logo(ctx, W / 2, top + 168, 340);
-    if (!hasLogo) { ui.title('MUKBANG', W / 2, top + 130, 60, C.white, C.pinkDark); ui.title('BANG', W / 2, top + 190, 72, C.yellow, C.pinkDark); }
-    // TikTok review buttons (HSGame decides whether they exist on this platform)
-    let bx = 16; const by = top + 100;
-    if (hs.hasMissions()) {
-      if (!hs.profileMissionDone()) { ui.button('mission_profile', bx, by, 96, 44, 'ENTRY', { size: 14, badge: true, sub: 'REWARD', color: C.lavender, dark: C.lavenderDark }); bx += 104; }
-      if (!hs.shortcutMissionDone()) { ui.button('mission_shortcut', bx, by, 96, 44, 'LAUNCH', { size: 14, badge: true, sub: 'REWARD', color: C.lavender, dark: C.lavenderDark }); bx += 104; }
-    }
-    if (hs.hasShare() && hs.canShare()) { ui.button('share', bx, by, 96, 44, 'SHARE', { size: 14, badge: hs.shareAvailable(), sub: 'FRIENDS', color: C.blue, dark: C.blueDark }); bx += 104; }
+    // game name: Mukbang ASMR. The old bitmap logo says "Mukbang Bang", so the title is drawn until the new logo art (ui/logo_asmr.png) ships
+    const hasLogo = S.v4draw(ctx, 'ui/logo_asmr.png', W / 2, top + 168, 360);
+    if (!hasLogo) { ui.title('MUKBANG', W / 2, top + 128, 60, C.white, C.pinkDark); ui.title('ASMR', W / 2, top + 192, 74, C.yellow, C.pinkDark);
+      for (let k = 0; k < 3; k++) { const a = 0.5 + 0.5 * Math.sin(this.time * 4 - k); ctx.globalAlpha = a; ctx.strokeStyle = '#fff'; ctx.lineWidth = 4; ctx.lineCap = 'round'; for (const sx of [-1, 1]) { ctx.beginPath(); ctx.arc(W / 2 + sx * 112, top + 190, 12 + k * 9, sx > 0 ? -0.6 : Math.PI - 0.6, sx > 0 ? 0.6 : Math.PI + 0.6); ctx.stroke(); } } ctx.globalAlpha = 1; }
     // main button: straight into the eating
     const y0 = H * 0.585; const bw = W * 0.8, bx0 = W * 0.1;
     ui.label(this.run ? 'YOUR STREAM IS WAITING' : 'STREAM ' + lv.n + ' · ' + lv.title.toUpperCase(), W / 2, y0 - 16, 15, C.white, 'center', { stroke: 4 });
@@ -470,9 +465,12 @@ class Game {
     ui.button('wardrobe', bx0 + bw / 3 + 3, y, bw / 3 - 6, 54, wOpen ? 'WARDROBE' : '', { color: wOpen ? C.lavender : '#e0d6d6', dark: wOpen ? C.lavenderDark : '#bfb0b0', size: 15, sub: wOpen ? '' : 'LV ' + WR.OPEN_AT, icon: wOpen ? null : function (c, w, h) { A.lock(c, w / 2, h / 2 - 6, 20); } });
     ui.button('streamers', bx0 + 2 * bw / 3 + 6, y, bw / 3 - 6, 54, 'STARS', { color: C.blue, dark: C.blueDark, size: 17 });
     y += 64;
-    const shop = hs.hasShop();
-    if (shop) ui.button('hsshop', bx0, y, bw / 2 - 5, 48, 'SHOP', { color: C.yellow, dark: C.yellowDark, size: 17 });
+    let shop = hs.hasShop();
+    // the Beans store only sells No Ads: label it that way ("SHOP" is the supermarket); hidden once bought
+    if (shop && this.noAds()) shop = false;
+    if (shop) ui.button('hsshop', bx0, y, bw / 2 - 5, 48, '🚫 NO ADS', { color: C.yellow, dark: C.yellowDark, size: 16 });
     ui.button('settings', shop ? bx0 + bw / 2 + 5 : bx0, y, shop ? bw / 2 - 5 : bw, 48, 'SETTINGS', { color: C.lavender, dark: C.lavenderDark, size: 16 });
+    this.drawTikTokRewards(y + 70); // Revisit / Launch / Share rewards right on the start screen (also on Levels)
     if (this.canSurprise()) ui.button('surprise_ad', W - 128, H * 0.47, 112, 52, '▶ SURPRISE', { color: C.yellow, dark: C.yellowDark, size: 14, sub: 'RARE FOOD', badge: true });
   }
   // ── LEVELS ──
@@ -497,7 +495,55 @@ class Game {
     const pages = Math.ceil(L.LEVEL_COUNT / 15), pw = (W - 60 - (pages - 1) * 10) / pages;
     for (let i = 0; i < pages; i++) ui.button('page' + i, 30 + i * (pw + 10), by, pw, 52, (i * 15 + 1) + '–' + Math.min(L.LEVEL_COUNT, i * 15 + 15), { color: this.levelPage === i ? C.pink : C.blue, dark: this.levelPage === i ? C.pinkDark : C.blueDark, size: 17 });
     ui.label('Reach the viewer goal for 2 stars · tap hearts for 3', W / 2, by + 78, 14, C.text);
+    this.drawTikTokRewards(by + 104);
   }
+  // TikTok review rewards (Revisit / Launch / Share) — each card only while HSGame says the feature exists here
+  drawTikTokRewards(y) {
+    const ui = this.ui, ctx = this.ctx, W = this.W, hs = this.hs, cards = [];
+    if (hs.hasMissions()) {
+      if (!hs.profileMissionDone()) cards.push({ id: 'mission_profile', kind: 'profile', name: 'REVISIT', sub: 'REWARD', reward: hs.rewardsProfile(), badge: true });
+      if (!hs.shortcutMissionDone()) cards.push({ id: 'mission_shortcut', kind: 'shortcut', name: 'LAUNCH', sub: 'REWARD', reward: hs.rewardsShortcut(), badge: true });
+    }
+    if (hs.hasShare() && hs.canShare()) cards.push({ id: 'share', kind: 'share', name: 'SHARE', sub: 'REWARD', reward: hs.rewardsShare(), badge: hs.shareAvailable() });
+    if (!cards.length) return;
+    ui.label('FREE REWARDS', W / 2, y, 15, C.white, 'center', { stroke: 4 });
+    const n = cards.length, gap = 10, cw = Math.min(150, (W - 50 - gap * (n - 1)) / n), x0 = (W - (cw * n + gap * (n - 1))) / 2, cy = y + 16;
+    const room = this.bottom() - cy - 10, compact = room < 128, chh = compact ? Math.max(50, Math.min(62, room)) : 128;
+    if (compact) { // short screens: one row of slim chips (icon · name · reward)
+      for (let i = 0; i < n; i++) { const c = cards[i], x = x0 + i * (cw + gap);
+        ui.panel(x, cy, cw, chh, '#fff', c.kind === 'share' ? C.blueDark : C.pinkDark, 16, 3); this.missionIcon(c.kind, x + 26, cy + chh / 2, 17);
+        ui.label(c.name, x + 48, cy + chh / 2 - 9, 13, C.text, 'left'); const coins = c.reward && c.reward.coins; if (coins) { A.coin(ctx, x + 54, cy + chh / 2 + 10, 6); ui.label('+' + coins, x + 63, cy + chh / 2 + 11, 11, C.goldDark, 'left'); }
+        if (c.badge) { A.circle(ctx, x + cw - 6, cy + 6, 10, C.red, 2); ui.label('!', x + cw - 6, cy + 7, 13, C.white); }
+        ui.hotspot(c.id, x, cy, cw, chh); }
+      return; }
+    for (let i = 0; i < n; i++) { const c = cards[i], x = x0 + i * (cw + gap), bob = c.badge ? Math.sin(this.time * 3 + i) * 2 : 0;
+      ui.panel(x, cy + bob, cw, chh, '#fff', c.kind === 'share' ? C.blueDark : C.pinkDark, 20, 4);
+      this.missionIcon(c.kind, x + cw / 2, cy + bob + 42, 30);
+      ui.label(c.name, x + cw / 2, cy + bob + 86, 15, C.text); ui.label(c.sub, x + cw / 2, cy + bob + 102, 11, C.textLight);
+      const coins = c.reward && c.reward.coins; if (coins) { A.coin(ctx, x + cw / 2 - 18, cy + bob + 118, 7); ui.label('+' + coins, x + cw / 2 - 8, cy + bob + 119, 12, C.goldDark, 'left'); }
+      if (c.badge) { A.circle(ctx, x + cw - 8, cy + bob + 8, 13, C.red, 3); ui.label('!', x + cw - 8, cy + bob + 9, 16, C.white); }
+      ui.hotspot(c.id, x, cy + bob, cw, chh); }
+  }
+  // code-drawn icons for the three TikTok rewards (r = radius of the round badge)
+  missionIcon(kind, x, y, r) {
+    const ctx = this.ctx; const bg = kind === 'share' ? '#bfe9ff' : kind === 'shortcut' ? '#fff0c2' : '#ffd6e6'; A.circle(ctx, x, y, r, bg, 3);
+    ctx.save(); ctx.translate(x, y); ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.strokeStyle = C.outline; ctx.lineWidth = 3;
+    if (kind === 'profile') { // TikTok profile: a person, with a curved "come back" arrow
+      A.circle(ctx, -2, -7, 7, '#fff', 2.5); ctx.beginPath(); ctx.moveTo(-15, 13); ctx.quadraticCurveTo(-2, -4, 11, 13); ctx.closePath(); ctx.fillStyle = '#fff'; ctx.fill(); ctx.stroke();
+      ctx.strokeStyle = C.pinkDark; ctx.lineWidth = 3.5; ctx.beginPath(); ctx.arc(10, -8, 9, -2.4, 0.75); ctx.stroke();
+      { const a = 0.75, ex = 10 + 9 * Math.cos(a), ey = -8 + 9 * Math.sin(a), tx = -Math.sin(a), ty = Math.cos(a), nx = Math.cos(a), ny = Math.sin(a); // arrowhead along the arc's tangent at its end
+        ctx.fillStyle = C.pinkDark; ctx.beginPath(); ctx.moveTo(ex + tx * 7, ey + ty * 7); ctx.lineTo(ex + nx * 5.5, ey + ny * 5.5); ctx.lineTo(ex - nx * 5.5, ey - ny * 5.5); ctx.closePath(); ctx.fill(); }
+    } else if (kind === 'shortcut') { // a phone home screen with the game icon and a plus
+      A.rr(ctx, -12, -19, 24, 38, 6); ctx.fillStyle = '#fff'; ctx.fill(); ctx.stroke();
+      A.rr(ctx, -7, -10, 14, 14, 4); ctx.fillStyle = C.pink; ctx.fill(); ctx.lineWidth = 2; ctx.stroke(); A.heart(ctx, 0, -3, 4, '#fff', 0);
+      A.circle(ctx, 12, 11, 8, C.green, 2.5); ctx.strokeStyle = '#fff'; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(12, 7); ctx.lineTo(12, 15); ctx.moveTo(8, 11); ctx.lineTo(16, 11); ctx.stroke();
+    } else { // share: a curved arrow out of a box
+      A.rr(ctx, -14, -2, 22, 18, 5); ctx.fillStyle = '#fff'; ctx.fill(); ctx.stroke();
+      ctx.strokeStyle = C.blueDark; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(-4, 8); ctx.quadraticCurveTo(-2, -12, 12, -12); ctx.stroke(); ctx.fillStyle = C.blueDark; ctx.beginPath(); ctx.moveTo(10, -19); ctx.lineTo(19, -12); ctx.lineTo(10, -5); ctx.closePath(); ctx.fill();
+    }
+    ctx.restore();
+  }
+
   // ── STREAMERS ──
   drawStreamers() {
     const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, p = this.profile;
@@ -652,7 +698,7 @@ class Game {
     A.coin(ctx, W / 2, py + 50, 26); ui.title('NEED COINS?', W / 2, py + 100, 30, C.white, C.goldDark);
     let y = py + 136;
     if (canFree) { ui.button('free_coins', 60, y, W - 120, 58, '▶  WATCH AD:  ' + this.itemsText(free), { color: C.blue, dark: C.blueDark, size: 17 }); y += 70; }
-    if (shop) { ui.button('hsshop', 60, y, W - 120, 58, 'OPEN SHOP', { color: C.yellow, dark: C.yellowDark, size: 20 }); y += 70; }
+    if (shop) { ui.button('hsshop', 60, y, W - 120, 58, 'REMOVE ADS', { color: C.yellow, dark: C.yellowDark, size: 20 }); y += 70; }
     if (!canFree && !shop) { ui.paragraph('Finish a stream to earn coins — every bite pays!', W / 2, y + 4, W - 140, 15, C.text); y += 30; }
     ui.button('coins_close', 60, y, W - 120, 50, 'CLOSE', { color: C.lavender, dark: C.lavenderDark, size: 18 });
   }
@@ -662,7 +708,7 @@ class Game {
     ui.dim(0.55);
     const top = this.top();
     ui.panel(24, top + 60, W - 48, H - top - 60 - 40, C.cream, C.outline, 26);
-    ui.title('SHOP', W / 2, top + 110, 40, C.white, C.goldDark);
+    ui.title('NO ADS', W / 2, top + 110, 40, C.white, C.goldDark);
     let y = top + 160;
     if (this.shopLoading) ui.label('LOADING…', W / 2, y + 30, 20, C.text);
     else if (!this.shopItems || !this.shopItems.length) ui.label('NOTHING FOR SALE YET', W / 2, y + 30, 20, C.text);
@@ -679,22 +725,28 @@ class Game {
     ui.button('shop_back', 40, H - 40 - 70, W - 80, 54, 'BACK', { color: C.lavender, dark: C.lavenderDark, size: 20 });
   }
   // TikTok review popups: numbered steps + the reward (label from the dashboard), one "GO" button.
+  popupBack() { return this.popupFrom === 'levels' ? 'levels' : 'home'; }
   drawPopup() {
-    const ui = this.ui, W = this.W, H = this.H, hs = this.hs;
+    const ui = this.ui, ctx = this.ctx, W = this.W, H = this.H, hs = this.hs;
     ui.dim(0.5);
-    const kind = this.popup; let title, steps, reward;
-    if (kind === 'profile') { title = 'ENTRY REWARD'; steps = ['Go to your TikTok profile', 'Open "TikTok Minis"', 'Open Mukbang Bang from there', 'Come back and get the reward']; reward = hs.rewardsProfile(); }
-    else if (kind === 'shortcut') { title = 'LAUNCH REWARD'; steps = ['Tap "GO"', 'Add Mukbang Bang to your home screen', 'Open the game from the new icon', 'Get the reward']; reward = hs.rewardsShortcut(); }
-    else { title = 'SHARE'; steps = ['Share the game with friends', 'Get a reward once a day']; reward = hs.rewardsShare(); }
-    const ph = 120 + steps.length * 38 + 150, py = (H - ph) / 2;
+    const kind = this.popup; let title, steps, reward, go;
+    if (kind === 'profile') { title = 'REVISIT REWARD'; go = 'GO'; reward = hs.rewardsProfile();
+      steps = ['Open your TikTok Profile', 'Tap the menu ☰ and find "Recently used" mini games', 'Open Mukbang ASMR from there', 'Your reward is waiting in the game!']; }
+    else if (kind === 'shortcut') { title = 'LAUNCH REWARD'; go = 'ADD'; reward = hs.rewardsShortcut();
+      steps = ['Tap ADD below', 'Add Mukbang ASMR to your Home Screen', 'Launch the game from the new icon', 'Your reward is waiting in the game!']; }
+    else { title = 'SHARE REWARD'; go = 'SHARE'; reward = hs.rewardsShare(); steps = ['Share Mukbang ASMR with your friends', 'Get a reward once a day']; }
+    const ph = 210 + steps.length * 40 + 140, py = (H - ph) / 2;
     ui.panel(30, py, W - 60, ph, C.cream, C.outline, 26);
     ui.title(title, W / 2, py + 46, 30, C.white, C.pinkDark);
-    let y = py + 100;
-    for (let i = 0; i < steps.length; i++) { ui.label((i + 1) + '.  ' + steps[i], 54, y, 17, C.text, 'left'); y += 38; }
-    ui.label(reward ? 'REWARD:  ' + this.itemsText(reward) : 'REWARD: none right now', W / 2, y + 10, 17, C.goldDark);
-    ui.button('popup_go', 50, y + 44, (W - 110) / 2, 58, 'GO', { color: C.pink, dark: C.pinkDark, size: 24 });
-    ui.button('popup_close', 60 + (W - 110) / 2, y + 44, (W - 110) / 2, 58, 'LATER', { color: C.lavender, dark: C.lavenderDark, size: 20 });
+    this.missionIcon(kind, W / 2, py + 128, 48);
+    let y = py + 206;
+    for (let i = 0; i < steps.length; i++) { A.circle(ctx, 66, y, 13, C.pink, 2); ui.label(String(i + 1), 66, y + 1, 14, C.white); ui.label(steps[i], 88, y, 15, C.text, 'left'); y += 40; }
+    const coins = reward && reward.coins; ui.panel(W / 2 - 110, y + 2, 220, 44, '#fff8d6', C.goldDark, 22, 3);
+    if (coins) { A.coin(ctx, W / 2 - 64, y + 24, 12); ui.label('REWARD +' + coins, W / 2 - 46, y + 25, 18, C.goldDark, 'left'); } else ui.label(reward ? 'REWARD: ' + this.itemsText(reward) : 'No reward right now', W / 2, y + 25, 16, C.goldDark);
+    ui.button('popup_go', 50, y + 62, (W - 110) / 2, 58, go, { color: C.pink, dark: C.pinkDark, size: 24 });
+    ui.button('popup_close', 60 + (W - 110) / 2, y + 62, (W - 110) / 2, 58, 'LATER', { color: C.lavender, dark: C.lavenderDark, size: 20 });
   }
+
   // Settings: sound, and — only in the web / artifact build (platform.devTools) — a tester's "unlock all levels".
   // It only opens the levels: levels_done is untouched, so each first clear still pays its level bonus once.
   // test build only: back to a brand-new player (level 1, 500 coins, no looks, tutorials shown again)

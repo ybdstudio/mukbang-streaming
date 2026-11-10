@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "name": "No Ads",
+    "description": "Remove the ads between streams and in the kitchen forever",
+    "beans_cost": 30,
+    "rewards": {
+      "no_ads": 1
+    },
+    "category": "iap",
+    "type": "no_ads",
+    "consumable": false
+  }
+]

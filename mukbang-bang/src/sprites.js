@@ -18,7 +18,12 @@ function enabled() { return !!platform; }
 
 // paths that live in a TikTok subpackage (game.json → subpackages); loaded once the subpackage is in
 const SUB_OF = [['food/', 'art1'], ['food3/', 'art3'], ['bg/view_', 'art3']];
-function subOf(path) { for (let i = 0; i < SUB_OF.length; i++) if (path.indexOf(SUB_OF[i][0]) === 0) return SUB_OF[i][1]; return null; }
+// Foods V4 (Codex 09/11): 6 states per dish in art6 (delivery + mystery), art7, art8 (buffet). Only dishes with all 6 states.
+const FOOD5 = {};
+['cheese_burger', 'pizza', 'pasta', 'tteokbokki', 'dumplings', 'sushi_set', 'curry_rice', 'mini_hotpot', 'seafood_boil', 'cola', 'fries', 'cheese_sticks', 'pickled_radish', 'miso_soup', 'mochi', 'choco_ramen', 'pickle_icecream', 'wasabi_cake', 'golden_parfait'].forEach(function (id) { FOOD5[id] = 'art6'; });
+['spicy_wings', 'kimchi_rice', 'mapo_tofu', 'fried_shrimp', 'spring_rolls', 'iced_lemon_tea', 'salmon_nigiri', 'cold_soba', 'tamago', 'seaweed_salad', 'ice_jelly', 'melon_slice', 'beef_slices', 'mushroom_mix', 'fish_balls', 'corn_cob', 'udon_bowl', 'spicy_broth'].forEach(function (id) { FOOD5[id] = 'art7'; });
+['mini_steak', 'yakitori', 'sausage', 'garlic_bread', 'grilled_squid', 'sparkling_soda'].forEach(function (id) { FOOD5[id] = 'art8'; });
+function subOf(path) { if (path.indexOf('food5/') === 0) { const id = path.slice(6).replace(/_(sealed|open|p1|p2|empty|portion)\.png$/, ''); return FOOD5[id] || null; } for (let i = 0; i < SUB_OF.length; i++) if (path.indexOf(SUB_OF[i][0]) === 0) return SUB_OF[i][1]; return null; }
 function request(path) {
   if (!platform || asked[path]) return;
   const pkg = subOf(path); if (pkg && !subReady(pkg)) return;
@@ -118,6 +123,7 @@ const V4 = {};
   'cook/deco_pearls_d.png',
   'cook/deco_snow.png',
   'cook/deco_sprinkles.png',
+  'cook/deco_sesame.png', 'cook/deco_chili_flakes.png', 'cook/deco_nori_flakes.png', 'cook/deco_pepper.png', 'cook/deco_fried_garlic.png',
   'cook/deco_stars.png',
   'cook/fx_cold.png',
   'cook/fx_pour.png',
@@ -145,6 +151,7 @@ const V4 = {};
   'cook/opt_deco_pearls_d.png',
   'cook/opt_deco_snow.png',
   'cook/opt_deco_sprinkles.png',
+  'cook/opt_ramen_deco_sesame.png', 'cook/opt_ramen_deco_chili_flakes.png', 'cook/opt_ramen_deco_nori_flakes.png', 'cook/opt_ramen_deco_pepper.png', 'cook/opt_ramen_deco_fried_garlic.png',
   'cook/opt_deco_stars.png',
   'cook/opt_flavor_blueberry.png',
   'cook/opt_flavor_chocolate.png',
@@ -356,13 +363,15 @@ const WEAR_FIT = {
   kiko: { acc_headphones: { sx: 0.8, sy: 0.9, c: [256, 240], dy: 6 }, hair_cat_ears: { sy: 1.06, c: [256, 160], dy: 6 }, hair_bunny_ears: { dy: 6 }, acc_scarf: { under: 1, s: 1.2, c: [256, 469], dy: 10 } },
   momo: { acc_headphones: { sx: 0.86, sy: 0.96, c: [256, 200], dy: 6 }, hair_cat_ears: { sy: 1.08, c: [256, 130], dy: 2 }, hair_bunny_ears: { sx: 1.04, sy: 1.06, c: [256, 130], dy: -4 }, hair_flowers: { dy: 4 }, acc_scarf: { s: 1.15, c: [256, 433], dy: 20 } }
 };
-const SUB_ROOT = { art4: 'art4/', art3: 'art3/', art1: 'art1/', art5: 'art5/' };
+const SUB_ROOT = { art4: 'art4/', art3: 'art3/', art1: 'art1/', art5: 'art5/', art6: 'art6/', art7: 'art7/', art8: 'art8/' };
 const sub = {};     // name → 'loading' | 'ok' | 'fail'
+const subFailAt = {}; // a failed subpackage download is retried (weak network on the first launch)
 function subReady(name) {
   if (sub[name] === 'ok') return true;
+  if (sub[name] === 'fail' && Date.now() - (subFailAt[name] || 0) > 4000) sub[name] = null;
   if (!sub[name] && platform) {
     if (typeof platform.loadSubpackage !== 'function') sub[name] = 'ok';
-    else { sub[name] = 'loading'; platform.loadSubpackage(name, function (ok) { sub[name] = ok ? 'ok' : 'fail'; }); }
+    else { sub[name] = 'loading'; platform.loadSubpackage(name, function (ok) { sub[name] = ok ? 'ok' : 'fail'; if (!ok) subFailAt[name] = Date.now(); }); }
   }
   return sub[name] === 'ok';
 }
@@ -402,7 +411,7 @@ function nine(ctx, im, sl, iw, ih, x, y, w, h, k) {
   for (let j = 0; j < 3; j++) for (let i = 0; i < 3; i++) if (dw[i] > 0 && dh[j] > 0) ctx.drawImage(im, sx[i], sy[j], sw[i], sh[j], dx[i], dy[j], dw[i], dh[j]);
 }
 
-module.exports = { WEAR_FIT,
+module.exports = { FOOD5, WEAR_FIT,
   init, enabled, get, v4, v4draw, V4, preloadV4, subReady, canvas, getBg, preload, preloadFoods, foodPath, FOOD_SIZE, STREAMERS, STREAMER_K, FACE_IMG, FACE, FACE_EYES_AT, FACE_MOUTH_AT, FACE_FX_AT, EXPR,
   ICONS, REACTIONS, AVATARS, STORE, UI, BG_W, BG_H, cell, atlas, cover, nine, FX_IMG, FX, fxAt, streamerK
 };

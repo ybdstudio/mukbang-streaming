@@ -239,6 +239,17 @@ seed(7);
   g.setState('settings'); run(g, 0.05); await tap(g, p, 'reset_progress'); check('reset asks for a second tap', prof.get('level') === 12);
   await tap(g, p, 'reset_progress'); check('reset progress → level 1, 500 coins, no looks, tutorials again', prof.get('level') === 1 && prof.get('levels_done') === 0 && prof.get('coins') === 500 && prof.get('wardrobe_json') === '{}' && prof.get('tip_goal') === 0 && g.state === 'home' && !g.run);
 }
+// ═════════ foods V4 art (Codex 09/11) ═════════
+{
+  const gameDir = join(here, '..', 'mukbang-bang'); const miss = [];
+  for (const id in S.FOOD5) for (const st of ['sealed', 'open', 'p1', 'p2', 'empty', 'portion']) { const q = join(gameDir, S.FOOD5[id], 'food5', id + '_' + st + '.png'); if (!existsSync(q)) miss.push(q); }
+  check('foods V4: every registered dish has all 6 states in its subpackage', miss.length === 0, miss.slice(0, 5));
+  const shown = []; for (const k in K.DISHES) { const d = K.DISHES[k]; if (d.src === 'delivery' || d.src === 'mystery') shown.push(d.id); }
+  for (const st of K.STATIONS) for (const d of K.stationItems(st.id)) if (d && d.src === 'buffet') shown.push(d.id);
+  const vec = shown.filter(id => !S.FOOD5[id] && id !== 'kfc_chicken'); check('no delivery / buffet / mystery dish on a menu is still vector-drawn', vec.length === 0, vec);
+  check('Lava Spicy station hidden (art not finished)', !K.station('lava'));
+  check('ramen seasonings: 10 sprites registered', ['sesame', 'chili_flakes', 'nori_flakes', 'pepper', 'fried_garlic'].every(id => S.V4['cook/deco_' + id + '.png'] && S.V4['cook/opt_ramen_deco_' + id + '.png']));
+}
 // ═════════ side quests ═════════
 {
   check('side quest on every level from 2 (none on level 1)', !L.LEVELS[0].quest && L.LEVELS.slice(1).every(l => l.quest && l.quest.pay > 0 && l.quest.need >= 1));
@@ -354,7 +365,7 @@ for (const mode of ['null', 'reject']) {
   const p2 = fakePlatform(); p2.devTools = true; const prof2 = fakeProfile(Object.assign({}, INIT, { level: 3, levels_done: 2, streams: 2 })); const g2 = new Game(p2, fakeHs(prof2, 'ok')); g2.hsReady = true; run(g2, 0.1);
   await tap(g2, p2, 'settings'); await tap(g2, p2, 'unlock_all'); check('web build: unlock all → every level open, levels_done untouched', prof2.get('level') === L.LEVEL_COUNT && prof2.get('levels_done') === 2); }
 { let bytes = 0; let sub4 = 0; const subs = {}; (function walk(d) { for (const e of readdirSync(d, { withFileTypes: true })) { const q = join(d, e.name); if (e.isDirectory()) walk(q); else if (/[\\/]art[0-9][\\/]/.test(q)) { const m = /[\\/](art[0-9])[\\/]/.exec(q)[1]; subs[m] = (subs[m] || 0) + statSync(q).size; if (m === 'art4') sub4 += statSync(q).size; } else bytes += statSync(q).size; } })(join(here, '..', 'mukbang-bang'));
-  { const gj = JSON.parse(readFileSync(join(here, '..', 'mukbang-bang', 'game.json'), 'utf8')); for (const n of ['art1', 'art3', 'art4', 'art5']) check('subpackage ' + n + ' ≤ 4 MB (' + ((subs[n] || 0) / 1048576).toFixed(2) + ' MB) and declared in game.json', (subs[n] || 0) > 0 && subs[n] <= 4 * 1048576 && gj.subpackages.some(x => x.name === n && x.root === n + '/')); }
+  { const gj = JSON.parse(readFileSync(join(here, '..', 'mukbang-bang', 'game.json'), 'utf8')); for (const n of ['art1', 'art3', 'art4', 'art5', 'art6', 'art7', 'art8']) check('subpackage ' + n + ' ≤ 4 MB (' + ((subs[n] || 0) / 1048576).toFixed(2) + ' MB) and declared in game.json', (subs[n] || 0) > 0 && subs[n] <= 4 * 1048576 && gj.subpackages.some(x => x.name === n && x.root === n + '/')); }
   check('TikTok main package ≤ 4 MB (' + (bytes / 1048576).toFixed(2) + ' MB)', bytes <= 4 * 1024 * 1024);
   const dash = JSON.parse(readFileSync(join(here, '..', 'mukbang-bang.hs-dashboard.json'), 'utf8')); const pl = dash.iaa_config.placements;
   check('dashboard: 13 ad places, every cooldown 30 s, fan_gift has a reward', pl.length === 13 && ['rare_choice', 'cook_step', 'serve_bonus', 'extra_hype', 'unlock_level', 'unlock_look'].every(l => pl.some(x => x.label === l)) && pl.every(x => x.ads[0].config.cooldown === 30) && !!dash.iaa_config.rewards.fan_gift, pl.map(x => x.label + ':' + x.ads[0].config.cooldown));

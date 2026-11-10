@@ -1,0 +1,187 @@
+{
+  "placements": [
+    {
+      "label": "stream_end",
+      "ads": [
+        {
+          "id": "ad7704978412619892788",
+          "config": {
+            "cooldown": 30
+          }
+        }
+      ]
+    },
+    {
+      "label": "bonus_coins",
+      "ads": [
+        {
+          "id": "ad7705024066708654132",
+          "config": {
+            "cooldown": 30
+          }
+        }
+      ]
+    },
+    {
+      "label": "free_coins",
+      "ads": [
+        {
+          "id": "ad7705000380241004596",
+          "config": {
+            "cooldown": 30
+          }
+        }
+      ]
+    },
+    {
+      "label": "surprise_food",
+      "ads": [
+        {
+          "id": "ad7705024066708670516",
+          "config": {
+            "cooldown": 30
+          }
+        }
+      ]
+    },
+    {
+      "label": "fashion_reward",
+      "ads": [
+        {
+          "id": "ad7704999157510637569",
+          "config": {
+            "cooldown": 30
+          }
+        }
+      ]
+    },
+    {
+      "label": "viral_boost",
+      "ads": [
+        {
+          "id": "ad7704973826467481652",
+          "config": {
+            "cooldown": 30
+          }
+        }
+      ]
+    },
+    {
+      "label": "fan_gift",
+      "ads": [
+        {
+          "id": "ad7704975769549867014",
+          "config": {
+            "cooldown": 30
+          }
+        }
+      ]
+    },
+    {
+      "label": "rare_choice",
+      "ads": [
+        {
+          "id": "ad7705002184262223878",
+          "config": {
+            "cooldown": 30
+          }
+        }
+      ]
+    },
+    {
+      "label": "cook_step",
+      "ads": [
+        {
+          "id": "ad7704990511626799110",
+          "config": {
+            "cooldown": 30
+          }
+        }
+      ]
+    },
+    {
+      "label": "serve_bonus",
+      "ads": [
+        {
+          "id": "ad7704976608651347969",
+          "config": {
+            "cooldown": 30
+          }
+        }
+      ]
+    },
+    {
+      "label": "extra_hype",
+      "ads": [
+        {
+          "id": "ad7704981817455249460",
+          "config": {
+            "cooldown": 30
+          }
+        }
+      ]
+    },
+    {
+      "label": "unlock_level",
+      "ads": [
+        {
+          "id": "ad7704972756039026740",
+          "config": {
+            "cooldown": 30
+          }
+        }
+      ]
+    },
+    {
+      "label": "unlock_look",
+      "ads": [
+        {
+          "id": "ad7704992300431296513",
+          "config": {
+            "cooldown": 30
+          }
+        }
+      ]
+    }
+  ],
+  "rewards": {
+    "level_bonus": {
+      "coins": 150
+    },
+    "first_stream": {
+      "coins": 200,
+      "$limit": "once"
+    },
+    "bonus_coins": {
+      "coins": 300
+    },
+    "free_coins": {
+      "coins": 200
+    },
+    "share": {
+      "coins": 100,
+      "$limit": "daily"
+    },
+    "tiktok_shortcut": {
+      "coins": 300
+    },
+    "tiktok_profile": {
+      "coins": 300
+    },
+    "fan_gift": {
+      "coins": 300
+    }
+  },
+  "items": {
+    "coins": {
+      "category": "currency",
+      "name": "Coins"
+    },
+    "no_ads": {
+      "category": "iap",
+      "name": "No Ads",
+      "type": "no_ads",
+      "consumable": false
+    }
+  }
+}

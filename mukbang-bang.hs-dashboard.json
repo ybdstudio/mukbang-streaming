@@ -5,7 +5,7 @@
         "label": "stream_end",
         "ads": [
           {
-            "id": "<AD UNIT ID>",
+            "id": "ad7704978412619892788",
             "config": {
               "cooldown": 30
             }
@@ -16,7 +16,7 @@
         "label": "bonus_coins",
         "ads": [
           {
-            "id": "<AD UNIT ID>",
+            "id": "ad7705024066708654132",
             "config": {
               "cooldown": 30
             }
@@ -27,7 +27,7 @@
         "label": "free_coins",
         "ads": [
           {
-            "id": "<AD UNIT ID>",
+            "id": "ad7705000380241004596",
             "config": {
               "cooldown": 30
             }
@@ -38,7 +38,7 @@
         "label": "surprise_food",
         "ads": [
           {
-            "id": "<AD UNIT ID>",
+            "id": "ad7705024066708670516",
             "config": {
               "cooldown": 30
             }
@@ -49,7 +49,7 @@
         "label": "fashion_reward",
         "ads": [
           {
-            "id": "<AD UNIT ID>",
+            "id": "ad7704999157510637569",
             "config": {
               "cooldown": 30
             }
@@ -60,7 +60,7 @@
         "label": "viral_boost",
         "ads": [
           {
-            "id": "<AD UNIT ID>",
+            "id": "ad7704973826467481652",
             "config": {
               "cooldown": 30
             }
@@ -71,7 +71,7 @@
         "label": "fan_gift",
         "ads": [
           {
-            "id": "<AD UNIT ID>",
+            "id": "ad7704975769549867014",
             "config": {
               "cooldown": 30
             }
@@ -82,7 +82,7 @@
         "label": "rare_choice",
         "ads": [
           {
-            "id": "<AD UNIT ID>",
+            "id": "ad7705002184262223878",
             "config": {
               "cooldown": 30
             }
@@ -93,7 +93,7 @@
         "label": "cook_step",
         "ads": [
           {
-            "id": "<AD UNIT ID>",
+            "id": "ad7704990511626799110",
             "config": {
               "cooldown": 30
             }
@@ -104,7 +104,7 @@
         "label": "serve_bonus",
         "ads": [
           {
-            "id": "<AD UNIT ID>",
+            "id": "ad7704976608651347969",
             "config": {
               "cooldown": 30
             }
@@ -115,7 +115,7 @@
         "label": "extra_hype",
         "ads": [
           {
-            "id": "<AD UNIT ID>",
+            "id": "ad7704981817455249460",
             "config": {
               "cooldown": 30
             }
@@ -126,7 +126,7 @@
         "label": "unlock_level",
         "ads": [
           {
-            "id": "<AD UNIT ID>",
+            "id": "ad7704972756039026740",
             "config": {
               "cooldown": 30
             }
@@ -137,7 +137,7 @@
         "label": "unlock_look",
         "ads": [
           {
-            "id": "<AD UNIT ID>",
+            "id": "ad7704992300431296513",
             "config": {
               "cooldown": 30
             }
@@ -179,40 +179,24 @@
         "name": "Coins"
       },
       "no_ads": {
-        "category": "unlock",
-        "name": "No Ads"
+        "category": "iap",
+        "name": "No Ads",
+        "type": "no_ads",
+        "consumable": false
       }
     }
   },
   "products": [
     {
       "id": 1,
-      "name": "Coin pouch",
-      "description": "1,000 coins for the supermarket",
-      "beans_cost": 10,
-      "rewards": {
-        "coins": 1000
-      },
-      "badge": "POPULAR"
-    },
-    {
-      "id": 2,
-      "name": "Coin chest",
-      "description": "5,000 coins \u2014 a whole week of streams",
-      "beans_cost": 40,
-      "rewards": {
-        "coins": 5000
-      },
-      "badge": "BEST VALUE"
-    },
-    {
-      "id": 3,
       "name": "No Ads",
-      "description": "Remove the ads between streams forever",
+      "description": "Remove the ads between streams and in the kitchen forever",
       "beans_cost": 30,
       "rewards": {
         "no_ads": 1
       },
+      "category": "iap",
+      "type": "no_ads",
       "consumable": false
     }
   ]

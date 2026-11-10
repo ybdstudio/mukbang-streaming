@@ -1,6 +1,9 @@
 {
-  "appid": "",
+  "appid": "7705201906184030215",
   "projectname": "mukbang-bang",
-  "description": "Mukbang Bang - shop, scan, and eat on a live stream",
-  "setting": { "es6": true, "minified": true }
+  "description": "Mukbang ASMR - cook, serve and eat on a live stream",
+  "setting": {
+    "es6": true,
+    "minified": true
+  }
 }
