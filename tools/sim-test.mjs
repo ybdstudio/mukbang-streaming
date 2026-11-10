@@ -250,6 +250,17 @@ seed(7);
   check('Lava Spicy station hidden (art not finished)', !K.station('lava'));
   check('ramen seasonings: 10 sprites registered', ['sesame', 'chili_flakes', 'nori_flakes', 'pepper', 'fried_garlic'].every(id => S.V4['cook/deco_' + id + '.png'] && S.V4['cook/opt_ramen_deco_' + id + '.png']));
 }
+// ═════════ ad pacing: impressions per 5 minutes (normal-pace autoplay, every interstitial; rewarded not counted) ═════════
+{
+  let clk = 0; const p = fakePlatform(); p.devTools = true; const prof = fakeProfile(Object.assign({}, INIT, { tip_goal: 1, tip_market: 1, coins: 3000 }));
+  const hs = fakeHs(prof, 'ok', { clock: () => clk, cooldown: 30 }); const g = new Game(p, hs); g.hsReady = true; run(g, 0.2); g.autoplay = true;
+  const imp = []; const orig = g.adRun.bind(g); g.adRun = function (place, pr, after) { return orig(place, pr.then(r => { if (r) { imp.push([clk, place]); clk += 15; g.wall = clk; } return r; }), after); }; // an ad lasts ~15 s
+  for (let i = 0; i < 600; i++) { run(g, 1); clk += 1; g.wall = clk; await flush(); }
+  const per5 = [imp.filter(x => x[0] < 300).length, imp.filter(x => x[0] >= 300).length];
+  console.log('   interstitial impressions per 5 min (0-5 / 5-10):', per5.join(' / '), '·', imp.map(x => x[1][0] + Math.round(x[0])).join(' '));
+  check('interstitials start in the first minutes (after stream 1)', imp.length > 0 && imp[0][0] < 180, imp.slice(0, 3));
+  check('interstitials at least 30 s apart', imp.every((x, i) => i === 0 || x[0] - imp[i - 1][0] >= 30), imp);
+}
 // ═════════ side quests ═════════
 {
   check('side quest on every level from 2 (none on level 1)', !L.LEVELS[0].quest && L.LEVELS.slice(1).every(l => l.quest && l.quest.pay > 0 && l.quest.need >= 1));
@@ -303,11 +314,11 @@ seed(4);
 // ═════════ ads ═════════
 seed(5);
 {
-  const prof = fakeProfile(Object.assign({}, INIT, { level: 3, levels_done: 2, streams: 2, coins: 3000 })); let clk = 0; const hs = fakeHs(prof, 'ok', { clock: () => clk, cooldown: 30 });
-  const p = fakePlatform(), g = new Game(p, hs); g.hsReady = true; run(g, 0.1);
-  await tap(g, p, 'play'); await eatAll(g, p, 'tap');
-  await tap(g, p, 'next'); check('no interstitial in the first 3 streams', hs.ads.indexOf('stream_end') < 0, hs.ads);
-  await eatAll(g, p, 'tap'); clk = 100; await tap(g, p, 'next'); check('interstitial at NEXT after stream 4 (a tap, a natural transition)', hs.ads.filter(a => a === 'stream_end').length === 1, hs.ads);
+  const prof = fakeProfile(Object.assign({}, INIT, { level: 1, levels_done: 0, streams: 0, coins: 3000, tip_goal: 1 })); let clk = 0; const hs = fakeHs(prof, 'ok', { clock: () => clk, cooldown: 30 });
+  const p = fakePlatform(), g = new Game(p, hs); Object.defineProperty(g, 'wall', { get: () => clk }); g.hsReady = true; run(g, 0.1);
+  if (g.state !== 'stream') await tap(g, p, 'play'); await eatAll(g, p, 'tap');
+  check('no interstitial while cooking stream 1', hs.ads.indexOf('cook_step') < 0, hs.ads); await tap(g, p, 'next'); check('interstitial right after stream 1 (NEXT)', hs.ads.filter(a => a === 'stream_end').length === 1, hs.ads);
+  clk = 40; await eatAll(g, p, 'tap'); check('cook_step interstitial from stream 2', hs.ads.filter(a => a === 'cook_step').length === 1, hs.ads); clk = 100; await tap(g, p, 'next'); check('interstitial at NEXT after stream 2 (30 s later)', hs.ads.filter(a => a === 'stream_end').length === 2, hs.ads);
   await tap(g, p, 'cook_go'); await cookAll(g, p); const fp = foodPos(g); touchAt(g, p, fp.x, fp.y); run(g, 0.6);
   check('no ad button while chewing', !hasBtn(g, 'fangift_ad') && !hasBtn(g, 'bonus_ad'));
   runUntil(g, () => g.run.phase === 'open', 8); check('no fan gift before the balloons come', !hasBtn(g, 'fangift_ad') && !g.run.bal);
@@ -316,8 +327,8 @@ seed(5);
   const c0 = prof.get('coins'); await tap(g, p, 'fangift_ad'); await flush(); run(g, 0.1); check('fan gift ad → coins from the SDK reward; balloons leave', prof.get('coins') === c0 + 300 && !hasBtn(g, 'fangift_ad') && !g.run.bal);
   for (let k = 0; k < 2; k++) { runUntil(g, () => g.run.phase === 'open', 8); const q = foodPos(g); touchAt(g, p, q.x, q.y); } runUntil(g, () => g.state === 'result', 12);
   clk = 110; await tap(g, p, 'next');
- check('cooldown: within 30 s the game does not even ask for an interstitial', hs.ads.filter(a => a === 'stream_end').length === 1 && JSON.parse(prof.get('ad_stats')).stream_end.req === 1 && g.state === 'stream', hs.ads);
-  const st = JSON.parse(prof.get('ad_stats')); check('ad_stats counts per place (req / imp / done / grant)', st.stream_end.imp === 1 && st.fan_gift.imp === 1 && st.fan_gift.grant === 1, st);
+ check('cooldown: within 30 s the game does not even ask for an interstitial', hs.ads.filter(a => a === 'stream_end').length === 2 && JSON.parse(prof.get('ad_stats')).stream_end.req === 2 && g.state === 'stream', hs.ads);
+  const st = JSON.parse(prof.get('ad_stats')); check('ad_stats counts per place (req / imp / done / grant)', st.stream_end.imp === 2 && st.fan_gift.imp === 1 && st.fan_gift.grant === 1, st);
   { // rare choice in the cooking tray (the run of the cooldown test above is still in its request)
     await tap(g, p, 'cook_go'); let offers = 0, ads = 0; const seenRare = () => { if (g.ck && g.ck.rare) offers++; };
     seenRare(); await cookAll(g, p, { match: true, rare: 1, onAd: () => { ads++; } });

@@ -23,7 +23,8 @@ const C = D.COLORS;
 
 const DESIGN_W = 540;
 const REACTIONS = ['heart', 'like', 'star', 'laugh', 'love', 'cool', 'smile'];
-const AD_FREE_STREAMS = 3;       // the first 3 streams are ad-free; after that every natural transition may show one (dashboard cooldown 30 s)
+const AD_FREE_STREAMS = 3;       // rewarded extras (boost, surprise) appear from stream 3
+const INTER_FROM = 1;            // interstitials from the end of stream 1 on; spacing = dashboard cooldown 30 s per place
 
 class Game {
   constructor(platform, hs) {
@@ -302,11 +303,13 @@ class Game {
   }
   clock() { return this.wall !== undefined ? this.wall : this.time; }
   adsLast5min() { const now = this.clock(), log = this.adLog || []; let n = 0; for (let i = 0; i < log.length; i++) if (now - log[i] <= 300) n++; return n; }
+  // interstitials (stream_end + cook_step) at least 30 s apart from each other; the dashboard cooldown is per place
+  interGapOk() { return this.lastInter === undefined || this.clock() - this.lastInter >= 30; }
   noAds() { return (this.profile.get('no_ads') || 0) > 0; }
   afterResultAd(go) {
-    const eligible = (this.profile.get('streams') || 0) > AD_FREE_STREAMS;
-    if (this.noAds() || !eligible || this.adBusy || !this.hs.canShowStreamEnd()) { go(); return; }
-    this.adRun('stream_end', this.hs.showStreamEnd(), function () { go(); });
+    const eligible = (this.profile.get('streams') || 0) >= INTER_FROM;
+    if (this.noAds() || !eligible || this.adBusy || !this.interGapOk() || !this.hs.canShowStreamEnd()) { go(); return; }
+    const self = this; this.adRun('stream_end', this.hs.showStreamEnd(), function (r) { if (r) self.lastInter = self.clock(); go(); });
   }
   watchBonus() {
     if (this.adBusy || !this.hs.canShowBonusCoins()) return;

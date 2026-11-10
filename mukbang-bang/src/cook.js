@@ -62,8 +62,8 @@ function install(Game) {
   // interstitial between cooking steps: once per dish, at a ✓ in the middle of the recipe (a tap, a natural pause)
   P.cookStepAd = function () {
     const k = this.ck; k.stepAd = true;
-    if (this.noAds() || this.adBusy || (this.profile.get('streams') || 0) < 4 || !this.hs.hasAds() || !this.hs.canShowCookStep || !this.hs.canShowCookStep()) return;
-    this.adRun('cook_step', this.hs.showCookStep(), function () {});
+    if (this.noAds() || this.adBusy || (this.profile.get('streams') || 0) < 1 || !this.hs.hasAds() || !this.interGapOk() || !this.hs.canShowCookStep || !this.hs.canShowCookStep()) return;
+    const self = this; this.adRun('cook_step', this.hs.showCookStep(), function (r) { if (r) self.lastInter = self.clock(); });
   };
   // serve: after PERFECT the player taps SERVE, or watches an ad for a HOT START (+40% viewers when the stream resumes)
   P.canServe = function () { return this.hs.hasAds() && this.hs.canShowServe && (this.profile.get('streams') || 0) >= 2 && this.hs.canShowServe(); };
