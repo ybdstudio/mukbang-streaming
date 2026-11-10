@@ -261,6 +261,13 @@ seed(7);
   check('interstitials start in the first minutes (after stream 1)', imp.length > 0 && imp[0][0] < 180, imp.slice(0, 3));
   check('interstitials at least 30 s apart', imp.every((x, i) => i === 0 || x[0] - imp[i - 1][0] >= 30), imp);
 }
+// ═════════ interstitial when closing a menu ═════════
+{
+  let clk = 500; const prof = fakeProfile(Object.assign({}, INIT, { level: 12, levels_done: 11, streams: 11, coins: 3000 })); const hs = fakeHs(prof, 'ok', { clock: () => clk, cooldown: 30 });
+  const p = fakePlatform(), g = new Game(p, hs); Object.defineProperty(g, 'wall', { get: () => clk }); g.hsReady = true; run(g, 0.1);
+  await tap(g, p, 'levels'); await tap(g, p, 'home'); await flush(); run(g, 0.05); check('closing Levels: interstitial, then home', hs.ads.filter(a => a === 'stream_end').length === 1 && g.state === 'home', hs.ads);
+  clk += 10; await tap(g, p, 'wardrobe'); await tap(g, p, 'home'); await flush(); check('within 30 s: no second interstitial', hs.ads.filter(a => a === 'stream_end').length === 1 && g.state === 'home', hs.ads);
+}
 // ═════════ side quests ═════════
 {
   check('side quest on every level from 2 (none on level 1)', !L.LEVELS[0].quest && L.LEVELS.slice(1).every(l => l.quest && l.quest.pay > 0 && l.quest.need >= 1));

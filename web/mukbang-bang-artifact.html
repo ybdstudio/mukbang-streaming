@@ -5036,7 +5036,8 @@ class Game {
       case 'levels': this.levelPage = Math.floor((this.curLevel() - 1) / 15); this.setState('levels'); break;
       case 'page0': case 'page1': case 'page2': this.levelPage = +id.slice(4); break;
       case 'streamers': this.setState('streamers'); break;
-      case 'home': this.setState('home'); break;
+      case 'home': // closing a menu / leaving a side activity is a natural break: an interstitial may play (30 s gap, after stream 1)
+        if (['market', 'delivery', 'buffet', 'wardrobe', 'levels', 'streamers'].indexOf(this.state) >= 0) this.afterResultAd(function () { self.setState('home'); }); else this.setState('home'); break;
       case 'sound': p.set('sound', !p.get('sound')); this.audio.setMuted(!p.get('sound')); break;
       case 'settings': this.settingsFrom = this.state === 'pause' ? 'pause' : 'home'; this.setState('settings'); break;
       case 'settings_close': this.setState(this.settingsFrom === 'pause' && this.run ? 'pause' : 'home'); this.settingsFrom = null; break;
