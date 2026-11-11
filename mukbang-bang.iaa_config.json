@@ -7,7 +7,8 @@
           "id": "ad7704978412619892788",
           "config": {
             "cooldown": 30
-          }
+          },
+          "type": "interstitial"
         }
       ]
     },
@@ -18,7 +19,8 @@
           "id": "ad7705024066708654132",
           "config": {
             "cooldown": 30
-          }
+          },
+          "type": "rewarded"
         }
       ]
     },
@@ -29,7 +31,8 @@
           "id": "ad7705000380241004596",
           "config": {
             "cooldown": 30
-          }
+          },
+          "type": "rewarded"
         }
       ]
     },
@@ -40,7 +43,8 @@
           "id": "ad7705024066708670516",
           "config": {
             "cooldown": 30
-          }
+          },
+          "type": "rewarded"
         }
       ]
     },
@@ -51,7 +55,8 @@
           "id": "ad7704999157510637569",
           "config": {
             "cooldown": 30
-          }
+          },
+          "type": "rewarded"
         }
       ]
     },
@@ -62,7 +67,8 @@
           "id": "ad7704973826467481652",
           "config": {
             "cooldown": 30
-          }
+          },
+          "type": "rewarded"
         }
       ]
     },
@@ -73,7 +79,8 @@
           "id": "ad7704975769549867014",
           "config": {
             "cooldown": 30
-          }
+          },
+          "type": "rewarded"
         }
       ]
     },
@@ -84,7 +91,8 @@
           "id": "ad7705002184262223878",
           "config": {
             "cooldown": 30
-          }
+          },
+          "type": "rewarded"
         }
       ]
     },
@@ -95,7 +103,8 @@
           "id": "ad7704990511626799110",
           "config": {
             "cooldown": 30
-          }
+          },
+          "type": "interstitial"
         }
       ]
     },
@@ -106,7 +115,8 @@
           "id": "ad7704976608651347969",
           "config": {
             "cooldown": 30
-          }
+          },
+          "type": "rewarded"
         }
       ]
     },
@@ -117,7 +127,8 @@
           "id": "ad7704981817455249460",
           "config": {
             "cooldown": 30
-          }
+          },
+          "type": "rewarded"
         }
       ]
     },
@@ -128,7 +139,8 @@
           "id": "ad7704972756039026740",
           "config": {
             "cooldown": 30
-          }
+          },
+          "type": "rewarded"
         }
       ]
     },
@@ -139,7 +151,8 @@
           "id": "ad7704992300431296513",
           "config": {
             "cooldown": 30
-          }
+          },
+          "type": "rewarded"
         }
       ]
     }

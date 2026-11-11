@@ -1,4 +1,4 @@
-/*! hs-game.js 3.2.4 — the HS TikTok SDK for native TikTok mini games.
+/*! hs-game.js 3.4.0 — the HS TikTok SDK for native TikTok mini games.
  *
  * Put this file and hs-sdk.min.js next to your game.js, then:
  *
@@ -15,11 +15,18 @@
  *   HSGame.share({ title })          // share → the "share" reward goes to onGive
  *   HSGame.save(progress)            // cloud save
  *   HSGame.shop() / HSGame.buy(id)   // purchases → onGive
+ *   HSGame.restore()                 // "Restore purchases" (shown when has('restore'))
  *   HSGame.has('share')              // show a button only where it works (see has())
  *   HSGame.on('pause' | 'resume')    // mute + freeze while an ad / purchase / the app is away
  *
- * One game, two platforms: TikTok Minis, and the HS Android app (the same
- * files in a WebView, packed by HS). The game never checks the platform —
+ * HS Analytics (3.4, start({ analytics: true })): sessions, ads, purchases and
+ * the device profile are sent by the kit; the game adds
+ *   HSGame.level.start(n) / HSGame.level.end(n, 'win' | 'lose' | 'quit', {…})
+ *   HSGame.economy.earn / spend(currency, amount, {…}) · HSGame.powerUp(name, {…})
+ *   HSGame.ui(action, name) · HSGame.track(registeredName, {…})
+ *
+ * One game, three platforms: TikTok Minis, and the HS app for Android and iOS
+ * (the same files in a WebView, packed by HS). The game never checks the platform —
  * HSGame.has() says what is on, and the ad provider is HS's choice.
  *
  * Data-driven: a reward key, an ad place, an item, a product — if it is in the
@@ -42,7 +49,7 @@
 (function (root) {
   'use strict';
 
-  var VERSION = '3.2.4';
+  var VERSION = '3.4.0';
   // The SDK waits for the ad's own answer; past this the ad counts as failed,
   // so a host that never answers cannot latch or freeze the game. Android:
   // longer than the app's own ad watchdog (120 s), so there the app answers
@@ -170,7 +177,9 @@
   function resumeFrom(reason) {
     if (!has(pauseReasons, reason)) return;
     delete pauseReasons[reason];
-    if (isEmpty(pauseReasons)) kitEmit('resume', reason);
+    if (!isEmpty(pauseReasons)) return;
+    kitEmit('resume', reason);
+    safe(evPerfRun);   // analytics: the FPS sample paused with the game
   }
 
   // ─── The reward table: dashboard (iaa_config) over the game's defaults ────
@@ -1033,6 +1042,7 @@
       // resend that older copy first (nor start its cooldown).
       if (cloudWanted()) cloud.isDirtyForCloud = true;
       ok = true;
+      evPurchase(o.product_id);
     } finally {
       if (!o.recovered) lastBuyGiven = ok;
     }
@@ -1057,8 +1067,13 @@
   /** A purchase's product, order id and token — from the app's object, else Google's own JSON. */
   function gpInfo(p) {
     var j = (p && typeof p.json === 'string' && safe(function () { return JSON.parse(p.json); }, null)) || {};
+    // A bridge may hand ids over as numbers (StoreKit's product "1", a transaction id).
     var text = function () {
-      for (var i = 0; i < arguments.length; i++) if (typeof arguments[i] === 'string' && arguments[i]) return arguments[i];
+      for (var i = 0; i < arguments.length; i++) {
+        var v = arguments[i];
+        if (typeof v === 'number' && isFinite(v)) return String(v);
+        if (typeof v === 'string' && v) return v;
+      }
       return '';
     };
     return {
@@ -1068,8 +1083,22 @@
     };
   }
 
-  /** A permanent item (a skin): Google keeps it owned and returns it at every start. */
-  function isPermanent(product) { return !!product && product.consumable === false; }
+  /**
+   * A permanent item (a skin): the store keeps it owned and returns it at every
+   * start. Read as the iOS build worker reads it (it creates the App Store
+   * product from the same item): "type" wins (one_time / non_consumable /
+   * entitlement · consumable), else "consumable": false — in the item or its metadata.
+   */
+  function isPermanent(product) {
+    if (!product) return false;
+    var md = product.metadata;
+    if (typeof md === 'string') { var raw = md; md = safe(function () { return JSON.parse(raw); }, null); }
+    if (!md || typeof md !== 'object') md = {};
+    var type = String(md.type != null ? md.type : (product.type != null ? product.type : '')).toLowerCase().replace(/[-\s]/g, '_');
+    if (type === 'consumable') return false;
+    if (/^(non_?consumable|one_time|entitlement)$/.test(type)) return true;
+    return (typeof md.consumable === 'boolean' ? md.consumable : product.consumable) === false;
+  }
 
   /**
    * The key a purchase is remembered by; '' when it has neither order id nor
@@ -1136,9 +1165,11 @@
     }
     if (cloudSettled && cloudWanted()) cloud.isDirtyForCloud = true;
     var q = readList(GP_REPORTS);
-    q.push({ json: p.json, signature: p.signature, tries: 0 });
+    // iOS: json is Apple's signed transaction (JWS), checked by the backend's Apple route.
+    q.push(isIos() ? { json: p.json, store: 'apple', tries: 0 } : { json: p.json, signature: p.signature, tries: 0 });
     storeSet(GP_REPORTS, JSON.stringify(q.slice(-ORDERS_KEEP)));
     flushGoogleReports();
+    safe(function () { evPurchase(String(product.product_id || product.id), product); });   // analytics: the purchase
     return true;
   }
 
@@ -1188,7 +1219,12 @@
       var entry = q[i];
       if (!entry || typeof entry.json !== 'string') { update(entry && entry.json, function () { return null; }); next(i + 1); return; }
       tried[entry.json] = true;
-      Promise.resolve(safe(function () { return sdk.iap.reportStorePurchase(entry.json, entry.signature); }, null)).then(function (r) {
+      var apple = entry.store === 'apple';
+      // An SDK without the Apple route keeps it queued, untried, for one that has it.
+      if (apple && typeof sdk.iap.reportApplePurchase !== 'function') { next(i + 1); return; }
+      Promise.resolve(safe(function () {
+        return apple ? sdk.iap.reportApplePurchase(entry.json) : sdk.iap.reportStorePurchase(entry.json, entry.signature);
+      }, null)).then(function (r) {
         if (r && r.success) update(entry.json, function () { return null; });
         else failed(entry.json);
         next(i + 1);
@@ -1197,14 +1233,28 @@
     next(0);
   }
 
+  /**
+   * The id the app's store sells a product under: its google_id. The iOS app
+   * (HSNative.os 'ios') takes the product_id ("1") and maps it to the App
+   * Store id itself, both ways — a google_id copied from Android means nothing
+   * there. '' = not on sale in this app.
+   */
+  function storeId(p) {
+    if (!p) return '';
+    if (isIos()) return p.product_id != null && p.product_id !== '' ? String(p.product_id) : '';
+    return typeof p.google_id === 'string' && p.google_id ? p.google_id : '';
+  }
+
   function findGoogleProduct(productId) {
     var want = String(productId);
-    for (var gid in googleProducts) {
-      if (!has(googleProducts, gid)) continue;
-      var p = googleProducts[gid];
-      if (String(p.product_id) === want || String(p.id) === want || gid === want) return p;
+    var byRow = null;   // `id` (the backend's row on iOS) only when no product_id matches
+    for (var sid in googleProducts) {
+      if (!has(googleProducts, sid)) continue;
+      var p = googleProducts[sid];
+      if (String(p.product_id) === want || sid === want) return p;
+      if (!byRow && String(p.id) === want) byRow = p;
     }
-    return null;
+    return byRow;
   }
 
   var buyingGoogle = null;   // the open purchase (one at a time: Google shows one sheet)
@@ -1224,7 +1274,7 @@
       // A sheet that never answers must not freeze the game, nor block buying for good.
       var cap = setTimeout(function () { resumeFrom('buy'); release(); }, BUY_PAUSE_MAX_MS);
       var buying;
-      try { buying = Promise.resolve(b.buy(prod.google_id)); } catch (e) { buying = Promise.reject(e); }
+      try { buying = Promise.resolve(b.buy(storeId(prod))); } catch (e) { buying = Promise.reject(e); }
       return buying.then(function (r) {
         clearTimeout(cap);
         resumeFrom('buy');
@@ -1236,9 +1286,9 @@
         }
         // What Google sold decides what is given — not the button that was tapped.
         var sold = gpInfo(r.purchase).product;
-        var real = sold === prod.google_id ? prod : (has(googleProducts, sold) ? googleProducts[sold] : null);
+        var real = sold === storeId(prod) ? prod : (has(googleProducts, sold) ? googleProducts[sold] : null);
         if (!real) {
-          log('Google sold "' + sold + '", not "' + prod.google_id + '" — not credited');
+          log('the store sold "' + sold + '", not "' + storeId(prod) + '" — not credited');
           return { ok: true, error: '', delivered: false };
         }
         var given = creditGoogle(r.purchase, real);
@@ -1260,54 +1310,116 @@
   var googleLoaded = false;    // googleProducts came from the server at least once
   var recoverWanted = false;   // a recovery is waiting: for the products, or for the cloud copy
 
-  /** Purchases Google still holds — unfinished (a crash before finish) or permanent: credit what is new. */
+  /**
+   * Purchases the store still holds — unfinished (a crash before finish) or
+   * permanent: credit what is new. Resolves { owned, restored } (product ids:
+   * credited now or before · credited now), or null when it could not look.
+   */
   function recoverGoogle() {
     var b = billing();
-    if (!b || typeof b.owned !== 'function') return Promise.resolve();
+    if (!b || typeof b.owned !== 'function') return Promise.resolve(null);
     // The cloud copy, not read yet, may already hold them (a reinstall):
     // crediting first would be overwritten by it. The login calls back here.
-    if (cloudWanted() && loginPossible() && !cloudSettled) { recoverWanted = true; return Promise.resolve(); }
+    if (cloudWanted() && loginPossible() && !cloudSettled) { recoverWanted = true; return Promise.resolve(null); }
     var products = googleLoaded ? Promise.resolve() : loadGoogleProducts();
     return products.then(function () {
       // Offline: what each purchase gives is unknown — again once the shop loads.
-      if (!googleLoaded) { recoverWanted = true; return; }
+      if (!googleLoaded) { recoverWanted = true; return null; }
       recoverWanted = false;
       return Promise.resolve(safe(function () { return b.owned(); }, [])).then(function (list) {
+        var found = { owned: [], restored: [] };
         (list || []).forEach(function (p) {
           var pid = gpInfo(p).product;
           var product = has(googleProducts, pid) ? googleProducts[pid] : null;
-          if (!product) { log('owned Google purchase of unknown product ' + pid + ' — left for a build that knows it'); return; }
-          if (creditGoogle(p, product)) finishGoogle(p, product);
+          if (!product) { log('owned store purchase of unknown product ' + pid + ' — left for a build that knows it'); return; }
+          var before = googleCredited(purchaseKey(p, product));
+          if (!creditGoogle(p, product)) return;
+          finishGoogle(p, product);
+          var id = product.product_id != null ? product.product_id : product.id;
+          if (found.owned.indexOf(id) < 0) found.owned.push(id);
+          if (!before && found.restored.indexOf(id) < 0) found.restored.push(id);
         });
-      }, function () {});
+        return found;
+      }, function () { return null; });
     });
   }
 
-  /** HS dashboard products that are on sale in Google Play (a `google_id` + Google's price). */
+  var storePermanent = false;  // a one-time product is on sale in the app's store — has('restore')
+
+  /**
+   * HS dashboard products that are on sale in the app's store (Google Play: a
+   * `google_id`; iOS: every product, by product_id) + the store's price.
+   */
   function loadGoogleProducts() {
     var b = billing();
     if (!b || !sdk || !ready) return Promise.resolve([]);
     return Promise.resolve(safe(function () { return sdk.iap.getShopItems(); }, null)).then(function (r) {
       // Offline: keep what an earlier load found.
       if (!r || !r.success) return [];
-      var mine = (r.data || []).filter(function (p) { return p && typeof p.google_id === 'string' && p.google_id; });
+      var mine = (r.data || []).filter(function (p) { return !!storeId(p); });
       googleProducts = {};
-      mine.forEach(function (p) { googleProducts[p.google_id] = p; });
+      mine.forEach(function (p) { googleProducts[storeId(p)] = p; });
       googleLoaded = true;
-      if (!mine.length || typeof b.products !== 'function') return [];
-      return Promise.resolve(b.products(mine.map(function (p) { return p.google_id; }))).then(function (prices) {
+      if (!mine.length || typeof b.products !== 'function') { storePermanent = false; return []; }
+      return Promise.resolve(b.products(mine.map(storeId))).then(function (prices) {
         var byId = {};
         (prices || []).forEach(function (g) { if (g && g.id) byId[g.id] = g; });
-        return mine.filter(function (p) { return has(byId, p.google_id); }).map(function (p) {
+        var list = mine.filter(function (p) { return has(byId, storeId(p)); }).map(function (p) {
           var out = {};
           for (var k in p) if (has(p, k) && k !== 'rewards') out[k] = p[k];
           out.items = toItems(p.rewards);
-          out.price = byId[p.google_id].price;          // Google's localized text, e.g. "₫25,000"
-          out.currency = byId[p.google_id].currency;
+          out.price = byId[storeId(p)].price;          // the store's localized text, e.g. "₫25,000"
+          out.currency = byId[storeId(p)].currency;
+          // the price as a number, when the app's billing gives one (for the analytics purchase event)
+          var micros = byId[storeId(p)].priceMicros;
+          if (typeof micros !== 'number') micros = byId[storeId(p)].price_amount_micros;
+          if (typeof micros === 'number' && isFinite(micros)) out.price_micros = micros;
           return out;
         });
+        storePermanent = list.some(isPermanent);
+        return list;
       });
     }, function () { return []; });
+  }
+
+  function isIos() { var nb = nativeBridge(); return !!nb && nb.os === 'ios'; }
+
+  // ─── The HS app's ad provider (max.js behind HSNative.ads) ────────────────
+  // The provider's key and the unit ids are data of the HS game (iaa_config
+  // "ad_provider" + its placements): handed to the app each time the ad config
+  // arrives, so it starts the provider and loads every unit before the first
+  // tap. An app without ads.init (an older build) loads on the first show.
+
+  var adsInitSent = '';
+
+  function initNativeAds() {
+    var nb = nativeBridge();
+    if (!nb || !nb.ads || typeof nb.ads.init !== 'function' || !sdk) return;
+    var cfg = safe(function () { return sdk.ads.config; }, null) || {};
+    var p = cfg.ad_provider;
+    if (!p || typeof p !== 'object' || typeof p.sdk_key !== 'string' || !p.sdk_key) return;
+    // A unit's type comes from Edit Game (the active ad placements), as for showAd.
+    var types = {};
+    (safe(function () { return sdk.ads.getActivePlacements(); }, null) || []).forEach(function (ap) {
+      if (ap && ap.id && typeof ap.type === 'string') types[ap.id] = /reward/i.test(ap.type) ? 'rewarded' : 'interstitial';
+    });
+    var units = [];
+    (Array.isArray(cfg.placements) ? cfg.placements : []).forEach(function (pl) {
+      (pl && Array.isArray(pl.ads) ? pl.ads : []).forEach(function (a) {
+        var id = a && a.id;
+        if (id && has(types, id) && !units.some(function (u) { return u.unitId === id; })) units.push({ type: types[id], unitId: id });
+      });
+    });
+    var req = {
+      provider: typeof p.name === 'string' && p.name ? p.name : 'applovin_max',
+      sdkKey: p.sdk_key,
+      testMode: p.test_mode !== false,   // test unless the dashboard says otherwise (a test build always is)
+      units: units
+    };
+    var sent = JSON.stringify(req);
+    if (sent === adsInitSent) return;
+    adsInitSent = sent;
+    safe(function () { Promise.resolve(nb.ads.init(req)).then(null, function (e) { log('ad provider init failed: ' + String(e && e.message || e)); }); });
   }
 
   // ─── TikTok APIs the backend is not involved in (missions, share) ─────────
@@ -1414,6 +1526,7 @@
 
   /** Back in the foreground: missions, and — at most once a minute — "is this still the active device?". */
   function onAppShow() {
+    evOnShow();
     resumeFrom('app');
     checkMissions();
     // A pending Google payment (cash, bank) that completed meanwhile: credit and
@@ -1451,6 +1564,7 @@
 
   function onAppHide() {
     if (P && P.timer) writeProfileNow();
+    evOnHide();
     pauseFor('app');
   }
 
@@ -1515,6 +1629,563 @@
     return !!(sdk && ready) && (platformName() !== 'android' || !!billing());
   }
 
+  // ─── Analytics (HS Analytics — games-analytics docs/EVENTS.md) ────────────
+  // Off unless start({ analytics: true }). The kit sends sessions, ads,
+  // purchases and the device profile by itself; the game adds level / economy /
+  // power-up / ui calls and registered custom events. Events wait in a queue on
+  // the device and go out in batches; a resend after a lost answer is dropped
+  // by the server (each event has its own id). Never throws, never blocks play.
+
+  var EV_URL = 'https://games.wafflescouts.com/api/ev';
+  var EV_QUEUE_KEY = 'hs_ev.q';
+  var EV_INSTALL_KEY = 'hs_ev.install';
+  var EV_MAX_QUEUE = 1000;
+  var EV_BATCH = 50;
+  var EV_FLUSH_AT = 20;
+  var EV_FLUSH_MS = 10000;
+  var EV_NEW_SESSION_MS = 30000;
+  var EV_POST_TIMEOUT_MS = 30000;   // a request with no answer by then counts as failed (kept, sent again)
+  var EV_SAVE_MS = 500;             // queue writes are batched; a hide writes at once
+  var EV_SESSION_KEY = 'hs_ev.s';   // the session the app left in the background: { s, active, at, perf }
+  var EV_NAME_RE = /^[a-z][a-z0-9_]{2,39}$/;
+  var EV_TEMPLATE = {
+    session_start: 1, session_end: 1, ad_shown: 1, purchase: 1, perf: 1, error: 1, ab_exposure: 1,
+    level_start: 1, level_end: 1, power_up: 1, currency: 1, mission_step: 1, ui: 1, custom: 1
+  };
+  // The props each template event may carry (games-analytics schema/events.json) —
+  // s: string · n: number · i: whole number · b: true/false. The server refuses an
+  // event with any other prop, so the rest is dropped here. custom: the game's own.
+  var EV_PROPS = {
+    session_start: {}, level_start: {},
+    session_end: { duration_s: 'n' },
+    level_end: { result: 's', score: 'n', reason: 's', duration_s: 'n', moves: 'i', moves_left: 'n', time_left: 'n' },
+    power_up: { name: 's', paid: 'b' },
+    currency: { flow: 's', currency: 's', amount: 'i', balance: 'i', item_type: 's', item_id: 's', placement: 's' },
+    ui: { action: 's', name: 's', location: 's', type: 's' },
+    mission_step: { name: 's' },
+    ad_shown: { place: 's', format: 's', network: 's', revenue_micros: 'i', currency: 's' },
+    purchase: { product: 's', price_micros: 'i', currency: 's', first: 'b' },
+    perf: { fps_avg: 'n', fps_p10: 'n' },
+    error: { type: 's', hash: 's' },
+    ab_exposure: { test_id: 's', variant: 's' }
+  };
+  // whole-number props kept within the server's caps
+  var EV_CAPS = { amount: 1e9, balance: 1e9, price_micros: 5e8, revenue_micros: 5e7 };
+
+  var EV = {
+    on: false, url: EV_URL, gameId: '', env: 'live', cfg: {}, building: false,
+    queue: [], early: [], timer: null, sending: false, flushPending: false, saveTimer: null,
+    install: '', errors: {}, device: null,
+    // the session: its id, when it started, its visible time before the current visible stretch
+    // (activeMs) and since when it is visible (0 while away); rec = the record kept while away
+    session: '', sessionStart: 0, activeMs: 0, visibleSince: 0, hiddenAt: 0, rec: null, products: {}
+  };
+
+  function evHex(n) {
+    var c = root && root.crypto;
+    var a = c && typeof c.getRandomValues === 'function' && typeof Uint8Array === 'function'
+      ? safe(function () { var x = new Uint8Array(n); c.getRandomValues(x); return x; }, null)
+      : null;
+    var s = '';
+    for (var i = 0; i < n; i++) {
+      var b = a ? a[i] : Math.floor(Math.random() * 256);
+      s += (b < 16 ? '0' : '') + b.toString(16);
+    }
+    return s;
+  }
+
+  // Time-ordered event id (UUIDv7 layout): unique, and sorts by creation time.
+  function evId() {
+    var t = Date.now().toString(16);
+    while (t.length < 12) t = '0' + t;
+    var r = evHex(10);
+    return t.slice(0, 8) + '-' + t.slice(8, 12) + '-7' + r.slice(0, 3) + '-' + ((parseInt(r.charAt(3), 16) & 3) | 8).toString(16) + r.slice(4, 7) + '-' + r.slice(7, 19);
+  }
+
+  // The install id: random, made once, kept on the device. The server stores only a salted hash of it.
+  function evInstall() {
+    if (EV.install) return EV.install;
+    var id = storeGet(EV_INSTALL_KEY);
+    if (!id || !/^[0-9a-f]{32}$/.test(id)) { id = evHex(16); storeSet(EV_INSTALL_KEY, id); }
+    EV.install = id;
+    return id;
+  }
+
+  /** The short id a tester registers in the HS dashboard (Analytics Setup → Test devices). */
+  function evDeviceId() { return 'hsd-' + evInstall().slice(0, 8).toUpperCase(); }
+
+  function evPlatform() {
+    var nb = nativeBridge();
+    if (nb) return nb.os === 'ios' ? 'ios' : 'android';
+    return platformName() === 'minis' ? 'tiktok' : 'web';
+  }
+
+  function evStore() {
+    var p = evPlatform();
+    return p === 'ios' ? 'appstore' : p === 'android' ? 'google' : p === 'tiktok' ? 'minis' : 'site';
+  }
+
+  // Coarse on purpose (EVENTS.md §1b): no ad id, no hardware id, RAM as a bucket.
+  function evDevice() {
+    var info = safe(function () {
+      var t = root && root.tt;
+      return t && typeof t.getSystemInfoSync === 'function' ? t.getSystemInfoSync() : null;
+    }, null) || {};
+    var nav = safe(function () { return root && root.navigator; }, null) || {};
+    var nb = nativeBridge();
+    var scr = safe(function () { return root && root.screen; }, null) || {};
+    var w = Number(info.screenWidth || scr.width || 0);
+    var h = Number(info.screenHeight || scr.height || 0);
+    var short = Math.min(w, h);
+    var gb = Number(info.memorySize ? info.memorySize / 1024 : nav.deviceMemory || 0);
+    var ram = !gb ? '' : gb <= 2 ? '<=2' : gb <= 4 ? '3-4' : gb <= 8 ? '6-8' : '12+';
+    var lang = String(info.language || nav.language || '').slice(0, 2).toLowerCase();
+    // The HS app's WebView: the user agent holds the real OS version and model
+    // ("Android 11; Redmi Note 8 Pro Build/…", "iPhone OS 18_1"); its getSystemInfo only has
+    // the browser's platform ("Linux aarch64"). TikTok's own system string is "Android 11" / "iOS 17.0".
+    var ua = String(nav.userAgent || '');
+    var am = /Android ([0-9.]+);\s*([^;)]+?)(?:\s+Build\/|\))/.exec(ua);
+    var im = /(?:iPhone|iPad)[^)]*? OS (\d+(?:_\d+)*)/.exec(ua);
+    var sys = /android|ios|iphone/i.test(String(info.system || '')) ? /(\d+(?:\.\d+)*)/.exec(String(info.system)) : null;
+    var osv = sys ? sys[1] : am ? am[1] : im ? im[1].replace(/_/g, '.') : String((nb && nb.osVersion) || '');
+    var model = info.model || (nb && nb.model) || (am && am[2]) || (im ? (ua.indexOf('iPad') >= 0 ? 'iPad' : 'iPhone') : '');
+    return {
+      os: evPlatform() === 'tiktok' ? String(info.platform || '').toLowerCase().slice(0, 16) : evPlatform(),
+      os_version: osv.replace(/[^0-9.]/g, '').slice(0, 24),
+      model: String(model).replace(/[^0-9A-Za-z ,._()-]/g, '').slice(0, 48),
+      ram: ram,
+      screen: short ? (short >= 600 ? 'tablet' : 'phone') : '',
+      lang: /^[a-z]{2}$/.test(lang) ? lang : ''
+    };
+  }
+
+  // The queue on the device: written at most every 0.5 s while playing, at once on a hide.
+  function evSaveNow() {
+    if (EV.saveTimer) { safe(function () { clearTimeout(EV.saveTimer); }); EV.saveTimer = null; }
+    storeSet(EV_QUEUE_KEY, safe(function () { return JSON.stringify(EV.queue); }, '[]'));
+  }
+  function evSave() {
+    if (EV.saveTimer) return;
+    EV.saveTimer = safe(function () { return setTimeout(function () { EV.saveTimer = null; safe(evSaveNow); }, EV_SAVE_MS); }, null);
+    if (!EV.saveTimer) evSaveNow();
+  }
+
+  function evLoad() {
+    var raw = storeGet(EV_QUEUE_KEY);
+    var q = raw ? safe(function () { return JSON.parse(raw); }, []) : [];
+    EV.queue = Object.prototype.toString.call(q) === '[object Array]' ? q.slice(-EV_MAX_QUEUE) : [];
+  }
+
+  // Props: plain numbers / short strings / booleans only — anything else is dropped here,
+  // the server rejects what its template does not allow.
+  function evProps(p) {
+    var out = {};
+    if (!p || typeof p !== 'object') return out;
+    var n = 0;
+    for (var k in p) {
+      if (!has(p, k) || n >= 10 || !/^[a-z][a-z0-9_]{0,31}$/.test(k)) continue;
+      var v = p[k];
+      if (typeof v === 'number' && isFinite(v)) out[k] = v;
+      else if (typeof v === 'boolean') out[k] = v;
+      else if (typeof v === 'string') out[k] = v.slice(0, 128);
+      else continue;
+      n++;
+    }
+    return out;
+  }
+
+  // Only the props the server takes for this event, each of its type; whole numbers
+  // rounded and kept within the caps. custom: the game's own (registered) values.
+  function evAllowed(name, p) {
+    var spec = EV_PROPS[name];
+    if (!spec) return p;
+    var out = {};
+    for (var k in p) {
+      if (!has(p, k) || !has(spec, k)) continue;
+      var v = p[k], type = spec[k];
+      if (type === 's') { if (typeof v === 'string') out[k] = v; else if (typeof v === 'number') out[k] = String(v); }
+      else if (type === 'b') { if (typeof v === 'boolean') out[k] = v; }
+      else if (typeof v === 'number') {
+        if (type === 'i') {
+          v = Math.round(v);
+          if (has(EV_CAPS, k)) v = Math.max(0, Math.min(EV_CAPS[k], v));
+        }
+        out[k] = v;
+      }
+    }
+    return out;
+  }
+
+  // at / session: an event of a session that already ended (its own time and id)
+  function evPush(name, level, props, at, session) {
+    // Before start(): a game often builds its first level first. Held (up to 100) until
+    // start() says whether analytics is on — then sent, or dropped.
+    if (!EV.on && started) return false;
+    // t: when it happened (this phone's clock); sent as age_ms, so a wrong clock does not matter.
+    // s: its session — a batch carries the events of one session only.
+    var e = { id: evId(), name: name, t: typeof at === 'number' && isFinite(at) ? at : Date.now(), s: session || EV.session };
+    if (typeof level === 'number' && isFinite(level) && level >= 0) e.level = Math.floor(level);
+    var p = evAllowed(name, evProps(props));
+    if (!isEmpty(p)) e.p = p;
+    if (!EV.on) {
+      if (EV.early.length < 100) EV.early.push(e);
+      return true;
+    }
+    EV.queue.push(e);
+    if (EV.queue.length > EV_MAX_QUEUE) EV.queue.splice(0, EV.queue.length - EV_MAX_QUEUE);
+    if (EV.building) return true;   // start(): saved and sent once the queue is assembled
+    evSave();
+    if (EV.queue.length >= EV_FLUSH_AT) evFlush();
+    return true;
+  }
+
+  // UTF-8 size, a little over for characters outside the BMP — enough for the 64 KB keepalive cap
+  function evBytes(s) {
+    var n = s.length;
+    for (var i = 0; i < s.length; i++) { var c = s.charCodeAt(i); if (c > 0x7f) n += c > 0x7ff ? 2 : 1; }
+    return n;
+  }
+
+  // done(status, data) runs ONCE: on the answer, on a request that throws, or after 30 s
+  // without an answer — the queue is never left waiting on a request that is gone.
+  function evPost(body, done) {
+    var finished = false;
+    var timer = null;
+    var end = function (status, data) {
+      if (finished) return;
+      finished = true;
+      if (timer) safe(function () { clearTimeout(timer); });
+      done(status, data);
+    };
+    // hs-check: never the real service — the batch counts as accepted (the checker reads the trace)
+    if (root && root.__HS_CHECK__) { note('analytics:batch'); end(202, null); return; }
+    timer = safe(function () { return setTimeout(function () { safe(function () { end(0, null); }); }, EV_POST_TIMEOUT_MS); }, null);
+    var t = root && root.tt;
+    if (t && typeof t.request === 'function') {
+      var asked = safe(function () {
+        t.request({
+          url: EV.url, method: 'POST', data: body, header: { 'content-type': 'application/json' },
+          success: function (r) { end(r && r.statusCode, r && r.data); },
+          fail: function () { end(0, null); }
+        });
+        return true;
+      }, false);
+      if (!asked) end(0, null);
+      return;
+    }
+    var f = root && root.fetch;
+    if (typeof f !== 'function') { end(0, null); return; }
+    var sent = safe(function () {
+      // keepalive: a batch sent as the page hides still goes out (browsers cap it at 64 KB)
+      f.call(root, EV.url, { method: 'POST', body: body, keepalive: evBytes(body) < 60000, headers: { 'content-type': 'application/json' } })
+        .then(function (r) { return r.text().then(function (x) { end(r.status, x); }, function () { end(r.status, null); }); },
+          function () { end(0, null); });
+      return true;
+    }, false);
+    if (!sent) end(0, null);
+  }
+
+  function evFlush() {
+    if (!EV.on || !EV.queue.length) return;
+    // one request at a time; a flush asked meanwhile (a hide) runs as soon as it ends
+    if (EV.sending) { EV.flushPending = true; return; }
+    EV.sending = true;
+    EV.flushPending = false;
+    // the events of ONE session — the oldest one's — sent with that session
+    var s0 = EV.queue[0].s || '';
+    var batch = [];
+    for (var i = 0; i < EV.queue.length && batch.length < EV_BATCH; i++) {
+      if ((EV.queue[i].s || '') !== s0) break;
+      batch.push(EV.queue[i]);
+    }
+    var more = EV.queue.length > batch.length;
+    var now = Date.now();
+    var body = safe(function () {
+      if (!EV.device) EV.device = evDevice();   // once per session
+      return JSON.stringify({
+        hs_game_id: EV.gameId, platform: evPlatform(), store: evStore(), env: EV.env,
+        app_version: String((nativeBridge() && nativeBridge().appVersion) || HSGame.appVersion || ''),
+        kit: 'hs-game.js ' + VERSION,
+        player: { src: 'install', id: evInstall() },
+        device_id: evDeviceId(),
+        device: EV.device,
+        session: s0 || EV.session,
+        events: batch.map(function (e) {
+          var x = { id: e.id, name: e.name, age_ms: Math.max(0, now - e.t) };
+          if (e.level !== undefined) x.level = e.level;
+          if (e.p) x.p = e.p;
+          return x;
+        })
+      });
+    }, null);
+    if (!body) { EV.sending = false; return; }
+    evPost(body, function (status) {
+      EV.sending = false;
+      var again = EV.flushPending;
+      EV.flushPending = false;
+      // 202 accepted · 4xx (not 429) refused for good: drop it, it would never pass.
+      // 0 / 429 / 5xx: kept, sent again later.
+      if (status === 202 || (status >= 400 && status < 500 && status !== 429)) {
+        if (status !== 202) log('analytics: batch refused (' + status + ') — dropped');
+        var sent = {};
+        for (var j = 0; j < batch.length; j++) sent[batch[j].id] = true;
+        EV.queue = EV.queue.filter(function (e) { return !sent[e.id]; });
+        evSaveNow();   // once per batch: a sent batch is not sent again after a restart
+        if (more) again = true;   // the rest: more of this session, or the next session
+      }
+      if (again) evFlush();
+    });
+  }
+
+  function evSessionStart() {
+    var now = Date.now();
+    EV.session = 's' + evHex(8);
+    EV.sessionStart = now;
+    EV.activeMs = 0;
+    EV.visibleSince = now;
+    EV.errors = {};
+    EV.device = null;
+    evPush('session_start');
+    evPerf();
+  }
+
+  // The session's visible time so far (short trips away not counted).
+  function evActiveMs() {
+    return EV.activeMs + (EV.visibleSince ? Math.max(0, Date.now() - EV.visibleSince) : 0);
+  }
+
+  // The end of a session left in the background: its perf (if measured and not sent)
+  // and ONE session_end — at the moment it was left, with its own session id.
+  function evEndSession(rec) {
+    EV.rec = null;
+    storeSet(EV_SESSION_KEY, '');
+    if (!rec || typeof rec !== 'object' || typeof rec.s !== 'string' || !/^s[0-9a-f]{16}$/.test(rec.s)) return;
+    var at = typeof rec.at === 'number' && isFinite(rec.at) ? Math.min(rec.at, Date.now()) : Date.now();
+    var pf = rec.perf;
+    if (pf && typeof pf === 'object' && typeof pf.fps_avg === 'number') {
+      evPush('perf', null, { fps_avg: pf.fps_avg, fps_p10: pf.fps_p10 }, at, rec.s);
+      if (perf && perf.session === rec.s) perf.sent = true;
+    }
+    var active = Number(rec.active);
+    evPush('session_end', null, { duration_s: Math.round((isFinite(active) && active > 0 ? active : 0) / 1000) }, at, rec.s);
+  }
+
+  function evRecLoad() {
+    var raw = storeGet(EV_SESSION_KEY);
+    return raw ? safe(function () { return JSON.parse(raw); }, null) : null;
+  }
+
+  // perf: frames per second over 20 visible seconds, from 5 s after the session starts, once
+  // per session — the average and the slowest tenth (p10). Paused while the app is away or
+  // the game is paused (an ad, a purchase sheet); a session that ends first sends what it
+  // has (≥ 5 s) with its session_end. Own frame callback only while measuring.
+  var EV_PERF_DELAY_MS = 5000;
+  var EV_PERF_SECONDS = 20;
+  var perf = null;   // { session, perSec, frames, secStart, running, sent }
+
+  // What this session measured so far (null: not enough yet, or already sent).
+  function evPerfSummary() {
+    var p = perf;
+    if (!p || p.sent || p.session !== EV.session || p.perSec.length < 5) return null;
+    var sorted = p.perSec.slice().sort(function (a, b) { return a - b; });
+    var sum = 0;
+    for (var i = 0; i < p.perSec.length; i++) sum += p.perSec[i];
+    return {
+      fps_avg: Math.round(sum / p.perSec.length * 10) / 10,
+      fps_p10: Math.round(sorted[Math.floor(sorted.length * 0.1)] * 10) / 10
+    };
+  }
+
+  function evPerfSend() {
+    var sum = evPerfSummary();
+    if (!sum) return;
+    perf.sent = true;
+    evPush('perf', null, sum);
+  }
+
+  function evPerfStopped() {
+    // (a timer may fire a few ms early: 50 ms of slack)
+    return !!EV.hiddenAt || !isEmpty(pauseReasons) || Date.now() < EV.sessionStart + EV_PERF_DELAY_MS - 50;
+  }
+
+  function evPerfRun() {
+    var raf = root && root.requestAnimationFrame;
+    var p = perf;
+    if (typeof raf !== 'function' || !p || p.sent || p.running || p.session !== EV.session || evPerfStopped()) return;
+    p.running = true;
+    p.frames = 0;
+    p.secStart = Date.now();
+    var tick = function () {
+      // paused; resumes on show / when the game resumes
+      if (p.sent || p.session !== EV.session || EV.hiddenAt || !isEmpty(pauseReasons)) { p.running = false; return; }
+      p.frames++;
+      var now = Date.now();
+      if (now - p.secStart >= 1000) {
+        // a second that spans a pause (a long gap) is not a frame rate
+        if (now - p.secStart < 2000) p.perSec.push(p.frames * 1000 / (now - p.secStart));
+        p.frames = 0; p.secStart = now;
+      }
+      if (p.perSec.length >= EV_PERF_SECONDS) { p.running = false; evPerfSend(); return; }
+      safe(function () { raf.call(root, tick); });
+    };
+    safe(function () { raf.call(root, tick); });
+  }
+
+  function evPerf() {
+    var session = EV.session;
+    perf = { session: session, perSec: [], frames: 0, secStart: 0, running: false, sent: false };
+    setTimeout(function () { if (EV.on && perf && perf.session === session) evPerfRun(); }, EV_PERF_DELAY_MS);
+  }
+
+  // error: an uncaught error of the game — its type and a short hash of the message, never the
+  // text (it may hold player data). At most 5 per session, each kind once.
+  function evHashText(s) {
+    var h = 0;
+    s = String(s || '');
+    for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+    return (h >>> 0).toString(16);
+  }
+  function evError(err, message, fallback) {
+    if (!EV.on) return;
+    // tt.onError gives text like "TypeError: …" — the type is its first word. err.name only
+    // when it reads like an error class: a rejected object's .name may be a player's name.
+    var named = /^([A-Za-z]*Error)\b/.exec(String(message || ''));
+    var en = err && typeof err.name === 'string' && /(Error|Exception)$/.test(err.name) ? err.name : '';
+    var type = String(en || (named && named[1]) || fallback || 'Error').replace(/[^A-Za-z0-9_]/g, '').slice(0, 32) || 'Error';
+    var hash = evHashText(type + ':' + ((err && err.message) || message || ''));
+    if (!EV.errors || EV.errors[hash] || Object.keys(EV.errors).length >= 5) return;
+    EV.errors[hash] = 1;
+    evPush('error', null, { type: type, hash: hash });
+  }
+  function evHookErrors() {
+    var t = root && root.tt;
+    if (t && typeof t.onError === 'function') {
+      // tt.onError hands a message string (or { message, stack })
+      safe(function () { t.onError(function (e) { evError(null, e && e.message ? e.message : e); }); });
+      return;
+    }
+    if (root && typeof root.addEventListener === 'function') {
+      safe(function () {
+        root.addEventListener('error', function (ev) { evError(ev && ev.error, ev && ev.message); });
+        root.addEventListener('unhandledrejection', function (ev) { evError(ev && ev.reason, 'unhandled rejection', 'UnhandledRejection'); });
+      });
+    }
+  }
+
+  // A hide does NOT end the session: a trip away under 30 s (an ad, a pay sheet) continues
+  // it. Its visible time and what perf measured are kept on the device; the ONE session_end
+  // goes on the next show after ≥ 30 s away, or at the next start() if the app was closed.
+  function evOnHide() {
+    if (!EV.on) return;
+    if (!EV.hiddenAt) {
+      var now = Date.now();
+      EV.hiddenAt = now;
+      if (EV.session) {
+        EV.activeMs = evActiveMs();
+        EV.visibleSince = 0;
+        EV.rec = { s: EV.session, active: EV.activeMs, at: now, perf: evPerfSummary() };
+        storeSet(EV_SESSION_KEY, safe(function () { return JSON.stringify(EV.rec); }, ''));
+      }
+    }
+    evSaveNow();
+    evFlush();
+  }
+
+  function evOnShow() {
+    if (!EV.on || !EV.hiddenAt) return;
+    var now = Date.now();
+    var away = now - EV.hiddenAt;
+    EV.hiddenAt = 0;
+    if (away >= EV_NEW_SESSION_MS) {
+      evEndSession(EV.rec || evRecLoad());
+      evSessionStart();
+    } else {
+      // a short trip away continues the session, its visible time and its FPS sample
+      EV.rec = null;
+      storeSet(EV_SESSION_KEY, '');
+      EV.visibleSince = now;
+      evPerfRun();
+    }
+  }
+
+  // test: debug builds, the browser preview, the SDK's test mode, or forced; else live.
+  // Run again once the SDK is initialised (its test mode is known only then).
+  function evEnv() {
+    var cfg = EV.cfg || {};
+    var testSdk = safe(function () { return !!(sdk && ready && sdk.isTestMode); }, false);
+    EV.env = cfg.env === 'live' || cfg.env === 'test' ? cfg.env
+      : (HSGame.debug || platformName() === 'browser' || testSdk) ? 'test' : 'live';
+  }
+
+  function evStart(opts, gameId) {
+    var early = EV.early;
+    EV.early = [];
+    var a = opts.analytics;
+    if (!a) return;
+    if (!gameId) { log('analytics: no game id — off'); return; }
+    var cfg = typeof a === 'object' ? a : {};
+    EV.on = true;
+    EV.gameId = gameId;
+    EV.cfg = cfg;
+    if (typeof cfg.endpoint === 'string' && /^https?:\/\//.test(cfg.endpoint)) EV.url = cfg.endpoint;
+    evEnv();
+    // The queue is assembled in full before anything can be sent: what is left from last
+    // time, the end of the session the app was closed in, this session_start, then the
+    // calls made before start() (they belong to this session).
+    EV.building = true;
+    try {
+      evLoad();
+      evEndSession(evRecLoad());
+      evSessionStart();
+      for (var i = 0; i < early.length; i++) { early[i].s = EV.session; EV.queue.push(early[i]); }
+      if (EV.queue.length > EV_MAX_QUEUE) EV.queue.splice(0, EV.queue.length - EV_MAX_QUEUE);
+    } finally {
+      EV.building = false;
+    }
+    evSaveNow();
+    // A full queue goes once start() is past the SDK's init (env decided), not before.
+    if (EV.queue.length >= EV_FLUSH_AT) safe(function () { setTimeout(function () { safe(evFlush); }, 0); });
+    EV.timer = setInterval(evFlush, EV_FLUSH_MS);
+    evHookErrors();
+    log('analytics on — ' + EV.env + ', device ' + evDeviceId() + ' (register it in the HS dashboard to test)');
+    note('analytics:' + EV.env);
+  }
+
+  function evCurrency(flow, currency, amount, props) {
+    return safe(function () {
+      if (!currency || typeof amount !== 'number' || !isFinite(amount) || amount < 0) return false;
+      var p = evProps(props); var lv = p.level; delete p.level;
+      p.flow = flow; p.currency = String(currency).slice(0, 32); p.amount = Math.round(amount);
+      return evPush('currency', lv, p);
+    }, false);
+  }
+
+  function evAdShown(label, r) {
+    if (!EV.on || !r || !r.success) return;
+    var pl = safe(function () { return sdk.ads.getPlacement(label); }, null) || {};
+    var kind = String(pl.type || pl.ad_type || pl.format || '').toLowerCase();
+    var format = kind.indexOf('inter') >= 0 ? 'interstitial' : kind.indexOf('banner') >= 0 ? 'banner' : 'rewarded';
+    evPush('ad_shown', null, { place: label, format: format });
+  }
+
+  // A purchase credited — a TikTok order or a Google Play / App Store purchase. Its price:
+  // the store's micros, else the TikTok beans (currency BEANS), else 0. 'XXX' (ISO: no
+  // currency) when the currency is unknown — the server needs one.
+  function evPurchase(productId, product) {
+    if (!EV.on) return;
+    var p = EV.products[productId] || product || {};
+    var num = function (v) { return typeof v === 'number' && isFinite(v) && v >= 0; };
+    var micros = 0, cur = '';
+    if (num(p.price_micros)) micros = p.price_micros;
+    else if (num(p.price_amount_micros)) micros = p.price_amount_micros;
+    // beans are the TikTok price: only for a TikTok order, never for a Google / Apple one
+    // (that is unknown → 0 'XXX', rather than a wrong amount in the revenue reports)
+    else if (platformName() !== 'android' && num(p.beans_cost)) { micros = p.beans_cost * 1e6; cur = 'BEANS'; }
+    else if (num(p.price)) micros = p.price * 1e6;
+    if (!cur) cur = String(p.currency || p.price_currency_code || '').replace(/[^A-Za-z]/g, '').slice(0, 8).toUpperCase();
+    evPush('purchase', null, { product: String(productId), price_micros: Math.round(micros), currency: cur || 'XXX' });
+  }
+
   var HSGame = {
     version: VERSION,
     debug: false,
@@ -1533,7 +2204,7 @@
     get defaults() { return copy(defaults); },
     /** True when rewards have somewhere to go: an onGive, or a profile to credit. */
     get canGive() { return !!giveCb || !!P; },
-    /** 'minis' (TikTok) | 'android' (the HS Android app) | 'browser' (development). For logs — build UI with has(). */
+    /** 'minis' (TikTok) | 'android' (the HS app — Android or iOS) | 'browser' (development). For logs — build UI with has(). */
     get platform() { return platformName(); },
     /** True between 'pause' and 'resume' (an ad, a purchase, a share sheet, the app away). */
     get paused() { return !isEmpty(pauseReasons); },
@@ -1545,7 +2216,10 @@
      *   'share'           — a share button
      *   'ads'             — any ad button (then canShowAd(place) per button)
      *   'shop'            — the shop button (products exist and this platform can sell)
+     *   'restore'         — a "Restore purchases" link in the shop → HSGame.restore()
+     *                       (the iOS app, when a one-time product is on sale: Apple requires it)
      *   'cloud'           — "your progress is saved to your account" (login works here)
+     *   'exit'            — a "Quit" button (tt.exitMiniProgram) — never on iOS
      * The dashboard can switch any of them off: iaa_config "features": { "share": false }.
      */
     has: function (feature) {
@@ -1561,7 +2235,13 @@
           // The products could not be read (offline at start): ask again, at most once a minute.
           if (storeOpen() && !shopKnown && Date.now() - shopTriedAt > 60000) HSGame.shop();
           return storeOpen() && shopCount > 0;
+        case 'restore':
+          if (!storeOpen() || featureOff('shop') || !billing() || !isIos()) return false;
+          if (!shopKnown && Date.now() - shopTriedAt > 60000) HSGame.shop();
+          return storePermanent;
         case 'cloud': return loginPossible();
+        // A "Quit" button: Apple rejects an iOS app that closes itself.
+        case 'exit': return !isIos() && !!(root && root.tt && typeof root.tt.exitMiniProgram === 'function');
       }
       return false;
     },
@@ -1616,6 +2296,10 @@
         gameId = String((check && check.gameId) || opts.gameId || '');
         sdkKey = String((check && check.sdkKey) || opts.sdkKey || '');
       }
+
+      // Analytics needs only the game id — it runs offline, without the SDK or a login.
+      if (typeof opts.appVersion === 'string') HSGame.appVersion = opts.appVersion.slice(0, 32);
+      safe(function () { evStart(opts, gameId); });
 
       var offline = function (reason) { loginDone = true; checkMissions(); return Promise.resolve({ loggedIn: false, reason: reason }); };
       if (!sdk) return offline(loadError || 'SDK not loaded');
@@ -1698,10 +2382,13 @@
           cloud.isDirtyForCloud = false;
           kitEmit('otherDevice');
         });
+        // The HS app: start its ad provider with the units of every new ad config.
+        sdk.on('initCompleted', initNativeAds);
         return true;
       }, false);
       if (!ok) return offline('init failed — check gameId / sdkKey');
       ready = true;
+      if (EV.on) safe(evEnv);   // analytics: the SDK's test mode is known now, before the first batch
 
       var finish = function (r) {
         if (r.loggedIn) settleCloud();
@@ -1842,6 +2529,7 @@
             settled = true;
             clearTimeout(timer);
             endAd();
+            evAdShown(label, r);
             var out = adOutcome(label, r);
             // A late answer still pays an ad that was watched — the reward goes
             // to the profile / onGive; only the promise already said null.
@@ -1948,6 +2636,7 @@
         return loadGoogleProducts().then(function (list) {
           shopKnown = true;
           shopCount = list.length;
+          for (var i = 0; i < list.length; i++) if (list[i] && list[i].product_id) EV.products[list[i].product_id] = list[i];
           if (recoverWanted) recoverGoogle();     // start-up was offline: recover now
           return list;
         }, function () { return []; });
@@ -1959,6 +2648,7 @@
           var out = {};
           for (var k in p) if (has(p, k) && k !== 'rewards') out[k] = p[k];
           out.items = toItems(p.rewards);
+          if (out.product_id) EV.products[out.product_id] = out;   // its price, for the purchase event
           return out;
         });
         shopCount = list.length;
@@ -1996,6 +2686,25 @@
         },
         function (e) { unpause(); return { ok: false, error: String(e && e.message || e), delivered: false }; }
       );
+    },
+
+    /**
+     * "Restore purchases" — the link has('restore') asks for. Asks the app's
+     * store what this account owns and credits what this phone lacks (through
+     * the profile / onGive, like a purchase). Resolves { ok, error, restored,
+     * owned }: product ids credited now · all owned ones (a recovery at the
+     * app's return may have credited them first: say "restored" for owned).
+     */
+    restore: function () {
+      note('restore');
+      var fail = function (error) { return { ok: false, error: error, restored: [], owned: [] }; };
+      if (!storeOpen() || featureOff('shop') || !billing()) return Promise.resolve(fail('Store unavailable'));
+      if (buyingGoogle) return Promise.resolve(fail('A purchase is already open'));
+      // A fresh product list: one added since the start is restored too.
+      return loadGoogleProducts().then(function () { return recoverGoogle(); }).then(function (r) {
+        if (!r) return fail(googleLoaded ? 'Not ready yet — try again in a moment' : 'Store unavailable');
+        return { ok: true, error: '', restored: r.restored, owned: r.owned };
+      }, function (e) { return fail(String(e && e.message || e)); });
     },
 
     // ─── Cloud save ──────────────────────────────────────────
@@ -2088,6 +2797,100 @@
 
     /** True when another device took this account over (until takeOver()). */
     get otherDevice() { return !!(sdk && ready && sdk.isSessionReplaced); },
+
+    // ─── Analytics (start({ analytics: true })) ─────────────
+    // Sessions, ads, purchases and the device profile are sent by the kit itself.
+    // Each call below returns true when the event was queued (false: analytics off
+    // or a bad argument). Never throws.
+
+    analytics: {
+      /** Analytics is on (start() was given analytics: true and a game id). */
+      get on() { return EV.on; },
+      /** 'test' or 'live'. Debug builds and the browser preview are test. */
+      get env() { return EV.env; },
+      /** This install's id for the HS dashboard (Analytics Setup → Test devices), e.g. hsd-7K2Q9F3A. */
+      get deviceId() { return safe(evDeviceId, ''); },
+      /** Events waiting to be sent. */
+      get queued() { return EV.queue.length; },
+      /** Send what is queued now (also happens every 10 s and when the app hides). */
+      flush: function () { safe(evFlush); }
+    },
+
+    level: {
+      /** A level begins. level: its number (1, 2, …). */
+      start: function (level, props) {
+        return safe(function () { return typeof level === 'number' && evPush('level_start', level, props); }, false);
+      },
+      /**
+       * A level ends. result: 'win' | 'lose' | 'quit' (a restart is 'quit', reason 'restart').
+       * props: score, duration_s, reason, moves (made this attempt), and — only a game with a
+       * move / time limit — moves_left, time_left.
+       */
+      end: function (level, result, props) {
+        return safe(function () {
+          if (typeof level !== 'number' || ['win', 'lose', 'quit'].indexOf(result) < 0) { log('level.end(level, "win" | "lose" | "quit")'); return false; }
+          var p = evProps(props); delete p.level; p.result = result;
+          return evPush('level_end', level, p);
+        }, false);
+      }
+    },
+
+    economy: {
+      /** Soft currency given to the player. props: item_type, item_id, placement, balance, level. */
+      earn: function (currency, amount, props) { return evCurrency('given', currency, amount, props); },
+      /** Soft currency taken (spent). props: item_type, item_id, placement, balance, level. */
+      spend: function (currency, amount, props) { return evCurrency('taken', currency, amount, props); }
+    },
+
+    /** A booster / revive / undo used. props: level, paid (bought with currency). */
+    powerUp: function (name, props) {
+      return safe(function () {
+        if (!name) return false;
+        var p = evProps(props); var lv = p.level; delete p.level; p.name = String(name).slice(0, 64);
+        return evPush('power_up', lv, p);
+      }, false);
+    },
+
+    /** A tutorial / mission step done. props: level. */
+    missionStep: function (name, props) {
+      return safe(function () {
+        if (!name) return false;
+        var p = evProps(props); var lv = p.level; delete p.level; p.name = String(name).slice(0, 64);
+        return evPush('mission_step', lv, p);
+      }, false);
+    },
+
+    /** The same as missionStep, as docs/EVENTS.md writes it: HSGame.mission.step(name, { level }). */
+    mission: {
+      step: function (name, props) { return safe(function () { return HSGame.missionStep(name, props); }, false); }
+    },
+
+    /** A screen or button that matters: ui('open', 'shop'), ui('tap', 'settings', { location: 'home' }). */
+    ui: function (action, name, props) {
+      return safe(function () {
+        if (!action || !name) return false;
+        var p = evProps(props); delete p.level; p.action = String(action).slice(0, 32); p.name = String(name).slice(0, 64);
+        return evPush('ui', null, p);
+      }, false);
+    },
+
+    /**
+     * A custom event — stored ONLY if its name is registered for this game in the
+     * HS dashboard (Analytics Setup → Custom events), with the values registered
+     * there. props.level is the level if the event has one.
+     */
+    track: function (name, props) {
+      return safe(function () {
+        name = String(name || '');
+        if (!EV_NAME_RE.test(name) || has(EV_TEMPLATE, name)) { log('track("' + name + '"): snake_case, not a built-in event name'); return false; }
+        var p = evProps(props); var lv = p.level; delete p.level;
+        // at most 5 values besides the name (docs/EVENTS.md)
+        var kept = 0;
+        for (var k in p) { if (has(p, k) && ++kept > 5) delete p[k]; }
+        p.name = name;
+        return evPush('custom', lv, p);
+      }, false);
+    },
 
     /**
      * True while a "Sign in" button makes sense: a guest, or (Android app) a

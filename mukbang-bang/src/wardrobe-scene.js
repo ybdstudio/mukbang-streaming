@@ -23,7 +23,7 @@ function install(Game) {
     const it = WR.BY_ID[id]; if (!it) return; const p = this.profile, s = WR.state(p), sid = this.streamerDef().id;
     if (WR.owns(s, id)) { WR.equip(p, sid, id); this.audio.play('pop'); this.spawnSparkles(this.W / 2, this.H * 0.28, 10); return; }
     if (it.gift) { if (this.watchUnlockLook(id)) return; this.audio.play('error'); this.showToast('A gift at stream ' + it.gift, 'Keep streaming to unlock it'); return; }
-    const r = WR.buy(p, id);
+    const r = WR.buy(p, id); if (r === 'ok') this.an('spend', 'coins', WR.BY_ID[id].price, { item_type: 'outfit', item_id: id, level: this.curLevel() });
     if (r === 'coins') { this.audio.play('error'); this.showToast('Need ' + U.fmtCoins(it.price) + ' coins'); return; }
     if (r === 'ok') { WR.equip(p, sid, id); this.audio.play('cash'); this.spawnConfetti(this.W / 2, this.H * 0.3, 30); this.showToast('NEW LOOK: ' + it.name.toUpperCase()); }
   };

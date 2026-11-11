@@ -44,7 +44,7 @@ function install(Game) {
 
   // ── starting a stream ──
   // V4: a level starts on the stream with the viewer's request; the dish is cooked first (cook.js), then eaten
-  P.startStream = function (n) { CA.preload(); const lv = L.level(n); this.sessionLevels++; this.trans = 0.3; this.newRun({ level: lv.n, food: null, recipe: lv.recipe, request: lv.request, pack: 'plates', phase: 'request', loc: 'home', view: lv.view, cost: 0, cpb: lv.cpb, event: lv.event }); this.beginStream(); };
+  P.startStream = function (n) { if (this.anRun) { this.anStreamCoins(); this.anLevelEnd('quit', 'restart'); } CA.preload(); const lv = L.level(n); this.anRun = { n: lv.n, t0: this.clock(), moves: 0 }; this.an('levelStart', lv.n); this.sessionLevels++; this.trans = 0.3; this.newRun({ level: lv.n, food: null, recipe: lv.recipe, request: lv.request, pack: 'plates', phase: 'request', loc: 'home', view: lv.view, cost: 0, cpb: lv.cpb, event: lv.event }); this.beginStream(); };
   // activities end here: one chosen food, a bonus stream that never advances the level
   // the next food of a multi-item order (supermarket basket, delivery, buffet plate)
   P.nextQueued = function () {
@@ -146,6 +146,7 @@ function install(Game) {
   P.openPack = function () { const r = this.run; r.phase = 'opening'; r.pt = 0; this.audio.play(L.PACK_INFO[r.pack].sound === 'ding' ? 'ding' : L.PACK_INFO[r.pack].sound, { gain: 1.1 }); this.vibrate('short'); this.setFace('open', 1); this.pushChat('idle'); this.saveRun(); };
   P.deliver = function () { const r = this.run; if (r.phase !== 'carry') return; this.carry = null; r.phase = 'chew'; r.pt = 0; r.bites = 0; this.setFace(r.dish && r.dish.recipe === 'boba' ? 'sip' : 'open', r.dish && r.dish.recipe === 'boba' ? 1 : 0.3); this.saveRun(); };
   P.tapHeart = function (h) { const r = this.run; h.taken = true; r.hearts++; const v = Math.round(r.goal * HEART_BOOST); this.addViewers(v); this.floatText('+' + U.fmtViewers(v), h.x, h.y - 20, C.pink, 18); this.spawnSparkles(h.x, h.y, 8); this.audio.play('like', { gain: 0.6 }); };
+  P.anMove = function () { if (this.anRun) this.anRun.moves++; };
   P.tapGift = function () { const r = this.run; r.giftTaken = true; const coins = r.cpb * 4, v = Math.round(r.goal * GIFT_BOOST); r.coins += coins; this.profile.add('coins', coins); this.addViewers(v); this.floatText('FAN GIFT  +' + coins, r.gift.x, r.gift.y - 50, C.gold, 22, true); this.spawnConfetti(r.gift.x, r.gift.y, 24); this.audio.play('cash'); r.gift = null; this.saveRun(); };
   // viewer milestones inside one stream: GOAL (2★) → GOAL 3★ → then +40 % each; the bar always aims at the next one
   P.milestone = function (i) { const r = this.run; return i <= 0 ? r.goal : i === 1 ? r.goal3 : Math.round(r.goal3 * Math.pow(1.4, i - 1)); };
@@ -277,11 +278,12 @@ function install(Game) {
 
   // ── result ──
   P.finishRun = function () {
-    const r = this.run, p = this.profile; if (!r) return;
+    const r = this.run, p = this.profile; if (!r) return; this.anStreamCoins(r.level);
     let stars = r.peak >= r.goal3 ? 3 : r.peak >= r.goal ? 2 : 1; if (r.perfect && stars < 3) stars++; // matching the request is worth a star
     p.add('streams', 1);
     if (r.peak > (p.get('best_viewers') || 0)) p.set('best_viewers', Math.round(r.peak));
     const fid = r.recipe || r.food;
+    if (r.level) this.anLevelEnd('win'); if (r.quest && r.quest.done) this.an('missionStep', 'side_quest_' + r.quest.id, { level: r.level });
     const res = { quest: r.quest, side: r.side, food: r.food, dish: r.dish, perfect: r.perfect, mission: r.mission || 0, stars: stars, peak: Math.round(r.peak), goal: r.goal, coins: r.coins, hearts: r.hearts, gift: r.giftTaken, unlocks: [], firstClear: false, bonusTaken: false, t: 0 };
     // collection: every food eaten once is in the food book
     let book; try { book = JSON.parse(p.get('foods_json') || '[]'); } catch (e) { book = []; }

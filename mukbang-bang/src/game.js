@@ -53,7 +53,7 @@ class Game {
   // ── plumbing ──
   resize() { const p = this.p; this.scale = p.width() * p.dpr() / DESIGN_W; this.W = DESIGN_W; this.H = Math.round(p.height() / p.width() * DESIGN_W); this.ui.W = this.W; this.ui.H = this.H; }
   freeze(on) { this.frozen = on; if (on) { this.audio.suspend(); this.ui.clearTouches(); this.drag = null; } else this.audio.resume(); }
-  onGiven(items, from) { this.showToast(this.itemsText(items), from === 'share' ? 'Thanks for sharing!' : ''); if (this.state === 'popup') { this.popup = null; this.setState('home'); } }
+  onGiven(items, from) { for (const k in items) if (k === 'coins' && items[k] > 0) this.an('earn', 'coins', items[k], { item_type: from || 'reward', level: this.curLevel() }); this.showToast(this.itemsText(items), from === 'share' ? 'Thanks for sharing!' : ''); if (this.state === 'popup') { this.popup = null; this.setState('home'); } }
   itemsText(items) { const parts = []; for (const k in items) { if (k.charAt(0) === '$') continue; const it = this.hs.item(k); parts.push('+' + U.fmtCoins(items[k]) + ' ' + (it && it.name ? it.name : k)); } return parts.join('  '); }
   showToast(text, sub) { if (!text) return; this.toast = { text: text, sub: sub || '', life: 0 }; }
   setState(s) { this.prevState = this.state; this.state = s; this.ui.clearTouches(); this.drag = null; }
@@ -106,7 +106,7 @@ class Game {
   payCheckout() {
     const c = this.checkout; if (!c || c.done || !c.review || !c.items.length) return;
     c.done = true; c.thankT = 0; this.audio.play('cash');
-    this.profile.add('coins', -c.total);
+    this.profile.add('coins', -c.total); this.an('spend', 'coins', c.total, { item_type: 'supermarket', level: this.curLevel() });
     c.food = c.items[0].id; c.queue = c.items.slice(1).map(function (it) { return it.id; });
   }
   // put one receipt line back on the shelf (the basket shrinks too); an empty receipt returns to the shop
@@ -206,8 +206,8 @@ class Game {
     if (this.sceneTap(id)) return;
     if (this.cookTap(id)) return;
     switch (id) {
-      case 'play': if (this.run) this.beginStream(); else this.startStream(this.curLevel()); break;
-      case 'wardrobe': if (this.curLevel() < WR.OPEN_AT && (this.profile.get('levels_done') || 0) < WR.OPEN_AT) { this.audio.play('error'); this.showToast('Wardrobe opens after stream ' + WR.OPEN_AT); } else { this.wardTab = this.wardTab || 0; this.setState('wardrobe'); } break;
+      case 'play': if (this.run) { if (this.run.level && !this.anRun) { this.anRun = { n: this.run.level, t0: this.clock(), moves: 0 }; this.an('levelStart', this.run.level); } this.beginStream(); } else this.startStream(this.curLevel()); break;
+      case 'wardrobe': if (this.curLevel() < WR.OPEN_AT && (this.profile.get('levels_done') || 0) < WR.OPEN_AT) { this.audio.play('error'); this.showToast('Wardrobe opens after stream ' + WR.OPEN_AT); } else { this.wardTab = this.wardTab || 0; this.an('uiOpen', 'wardrobe'); this.setState('wardrobe'); } break;
       case 'levels': this.levelPage = Math.floor((this.curLevel() - 1) / 15); this.setState('levels'); break;
       case 'page0': case 'page1': case 'page2': this.levelPage = +id.slice(4); break;
       case 'streamers': this.setState('streamers'); break;
@@ -222,7 +222,8 @@ class Game {
       case 'coins': this.popupFrom = this.state; this.setState('coins'); break;
       case 'coins_close': this.setState(this.popupFrom || 'home'); break;
       case 'free_coins': this.watchFreeCoins(); break;
-      case 'hsshop': this.openShop(); break;
+      case 'restore': { const self2 = this; Promise.resolve(this.hs.restore()).then(function () { self2.showToast('Purchases restored'); }, function () { self2.showToast('Nothing to restore'); }); break; }
+      case 'hsshop': this.an('uiOpen', 'shop'); this.openShop(); break;
       case 'shop_back': this.setState(this.popupFrom && this.popupFrom !== 'coins' ? this.popupFrom : 'home'); break;
       case 'cat_prev': this.market.cat = (this.market.cat + this.market.cats.length - 1) % this.market.cats.length; this.audio.play('whoosh', { gain: 0.5 }); break;
       case 'cat_next': this.market.cat = (this.market.cat + 1) % this.market.cats.length; this.audio.play('whoosh', { gain: 0.5 }); break;
@@ -235,7 +236,7 @@ class Game {
       case 'mtip_block': break;
       case 'pause': if (this.state === 'stream') this.setState('pause'); break;
       case 'resume': this.setState('stream'); break;
-      case 'leave': this.saveRun(); this.setState('home'); break;
+      case 'leave': this.anStreamCoins(); this.anLevelEnd('quit', 'leave'); this.saveRun(); this.setState('home'); break;
       case 'bonus_ad': this.watchBonus(); break;
       case 'cook_go': if (this.state === 'stream' && this.run && this.run.phase === 'request') this.enterCook(); break;
       case 'fangift_ad': this.watchFanGift(); break;
@@ -304,6 +305,13 @@ class Game {
   }
   clock() { return this.wall !== undefined ? this.wall : this.time; }
   adsLast5min() { const now = this.clock(), log = this.adLog || []; let n = 0; for (let i = 0; i < log.length; i++) if (now - log[i] <= 300) n++; return n; }
+  // HS Analytics: call a wrapper only if the platform has it (tests / web fake), never throw
+  an(fn) { const f = this.hs && this.hs[fn]; if (typeof f !== 'function') return false; try { return f.apply(this.hs, Array.prototype.slice.call(arguments, 1)); } catch (e) { return false; } }
+  // a main level ends exactly once per start: win at the result, quit when the player leaves or restarts
+  anLevelEnd(result, reason) { const a = this.anRun; if (!a) return; this.anRun = null; const r = this.run;
+    const info = { duration_s: Math.round(this.clock() - a.t0), moves: a.moves || 0 }; if (r) info.score = Math.round(r.peak || 0); if (reason) info.reason = reason;
+    this.an('levelEnd', a.n, result, info); }
+  anStreamCoins(level) { const r = this.run; if (!r) return; const got = (r.coins || 0) - (r.anPaid || 0); if (got > 0) { r.anPaid = r.coins; this.an('earn', 'coins', got, { item_type: r.level ? 'stream' : 'bonus_stream', level: level || this.curLevel() }); } }
   // interstitials (stream_end + cook_step) at least 30 s apart from each other; the dashboard cooldown is per place
   interGapOk() { return this.lastInter === undefined || this.clock() - this.lastInter >= 30; }
   noAds() { return (this.profile.get('no_ads') || 0) > 0; }
@@ -337,7 +345,7 @@ class Game {
     if (this.adBusy || !this.canBoost()) return;
     const self = this; this.adRun('viral_boost', this.hs.showBoost(), function (r) {
       const run = self.run; if (r === null || !run) { if (r === null) self.showToast('No ad right now'); return; }
-      run.boosted = true; const v = Math.round(run.goal * 0.25); run.viewers += v; run.peak = Math.max(run.peak, run.viewers);
+      run.boosted = true; self.an('powerUp', 'viral_boost', { level: run.level || self.curLevel(), paid: false }); const v = Math.round(run.goal * 0.25); run.viewers += v; run.peak = Math.max(run.peak, run.viewers);
       for (let i = 0; i < 10; i++) self.spawnHeart(true); self.floatText('VIRAL BOOST!  +' + U.fmtViewers(v), self.W / 2, self.H * 0.47, C.gold, 28, true); self.audio.play('levelup'); self.saveRun();
     });
   }
@@ -355,7 +363,7 @@ class Game {
     const self = this; r.hyped = true;
     this.adRun('extra_hype', this.hs.showHype(), function (res) {
       const run = self.run; if (!run) return; if (res === null) { run.hyped = false; self.showToast('No ad right now'); return; }
-      const v = Math.round(run.goal * 0.5); self.addViewers(v); for (let i = 0; i < 12; i++) self.spawnHeart(true); self.floatText('EXTRA HYPE!  +' + U.fmtViewers(v), self.W / 2, self.H * 0.47, C.gold, 28, true); self.audio.play('levelup'); self.saveRun();
+      self.an('powerUp', 'extra_hype', { level: run.level || self.curLevel(), paid: false }); const v = Math.round(run.goal * 0.5); self.addViewers(v); for (let i = 0; i < 12; i++) self.spawnHeart(true); self.floatText('EXTRA HYPE!  +' + U.fmtViewers(v), self.W / 2, self.H * 0.47, C.gold, 28, true); self.audio.play('levelup'); self.saveRun();
     });
   }
   // unlock the next locked level early (levels screen); the level bonus still pays once, when it is cleared
@@ -727,6 +735,7 @@ class Game {
       y += 96;
     }
     ui.button('shop_back', 40, H - 40 - 70, W - 80, 54, 'BACK', { color: C.lavender, dark: C.lavenderDark, size: 20 });
+    if (this.hs.hasRestore && this.hs.hasRestore()) ui.button('restore', W / 2 - 110, H - 110, 220, 44, 'Restore purchases', { color: C.lavender, dark: C.lavenderDark, size: 15 });
   }
   // TikTok review popups: numbered steps + the reward (label from the dashboard), one "GO" button.
   popupBack() { return this.popupFrom === 'levels' ? 'levels' : 'home'; }

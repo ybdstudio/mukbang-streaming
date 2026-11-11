@@ -78,7 +78,7 @@ function install(Game) {
   P.placeOrder = function () {
     const d = this.deliv; if (d.mains.length < 1) { this.audio.play('error'); this.showToast('Pick a main dish'); return; }
     const cost = this.deliveryTotal(); if ((this.profile.get('coins') || 0) < cost) { this.audio.play('error'); this.showToast('Not enough coins'); return; }
-    this.profile.add('coins', -cost); this.audio.play('cash');
+    this.profile.add('coins', -cost); this.an('spend', 'coins', cost, { item_type: 'delivery', level: this.curLevel() }); this.audio.play('cash');
     d.cost = cost; d.t = 0; d.dinged = false; d.dropped = false;
     this.setState('arrive'); this.audio.play('whoosh');
   };
@@ -183,7 +183,7 @@ function install(Game) {
     const b = this.buf, fee = b.lv.buffet.fee;
     if (b.plate.length < 1) { this.audio.play('error'); this.showToast('Put some food on your plate'); return; }
     if ((this.profile.get('coins') || 0) < fee) { this.audio.play('error'); this.showToast('Not enough coins'); return; }
-    this.profile.add('coins', -fee); this.audio.play('cash');
+    this.profile.add('coins', -fee); this.an('spend', 'coins', fee, { item_type: 'buffet', level: this.curLevel() }); this.audio.play('cash');
     this.startFoodStream(b.plate[0], { side: 'buffet', cost: fee, loc: 'restaurant', queue: b.plate.slice(1) });
   };
   P.buffetTouch = function (kind, id, x, y) {

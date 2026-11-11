@@ -177,6 +177,16 @@ var hs = {
   startShortcutMission: function () { return HSGame.tiktokMission.start('shortcut'); },
   canShare: function () { return HSGame.canShare(); },
   share: function () { return HSGame.share({ title: 'Mukbang ASMR', subtitle: 'Cook it, serve it, eat it live! Come watch my mukbang stream.' }); },
+  // HS Analytics (kit 3.4.0): literal calls; every call returns false when analytics is off
+  levelStart: function (n) { return HSGame.level.start(n); },
+  levelEnd: function (n, result, info) { return HSGame.level.end(n, result, info); },
+  earn: function (currency, amount, info) { return HSGame.economy.earn(currency, amount, info); },
+  spend: function (currency, amount, info) { return HSGame.economy.spend(currency, amount, info); },
+  powerUp: function (id, info) { return HSGame.powerUp(id, info); },
+  uiOpen: function (screen) { return HSGame.ui('open', screen); },
+  missionStep: function (id, info) { return HSGame.mission.step(id, info); },
+  hasRestore: function () { return HSGame.has('restore'); },
+  restore: function () { return HSGame.restore(); },
   // shop & account
   shop: function () { return HSGame.shop(); },
   buy: function (id) { return HSGame.buy(id); },
@@ -195,7 +205,7 @@ HSGame.on('otherDevice', function () {
 });
 
 // The game plays at once from the profile; claims work after start() resolves.
-HSGame.start({ gameId: HS_KEYS.gameId || '', sdkKey: HS_KEYS.sdkKey || '', defaults: DEFAULTS }).then(function () { game.hsReady = true; });
+HSGame.start({ gameId: HS_KEYS.gameId || '', sdkKey: HS_KEYS.sdkKey || '', defaults: DEFAULTS, analytics: true }).then(function () { game.hsReady = true; });
 
 var raf = (typeof requestAnimationFrame === 'function') ? requestAnimationFrame : (tt.requestAnimationFrame ? tt.requestAnimationFrame : function (f) { setTimeout(function () { f(Date.now()); }, 16); });
 function loop(now) { game.frame(typeof now === 'number' ? now : Date.now()); raf(loop); }

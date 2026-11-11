@@ -52,7 +52,7 @@ function install(Game) {
   P.cookTap = function (id) {
     const k = this.ck; if (!k || this.state !== 'cook') return false;
     if (id.indexOf('cko_') === 0) { const st = this.curCookStep(); if (!st || st.t !== 'pick') return true; const oid = id.slice(4); k.sel = oid; k.dish[SLOT_KEY[st.slot]] = oid; this.audio.play('pop'); this.vibrate('short'); return true; }
-    if (id === 'ck_ok') { if (!k.sel) return true; const mid = k.step >= 2 && !k.stepAd; this.cookNext(); if (mid) this.cookStepAd(); return true; }
+    if (id === 'ck_ok') { if (!k.sel) return true; this.anMove(); const mid = k.step >= 2 && !k.stepAd; this.cookNext(); if (mid) this.cookStepAd(); return true; }
     if (id === 'ck_serve') { if (k.serveAsk) this.cookServed(); return true; }
     if (id === 'ck_hot') { this.watchServe(); return true; }
     if (id === 'ck_rare') { this.watchRare(); return true; }
@@ -72,7 +72,7 @@ function install(Game) {
     const self = this; this.adRun('serve_bonus', this.hs.showServe(), function (r) {
       if (self.ck !== k) return;
       if (r === null) { self.showToast('No ad right now'); return; }
-      self.cookServed(true);
+      self.an('powerUp', 'hot_start', { level: k.lv.n, paid: false }); self.cookServed(true);
     });
   };
   P.canRare = function () { return this.hs.hasAds() && this.hs.canShowRare && (this.profile.get('streams') || 0) >= 3 && this.hs.canShowRare(); };
@@ -82,7 +82,7 @@ function install(Game) {
     this.adRun('rare_choice', this.hs.showRare(), function (r) {
       if (r === null) { self.showToast('No ad right now'); return; }
       if (self.ck !== k || self.curCookStep() !== st) return;
-      k.rareUsed = true; k.rareKey = key; k.sel = o.id; k.dish[key] = o.id; k.opts = k.opts.concat([o]); k.rare = null;
+      k.rareUsed = true; self.an('powerUp', 'rare_choice', { level: k.lv.n, paid: false }); k.rareKey = key; k.sel = o.id; k.dish[key] = o.id; k.opts = k.opts.concat([o]); k.rare = null;
       self.audio.play('levelup'); self.spawnConfetti(self.W / 2, self.H * 0.4, 30); self.showToast('RARE ' + o.name.toUpperCase() + '!', 'The viewers will love it');
     });
   };
